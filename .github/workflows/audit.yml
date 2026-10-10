@@ -18,3 +18,4 @@ jobs:
       - run: python experiments/matching_cost_20261010/reoptimize_lqp02.py
       - run: python experiments/matching_limit/enumerate_graphs.py --nodes 3 --branches 6
       - run: python experiments/matching_limit/parallel_chip_screen.py
+      - run: python experiments/matching_limit/graph_mna_screen.py --max-candidates 4 --max-raw 200

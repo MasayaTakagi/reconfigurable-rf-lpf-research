@@ -2,7 +2,7 @@
 
 **開発状況:** Phase 2（回路トポロジー／理論性能の探索中） | **基準日:** 2026-10-10 | **Phase 3: ユーザー承認まで停止**
 
-[English overview](README.en.md) · [設計仕様](docs/01_requirements_ja.md) · [部品・面積コストとC配置の新定義](docs/11_component_cost_topology_rules_ja.md) · [新仕様での整合専用コスト–IL探索（面積4）](docs/12_matching_cost_frontier_ja.md) · [面積6・PCB結合0.6の追加探索](docs/13_matching_area6_pcb_k06_ja.md) · [チップ結合上限0.4とペア数感度](docs/14_chip_coupling_k04_study_ja.md) · [開発履歴](docs/02_history_ja.md) · [チェックポイント一覧](docs/09_design_checkpoints_ja.md) · [実装候補](docs/10_implementation_shortlist_ja.md) · [結果と証拠](docs/03_results_ja.md) · [ロードマップ](docs/05_roadmap_ja.md) · [外部レビュー依頼](docs/06_review_request_ja.md) · [再現手順](docs/07_reproduction_ja.md)
+[English overview](README.en.md) · [設計仕様](docs/01_requirements_ja.md) · [部品・面積コストとC配置の新定義](docs/11_component_cost_topology_rules_ja.md) · [新仕様での整合専用コスト–IL探索（面積4）](docs/12_matching_cost_frontier_ja.md) · [面積6・PCB結合0.6の追加探索](docs/13_matching_area6_pcb_k06_ja.md) · [チップ結合上限0.4とペア数感度](docs/14_chip_coupling_k04_study_ja.md) · [隣接配置に基づく強結合ペアの検討案（未承認）](docs/15_chip_strong_coupling_layout_proposal_ja.md) · [開発履歴](docs/02_history_ja.md) · [チェックポイント一覧](docs/09_design_checkpoints_ja.md) · [実装候補](docs/10_implementation_shortlist_ja.md) · [結果と証拠](docs/03_results_ja.md) · [ロードマップ](docs/05_roadmap_ja.md) · [外部レビュー依頼](docs/06_review_request_ja.md) · [再現手順](docs/07_reproduction_ja.md)
 
 ## プロジェクト目標
 

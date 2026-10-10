@@ -105,6 +105,15 @@ def run(args):
     selected,eligible=select_node_balanced(graphs,args.per_bin)
     rows=load_bands();grid=frequency_grid(rows,args.coarse_points)
     rng=np.random.default_rng(args.seed);results=[]
+    checkpoint=Path(args.output)
+    def save_partial():
+        payload=dict(method='bounded_sampled_search_not_global_optimum',
+                     status='partial_checkpoint',parameters=vars(args),
+                     sampled_graphs=len(graphs),eligible=eligible,
+                     optimized_graphs=len(results),results=results)
+        temp=checkpoint.with_suffix(checkpoint.suffix+'.tmp')
+        temp.write_text(json.dumps(payload,indent=2),encoding='utf-8')
+        temp.replace(checkpoint)
     for (internal_nodes,bin_idx),graph in selected:
         best=None;bounds=bounds_for(graph)
         for K in layout_candidates(graph,args.layouts):
@@ -128,6 +137,7 @@ def run(args):
                             area=sum(AREA[t] for _,_,t in graph[1])/3,
                             bin=f'P{bin_idx+2}',graph=[graph[0],list(map(list,graph[1]))],
                             **best,validation=validation))
+        save_partial()
     return dict(method='bounded_sampled_search_not_global_optimum',
                 parameters=vars(args),sampled_graphs=len(graphs),eligible=eligible,
                 optimized_graphs=len(results),results=results)
@@ -147,6 +157,7 @@ def main():
     if min(args.attempts,args.per_bin,args.starts,args.layouts,args.iterations,args.coarse_points,args.validation_points)<1:
         p.error('All budget arguments must be positive')
     report=run(args)
+    report['status']='completed'
     Path(args.output).write_text(json.dumps(report,indent=2),encoding='utf-8')
     print(json.dumps({'optimized_graphs':report['optimized_graphs'],
                       'results':[(r['internal_nodes'],r['bin'],r['area'],r['coarse_il_db'],r['validation'])

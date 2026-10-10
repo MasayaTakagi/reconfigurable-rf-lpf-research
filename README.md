@@ -2,7 +2,7 @@
 
 **開発状況:** Phase 2（回路トポロジー／理論性能の探索中） | **基準日:** 2026-10-10 | **Phase 3: ユーザー承認まで停止**
 
-[English overview](README.en.md) · [設計仕様](docs/01_requirements_ja.md) · [部品・面積コストとC配置の新定義](docs/11_component_cost_topology_rules_ja.md) · [新仕様での整合専用コスト–IL探索（面積4）](docs/12_matching_cost_frontier_ja.md) · [面積6・PCB結合0.6の追加探索](docs/13_matching_area6_pcb_k06_ja.md) · [チップ結合上限0.4とペア数感度](docs/14_chip_coupling_k04_study_ja.md) · [隣接配置による強結合ペアの正式ルール](docs/15_chip_strong_coupling_layout_proposal_ja.md) · [開発履歴](docs/02_history_ja.md) · [チェックポイント一覧](docs/09_design_checkpoints_ja.md) · [実装候補](docs/10_implementation_shortlist_ja.md) · [結果と証拠](docs/03_results_ja.md) · [ロードマップ](docs/05_roadmap_ja.md) · [外部レビュー依頼](docs/06_review_request_ja.md) · [再現手順](docs/07_reproduction_ja.md)
+[English overview](README.en.md) · [設計仕様](docs/01_requirements_ja.md) · [部品・面積コストとC配置の新定義](docs/11_component_cost_topology_rules_ja.md) · [新仕様での整合専用コスト–IL探索（面積4）](docs/12_matching_cost_frontier_ja.md) · [面積6・PCB結合0.6の追加探索](docs/13_matching_area6_pcb_k06_ja.md) · [チップ結合上限0.4とペア数感度](docs/14_chip_coupling_k04_study_ja.md) · [隣接配置による強結合ペアの正式ルール](docs/15_chip_strong_coupling_layout_proposal_ja.md) · [新ルールによる面積別の最適化結果](docs/16_matching_1d_adjacent_cost_frontier_ja.md) · [開発履歴](docs/02_history_ja.md) · [チェックポイント一覧](docs/09_design_checkpoints_ja.md) · [実装候補](docs/10_implementation_shortlist_ja.md) · [結果と証拠](docs/03_results_ja.md) · [ロードマップ](docs/05_roadmap_ja.md) · [外部レビュー依頼](docs/06_review_request_ja.md) · [再現手順](docs/07_reproduction_ja.md)
 
 ## プロジェクト目標
 
@@ -25,6 +25,12 @@ B71 / B12 / B28 / B13+B14 / B26 / B8 の**6設定**を1つのRFフィルタで�
 - **全チップ対を同時にk=0.4**と置く旧理論モデルで、LQP02×4（面積4）は約**0.0973dB**、LQP02×6（面積6）は約**0.0799dB**。**これは新しい単列隣接強結合ルールに不適合であり、正式な候補ではない**。単列隣接5ペアのみにk=0.4を与え、他を0とする6チップ候補は約**0.1171dB**（整合のみ）。
 - **主2ペアk=0.4＋その他k=0.16**という旧比較は、非強結合上限0.1の新ルールに不適合。旧理論比較値としてのみ保持し、正式なコスト–ILフロンティアには含めない。
 - 詳細：[結合係数とペア数の感度レポート](docs/14_chip_coupling_k04_study_ja.md)。
+
+## 単列隣接強結合・弱結合0.1の正式ルールでの整合専用再最適化
+
+- **新ルール（隣接ペアのみk≤0.4、非強結合は公称0）**の候補：LQP02×2で最大IL約**0.1320dB**、×3で**0.1222dB**、×4で**0.1180dB**、×6で**0.1148dB**。6設定UL/DLでの評価値であり、H2/H3減衰は課していない。
+- 非強結合ペアを一律−0.1／0／+0.1として同時再最適化した限定ロバスト比較では、LQP02×3の最大IL約**0.1287dB**が有望。独立ペアすべての厳密最悪ではない。
+- [新規数値レポート](docs/16_matching_1d_adjacent_cost_frontier_ja.md)／[面積別CSV](data/matching_1d_adjacent_cost_frontier_20261010.csv)／[独立検証コード](experiments/matching_cost_20261010/verify_adjacent_1d.py)。過去の全チップ対k=0.4による0.0799dBは現行ルールに不適合。
 
 ## 過去の35dB減衰付き結果（**数値探索値、証明値ではない**）
 

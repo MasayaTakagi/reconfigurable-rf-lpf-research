@@ -42,3 +42,30 @@ def check_graph(graph):
     area=sum({'LQP01':2,'LQP02':3,'PCB_L':0,'GJM01':2}[t] for _,_,t in edges)
     if area>18:raise ValueError('Chip area >6')
     return area/3
+
+def build_grounded_settings(graph,values=None,caps=None,coupling=None):
+    """Graph 0=ground,1=input,2=output,>=3 internal."""
+    n,edges=graph
+    if n<3:raise ValueError('Ground and two terminals required')
+    if values is None:values=[DEFAULT[t] for _,_,t in edges]
+    if len(values)!=len(edges):raise ValueError('Value count mismatch')
+    if caps is None:caps=np.zeros((6,2))
+    caps=np.asarray(caps,float)
+    if caps.shape!=(6,2) or np.any(caps<0) or np.any(caps>4):
+        raise ValueError('Invalid variable capacitor settings')
+    inductors=[];fixed=[]
+    for (a,b,t),v in zip(edges,values):
+        branch=Branch(a,b,float(v),Q[t])
+        (fixed if t=='GJM01' else inductors).append(branch)
+    if sum(t=='PCB_L' for _,_,t in edges)>3:raise ValueError('PCB limit')
+    if sum({'LQP01':2,'LQP02':3,'PCB_L':0,'GJM01':2}[t] for _,_,t in edges)>18:
+        raise ValueError('Chip area limit')
+    out={}
+    for case,cc in zip(CASES,caps):
+        out[case]=dict(n_nodes=n-1,source_node=1,load_node=2,
+            inductors=tuple(inductors),
+            capacitors=tuple(fixed+[Branch(1,0,float(cc[0])*1e-12,80),
+                                     Branch(2,0,float(cc[1])*1e-12,80)]),
+            coupling=coupling)
+    validate_six_settings(out,(len(fixed),len(fixed)+1))
+    return out

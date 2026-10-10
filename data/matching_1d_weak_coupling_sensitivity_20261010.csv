@@ -1,7 +1,7 @@
 # Three uniform nonstrong chip-pair weak coupling scenarios: all k=-0.1,0,+0.1; fixed strong k=+0.4 on immediate neighbors; same six-band IC shunt caps; NO certified independent-pair worst-case.
 LQP02_count,chip_area,nominal_IL_db,nominal_LC_fixed_weak_extremes_worst_IL_db,scenario_robust_reoptimized_worst_IL_db,robust_design_nominal_IL_db
 2,2,0.131991212,0.131991212,0.131991212,0.131991212
-3,3,0.122209045,0.130098582,0.1286648,0.12312
-4,4,0.118042384,0.136555491,0.130114,0.121468
+3,3,0.122209045,0.130098582,0.128665185,0.12312
+4,4,0.118042384,0.136555491,0.130114452,0.121468
 5,5,0.115868661,0.146949999,0.14039,0.120857
-6,6,0.114837004,0.166216564,0.155764,0.121764
+6,6,0.114837004,0.166216564,0.155764411,0.121764

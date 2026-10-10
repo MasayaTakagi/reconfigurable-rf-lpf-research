@@ -68,6 +68,7 @@
 - [面積予算別フロンティアCSV](../data/matching_1d_adjacent_cost_frontier_20261010.csv)。
 - [弱結合感度CSV](../data/matching_1d_weak_coupling_sensitivity_20261010.csv)。
 - [代表8構成のL値、配置順序、6設定ごとのC値](../experiments/matching_cost_20261010/adjacent_1d_20261010_shortlist.json)。
+- [代表8構成の再最適化コード](../experiments/matching_cost_20261010/optimize_adjacent_1d.py)。既存の代表8トポロジーを数値最適化で再探索できる。初期点依存・非凸のため完全一致は保証しない。
 - [代表8構成の独立MNA検証コード](../experiments/matching_cost_20261010/verify_adjacent_1d.py)。実行：`python experiments/matching_cost_20261010/verify_adjacent_1d.py`（NumPy必要）。
 - 探索プログラム全体・多数の局所候補とグラフ・弱結合再最適化コードは別添研究ZIPに保存。**GitHubの検証コードは保存済み候補の再計算であり、全探索の再現とは区別**する。
 

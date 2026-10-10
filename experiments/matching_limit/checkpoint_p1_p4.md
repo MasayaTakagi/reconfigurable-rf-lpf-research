@@ -24,3 +24,12 @@ P0: complete and CI verified on main. P1: bounded graph generation implemented a
 
 ## Unresolved modeling decisions
 A practical upper bound on internal nodes and on how many parallel branches can share the same terminals is required before any defensible completeness claim. Default physical design constraints are unchanged; increasing the topology enumeration computational bound does not relax RF specifications.
+
+## GitHub Actions pilot observations (commit 5d2b06dd, run 38057406033)
+| Chip area | Parallel LQP02 count | Pilot worst IL (dB) | Historical series-L reference (dB) |
+|---:|---:|---:|---:|
+| 2 | 2 | 0.202017753 | 0.131991212 |
+| 4 | 4 | 0.332742527 | 0.118042384 |
+| 6 | 6 | 0.396914138 | 0.114837004 |
+
+All three SLSQP runs reported success, and all inductor values reached the provisional upper search bound 8nH. These are **restricted, two-start, local screening results**, not topology-wise global minima. The parallel-current-path pilot does not beat the reference series-L solutions under these settings. All results were rescored at approximately 0.02MHz but independent MNA and hardware feasibility have not yet been verified.

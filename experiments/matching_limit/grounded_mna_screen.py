@@ -9,6 +9,7 @@ from scipy.optimize import minimize
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'src'))
 from enumerate_grounded import enumerate_grounded
+from topology_selection import select_balanced
 from instantiate_graph import build_grounded_settings
 from lpf.evaluate import CASES,load_bands
 from lpf.circuit import solve
@@ -23,18 +24,6 @@ def score(x,graph,freq):
         settings=build_grounded_settings(graph,values,np.asarray(x[len(edges):]).reshape(6,2))
         return max(solve(f*1e6,**settings[c])['il_db'] for c in CASES for f in freq[c])
     except (ValueError,np.linalg.LinAlgError):return 1e6
-def select(graphs,per_bin):
-    bins=[[],[],[]]
-    for g in graphs:
-        area=sum({'LQP01':2,'LQP02':3,'PCB_L':0,'GJM01':2}[t] for _,_,t in g[1])
-        bins[0 if area<=6 else 1 if area<=12 else 2].append(g)
-    chosen=[]
-    for idx,group in enumerate(bins):
-        # Prefer grounded L/C combinations, not only first lexicographic graph.
-        group.sort(key=lambda g:(-sum(a==0 or b==0 for a,b,_ in g[1]),
-                                 -len(set(t for _,_,t in g[1])),str(g)))
-        chosen.extend((idx,g) for g in group[:per_bin])
-    return chosen
 def main():
     p=argparse.ArgumentParser()
     p.add_argument('--max-raw',type=int,default=25000)
@@ -43,7 +32,8 @@ def main():
     counts,graphs=enumerate_grounded(1,6,a.max_raw)
     print('grounded_enumeration',dict(counts))
     freq=frequencies()
-    selected=select(graphs,a.per_bin)
+    selected,eligible_counts=select_balanced(graphs,a.per_bin)
+    print('eligible_after_structural_pruning',eligible_counts)
     print('selected_bins', {name:sum(i==idx for i,_ in selected) for idx,name in enumerate(('P2','P3','P4'))})
     for idx,g in selected:
         edges=g[1];n=len(edges)

@@ -2,7 +2,7 @@
 
 **開発状況:** Phase 2（回路トポロジー／理論性能の探索中） | **基準日:** 2026-10-10 | **Phase 3: ユーザー承認まで停止**
 
-[English overview](README.en.md) · [設計仕様](docs/01_requirements_ja.md) · [開発履歴](docs/02_history_ja.md) · [結果と証拠](docs/03_results_ja.md) · [ロードマップ](docs/05_roadmap_ja.md) · [外部レビュー依頼](docs/06_review_request_ja.md) · [再現手順](docs/07_reproduction_ja.md)
+[English overview](README.en.md) · [設計仕様](docs/01_requirements_ja.md) · [開発履歴](docs/02_history_ja.md) · [チェックポイント一覧](docs/09_design_checkpoints_ja.md) · [実装候補](docs/10_implementation_shortlist_ja.md) · [結果と証拠](docs/03_results_ja.md) · [ロードマップ](docs/05_roadmap_ja.md) · [外部レビュー依頼](docs/06_review_request_ja.md) · [再現手順](docs/07_reproduction_ja.md)
 
 ## プロジェクト目標
 
@@ -32,7 +32,7 @@ B71 / B12 / B28 / B13+B14 / B26 / B8 の**6設定**を1つのRFフィルタで�
 | 目的 | 読むファイル |
 |---|---|
 | 仕様とバンド定義 | [`docs/01_requirements_ja.md`](docs/01_requirements_ja.md), [`data/bands.csv`](data/bands.csv) |
-| 何を試したか／判断履歴 | [`docs/02_history_ja.md`](docs/02_history_ja.md), [`docs/08_decisions_ja.md`](docs/08_decisions_ja.md) |
+| 途中で残した設計チェックポイント（全段階） | [`docs/09_design_checkpoints_ja.md`](docs/09_design_checkpoints_ja.md), [`data/design_checkpoints.csv`](data/design_checkpoints.csv) |\n| 実装に残す構成と試作前のゲート | [`docs/10_implementation_shortlist_ja.md`](docs/10_implementation_shortlist_ja.md), [`data/implementation_shortlist.csv`](data/implementation_shortlist.csv) |\n| 何を試したか／判断履歴 | [`docs/02_history_ja.md`](docs/02_history_ja.md), [`docs/08_decisions_ja.md`](docs/08_decisions_ja.md) |
 | 各数値の根拠と信頼度 | [`docs/03_results_ja.md`](docs/03_results_ja.md), [`data/evidence_register.csv`](data/evidence_register.csv) |
 | 回路・Qモデル／相互結合／IL定義 | [`docs/04_model_ja.md`](docs/04_model_ja.md) |
 | 未解決課題とマイルストーン | [`docs/05_roadmap_ja.md`](docs/05_roadmap_ja.md) |

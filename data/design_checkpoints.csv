@@ -1,0 +1,17 @@
+checkpoint_id,configuration,scope,chip_l_count,pcb_l_count,c_count,max_il_db,min_h2_db,min_h3_db,nominal_target_db,comparison_group,status,evidence
+CP00,classic_fifth_order_ladder,B8_only,,,,,,,,historic_only,historical_only,history/original-analysis/lpf_design_exploration.zip
+CP01,D_type,B8_only,3,0,2,0.501742,30.05,30.05,30.05,legacy_single_band,historical_only,history/original-analysis/lpf_design_exploration.zip
+CP02,D_plus,B8_only,3,0,3,0.396776,30.05,30.05,30.05,legacy_single_band,historical_only,history/original-analysis/lpf_design_exploration.zip
+CP03,early_four_chip_six_case,six_cases,4,0,4,0.439,35,35,35,legacy_six_case,historical_only,history/original-analysis/lpf_sixband_phase1_phase2.zip
+CP04,two_series_resonators_mid_shunt,six_cases,4,0,4,0.381,35,35,35,legacy_six_case,alternative_benchmark,history/original-analysis/lpf_nominal_lpf_exploration_20261010.zip
+CP05,three_series_resonators_min_loss,six_cases,4,0,4,0.2599,30.001,30.001,30.001,thirty_db_margin_free,theory_loss_bound,history/original-analysis/lpf_three_conditions_Q25.zip
+CP06,three_series_resonators_33dB,six_cases,4,0,4,0.2992,33,33,33,thirty_three_db,pareto_benchmark,history/original-analysis/lpf_three_conditions_Q25.zip
+CP07,three_series_resonators_35dB,six_cases,4,0,4,0.328924,35.05,35.05,35.05,current_35dB,shortlist_I01,experiments/phase2_4chip_baseline/dense_verification.csv
+CP08,CP07_plus_extra_capacitance,six_cases,4,0,5,0.328215,35.05,35.05,35.05,extra_c_sensitivity,on_hold,experiments/phase2_4chip_baseline/fifthC_results.json
+CP09,weakly_coupled_pcb_additions,six_cases,4,3,7,0.324314,35.05,35.05,35.05,current_35dB,shortlist_I02,experiments/weak_pcb/dense_verification.csv
+CP10,mutually_coupled_pcb_branches,six_cases,4,3,7,0.323391,35.04995,35.04991,35.05,current_35dB,shortlist_I03,experiments/pcb_pcb_coupled/six_case_verified.csv
+CP11,three_series_aiding_pcb_k098,six_cases,4,3,7,0.295208,35.1,35.1,35.1,strong_coupling_theory,theory_only_not_implementation,experiments/strong_pcb_coupling_theory/stack_band_verified.csv
+CP12,three_series_aiding_pcb_k095,six_cases,4,3,7,0.297578,35.1,35.1,35.1,strong_coupling_theory,theory_only_not_implementation,experiments/strong_pcb_coupling_theory/stack_band_verified.csv
+CP12b,three_series_aiding_pcb_k090,six_cases,4,3,7,0.301735,35.1,35.1,35.1,strong_coupling_theory,theory_only_not_implementation,experiments/strong_pcb_coupling_theory/stack_band_verified.csv
+CP13,LQW04_one_LQP02_one_two_PCB,six_cases,2,2,,0.464,35,35,35,different_q_LQW30,not_comparable,history/original-analysis/lpf_new_topology_study.zip
+CP14,capacitor_bridge_four_chip,six_cases,4,0,4,0.430,35,35,35,legacy_topology,historical_only,history/original-analysis/lpf_nominal_lpf_exploration_20261010.zip

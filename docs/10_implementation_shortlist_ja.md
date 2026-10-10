@@ -87,7 +87,7 @@ PCB間：k56≈+0.0930、k57≈−0.2000、k67≈−0.2000。chip–PCBは各 |k
 
 数値モデルで kPCB=0.98、3PCB-L各約0.708nH、Q12、同極性直列として実効Q≈35.52を得る。この実効Qは巻線間の損失相関を無視した理想モデルに依存する。保存済み結果は最大IL0.295208dB・高調波最小減衰35.10dB。k=0.95でも最大IL≈0.297578dB、k=0.90では≈0.301735dBで、`0.30dB`目標未達だった（それぞれ最適化し直した数値）。
 
-- [k別・6設定結果](../experiments/strong_pcb_coupling_theory/stack_band_verified.csv)
+- [k別・6設定結果](../experiments/strong_pcb_coupling_theory/stack_band_verified.csv)\n- [k別の固定L・結合・各設定Cを含む最適化ベクトル](../experiments/strong_pcb_coupling_theory/stack_k_sensitivity.json)
 - [独立7巻線式との照合](../data/independent_validation/independently_verified.json)
 - [理論モデル・解析コード](../experiments/strong_pcb_coupling_theory/stack_refine.py)
 

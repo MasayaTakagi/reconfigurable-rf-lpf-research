@@ -10,11 +10,13 @@ One passive network with six configurations: **B71, B12, B28, B13+B14 (one share
 - Nominal minimax passband IL target: **≤0.30 dB** across the six settings.
 - Source: 50 Ω. Load: frequency-independent 60−j40 Ω.
 - Constant Q loss model: chip inductors 25, internal PCB inductors 12, capacitors 80. **Do not substitute Murata's published nominal Q numbers.**
-- Chip area budget: LQP02=1, LQW04=3, internal PCB L=0; total ≤4. PCB traces still have physical layout, via, and coupling feasibility issues.
+- **New chip footprint cost (approved 2026-10-10):** LQP02=1 unit (Q25), LQP01=2/3 unit (Q15), LQW04=3 units (Q unspecified), fixed GJM01 capacitors=2/3 unit each (Q80 assumed; ≤100pF per part). Chip-footprint budget is **swept**, not capped at 4 for the new study. PCB inductors (Q12) are **normally limited to 3**; IC variable capacitor branches (Q80 assumed) to **2 total**, **0–4pF of variable capacitance per branch**, shunt to ground only unless separately approved. Fixed GJM01 capacitors may be series or shunt, and parallel combinations with variable capacitors are permitted. Count PCB resources and IC branch count separately. Full rules: [design constraints (Japanese)](docs/11_component_cost_topology_rules_ja.md) and [machine-readable policy](data/design_constraints_20261010.json).
 - Chip-chip coupling: at most two major pairs (|k|≤0.25), four minor pairs (|k|≤0.16). Chip-PCB coupling: |k|≤0.03. PCB-PCB coupling unrestricted **only within a positive-definite inductance matrix** in the theoretical exploration.
-- Capacitors remain **ideal continuously adjustable values in Phase 2**. Discrete switched-capacitor realization is not yet approved.
+- For **new Phase 2 runs**, only the IC capacitor branches have continuously adjustable 0–4pF values; fixed GJM01 capacitors are shared across all six settings. No discrete switched-capacitor implementation work is authorized (Phase 3 remains paused).
 
 ## Published numerical search results (not global optima)
+
+**Historical results below have not been re-optimized or checked against the new fixed-GJM01 and two-branch variable-C constraints; they are not evidence of new-policy compliance.**
 
 | Candidate | Worst nominal IL | Minimum H2/H3 | Qualification |
 |---|---:|---:|---|

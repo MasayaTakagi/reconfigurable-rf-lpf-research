@@ -81,13 +81,16 @@
     }
   },
   "coupling_limits": {
-    "chip_chip_major_two_pairs_abs_k_max": 0.25,
-    "chip_chip_other_pairs_abs_k_max": 0.16,
     "chip_pcb_abs_k_max": 0.03,
     "pcb_pcb_theoretical_model": "full_inductance_matrix_positive_definite_required_in_addition_to_abs_k_le_0_6_default",
     "pcb_pcb_0_98_physical_feasibility": "historical_theoretical_only_out_of_new_default_policy",
     "mixed_chip_package_mutual_feasibility": "unverified",
-    "pcb_pcb_abs_k_max_default": 0.6
+    "pcb_pcb_abs_k_max_default": 0.6,
+    "legacy_chip_chip_major_two_pairs_abs_k_max": 0.25,
+    "legacy_chip_chip_other_pairs_abs_k_max": 0.16,
+    "chip_chip_all_pairs_abs_k_max_default": 0.4,
+    "chip_chip_all_pair_0_4_physical_feasibility": "unverified",
+    "full_L_inductance_matrix_positive_definite_required": true
   },
   "evaluation": {
     "il_db": "-10*log10(Pload/Pavs)",
@@ -107,7 +110,8 @@
     "IC_variable_C_in_series",
     "more_than_2_independent_variable_C_branches",
     "more_than_3_PCB_inductors",
-    "PCB_PCB_abs_k_above_0_6"
+    "PCB_PCB_abs_k_above_0_6",
+    "chip_chip_abs_k_above_0_4"
   ],
-  "policy_revision": "2026-10-10T09:38Z_owner_update"
+  "policy_revision": "2026-10-10_chip_chip_pairwise_max_0_4"
 }

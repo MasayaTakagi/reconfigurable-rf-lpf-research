@@ -28,7 +28,14 @@ def active_connected(n,edges):
         a=pending.pop()
         for b in adj[a]-reached:reached.add(b);pending.append(b)
     if 2 not in reached:return False
-    return all(k in reached for k in range(3,n))
+    if not all(k in reached for k in range(3,n)):return False
+    # Ground-only connected components do not create a signal path. Require
+    # an input-to-output path after removing the ground vertex.
+    active={1};pending=[1]
+    while pending:
+        a=pending.pop()
+        for b in adj[a]-active-{0}:active.add(b);pending.append(b)
+    return 2 in active
 def enumerate_grounded(max_internal=1,max_branches=4,max_raw=100000):
     if not 0<=max_internal<=6 or not 1<=max_branches<=8 or max_raw<1:
         raise ValueError('Invalid enumeration bounds')

@@ -37,13 +37,15 @@ def select(graphs,per_bin):
     return chosen
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument('--max-raw',type=int,default=10000)
+    p.add_argument('--max-raw',type=int,default=25000)
     p.add_argument('--per-bin',type=int,default=1)
     a=p.parse_args()
-    counts,graphs=enumerate_grounded(1,4,a.max_raw)
+    counts,graphs=enumerate_grounded(1,6,a.max_raw)
     print('grounded_enumeration',dict(counts))
     freq=frequencies()
-    for idx,g in select(graphs,a.per_bin):
+    selected=select(graphs,a.per_bin)
+    print('selected_bins', {name:sum(i==idx for i,_ in selected) for idx,name in enumerate(('P2','P3','P4'))})
+    for idx,g in selected:
         edges=g[1];n=len(edges)
         x=np.array([2.]*n+[.1]*12)
         bounds=[(.4,3) if t=='PCB_L' else (.4,8) if t!='GJM01' else (.05,100)

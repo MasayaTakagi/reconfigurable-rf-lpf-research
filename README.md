@@ -2,7 +2,7 @@
 
 **開発状況:** Phase 2（回路トポロジー／理論性能の探索中） | **基準日:** 2026-10-10 | **Phase 3: ユーザー承認まで停止**
 
-[English overview](README.en.md) · [設計仕様](docs/01_requirements_ja.md) · [部品・面積コストとC配置の新定義](docs/11_component_cost_topology_rules_ja.md) · [新仕様での整合専用コスト–IL探索（面積4）](docs/12_matching_cost_frontier_ja.md) · [面積6・PCB結合0.6の追加探索](docs/13_matching_area6_pcb_k06_ja.md) · [チップ結合上限0.4とペア数感度](docs/14_chip_coupling_k04_study_ja.md) · [隣接配置に基づく強結合ペアの検討案（未承認）](docs/15_chip_strong_coupling_layout_proposal_ja.md) · [開発履歴](docs/02_history_ja.md) · [チェックポイント一覧](docs/09_design_checkpoints_ja.md) · [実装候補](docs/10_implementation_shortlist_ja.md) · [結果と証拠](docs/03_results_ja.md) · [ロードマップ](docs/05_roadmap_ja.md) · [外部レビュー依頼](docs/06_review_request_ja.md) · [再現手順](docs/07_reproduction_ja.md)
+[English overview](README.en.md) · [設計仕様](docs/01_requirements_ja.md) · [部品・面積コストとC配置の新定義](docs/11_component_cost_topology_rules_ja.md) · [新仕様での整合専用コスト–IL探索（面積4）](docs/12_matching_cost_frontier_ja.md) · [面積6・PCB結合0.6の追加探索](docs/13_matching_area6_pcb_k06_ja.md) · [チップ結合上限0.4とペア数感度](docs/14_chip_coupling_k04_study_ja.md) · [隣接配置による強結合ペアの正式ルール](docs/15_chip_strong_coupling_layout_proposal_ja.md) · [開発履歴](docs/02_history_ja.md) · [チェックポイント一覧](docs/09_design_checkpoints_ja.md) · [実装候補](docs/10_implementation_shortlist_ja.md) · [結果と証拠](docs/03_results_ja.md) · [ロードマップ](docs/05_roadmap_ja.md) · [外部レビュー依頼](docs/06_review_request_ja.md) · [再現手順](docs/07_reproduction_ja.md)
 
 ## プロジェクト目標
 
@@ -12,7 +12,7 @@ B71 / B12 / B28 / B13+B14 / B26 / B8 の**6設定**を1つのRFフィルタで�
 - **公称ILの目標**: 6設定のUL/DL全体における最大値 **0.30 dB以下**（現在の設計探索目標）。
 - **基準モデル**: 入力50 Ω、出力60−j40 Ω（全周波数で一定）、LQP02HV相当のチップLは **Q=25**、内層PCB-Lは **Q=12**、Cは **Q=80**。
 - **新しいチップ面積コスト（2026-10-10合意）**: LQP02=1、LQP01（Q15）=2/3、LQW04=3、GJM01固定C=2/3単位。PCB-LとIC可変Cはチップ占有面積に加算せず、数量・リソースを別管理。**最新の探索面積上限は6単位。** PCB-Lは原則3本以下、IC可変Cは原則2枝以下・各枝0〜4pF・対GNDのみ。GJM01は各100pF以下で全設定固定、可変Cとの並列接続を許可。IC可変Cのシリーズ配置は別途承認が必要。詳細は[仕様書](docs/11_component_cost_topology_rules_ja.md)。
-- **現在の標準探索**: Qと理想集中定数モデルを維持し、**チップL同士の全ペアは原則\(|k|\leq0.4\)**、chip–PCB結合は \(|k|\leq0.03\)、**PCB-L同士の結合は原則\(|k|\leq0.6\)**かつ全Lインダクタンス行列を正定値とする。過去のk≈0.98強結合理論解は履歴として残し、標準設計候補と混同しない。
+- **現在の標準探索**: Qと理想集中定数モデルを維持し、**チップL同士は一列配置で隣接するペアだけ強結合 \(|k|\leq0.4\)**、非強結合は公称\(k=0\)・弱結合感度で\(|k|\leq0.1\)、chip–PCBは \(|k|\leq0.03\)、**PCB-L同士は \(|k|\leq0.6\)**。全Lインダクタンス行列の正定値を必須とする。過去のk≈0.98強結合理論解は履歴として残し、標準設計候補と混同しない。
 
 ## 新しい面積6・PCB結合0.6制約での整合専用解析（2026-10-10）
 
@@ -22,8 +22,8 @@ B71 / B12 / B28 / B13+B14 / B26 / B8 の**6設定**を1つのRFフィルタで�
 
 ## チップ結合0.4を許した追加整合探索（減衰なし）
 
-- **全チップ対を同時にk=0.4**と置く理論モデルで、LQP02×4（面積4）は約**0.0973dB**、LQP02×6（面積6）は約**0.0799dB**。全15ペア同時結合は実装未検証。
-- **主2ペアk=0.4＋その他k=0.16**という疎結合寄りの比較では、LQP02×4で**0.1146dB**、LQP02×6で**0.1050dB**。いずれも数値的な成立候補で、大域的下限・実装保証ではない。
+- **全チップ対を同時にk=0.4**と置く旧理論モデルで、LQP02×4（面積4）は約**0.0973dB**、LQP02×6（面積6）は約**0.0799dB**。**これは新しい単列隣接強結合ルールに不適合であり、正式な候補ではない**。単列隣接5ペアのみにk=0.4を与え、他を0とする6チップ候補は約**0.1171dB**（整合のみ）。
+- **主2ペアk=0.4＋その他k=0.16**という旧比較は、非強結合上限0.1の新ルールに不適合。旧理論比較値としてのみ保持し、正式なコスト–ILフロンティアには含めない。
 - 詳細：[結合係数とペア数の感度レポート](docs/14_chip_coupling_k04_study_ja.md)。
 
 ## 過去の35dB減衰付き結果（**数値探索値、証明値ではない**）

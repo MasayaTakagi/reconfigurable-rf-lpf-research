@@ -2,7 +2,7 @@
 
 **開発状況:** Phase 2（回路トポロジー／理論性能の探索中） | **基準日:** 2026-10-10 | **Phase 3: ユーザー承認まで停止**
 
-[English overview](README.en.md) · [設計仕様](docs/01_requirements_ja.md) · [開発履歴](docs/02_history_ja.md) · [チェックポイント一覧](docs/09_design_checkpoints_ja.md) · [実装候補](docs/10_implementation_shortlist_ja.md) · [結果と証拠](docs/03_results_ja.md) · [ロードマップ](docs/05_roadmap_ja.md) · [外部レビュー依頼](docs/06_review_request_ja.md) · [再現手順](docs/07_reproduction_ja.md)
+[English overview](README.en.md) · [設計仕様](docs/01_requirements_ja.md) · [部品・面積コストとC配置の新定義](docs/11_component_cost_topology_rules_ja.md) · [開発履歴](docs/02_history_ja.md) · [チェックポイント一覧](docs/09_design_checkpoints_ja.md) · [実装候補](docs/10_implementation_shortlist_ja.md) · [結果と証拠](docs/03_results_ja.md) · [ロードマップ](docs/05_roadmap_ja.md) · [外部レビュー依頼](docs/06_review_request_ja.md) · [再現手順](docs/07_reproduction_ja.md)
 
 ## プロジェクト目標
 
@@ -11,10 +11,12 @@ B71 / B12 / B28 / B13+B14 / B26 / B8 の**6設定**を1つのRFフィルタで�
 - **必須高調波阻止**: H2 / H3 ともに **30 dB以上**。Phase 2の主な公称探索目標は **35 dB以上**。
 - **公称ILの目標**: 6設定のUL/DL全体における最大値 **0.30 dB以下**（現在の設計探索目標）。
 - **基準モデル**: 入力50 Ω、出力60−j40 Ω（全周波数で一定）、LQP02HV相当のチップLは **Q=25**、内層PCB-Lは **Q=12**、Cは **Q=80**。
-- **チップインダクタ面積予算**: LQP02を1単位、LQW04を3単位、内層PCB-Lを0単位として合計4単位以内。内層PCB-Lの専有配線領域・ビア等の実装制約は後日評価する。
+- **新しいチップ面積コスト（2026-10-10合意）**: LQP02=1、LQP01（Q15）=2/3、LQW04=3、GJM01固定C=2/3単位。PCB-LとIC可変Cはチップ占有面積に加算せず、数量・リソースを別管理。**面積予算4単位は新しいコスト–IL探索の固定上限にしない。** PCB-Lは原則3本以下、IC可変Cは原則2枝以下・各枝0〜4pF・対GNDのみ。GJM01は各100pF以下で全設定固定、可変Cとの並列接続を許可。IC可変Cのシリーズ配置は別途承認が必要。詳細は[仕様書](docs/11_component_cost_topology_rules_ja.md)。
 - **現在の探索**: Qと理想集中定数のモデルを維持し、チップL–PCB-L結合は \(|k|\leq0.03\)、PCB-L同士は受動性条件を満たす範囲で理論上の強結合まで検討。
 
 ## 結果の要約（**数値探索値、証明値ではない**）
+
+**重要：下表は新しいGJM01固定C／IC可変C≤4pF×2枝／PCB-L≤3本の制約で再最適化した結果ではない。** 従来条件下の研究履歴として保持し、今後のコスト–IL比較では新仕様を満たす候補のみを採用する。
 
 | モデル／設計段階 | 6設定最大IL | H2/H3最小減衰 | 実装上の留意点 |
 |---|---:|---:|---|
@@ -32,6 +34,7 @@ B71 / B12 / B28 / B13+B14 / B26 / B8 の**6設定**を1つのRFフィルタで�
 | 目的 | 読むファイル |
 |---|---|
 | 仕様とバンド定義 | [`docs/01_requirements_ja.md`](docs/01_requirements_ja.md), [`data/bands.csv`](data/bands.csv) |
+| 新しい部品の寸法・コストと可変C枝数の制約 | [`docs/11_component_cost_topology_rules_ja.md`](docs/11_component_cost_topology_rules_ja.md), [`data/design_constraints_20261010.json`](data/design_constraints_20261010.json) |
 | 途中で残した設計チェックポイント（全段階） | [`docs/09_design_checkpoints_ja.md`](docs/09_design_checkpoints_ja.md), [`data/design_checkpoints.csv`](data/design_checkpoints.csv) |\n| 実装に残す構成と試作前のゲート | [`docs/10_implementation_shortlist_ja.md`](docs/10_implementation_shortlist_ja.md), [`data/implementation_shortlist.csv`](data/implementation_shortlist.csv) |\n| 何を試したか／判断履歴 | [`docs/02_history_ja.md`](docs/02_history_ja.md), [`docs/08_decisions_ja.md`](docs/08_decisions_ja.md) |
 | 各数値の根拠と信頼度 | [`docs/03_results_ja.md`](docs/03_results_ja.md), [`data/evidence_register.csv`](data/evidence_register.csv) |
 | 回路・Qモデル／相互結合／IL定義 | [`docs/04_model_ja.md`](docs/04_model_ja.md) |

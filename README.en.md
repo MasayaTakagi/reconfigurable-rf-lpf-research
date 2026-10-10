@@ -14,6 +14,10 @@ One passive network with six configurations: **B71, B12, B28, B13+B14 (one share
 - Chip-chip coupling: at most two major pairs (|k|≤0.25), four minor pairs (|k|≤0.16). Chip-PCB coupling: |k|≤0.03. PCB-PCB coupling unrestricted **only within a positive-definite inductance matrix** in the theoretical exploration.
 - For **new Phase 2 runs**, only the IC capacitor branches have continuously adjustable 0–4pF values; fixed GJM01 capacitors are shared across all six settings. No discrete switched-capacitor implementation work is authorized (Phase 3 remains paused).
 
+## New matching-only cost–IL study (2026-10-10)
+
+A new Phase 2 candidate sweep covers 296 matching-only circuit configurations using the owner-approved chip-footprint model, fixed GJM01 constraints, and at most two IC shunt capacitor branches. Examples: one LQP02 + up to two IC shunt capacitors gives ~0.1669 dB worst-six-band IL; four coupled LQP02s give ~0.1217 dB. Zero-chip-footprint PCB-only solutions rely strongly on assumed PCB magnetic coupling and do **not** imply zero physical implementation cost. These are numerical candidate upper bounds within a restricted set of topologies, not global optimum claims or harmonic-filter results. See [study](docs/12_matching_cost_frontier_ja.md), [candidate envelope](data/matching_only_pareto_20261010.csv), and [shortlist verification code](experiments/matching_cost_20261010/verify_shortlist.py).
+
 ## Published numerical search results (not global optima)
 
 **Historical results below have not been re-optimized or checked against the new fixed-GJM01 and two-branch variable-C constraints; they are not evidence of new-policy compliance.**

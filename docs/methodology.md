@@ -1,9 +1,9 @@
-# 解析方法・結果の位置付け
+# 解析方法
 
-損失モデル: ZL=ωL/QL+jωL、ZC=(1/QC−j)/(ωC)、相互インダクタンス Mij=kij√(LiLj)。結合を含むMNAで解析し、インダクタンス行列の正定値性と Pavs=Pload+Pref+Ploss を確認する。IL=−10log10(Pload/Pavs)。
+共通MNA解析器: [src/lpf/circuit.py](../src/lpf/circuit.py)。RMSフェーザで各L枝の電圧降下を ZL I として解く。ZL=diag(ωL/Q)+jωM、Mij=kij√(LiLj)。C枝は ZC=(1/Q−j)/(ωC)。電源は50Ωのテブナン電源、負荷は60−j40Ω。
 
-全6設定のUL/DL最大ILと、UL由来H2/H3全域の最小減衰を別々に報告する。有限周波数メッシュのみでは連続帯域の厳密証明にならない。非凸最適化では複数初期値・構成を探索し、結果を大域最適値と呼ばない。
+Pavs=|Vs|²/(4Rs)、Pload=|Vload|²Re(1/Zload)、IL=−10log10(Pload/Pavs)。反射電力は|Vs−2Vin|²/(4Rs)。Pavs=Pload+Pref+ΣPL+ΣPC を検証する。
 
-結果には `spec_id`、`objective` (`matching_only`/`full_lpf`)、`experiment_id`、`candidate_id`、コードコミット、モデル、評価周波数、数値検証レベル、物理的未検証事項を記録する。公称値、弱結合感度、EM/実測を混同しない。
+結合の制約チェックは [src/lpf/validate.py](../src/lpf/validate.py)。実際の配置、巻線極性、寄生、SRFの検証は別途必要。MNAは任意の集中定数枝グラフの解析基盤であり、トポロジー探索、複数初期値最適化、全帯域極値の厳密保証は未実装。
 
-旧実験のコード再実行は保守対象外。保存された数値結果は**歴史的エビデンス**であり、最新エンジンでの再評価なしに新仕様への適合を宣言しない。
+6設定UL/DLの最大ILとULのH2/H3全域の最小減衰を分離して報告。matching_onlyとfull_lpfは同列比較しない。旧結果は新仕様への適合が未検証であり、Phase 3は停止中。

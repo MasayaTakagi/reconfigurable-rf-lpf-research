@@ -6,7 +6,7 @@ from collections import defaultdict
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
-POLICY=json.loads((ROOT / "data/design_constraints_20261010.json").read_text())
+POLICY=json.loads((ROOT / "data/design_constraints.json").read_text())
 
 def block_sizes(mask,n):
     sizes=[]

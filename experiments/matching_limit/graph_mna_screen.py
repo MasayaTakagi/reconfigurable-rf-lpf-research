@@ -33,7 +33,8 @@ def run(max_candidates=6,max_raw=300,seed=20261010):
     freq=frequency_sets(15)
     rng=np.random.default_rng(seed)
     output=[]
-    for graph in sorted(graphs,key=str)[:max_candidates]:
+    for edges in sorted(graphs,key=str)[:max_candidates]:
+        graph=(1+max(max(a,b) for a,b,_ in edges),edges)
         area=check_graph(graph)
         _,edges=graph
         x0=np.array([2.0 if t!='GJM01' else 2.0 for _,_,t in edges]+[.1]*12)

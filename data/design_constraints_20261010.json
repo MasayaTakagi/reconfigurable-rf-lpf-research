@@ -17,8 +17,9 @@
   "chip_area_unit": "one_LQP02_package_footprint",
   "area_formula": "N_LQP02+(2/3)*N_LQP01+3*N_LQW04+(2/3)*N_GJM01",
   "area_budget": {
-    "hard_cap": null,
-    "policy": "sweep"
+    "hard_cap": 6,
+    "policy": "sweep_0_to_6_in_1_over_3_units",
+    "previous_hard_cap": 4
   },
   "components": {
     "LQP02": {
@@ -83,9 +84,10 @@
     "chip_chip_major_two_pairs_abs_k_max": 0.25,
     "chip_chip_other_pairs_abs_k_max": 0.16,
     "chip_pcb_abs_k_max": 0.03,
-    "pcb_pcb_theoretical_model": "positive_definite_full_inductance_matrix",
-    "pcb_pcb_0_98_physical_feasibility": "unverified",
-    "mixed_chip_package_mutual_feasibility": "unverified"
+    "pcb_pcb_theoretical_model": "full_inductance_matrix_positive_definite_required_in_addition_to_abs_k_le_0_6_default",
+    "pcb_pcb_0_98_physical_feasibility": "historical_theoretical_only_out_of_new_default_policy",
+    "mixed_chip_package_mutual_feasibility": "unverified",
+    "pcb_pcb_abs_k_max_default": 0.6
   },
   "evaluation": {
     "il_db": "-10*log10(Pload/Pavs)",
@@ -104,6 +106,8 @@
   "overrides_require_owner_approval": [
     "IC_variable_C_in_series",
     "more_than_2_independent_variable_C_branches",
-    "more_than_3_PCB_inductors"
-  ]
+    "more_than_3_PCB_inductors",
+    "PCB_PCB_abs_k_above_0_6"
+  ],
+  "policy_revision": "2026-10-10T09:38Z_owner_update"
 }

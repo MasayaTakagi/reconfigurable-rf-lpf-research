@@ -25,7 +25,7 @@ def connected(n,edges):
         if new==reachable:break
         reachable=new
     return len(reachable)==n
-def enumerate_graphs(max_nodes=3,max_branches=4):
+def enumerate_graphs(max_nodes=3,max_branches=6):
     if not 2<=max_nodes<=4 or not 1<=max_branches<=6:
         raise ValueError('Use 2-4 nodes and 1-6 branches')
     counts=Counter();examples={}
@@ -49,7 +49,7 @@ def enumerate_graphs(max_nodes=3,max_branches=4):
 def main():
     p=argparse.ArgumentParser()
     p.add_argument('--nodes',type=int,default=3)
-    p.add_argument('--branches',type=int,default=4)
+    p.add_argument('--branches',type=int,default=6)
     p.add_argument('--out')
     args=p.parse_args()
     counts,examples=enumerate_graphs(args.nodes,args.branches)

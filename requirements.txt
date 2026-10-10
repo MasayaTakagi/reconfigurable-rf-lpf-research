@@ -1,0 +1,6 @@
+# For the historical optimization scripts. Exact versions in their original runtime
+# were not captured; pin them for official reproducible results in a later task.
+numpy>=1.26
+scipy>=1.12
+numba>=0.59
+matplotlib>=3.8

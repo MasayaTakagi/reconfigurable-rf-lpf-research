@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+*.nbc
+*.nbi
+.pytest_cache/
+.venv/
+venv/
+.DS_Store
+*.swp
+*.bak
+.env
+*.token
+*.key
+*.pem

@@ -1,0 +1,11 @@
+quantity,value,units,explanation
+L1,0.6110685740,nH,first series L
+L2,5.4770860356,nH,shunt L
+L3,4.0953998902,nH,third series L
+L4,3.4301286228,nH,second series L
+k12,0.0300000000,unitless,mutual coupling sign follows branch references
+k13,0.0300000000,unitless,mutual coupling sign follows branch references
+k14,0.1826894569,unitless,mutual coupling sign follows branch references
+k23,-0.2480615685,unitless,mutual coupling sign follows branch references
+k24,-0.0300000000,unitless,mutual coupling sign follows branch references
+k34,0.0300000000,unitless,mutual coupling sign follows branch references

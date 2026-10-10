@@ -26,14 +26,30 @@ def frequency_grid(rows,points):
                  for f in np.linspace(float(r['low_mhz']),float(r['high_mhz']),points))) for c in CASES}
 
 def layout_candidates(graph,max_layouts):
+    """Deterministic nominal + spread chip and PCB coupling patterns.
+
+    Chip-to-PCB remains nominal zero in this stage. Every candidate must be SPD.
+    """
+    import itertools
     types=[t for _,_,t in graph[1] if t!='GJM01']
-    options=[{}]+list(adjacent_patterns(types))
+    chips=[i for i,t in enumerate(types) if t in ('LQP01','LQP02')]
+    pcbs=[i for i,t in enumerate(types) if t=='PCB_L']
+    chip_pairs=list(zip(chips,chips[1:]))
+    pcb_pairs=list(itertools.combinations(pcbs,2))
+    candidates=[({}, {})]
+    for a,b in chip_pairs:
+        for k in (-.4,.4):candidates.append(({frozenset((a,b)):k},{}))
+    for a,b in pcb_pairs:
+        for k in (-.6,.6):candidates.append(({}, {frozenset((a,b)):k}))
+    if chip_pairs:candidates.append(({frozenset(pair):.4 for pair in chip_pairs},{}))
+    if pcb_pairs:candidates.append(({}, {frozenset(pair):.6 for pair in pcb_pairs}))
     unique=[];seen=set()
-    for edges in options:
-        signature=tuple(sorted((tuple(sorted(pair)),k) for pair,k in edges.items()))
+    for ce,pe in candidates:
+        signature=(tuple(sorted((tuple(sorted(pair)),k) for pair,k in ce.items())),
+                   tuple(sorted((tuple(sorted(pair)),k) for pair,k in pe.items())))
         if signature in seen:continue
         seen.add(signature)
-        try:K=admissible_matrix(types,[1.]*len(types),chip_edges=edges)
+        try:K=admissible_matrix(types,[1.]*len(types),chip_edges=ce,pcb_pairs=pe)
         except ValueError:continue
         unique.append(K)
         if len(unique)>=max_layouts:break

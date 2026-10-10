@@ -88,9 +88,14 @@
     "pcb_pcb_abs_k_max_default": 0.6,
     "legacy_chip_chip_major_two_pairs_abs_k_max": 0.25,
     "legacy_chip_chip_other_pairs_abs_k_max": 0.16,
-    "chip_chip_all_pairs_abs_k_max_default": 0.4,
     "chip_chip_all_pair_0_4_physical_feasibility": "unverified",
-    "full_L_inductance_matrix_positive_definite_required": true
+    "full_L_inductance_matrix_positive_definite_required": true,
+    "legacy_chip_chip_all_pairs_abs_k_max_default": 0.4,
+    "chip_chip_strong_adjacent_abs_k_max": 0.4,
+    "chip_chip_nonstrong_abs_k_max": 0.1,
+    "chip_chip_nonstrong_nominal_k": 0,
+    "chip_chip_strong_allowed_only_for_physical_neighbors": true,
+    "chip_chip_allow_2d_layout": false
   },
   "evaluation": {
     "il_db": "-10*log10(Pload/Pavs)",
@@ -111,7 +116,26 @@
     "more_than_2_independent_variable_C_branches",
     "more_than_3_PCB_inductors",
     "PCB_PCB_abs_k_above_0_6",
-    "chip_chip_abs_k_above_0_4"
+    "chip_chip_abs_k_above_0_4",
+    "chip_chip_strong_nonneighbor",
+    "chip_chip_2d_layout",
+    "chip_chip_weak_abs_k_above_0_1"
   ],
-  "policy_revision": "2026-10-10_chip_chip_pairwise_max_0_4"
+  "policy_revision": "2026-10-10T12:23Z_owner_approved_single_row_strong_adjacent_weak_0p1",
+  "chip_inductor_placement": {
+    "approved_layout": "single_linear_row",
+    "strength_grouping": "selected subset of consecutive physical neighbor edges",
+    "strong_pair_count_max_expression": "max(0, N_chip_inductors - 1)",
+    "strong_neighbor_degree_max": 2,
+    "nonstrong_includes": "all physically nonadjacent pairs and any adjacent pair not designated strongly coupled",
+    "nominal_k_for_nonstrong": 0,
+    "nonstrong_abs_k_max_weak_coupling_sensitivity": 0.1,
+    "strong_abs_k_max": 0.4,
+    "chip_orientation": "same magnetic-axis orientation for aiding strong coupling, signed coupling determined by electrical current reference and dot convention",
+    "placement_and_fixed_coupling_common_across_all_six_band_settings": true,
+    "all_pair_k_equal_0_4": "historical_idealized_outside_current_layout_constraints",
+    "layout_two_dimensional": "not_approved",
+    "inductance_matrix_requirement": "positive_definite_full_chip_plus_PCB_mutual_inductance_matrix",
+    "model_notes": "Upper bounds do not imply simultaneous physical realizability; variable coupling coefficients require physical justification"
+  }
 }

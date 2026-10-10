@@ -75,7 +75,7 @@ IN──[L1∥C1]──n1──[L4∥C4]──n2──[L3∥C3]──OUT
 | CP08 | [5C感度試験](../experiments/phase2_4chip_baseline/fifthC_results.json) |
 | **CP09** | [弱結合レポート](../experiments/weak_pcb/REPORT_ja.md)、[全設定検証](../experiments/weak_pcb/dense_verification.csv)、[固定素子](../experiments/weak_pcb/best_components.csv) |
 | **CP10** | [PCB間結合レポート](../experiments/pcb_pcb_coupled/REPORT_ja.md)、[全設定C値](../experiments/pcb_pcb_coupled/six_case_verified.csv)、[全Lと結合係数](../experiments/pcb_pcb_coupled/physical_components.csv) |
-| **CP11–CP12** | [理論候補k別全設定検証](../experiments/strong_pcb_coupling_theory/stack_band_verified.csv)、[独立7巻線モデル検証](../data/independent_validation/independently_verified.json)、[原始コード](../experiments/strong_pcb_coupling_theory/stack_refine.py) |
+| **CP11–CP12** | [理論候補k別全設定検証](../experiments/strong_pcb_coupling_theory/stack_band_verified.csv)、[k別の全パラメータ・C値](../experiments/strong_pcb_coupling_theory/stack_k_sensitivity.json)、[独立7巻線モデル検証](../data/independent_validation/independently_verified.json)、[原始コード](../experiments/strong_pcb_coupling_theory/stack_refine.py) |
 
 ## 設計上の判断と残課題
 

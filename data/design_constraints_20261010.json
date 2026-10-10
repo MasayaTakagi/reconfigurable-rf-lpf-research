@@ -1,0 +1,109 @@
+{
+  "policy_version": "2026-10-10",
+  "canonical_docs": "docs/11_component_cost_topology_rules_ja.md",
+  "applicability": "new_phase2_matching_only_and_future_filter_studies",
+  "historical_results_require_revalidation": true,
+  "source_ohms": {
+    "real": 50,
+    "imag": 0
+  },
+  "load_ohms": {
+    "real": 60,
+    "imag": -40,
+    "frequency_dependent": false
+  },
+  "bands_file": "data/bands.csv",
+  "passband_policy": "six_setting_UL_and_DL_B13B14_shared_setting",
+  "chip_area_unit": "one_LQP02_package_footprint",
+  "area_formula": "N_LQP02+(2/3)*N_LQP01+3*N_LQW04+(2/3)*N_GJM01",
+  "area_budget": {
+    "hard_cap": null,
+    "policy": "sweep"
+  },
+  "components": {
+    "LQP02": {
+      "category": "chip_inductor",
+      "q": 25,
+      "area_units": 1,
+      "common_across_settings": true
+    },
+    "LQP01": {
+      "category": "chip_inductor",
+      "q": 15,
+      "area_units_fraction": "2/3",
+      "common_across_settings": true,
+      "inductance_range_confirmed": false
+    },
+    "LQW04": {
+      "category": "chip_inductor",
+      "q": null,
+      "area_units": 3,
+      "common_across_settings": true
+    },
+    "GJM01": {
+      "category": "fixed_chip_capacitor",
+      "q": 80,
+      "max_pf_per_component": 100,
+      "area_units_fraction": "2/3",
+      "common_across_settings": true,
+      "allowed_positions": [
+        "shunt",
+        "series",
+        "bridge"
+      ],
+      "q_is_assumption": true
+    },
+    "IC_VARIABLE_C": {
+      "category": "IC_switched_capacitor_abstract_continuous",
+      "q": 80,
+      "area_units": 0,
+      "max_branches_principle": 2,
+      "max_total_variable_pf_per_branch": 4,
+      "min_total_variable_pf_per_branch": 0,
+      "positions_allowed_by_default": [
+        "shunt_to_ground"
+      ],
+      "series_requires_separate_approval": true,
+      "parallel_with_fixed_GJM01_allowed": true,
+      "setting_dependent": true,
+      "physical_switch_design_phase3_paused": true,
+      "q_is_assumption": true
+    },
+    "PCB_L": {
+      "category": "embedded_inductor",
+      "q": 12,
+      "area_units": 0,
+      "max_count_principle": 3,
+      "max_inductance_nh_approx": 3,
+      "common_across_settings": true,
+      "pcb_footprint_unmodeled": true
+    }
+  },
+  "coupling_limits": {
+    "chip_chip_major_two_pairs_abs_k_max": 0.25,
+    "chip_chip_other_pairs_abs_k_max": 0.16,
+    "chip_pcb_abs_k_max": 0.03,
+    "pcb_pcb_theoretical_model": "positive_definite_full_inductance_matrix",
+    "pcb_pcb_0_98_physical_feasibility": "unverified",
+    "mixed_chip_package_mutual_feasibility": "unverified"
+  },
+  "evaluation": {
+    "il_db": "-10*log10(Pload/Pavs)",
+    "matching_only_phase2": {
+      "h2_h3_constraints": false,
+      "minimize": "worst_case_IL_over_six_settings_and_all_UL_DL_ranges"
+    },
+    "full_phase2": {
+      "minimum_h2_h3_db": 30,
+      "nominal_h2_h3_target_db": 35,
+      "nominal_max_il_db": 0.3
+    },
+    "full_results_not_yet_revalidated_under_new_policy": true
+  },
+  "phase3": "paused_until_explicit_owner_approval",
+  "overrides_require_owner_approval": [
+    "IC_variable_C_in_series",
+    "more_than_2_independent_variable_C_branches",
+    "more_than_3_PCB_inductors"
+  ]
+}

@@ -85,4 +85,4 @@ IN──[L1∥C1]──n1──[L4∥C4]──n2──[L3∥C3]──OUT
 4. 量産条件を満たすと示せるまでは「実装可能」「量産適合」を宣言しない。
 5. Phase 3（スイッチドC離散化）は所有者の明示承認まで停止。
 
-**実装候補の選定理由・各候補のゲート条件:** [09_implementation_shortlist_ja.md](09_implementation_shortlist_ja.md)。
+**実装候補の選定理由・各候補のゲート条件:** [10_implementation_shortlist_ja.md](10_implementation_shortlist_ja.md)。

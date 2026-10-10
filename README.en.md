@@ -11,12 +11,16 @@ One passive network with six configurations: **B71, B12, B28, B13+B14 (one share
 - Source: 50 Ω. Load: frequency-independent 60−j40 Ω.
 - Constant Q loss model: chip inductors 25, internal PCB inductors 12, capacitors 80. **Do not substitute Murata's published nominal Q numbers.**
 - **New chip footprint cost (approved 2026-10-10):** LQP02=1 unit (Q25), LQP01=2/3 unit (Q15), LQW04=3 units (Q unspecified), fixed GJM01 capacitors=2/3 unit each (Q80 assumed; ≤100pF per part). Chip-footprint budget is swept up to **6 LQP02-equivalent units** for the current study (previously 4). PCB inductors (Q12) are **normally limited to 3**; IC variable capacitor branches (Q80 assumed) to **2 total**, **0–4pF of variable capacitance per branch**, shunt to ground only unless separately approved. Fixed GJM01 capacitors may be series or shunt, and parallel combinations with variable capacitors are permitted. Count PCB resources and IC branch count separately. Full rules: [design constraints (Japanese)](docs/11_component_cost_topology_rules_ja.md) and [machine-readable policy](data/design_constraints_20261010.json).
-- Chip-chip coupling: at most two major pairs (|k|≤0.25), four minor pairs (|k|≤0.16). Chip-PCB coupling: |k|≤0.03. PCB-PCB coupling unrestricted **only within a positive-definite inductance matrix** in the theoretical exploration.
+- **Current chip-chip coupling:** every chip pair |k|≤0.4 (prior two-major-pair 0.25 / minor 0.16 used only for historical studies). Chip-PCB coupling: |k|≤0.03. PCB-PCB coupling: normally |k|≤0.6. The complete inductance matrix must be positive definite. No physical implementation is implied by simultaneous all-pair maximal coupling.
 - For **new Phase 2 runs**, only the IC capacitor branches have continuously adjustable 0–4pF values; fixed GJM01 capacitors are shared across all six settings. No discrete switched-capacitor implementation work is authorized (Phase 3 remains paused).
 
 ## Latest matching-only study: area <=6, PCB pairwise |k|<=0.6 (2026-10-10)
 
 With the 6-setting worst-passband IL objective, a new non-exhaustive sweep yielded **0.121685dB at 4 LQP02 units**, **0.114741dB at 5**, and **0.108543dB at 6**, using no PCB inductors and two shunt IC-variable-C branches. PCB-only 3-winding candidate with k=0.6 gave **0.160622dB at chip area 0**, excluding physical PCB layout cost. These are matching-only numerical candidate values, not certified minima or harmonic-filter results. See [new study](docs/13_matching_area6_pcb_k06_ja.md), [candidate envelope](data/matching_only_area6_k06.csv), [full-MNA verifier](experiments/matching_cost_20261010/verify_area6_k06.py). **PCB–PCB coupling is now normally limited to |k|<=0.6** in new research; the old 0.98 case below is archived theoretical research and outside this standard.
+
+## New chip coupling |k|≤0.4 sensitivity (2026-10-10)
+
+Within a restricted model of equal series-aiding LQP02 inductors and at most two shunt IC variable capacitors, assuming **every chip pair reaches k=+0.4** gives 6-setting matching-only maximum IL **0.09726 dB** at area 4 and **0.07988 dB** at area 6. With only two major pairs at 0.4 and all other pairs at 0.16, the corresponding values are **0.11462 dB** and **0.10498 dB**. These models are passive but simultaneous magnetic coupling feasibility remains unverified. Details: [coupling and sparsity study](docs/14_chip_coupling_k04_study_ja.md).
 
 ## Previous matching-only cost–IL study (2026-10-10)
 

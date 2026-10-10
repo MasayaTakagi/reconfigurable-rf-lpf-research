@@ -31,3 +31,10 @@ exploratory: initial coarse screening; provisional: dense grid and model checks;
 
 ## Reporting
 Keep P2, P3, P4 individual coverage and Pareto tables; label incomplete classes explicitly. Only claim "exhaustive" inside the declared finite search class, never globally. Do not advance to Phase 3.
+
+## Approved staged internal-node expansion (owner decision: C, 2026-10-10)
+Start from the existing one-internal-node pilot. Expand to **up to four internal nodes** (six total nodes) as the next coverage target; then consider up to six internal nodes (eight total) if unexplored topologies remain promising. These are enumeration/computational bounds, **not** RF specification relaxations.
+
+At each stage: (1) enumerate and canonicalize, (2) report raw and unique counts and whether the run was truncated, (3) map candidates to realizable MNA circuits and assign physical chip order/couplings, (4) optimize multiple starts and validate on dense passbands, (5) measure Pareto improvements and remaining untested families. Only promote a node bound when the prior stage's coverage and candidate quality have been assessed.
+
+Because 6-node/6-branch multigraph enumeration can be very large, a `--max-raw` budget is mandatory for initial pilots. A budgeted run must be marked `TRUNCATED_INCOMPLETE`, and its counts must not be described as exhaustive. Expand search using connected-graph generation and canonical augmentation before attempting full 6-node enumeration.

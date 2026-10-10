@@ -17,3 +17,4 @@ jobs:
       - run: python experiments/matching_cost_20261010/verify_adjacent_1d.py
       - run: python experiments/matching_cost_20261010/reoptimize_lqp02.py
       - run: python experiments/matching_limit/enumerate_graphs.py --nodes 3 --branches 6
+      - run: python experiments/matching_limit/parallel_chip_screen.py

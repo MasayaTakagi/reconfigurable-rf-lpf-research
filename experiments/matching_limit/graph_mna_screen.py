@@ -28,13 +28,28 @@ def objective(x,graph,frequencies):
         return float(worst) if np.isfinite(worst) else 1e6
     except (ValueError,np.linalg.LinAlgError,FloatingPointError):
         return 1e6
+def select_stratified(graphs,max_candidates):
+    bins={'P2':[],'P3':[],'P4':[]}
+    for edges in graphs:
+        graph=(1+max(max(a,b) for a,b,_ in edges),edges)
+        area=check_graph(graph)
+        key='P2' if area<=2 else 'P3' if area<=4 else 'P4'
+        bins[key].append(graph)
+    for key in bins:
+        bins[key].sort(key=lambda g:(-len(set(t for _,_,t in g[1])), -g[0],str(g)))
+    chosen=[]
+    while len(chosen)<max_candidates and any(bins.values()):
+        for key in ('P2','P3','P4'):
+            if bins[key] and len(chosen)<max_candidates:
+                chosen.append(bins[key].pop(0))
+    return chosen
+
 def run(max_candidates=6,max_raw=300,seed=20261010):
     counts,graphs=enumerate_graphs(4,4,max_raw=max_raw)
     freq=frequency_sets(15)
     rng=np.random.default_rng(seed)
     output=[]
-    for edges in sorted(graphs,key=str)[:max_candidates]:
-        graph=(1+max(max(a,b) for a,b,_ in edges),edges)
+    for graph in select_stratified(graphs,max_candidates):
         area=check_graph(graph)
         _,edges=graph
         x0=np.array([2.0 if t!='GJM01' else 2.0 for _,_,t in edges]+[.1]*12)
@@ -48,6 +63,10 @@ def run(max_candidates=6,max_raw=300,seed=20261010):
         output.append(dict(area=area,graph=str(graph),il_coarse_db=objective(best.x,graph,freq),
             optimizer_success=bool(best.success),settings_caps_pf=best.x[len(edges):].reshape(6,2).tolist(),
             values=best.x[:len(edges)].tolist()))
+    counts['screened']=len(output)
+    counts['screened_P2']=sum(r['area']<=2 for r in output)
+    counts['screened_P3']=sum(2<r['area']<=4 for r in output)
+    counts['screened_P4']=sum(4<r['area']<=6 for r in output)
     return counts,output
 def main():
     p=argparse.ArgumentParser()

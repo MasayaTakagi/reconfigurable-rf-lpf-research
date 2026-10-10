@@ -25,7 +25,7 @@ def solve(f_hz,n_nodes,source_node,load_node,inductors=(),capacitors=(),
     if not 1<=source_node<=n_nodes or not 1<=load_node<=n_nodes:
         raise ValueError("Invalid source/load node")
     L=list(inductors); C=list(capacitors); w=2*np.pi*f_hz; nl=len(L)
-    if any(x.value<=0 or x.q<=0 for x in L+C):
+    if any(x.value<=0 or x.q<=0 for x in L) or any(x.value<0 or x.q<=0 for x in C):
         raise ValueError("Positive component value and Q required")
     K=np.eye(nl) if coupling is None else np.asarray(coupling,float)
     if K.shape!=(nl,nl) or not np.all(np.isfinite(K)) or not np.allclose(K,K.T,atol=1e-12) or not np.allclose(np.diag(K),1):
@@ -36,6 +36,7 @@ def solve(f_hz,n_nodes,source_node,load_node,inductors=(),capacitors=(),
     B=incidence(L,n_nodes); Y=np.zeros((n_nodes,n_nodes),complex)
     for cap in C:
         b=incidence([cap],n_nodes)[:,0]
+        if cap.value==0: continue
         z=(1/cap.q-1j)/(w*cap.value)
         Y+=np.outer(b,b)/z
     Y[source_node-1,source_node-1]+=1/source_ohms
@@ -44,8 +45,8 @@ def solve(f_hz,n_nodes,source_node,load_node,inductors=(),capacitors=(),
     A=np.block([[Y,B],[-B.T,Z]])
     rhs=np.zeros(n_nodes+nl,complex);rhs[source_node-1]=source_voltage/source_ohms
     sol=np.linalg.solve(A,rhs);v=sol[:n_nodes];iL=sol[n_nodes:]
-    iC=np.array([(incidence([c],n_nodes)[:,0]@v)/((1/c.q-1j)/(w*c.value)) for c in C])
-    pC=sum(abs(i)**2/(w*c.value*c.q) for i,c in zip(iC,C))
+    iC=np.array([(incidence([c],n_nodes)[:,0]@v)*w*c.value/(1/c.q-1j) for c in C])
+    pC=sum(abs(i)**2/(w*c.value*c.q) for i,c in zip(iC,C) if c.value>0)
     pL=sum(abs(i)**2*w*l.value/l.q for i,l in zip(iL,L))
     pLoad=abs(v[load_node-1])**2*(1/load_ohms).real
     pAvs=abs(source_voltage)**2/(4*source_ohms)

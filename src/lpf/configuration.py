@@ -25,7 +25,7 @@ def validate_six_settings(settings,variable_cap_indices):
             if i in variable_cap_indices:
                 if c.a!=d.a or c.b!=0 or d.b!=0 or c.q!=d.q or c.q!=80:
                     raise ValueError('Variable C must be fixed shunt-to-ground with Q80')
-                if not (0<c.value<=4e-12):raise ValueError('Variable C outside (0,4]pF')
+                if not (0<=c.value<=4e-12):raise ValueError('Variable C outside [0,4]pF')
             elif c!=d:
                 raise ValueError('Fixed C changed')
     if any(i<0 or i>=len(reference.get('capacitors',())) for i in variable_cap_indices):

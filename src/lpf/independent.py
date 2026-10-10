@@ -15,7 +15,7 @@ def solve_gain(f_hz,n_nodes,source_node,load_node,inductors=(),capacitors=(),
         Y+=B@np.linalg.solve(Z,B.T)
     for c in C:
         b=incidence([c],n_nodes)[:,0]
-        Y+=np.outer(b,b)/((1/c.q-1j)/(w*c.value))
+        Y+=np.outer(b,b)*w*c.value/(1/c.q-1j)
     Y[source_node-1,source_node-1]+=1/source_ohms
     Y[load_node-1,load_node-1]+=1/load_ohms
     rhs=np.zeros(n_nodes,complex);rhs[source_node-1]=source_voltage/source_ohms

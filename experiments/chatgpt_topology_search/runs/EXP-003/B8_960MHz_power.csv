@@ -1,0 +1,4 @@
+design,policy_compliance,case,frequency_mhz,max_il_db,p_load_mw_at_1W_Pavs,p_reflected_mw_at_1W_Pavs,p_L_dissipation_mw_at_1W_Pavs,p_C_dissipation_mw_at_1W_Pavs,model
+CP07_legacy,NO_four_setting_tunable_caps,B8,960,0.328924019,927.059477351,3.238195140,58.253552230,11.448775279,Q_L25_Q_C80_ideal
+CP07_row_only,NO_four_setting_tunable_caps,B8,960,0.337660365,925.1965,1.2517,60.9124,12.6394,Q_L25_Q_C80_ideal
+A7-01_current_exploratory_area7,YES_exploratory_budget7_not_hardcap6,B8,960,0.508388959,889.531033470,9.446355060,76.240112775,24.782498695,Q_L25_Q_C80_ideal

@@ -29,7 +29,8 @@ EDGE_SET=((0,1),(1,2),(0,2),(0,-1),(1,-1),(2,-1),(3,-1),
 
 
 def grids(points):
-    data=list(csv.DictReader(BANDS.open(encoding="utf-8",newline="")))
+    with BANDS.open(encoding="utf-8",newline="") as handle:
+        data=list(csv.DictReader(handle))
     out=[]
     for case in CASES:
         groups=[]

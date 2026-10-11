@@ -34,4 +34,8 @@ python -m unittest discover -s tests -v
 python scripts/verify_no_pcb_tunable_candidates.py
 ```
 
-自動CIでは、基準値を固定したLPF-007/008の有限グリッド回帰と、matching-onlyの解析的既知回路の回帰も検証する。新しい候補は\`data/candidate_index.csv\`へ追加でき、LPF-007/008を削除することはできない。\n\n大規模P4-Aは[手動Actions](.github/workflows/lpf-p4-a.yml)で実行。**以下のG1 smokeはPR #10より前の計算構成の結果**であり、PR #10の新ハッシュで再実行が必要。旧G1の1/2シャードsmokeと再開は[1シャード](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38128578799)・[2シャード](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38128871403)で成功済み。詳細な実行結果はGitHub履歴で追跡する。
+自動CIでは、基準値を固定したLPF-007/008の有限グリッド回帰と、matching-onlyの解析的既知回路の回帰も検証する。新しい候補は `data/candidate_index.csv` へ追加でき、LPF-007/008を削除することはできない。
+
+大規模P4-Aは[手動Actions](.github/workflows/lpf-p4-a.yml)で実行し、限定的なArtifact保存・再開・集計の再検証には[手動スモーク](.github/workflows/lpf-p4-a-smoke.yml)を利用する。
+
+旧G1の[1シャード実行](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38128578799)・[2シャード実行](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38128871403)に加え、PR #10変更後の計算構成でも[実機スモーク](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38139630751)が **PASS**。新構成では1シャードの3グラフをArtifact越しに2回再開し、G1集計が完了した。これはソフトウェア動作確認であり、P4-A網羅探索やIL改善の完了ではない。

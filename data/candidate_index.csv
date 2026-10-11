@@ -3,3 +3,7 @@ LPF-001,CP07,legacy,full_lpf,0.328924,35.05,35.05,historical,experiments/phase2_
 LPF-002,CP09,legacy,full_lpf,0.324314,35.05,35.05,historical,experiments/weak_pcb/dense_verification.csv
 LPF-003,CP10,legacy,full_lpf,0.323391,35.04995,35.04991,historical,experiments/pcb_pcb_coupled/six_case_verified.csv
 LPF-004,CP11,legacy,full_lpf,0.295208,35.1,35.1,theory_only_noncompliant,experiments/strong_pcb_coupling_theory/stack_band_verified.csv
+LPF-005,CP07,2026-10-10,full_lpf,1.251126745,35.160447,35.158084,structurally_valid_il_target_fail,experiments/no_pcb_policy_update_20261011/six_case_verified.csv
+LPF-006,CP07,2026-10-10,full_lpf,1.163822770,35.186753,35.308789,structurally_valid_il_target_fail,experiments/no_pcb_policy_update_20261011/six_case_verified.csv
+LPF-007,none,2026-10-10,full_lpf,0.513168414,35.069970,35.069996,new_policy_numerically_verified_IL_target_fail,experiments/no_pcb_tunable_shunt_20261011/README.md
+LPF-008,none,2026-10-10,full_lpf,0.518587126,35.099999,35.099995,new_policy_numerically_verified_IL_target_fail,experiments/no_pcb_tunable_shunt_20261011/README.md

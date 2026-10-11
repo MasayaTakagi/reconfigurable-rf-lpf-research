@@ -34,3 +34,14 @@ python -m unittest discover -s tests -v
 ```
 
 **注意:** 現行の監査は主に保存データの整合性チェック。EM、全帯域の数学的保証、回路全体の独立再計算を意味しない。
+
+## 最新のPCB-Lなし再最適化（2026-10-11）
+
+新しい固定GJM01／対GND可変IC C（2枝・各0–4pF）／チップL単列結合／面積上限6の条件を使った有限回数のPhase 2探索を実施。**構造的制約を満たすが、最大IL 0.30dB目標は未達**。
+
+| 候補 | チップL | 固定GJM01 | IC可変C | 面積 | 最大IL | H2/H3最小 |
+|---|---|---:|---:|---:|---:|---:|
+| [LPF-005](candidates/LPF-005.json) | LQP02×4 | 3 | 2 | 6 | 1.2511dB | 35.16/35.16dB |
+| [LPF-006](candidates/LPF-006.json) | LQP02×2＋LQP01×2 | 4 | 2 | 6 | 1.1638dB | 35.19/35.31dB |
+
+固定C・L値と6設定の可変C・結合行列は各JSONを参照。詳細は[探索レポート](experiments/no_pcb_policy_update_20261011/README.md)、[バンド別検証](experiments/no_pcb_policy_update_20261011/six_case_verified.csv)、[共通解析器による再計算スクリプト](scripts/check_no_pcb_candidates_20261011.py)。以前のCP07（0.3289dB）は可変Cの接続位置・枝数の新仕様に適合しない**歴史的参考値**であり、置き換えず保持する。**全トポロジーの網羅や大域最適性は未達**。LQP01実品番のL範囲も未確認。Phase 3は停止中。

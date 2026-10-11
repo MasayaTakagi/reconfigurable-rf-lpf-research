@@ -1,0 +1,166 @@
+{
+  "candidate_id": "LPF-008",
+  "spec_id": "2026-10-10",
+  "experiment_id": "no_pcb_tunable_shunt_traps_20261011",
+  "objective": "full_lpf",
+  "status": "nominal_35dB_grid_verified_IL_0p30_not_met_optimizer_nonconverged",
+  "title": "Two strong neighboring pairs, other chip-chip k=0",
+  "topology": {
+    "n_nodes": 5,
+    "ground": 0,
+    "input_node": 1,
+    "output_node": 3,
+    "inductors": [
+      {
+        "id": "L0",
+        "a": 1,
+        "b": 2,
+        "L_nH": 3.6961082097925715,
+        "Q": 25
+      },
+      {
+        "id": "L1",
+        "a": 3,
+        "b": 4,
+        "L_nH": 8.059797613852904,
+        "Q": 25
+      },
+      {
+        "id": "L2",
+        "a": 2,
+        "b": 5,
+        "L_nH": 6.06339975739945,
+        "Q": 25
+      },
+      {
+        "id": "L3",
+        "a": 2,
+        "b": 3,
+        "L_nH": 6.303725230068239,
+        "Q": 25
+      }
+    ],
+    "fixed_caps": [
+      {
+        "id": "Cf0",
+        "a": 2,
+        "b": 3,
+        "C_pF": 0.10000000000001148,
+        "Q": 80
+      },
+      {
+        "id": "Cf1",
+        "a": 1,
+        "b": 3,
+        "C_pF": 0.22822221757932803,
+        "Q": 80
+      },
+      {
+        "id": "Cf2",
+        "a": 5,
+        "b": 0,
+        "C_pF": 0.2168818391859141,
+        "Q": 80
+      }
+    ],
+    "variable_caps": [
+      {
+        "id": "Cv0",
+        "a": 4,
+        "b": 0,
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      },
+      {
+        "id": "Cv1",
+        "a": 5,
+        "b": 0,
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      }
+    ]
+  },
+  "chip_physical_order": [
+    "L1",
+    "L2",
+    "L3",
+    "L0"
+  ],
+  "strong_neighbor_pairs": [
+    [
+      2,
+      3
+    ],
+    [
+      3,
+      0
+    ]
+  ],
+  "neighbor_k_values": [
+    0,
+    -0.39999999999953056,
+    0.3999999982600827
+  ],
+  "all_nonlisted_chip_couplings_zero": true,
+  "ic_variable_C_pf_by_setting": {
+    "B71": [
+      1.1060033369093774,
+      2.1573349344369364
+    ],
+    "B12": [
+      1.010846135712661,
+      2.0384594616804868
+    ],
+    "B28": [
+      0.9609453916532391,
+      1.9281728286435715
+    ],
+    "B13+B14": [
+      0.5867424892847518,
+      1.6680407222956766
+    ],
+    "B26": [
+      0.5044593107296973,
+      1.562421097448041
+    ],
+    "B8": [
+      0.4276277144493767,
+      1.343527634280524
+    ]
+  },
+  "performance": {
+    "worst_IL_db": 0.5185871257221822,
+    "min_H2_db": 35.09999878063199,
+    "min_H3_db": 35.09999507979744,
+    "frequency_spacing_mhz_max": 0.02,
+    "max_independent_MNA_error_db": 1.2079226507921703e-12,
+    "min_K_eigenvalue": 0.43431457628140124
+  },
+  "area_units": 6,
+  "part_counts": {
+    "LQP02": 4,
+    "LQP01": 0,
+    "GJM01_fixed": 3,
+    "IC_variable_branches": 2,
+    "PCB_L": 0
+  },
+  "validation": {
+    "fixed_components_shared_by_six_cases": true,
+    "full_band_grid": true,
+    "independent_MNA": true,
+    "power_balance": true,
+    "solver_converged": false,
+    "global_optimality_proven": false,
+    "physical_coupling_EM_verified": false,
+    "cap_catalog_low_end_verified": false,
+    "phase3_authorized": false
+  },
+  "caveats": [
+    "Two strong adjacent couplings at the k=0.4 bound; physical simultaneous realization not demonstrated.",
+    "Minimum fixed C close to 0.1pF search bound; catalog availability/stray capacitance must be checked.",
+    "0.02MHz sampled band edges and interior are not rigorous interval proofs.",
+    "Only a finite optimization topology and initial-value search. Q(f), tolerances and large-signal not yet evaluated."
+  ]
+}

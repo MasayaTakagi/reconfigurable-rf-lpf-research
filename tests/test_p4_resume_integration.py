@@ -27,7 +27,7 @@ def _args(checkpoint, output, resume=False, resume_run_id=None, max_graphs_per_b
         layouts=1,
         iterations=1,
         coarse_points=2,
-        validation_points=1,
+        validation_points=3,
         seed=20261011,
         output=str(output),
         checkpoint=str(checkpoint),
@@ -105,6 +105,27 @@ class P4ResumeIntegrationTests(unittest.TestCase):
                 p4_batch.canonical_config_hash(first_config),
                 p4_batch.canonical_config_hash(changed_config),
             )
+
+    def test_cli_rejects_validation_grid_smaller_than_two_points(self):
+        with mock.patch("sys.argv", ["p4_batch.py", "--validation-points", "1"]):
+            with self.assertRaises(SystemExit) as raised:
+                p4_batch._parse_args()
+        self.assertEqual(raised.exception.code, 2)
+
+    def test_validation_exception_marks_graph_and_job_failed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with mock.patch.object(p4_batch, "validate", side_effect=ValueError("bad validation grid")):
+                report = p4_batch.run(
+                    _args(root / "failed.checkpoint.json", root / "failed.json")
+                )
+
+            self.assertEqual(report["status"], "failed")
+            self.assertEqual(report["results"], [])
+            self.assertEqual(report["completed_graph_ids"], [])
+            self.assertEqual(len(report["failures"]), 1)
+            self.assertEqual(report["failures"][0]["message"], "bad validation grid")
+            self.assertEqual(report["unit_execution_log"][0]["status"], "failed")
 
     def test_one_graph_artifact_batches_resume_to_completion(self):
         if "fork" not in multiprocessing.get_all_start_methods():

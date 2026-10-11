@@ -459,10 +459,8 @@ def run(args, progress_callback=None, candidate_progress_callback=None):
             best=min(candidate_records,key=lambda candidate:candidate['coarse_il_db'])
             K=np.asarray(best['coupling'],float)
             x=np.asarray(best['result_values'],float)
-            try:
-                validation=validate(graph,x,K,rows,args.validation_points)
-            except (ValueError,np.linalg.LinAlgError,OverflowError) as exc:
-                validation={'error':str(exc)}
+            # A validation exception is a job failure, never a normal result row.
+            validation=validate(graph,x,K,rows,args.validation_points)
             row={
                 'graph_id':graph_id,'optimization_seed':graph_seed,
                 'internal_nodes':internal_nodes,
@@ -582,6 +580,8 @@ def _parse_args():
         p.error('--max-graphs-per-batch must be positive')
     if args.max_batch_seconds is not None and args.max_batch_seconds<1:
         p.error('--max-batch-seconds must be positive')
+    if args.validation_points<2:
+        p.error('--validation-points must be at least 2')
     if args.resume and args.resume_artifact_missing:
         p.error('--resume cannot be combined with --resume-artifact-missing')
     if args.resume_artifact_missing and not args.resume_run_id:

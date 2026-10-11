@@ -1,6 +1,9 @@
 name: P4-A PR10 checkpoint compatibility smoke
 
 on:
+  pull_request:
+    paths:
+      - .github/workflows/lpf-p4-a-pr10-smoke.yml
   push:
     branches:
       - docs/phase2-research-reorganization-20261011

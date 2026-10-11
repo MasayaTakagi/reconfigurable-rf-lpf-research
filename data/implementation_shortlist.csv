@@ -1,5 +1,0 @@
-candidate_id,checkpoint_id,role,chip_l_count,pcb_l_count,c_count,max_nominal_il_db,min_h2_db,min_h3_db,nominal_attenuation_target_db,chip_pcb_max_abs_k,pcb_pcb_max_abs_k,implementation_status,priority,critical_gate,evidence
-I-01,CP07,baseline_prototype_reference,4,0,4,0.328924,35.05,35.05,35.05,0,0,conditional_simulation_only,1,chip_chip_coupling_and_chip_model,experiments/phase2_4chip_baseline/dense_verification.csv
-I-02,CP09,weak_chip_pcb_comparison,4,3,7,0.324314,35.05,35.05,35.05,0.03,0,conditional_simulation_only,2,parasitic_caps_and_incremental_benefit,experiments/weak_pcb/dense_verification.csv
-I-03,CP10,pcb_mutual_comparison,4,3,7,0.323391,35.04995,35.04991,35.05,0.03,0.20,conditional_simulation_only,3,full_mutual_matrix_EM_and_tolerance,experiments/pcb_pcb_coupled/six_case_verified.csv
-T-01,CP11,theoretical_loss_target,4,3,7,0.295208,35.10,35.10,35.10,0.03,0.98,NOT_IMPLEMENTATION_CANDIDATE,not_ranked,near_perfect_pcb_coupling_physical_proof,experiments/strong_pcb_coupling_theory/stack_band_verified.csv

@@ -1,47 +1,56 @@
 # Reconfigurable RF LPF Research
 
-**Phase 2（トポロジー・性能限界探索）進行中。Phase 3は明示承認まで停止。**
+**Phase 2（回路トポロジーと性能探索）進行中。Phase 3は明示承認まで停止。**
 
-6設定：B71 / B12 / B28 / B13+B14 / B26 / B8。全UL/DL通過帯域で最大ILを評価し、ULの2倍波・3倍波全域で最小減衰を評価する。公称目標は最大IL≤0.30dB、H2/H3≥35dB（必須≥30dB）。
+## いまの最優先目標
 
-## 現行仕様
+**先行するChatGPT主導探索より優れた、現行RF制約内のfull-LPF回路を発見する。**
 
-- [仕様説明](docs/specification.md) / [機械可読な正本](data/design_constraints.json) / [帯域表](data/bands.csv)
-- [解析方法](docs/methodology.md) / [設計判断](docs/decisions.md) / [ロードマップ](docs/roadmap.md)
-- [候補索引](data/candidate_index.csv) / [候補の管理方法](candidates/README.md)
+比較基準は、現在の仕様に適合する保存済み候補のうち最大ILが最小の[LPF-007](candidates/LPF-007.json)：6設定UL/DL最悪 **0.513168414dB**、UL高調波最小H2/H3 **35.069970/35.069996dB**（面積6、有限グリッド計算値、SLSQP未収束）。先に**35dB以上の減衰を維持してILを下げる**ことを目指し、長期的な公称目標は**IL≤0.30dB**。必須高調波減衰は30dB以上で、35dBは公称探索目標である。
 
-## 結果の読み方
+6設定：B71 / B12 / B28 / B13+B14（共通設定）/ B26 / B8。入力50Ω、負荷60−j40Ω、面積≤6などの承認済み物理制約は維持する。最良数値解は大域最適性や実装性を証明しない。
 
-旧35dB減衰付き候補は歴史的な数値探索結果であり、新仕様の可変C枝数・配置規則への適合は未確認。新しい整合専用の低IL値はH2/H3を課していないため、LPF成立値ではない。数値的な最良候補は大域最適性やEM実装性を証明しない。
+## 2つの探索トラック
 
-## ディレクトリ
+| 方式 | 役割 | 検証 |
+|---|---|---|
+| **ChatGPT主導の仮説探索** | RF回路理論からブリッジ、共振・反共振、低損失結合等の新構成を提案し、専用高速最適化器で探索 | 共通MNA・独立解析器で再評価。良好候補を体系探索へ供給 |
+| **スクリプト主導の体系探索** | 宣言したノード・枝・素子・レイアウト・可変C接続範囲を生成し、コスト別に数値最適化・未探索部分を定量化 | 同じ評価指標・物理制約でAI案と公平に比較。良好構成は専用解析で深掘り |
 
-| 場所 | 用途 |
+**未解決の統合課題**：現行P4-Aは可変Cの接続先がIN/OUTに限定され、LPF-007/008が用いる内部トラップ節点の可変Cを汎用生成できない。これを共通モデルの優先改善項目とする。
+
+探索方法の責務分担は[コード構成](docs/architecture.md)、具体的な実施順序は[Phase 2ロードマップ](docs/roadmap.md)、比較時の合否は[現行ベースライン](docs/baselines.md)を参照。
+
+## 開発状況
+
+- **G1 — GitHub Actions計算基盤：完了**。決定的シャーディング、チェックポイント、別runのArtifact復元、1/2シャードsmokeを実機で確認。[G1検証ログ](docs/g1_p4_sharding_validation_20261011.md) / [1シャード完了](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38128578799) / [2シャード完了](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38128871403)。
+- **R0/R1 — 共通回路モデルへの統合：未完了**。[コード移行計画](docs/refactor_plan.md)。設計制約の変更ではない。
+- **G2 — 数値解析／最適化高速化：未完了**。実測benchmarkから開始。
+- **P4-A — 内部ノード最大4・固定枝最大8の探索：本格解析前**。既存smokeは最適化未収束であり、性能限界ではない。
+- **Phase 3 — 停止中**。
+
+## 仕様・コード・研究記録
+
+| 場所 | 役割 |
 |---|---|
-| `data/` | 現行仕様、帯域、候補一覧、過去の数値表 |
-| `docs/` | 仕様・方法・判断・ロードマップ |
-| `src/lpf/` | 共通解析基盤（移行中） |
-| `experiments/` | 新規実験と保存済み研究結果 |
-| `candidates/` | 採用候補の個別定義 |
-| `tests/` | 自動検証 |
-| `history/` | 旧データ（過去コードの再現性維持は対象外） |
+| [`data/design_constraints.json`](data/design_constraints.json) / [`data/bands.csv`](data/bands.csv) | 物理制約の機械可読正本／周波数帯域 |
+| [`docs/specification.md`](docs/specification.md), [`docs/evaluation.md`](docs/evaluation.md) | 設計条件と6設定UL/DL/H2/H3の評価 |
+| [`src/lpf/`](src/lpf/) | MNA・独立解析・共通検証。最適化の共通化は移行中 |
+| [`experiments/`](experiments/) | 日付付き解析、ChatGPT仮説探索結果、汎用P4-A実行コード |
+| [`candidates/`](candidates/) / [`data/candidate_index.csv`](data/candidate_index.csv) | 候補定義と履歴・証拠索引 |
+| [`scripts/`](scripts/) / [`tests/`](tests/) | 検証CLIと自動テスト |
+| [`docs/decisions.md`](docs/decisions.md) | 設計・開発判断の履歴 |
 
-## 実行
+## 実行入口
 
 ```bash
+python -m pip install -r requirements.txt
 python scripts/audit_results.py
+python scripts/check_no_pcb_candidates_20261011.py
+python scripts/verify_no_pcb_tunable_candidates.py
 python -m unittest discover -s tests -v
 ```
 
-**注意:** 現行の監査は主に保存データの整合性チェック。EM、全帯域の数学的保証、回路全体の独立再計算を意味しない。
+P4-A実行は[手動GitHub Actions](.github/workflows/lpf-p4-a.yml)から実行する。push/PR時に大規模探索は自動起動しない。保存済み候補の再計算、有限メッシュでの確認、実際の最適化・収束、EM検証は**別の検証段階**である。
 
-## 最新のPCB-Lなし再最適化（2026-10-11）
-
-新しい固定GJM01／対GND可変IC C（2枝・各0–4pF）／チップL単列結合／面積上限6の条件を使った有限回数のPhase 2探索を実施。**構造的制約を満たすが、最大IL 0.30dB目標は未達**。
-
-| 候補 | チップL | 固定GJM01 | IC可変C | 面積 | 最大IL | H2/H3最小 |
-|---|---|---:|---:|---:|---:|---:|
-| [LPF-005](candidates/LPF-005.json) | LQP02×4 | 3 | 2 | 6 | 1.2511dB | 35.16/35.16dB |
-| [LPF-006](candidates/LPF-006.json) | LQP02×2＋LQP01×2 | 4 | 2 | 6 | 1.1638dB | 35.19/35.31dB |
-
-固定C・L値と6設定の可変C・結合行列は各JSONを参照。詳細は[探索レポート](experiments/no_pcb_policy_update_20261011/README.md)、[バンド別検証](experiments/no_pcb_policy_update_20261011/six_case_verified.csv)、[共通解析器による再計算スクリプト](scripts/check_no_pcb_candidates_20261011.py)。以前のCP07（0.3289dB）は可変Cの接続位置・枝数の新仕様に適合しない**歴史的参考値**であり、置き換えず保持する。**全トポロジーの網羅や大域最適性は未達**。LQP01実品番のL範囲も未確認。Phase 3は停止中。
+**注意**：旧CP07/CP11などは、現在の可変C枝数・結合上限等に適合しない歴史的参考値である。面積6の`matching_only`最良報告0.114837004dBは高調波条件なしの別目的であり、full-LPFの性能実績と混同しない。

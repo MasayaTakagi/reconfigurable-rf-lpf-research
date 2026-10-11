@@ -1,5 +1,5 @@
 {
-  "policy_version": "2026-10-10",
+  "policy_version": "2026-10-11",
   "canonical_docs": "docs/specification.md",
   "applicability": "new_phase2_matching_only_and_future_filter_studies",
   "historical_results_require_revalidation": true,
@@ -15,7 +15,7 @@
   "bands_file": "data/bands.csv",
   "passband_policy": "six_setting_UL_and_DL_B13B14_shared_setting",
   "chip_area_unit": "one_LQP02_package_footprint",
-  "area_formula": "N_LQP02+(2/3)*N_LQP01+3*N_LQW04+(2/3)*N_GJM01",
+  "area_formula": "N_LQP02+(2/3)*N_LQP01+3*N_LQW04+(2/3)*N_GJM01+0*N_PCB_PATTERN_C",
   "area_budget": {
     "hard_cap": 6,
     "policy": "sweep_0_to_6_in_1_over_3_units",
@@ -52,7 +52,8 @@
         "series",
         "bridge"
       ],
-      "q_is_assumption": true
+      "q_is_assumption": true,
+      "area_cost_distinct_from_PCB_PATTERN_C": true
     },
     "IC_VARIABLE_C": {
       "category": "IC_switched_capacitor_abstract_continuous",
@@ -78,6 +79,25 @@
       "max_inductance_nh_approx": 3,
       "common_across_settings": true,
       "pcb_footprint_unmodeled": true
+    },
+    "PCB_PATTERN_C": {
+      "category": "fixed_pcb_pattern_capacitor",
+      "q": 40,
+      "q_is_assumption": true,
+      "min_pf_per_component": 0.02,
+      "max_pf_per_component": null,
+      "max_count": 3,
+      "area_units": 0,
+      "common_across_settings": true,
+      "allowed_positions": [
+        "shunt",
+        "series",
+        "bridge"
+      ],
+      "footprint_and_routing_area_unmodeled": true,
+      "parasitic_and_EM_validation_required": true,
+      "physical_implementation_notes": "Zero chip area cost does not mean zero PCB geometry, parasitic loss, routing area or zero manufacturing tolerance; 0.02 pF feasibility is unverified.",
+      "upper_limit_status": "not_specified_by_owner"
     }
   },
   "coupling_limits": {
@@ -119,9 +139,10 @@
     "chip_chip_abs_k_above_0_4",
     "chip_chip_strong_nonneighbor",
     "chip_chip_2d_layout",
-    "chip_chip_weak_abs_k_above_0_1"
+    "chip_chip_weak_abs_k_above_0_1",
+    "more_than_3_PCB_pattern_capacitors"
   ],
-  "policy_revision": "2026-10-10T12:23Z_owner_approved_single_row_strong_adjacent_weak_0p1",
+  "policy_revision": "2026-10-11_owner_approved_fixed_PCB_pattern_cap_Q40_min_0p02pF_count3_zero_chip_cost",
   "chip_inductor_placement": {
     "approved_layout": "single_linear_row",
     "strength_grouping": "selected subset of consecutive physical neighbor edges",

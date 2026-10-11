@@ -19,6 +19,8 @@
 
 **未解決の統合課題**：現行P4-Aは可変Cの接続先がIN/OUTに限定され、LPF-007/008が用いる内部トラップ節点の可変Cを汎用生成できない。これを共通モデルの優先改善項目とする。
 
+**ChatGPTが新しく回路トポロジーを考案・最適化する際の作業先は、[`experiments/chatgpt_topology_search/`](experiments/chatgpt_topology_search/) に統一する。** 個別作業はその下の `runs/EXP-NNN/`。自動P4-Aは従来どおり `experiments/matching_limit/`。リポジトリ全体の役割は[フォルダ構成ガイド](docs/repository_layout.md)を参照。
+
 探索方法の責務分担は[コード構成](docs/architecture.md)、具体的な実施順序は[Phase 2ロードマップ](docs/roadmap.md)、比較時の合否は[現行ベースライン](docs/baselines.md)を参照。
 
 ## 開発状況

@@ -17,6 +17,7 @@
 | `src/lpf/circuit.py`, `independent.py` | 汎用集中定数MNA／独立節点照合 | 回路数値解析の共通基盤 |
 | `src/lpf/evaluate.py`, `configuration.py`, `validate.py` | 帯域メッシュ評価、6設定間の可変C整合、結合制約チェック | 共通指標・回路妥当性 |
 | `src/lpf/optimize.py` | **プレースホルダのみ** | 検証済み共通最適化APIの導入予定 |
+| [`experiments/chatgpt_topology_search/`](../experiments/chatgpt_topology_search/) | **新設：ChatGPT主導探索の正規作業場所**。`runs/EXP-NNN/`に回路仮説・専用ソルバ・実測結果を保存 | 共通MNAで検証し、良好結果を`candidates/`へ昇格 |
 | `experiments/matching_limit/` | グラフ生成・選択、P4-Aの最適化、シャーディング／復旧 | 現行実験の再現入口。汎用コードは段階的にライブラリへ移す |
 | `experiments/no_pcb_*` | ChatGPT探索由来の候補記録・実験レポート | 仮説探索・専用手法の実験記録 |
 | `scripts/` | 監査・検証・Artifact集計などのCLI | 薄い入口。新しい解析アルゴリズムを重複実装しない |
@@ -47,5 +48,7 @@
 - **コード移動とアルゴリズム変更を分離**：機能等価なコード移動 → 回帰テスト → 性能改善 → 新探索、の順とする。最適化結果の数値差は明示・比較する。
 - **物理制約の正本を一元化**：Q、コスト、部品上限、結合限界を複数ソースで別々に定義しない。既存ソースに埋め込まれた定数の統合は実装とテストが必要であり、現時点で完了したとは主張しない。
 - **研究記録を保持**：`experiments/`の日時付きファイル、`data/`の候補・チェックポイント・証拠は参照が切れないように残す。古い計画文書は現行ロードマップへ誘導し、履歴を削除しない。
+
+フォルダ・成果物の置き場所は[リポジトリ構成](repository_layout.md)を参照。各AI実験は必ず`experiments/chatgpt_topology_search/runs/EXP-NNN/`へ保存し、既存の日付付き履歴を上書きしない。
 
 詳細な段階別実装・テスト基準は[リファクタ計画](refactor_plan.md)、開発上の優先順位は[Phase 2ロードマップ](roadmap.md)を参照。

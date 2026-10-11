@@ -8,6 +8,8 @@
 
 **旧0.32dB対現行0.51dBの制約比較:** [EXP-003の独立レビュー](experiments/chatgpt_topology_search/runs/EXP-003/README.md)で、旧4可変C回路CP07（0.328924dB）と現行A7-01（0.508389dB）を同じL/C Qで比較。旧回路でチップ結合だけ一列隣接へ変えても、4可変Cを保持した再最適化解は0.337660dBだった。**現在の2枝・対GND・各4pFという可変C機能制約が主要なボトルネック候補**。旧解は現行の正式候補ではない。
 
+**新しい中間目標：最大IL 0.40dB（公称H2/H3≥35dB、6設定UL/DL全帯域）**。まず [EXP-004](experiments/chatgpt_topology_search/runs/EXP-004/README.md) で現行コスト7基準A7-01（0.508389dB）の更新を狙う。局所探索98件では未達、42条件は未完了。再現可能な[ベクトル化探索器](experiments/chatgpt_topology_search/runs/EXP-004/sweep_040.py)、[手動分割Actions](.github/workflows/lpf-target040.yml)、[進捗集計器](experiments/chatgpt_topology_search/runs/EXP-004/summarize.py)を準備済み。**大規模Actions探索はまだ起動していない**。最終0.30dB目標とPhase 3停止は維持。
+
 **2方式を並行**：ChatGPTはRF理論から回路を発案して専用高速最適化、自動探索は有限のグラフ・素子・配置クラスを生成して比較。良好な構造と初期値を相互に利用し、共通MNAと同一の6設定評価で検証する。現在のP4-Aは可変CがIN/OUT接続に固定されており、LPF-007/008の内部トラップCを探索できないため、一般化が最優先。
 
 ## フォルダ構成と作業先

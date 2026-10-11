@@ -1,0 +1,189 @@
+{
+  "candidate_id": "LPF-009",
+  "spec_id": "2026-10-10",
+  "experiment_id": "EXP-001-PCB_PATTERN_C_MAX_0P2_20261011",
+  "objective": "full_lpf",
+  "status": "numerical_grid_verified_vs_LPF008_not_better_than_LPF007",
+  "title": "LPF-007 topology plus one fixed Q40 PCB-pattern C shunt near 0.02 pF",
+  "topology": {
+    "n_nodes": 5,
+    "ground": 0,
+    "input_node": 1,
+    "output_node": 3,
+    "inductors": [
+      {
+        "id": "L0",
+        "a": 1,
+        "b": 2,
+        "L_nH": 3.52595847,
+        "Q": 25
+      },
+      {
+        "id": "L1",
+        "a": 3,
+        "b": 4,
+        "L_nH": 8.47617761,
+        "Q": 25
+      },
+      {
+        "id": "L2",
+        "a": 2,
+        "b": 5,
+        "L_nH": 5.73355221,
+        "Q": 25
+      },
+      {
+        "id": "L3",
+        "a": 2,
+        "b": 3,
+        "L_nH": 6.52650989,
+        "Q": 25
+      }
+    ],
+    "fixed_caps": [
+      {
+        "id": "Cf0",
+        "a": 2,
+        "b": 3,
+        "C_pF": 0.10016296312867587,
+        "Q": 80
+      },
+      {
+        "id": "Cf1",
+        "a": 1,
+        "b": 3,
+        "C_pF": 0.21699337447731237,
+        "Q": 80
+      },
+      {
+        "id": "Cf2",
+        "a": 5,
+        "b": 0,
+        "C_pF": 0.22511569297487413,
+        "Q": 80
+      },
+      {
+        "id": "Cp0",
+        "a": 2,
+        "b": 0,
+        "C_pF": 0.020000000010829605,
+        "Q": 40,
+        "component_type": "PCB_PATTERN_C",
+        "area_units": 0
+      }
+    ],
+    "variable_caps": [
+      {
+        "id": "Cv0",
+        "a": 4,
+        "b": 0,
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      },
+      {
+        "id": "Cv1",
+        "a": 5,
+        "b": 0,
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      }
+    ]
+  },
+  "chip_physical_order": [
+    "L1",
+    "L2",
+    "L3",
+    "L0"
+  ],
+  "strong_neighbor_pairs": [
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      3,
+      0
+    ]
+  ],
+  "neighbor_k_values": [
+    -0.0061059376234753665,
+    -0.3992970064302065,
+    0.39988226124851733
+  ],
+  "all_nonlisted_chip_couplings_zero": true,
+  "ic_variable_C_pf_by_setting": {
+    "B71": [
+      1.1245196304892042,
+      2.196663396863667
+    ],
+    "B12": [
+      1.0554199191825389,
+      2.010115629106788
+    ],
+    "B28": [
+      0.9820915720847162,
+      1.962483584272403
+    ],
+    "B13+B14": [
+      0.5806039710772952,
+      1.7177466790914226
+    ],
+    "B26": [
+      0.4783197904099531,
+      1.5872123901857247
+    ],
+    "B8": [
+      0.39061712400711857,
+      1.3789710994572306
+    ]
+  },
+  "performance": {
+    "worst_IL_db": 0.5160623378894315,
+    "min_H2_db": 35.099268592435145,
+    "min_H3_db": 35.10570193315198,
+    "frequency_spacing_mhz_max": 0.02,
+    "max_independent_MNA_error_db": 1.8474111129762605e-13,
+    "max_power_balance_residual_W": 5.668344483025778e-18,
+    "min_K_eigenvalue": 0.4348782987462298
+  },
+  "area_units": 6,
+  "part_counts": {
+    "LQP02": 4,
+    "LQP01": 0,
+    "GJM01_fixed": 3,
+    "IC_variable_branches": 2,
+    "PCB_L": 0,
+    "PCB_PATTERN_C": 1
+  },
+  "validation": {
+    "fixed_components_shared_by_six_cases": true,
+    "full_band_grid": true,
+    "independent_MNA": true,
+    "power_balance": true,
+    "solver_converged": true,
+    "global_optimality_proven": false,
+    "physical_coupling_EM_verified": false,
+    "cap_catalog_low_end_verified": false,
+    "phase3_authorized": false,
+    "solver_method": "L-BFGS-B penalty formulation (optimizer returned success); not a proof of minimax global optimality or certified satisfaction",
+    "pcb_pattern_capacitor_bounds_checked": true,
+    "dense_frequency_grid_checked": true,
+    "independent_MNA_representative_points_only": true
+  },
+  "caveats": [
+    "Numerical local solution: better than LPF-008 but worse than LPF-007; not selected as new best reference.",
+    "Pattern capacitor Cp0 is fixed at 0.020000pF (Q40), lower design bound; physical realizability and parasitics unverified.",
+    "Three GJM01 capacitors remain; chip area=6; no PCB inductors.",
+    "One near-zero neighbor coupling (k=-0.0061) is designated a physical adjacent edge, and two k≈0.4 edges need simultaneous physical feasibility.",
+    "Independent MNA and power conservation checked at representative frequencies only; dense sweep uses a separate reduced nodal model.",
+    "35dB is a numerical nominal margin; full continuous-frequency interval verification, EM, Q(f), tolerances, and large-signal performance not verified.",
+    "Phase 3 remains paused."
+  ],
+  "policy_revision": "2026-10-11_owner_approved_PCB_PATTERN_C_Q40_0p02_to_0p2pF_max3_zero_chip_area"
+}

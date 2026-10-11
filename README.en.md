@@ -8,6 +8,8 @@ Beat the current ChatGPT-origin **full-LPF** best-found reference under the *sam
 
 The first objective is **lower worst-case IL while retaining at least 35 dB H2/H3 rejection**. The longer-term nominal IL target is **≤0.30 dB**, with 30 dB mandatory harmonic rejection. Six cases: B71, B12, B28, combined B13+B14, B26, B8. Keep all existing cost, Q, variable-capacitor and physical coupling constraints.
 
+**Canonical ChatGPT topology-exploration workspace:** [`experiments/chatgpt_topology_search/`](experiments/chatgpt_topology_search/) with per-experiment  `runs/EXP-NNN/`. The existing systematic P4-A entry point remains  `experiments/matching_limit/`. See [directory map](docs/repository_layout.md).
+
 Two complementary discovery tracks run concurrently: (1) **ChatGPT-led RF hypotheses** and specialized reduced solvers, and (2) **systematic finite-class graph search** with deterministic sharded optimization. Both feed a common candidate representation, MNA/evaluation framework, and independently validated evidence. [Architecture and division of responsibilities](docs/architecture.md) / [Current Phase 2 roadmap](docs/roadmap.md) / [Reference candidates](docs/baselines.md).
 
 **Important gap:** the current systematic P4-A adapter places two variable shunt capacitors at IN/OUT. LPF-007 and LPF-008 instead place them at internal trap nodes. Reusable generalized variable-C placement and a common test that reproduces these candidates are prioritized before larger-scale search.

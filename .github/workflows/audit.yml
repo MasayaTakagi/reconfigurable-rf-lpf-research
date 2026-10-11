@@ -20,3 +20,4 @@ jobs:
       - run: python experiments/matching_limit/parallel_chip_screen.py
       - run: python experiments/matching_limit/graph_mna_screen.py --max-candidates 4 --max-raw 200
       - run: python experiments/matching_limit/grounded_mna_screen.py --max-raw 3000 --per-bin 1
+      - run: python scripts/check_no_pcb_candidates_20261011.py

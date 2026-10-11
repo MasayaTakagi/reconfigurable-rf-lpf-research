@@ -37,15 +37,15 @@ def validate_pcb_pattern_caps(values_pf, q_values=None):
     values_pf must be a sequence of per-component capacitances in pF.
     q_values, if supplied, must contain the corresponding per-component Q.
     PCB pattern C is FIXED; cross-setting invariance is checked separately.
-    No upper C limit is imposed because none is owner-approved.
+    Each fixed PCB pattern capacitor must be within [0.02, 0.2] pF.
     """
     spec=load_policy()['components']['PCB_PATTERN_C']
     values=tuple(values_pf)
     if len(values)>spec['max_count']:
         raise ValueError('PCB pattern C count exceeds maximum')
     if any(not isinstance(c,(float,int)) or not math.isfinite(c)
-           or c<spec['min_pf_per_component'] for c in values):
-        raise ValueError('PCB pattern C below minimum or invalid')
+           or c<spec['min_pf_per_component']\n           or c>spec['max_pf_per_component'] for c in values):
+        raise ValueError('PCB pattern C outside approved range or invalid')
     if q_values is not None:
         qs=tuple(q_values)
         if len(qs)!=len(values) or any(

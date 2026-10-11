@@ -56,11 +56,20 @@ class CandidateIndexGuardrails(unittest.TestCase):
         self.root = Path(self.tmp.name)
         for path in ("data/design_constraints.json", "data/bands.csv",
                      "data/candidate_index.csv", "docs/specification.md",
-                     "docs/historical_results.md", "candidates/LPF-007.json",
-                     "candidates/LPF-008.json"):
+                     "docs/historical_results.md"):
+
             target = self.root / path
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / path, target)
+        # Mirror all registered candidates so additional active candidates can
+        # be audited in the temporary root without hardcoded fixture IDs.
+        with (ROOT / "data/candidate_index.csv").open(newline="", encoding="utf-8") as handle:
+            candidate_ids = [row["candidate_id"] for row in csv.DictReader(handle)]
+        for candidate_id in candidate_ids:
+            source = ROOT / "candidates" / (candidate_id + ".json")
+            destination = self.root / "candidates" / (candidate_id + ".json")
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, destination)
 
     def _audit(self):
         with patch.object(audit_results, "ROOT", self.root):

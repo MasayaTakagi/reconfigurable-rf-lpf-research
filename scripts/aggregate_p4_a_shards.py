@@ -23,11 +23,16 @@ def main():
 
     input_dir = Path(args.input_dir)
     checkpoints = sorted(input_dir.rglob("checkpoint.json")) if input_dir.exists() else []
-    report = aggregate_checkpoints(checkpoints, args.expected_shards, args.matrix_result)
+    failures = sorted(input_dir.rglob("failure.json")) if input_dir.exists() else []
+    report = aggregate_checkpoints(
+        checkpoints, args.expected_shards, args.matrix_result, failure_paths=failures
+    )
     report["checkpoint_files"] = [str(path) for path in checkpoints]
+    report["failure_report_files"] = [str(path) for path in failures]
     atomic_write_json(args.output, report)
     print({
         "status": report["status"],
+        "overall_complete": report["overall_complete"],
         "expected_shards": report["expected_shards"],
         "received_shards": report["received_shards"],
         "missing_shards": report["missing_shards"],
@@ -35,7 +40,7 @@ def main():
         "errors": report["errors"],
         "output": args.output,
     })
-    return 0 if report["status"] == "all_expected_shards_completed" else 1
+    return 0 if report["status"] in {"completed", "in_progress"} else 1
 
 
 if __name__ == "__main__":

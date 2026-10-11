@@ -13,12 +13,14 @@ Distinguish matching-only IL frontier from LPF optimization with H2/H3 constrain
 3. GitHub Actions: manually launched long-running matrix batches, bounded budgets, artifact outputs. Public repository standard GitHub-hosted runners are generally free; check current platform limits.
 4. GitHub: source, seeds, configurations, validation reports and immutable result manifests.
 
-Existing workflows: `.github/workflows/audit.yml` runs saved-data audit and regression tests only; `.github/workflows/lpf-p4-a.yml` is manual-only and provides bounded, resumable P4-A shards. Do not launch expensive jobs automatically on push.
+Existing workflows: `.github/workflows/audit.yml` runs saved-data audit and the lightweight test suite only; `.github/workflows/lpf-p4-a.yml` is manual-only and provides bounded, resumable P4-A shards; `.github/workflows/lpf-research-regression.yml` is manual-only and retains the prior bounded numerical regression commands. Do not launch numerical jobs automatically on push or pull request.
 
 ## G1 implementation status
-- Deterministic graph IDs and shard assignment, atomic per-shard checkpoints, resume validation, and completeness-aware aggregation are implemented.
-- The manual workflow caps the matrix at 8 slots and parallel execution at 4 jobs. Its defaults are deliberately small; tune only after a measured runner pilot.
-- Run the workflow manually for the C0 pilot. Phase 3 remains paused, and a finite seeded sample must not be reported as exhaustive or globally optimal.
+- Deterministic graph IDs and shard assignment, atomic per-shard checkpoints, compatibility-checked resume, cross-run artifact retrieval, and completeness-aware aggregation are implemented.
+- The manual workflow caps the matrix at 8 slots, parallel execution at 4 jobs, and each shard batch at 1 graph by default (maximum 4). The default wall-time budget is 20 minutes. Artifact persistence is confirmed from the upload action's ID and digest outputs; retention is 14 days.
+- Optimizer candidates are checkpointed locally as they finish, and resume skips those saved candidates within the active graph. The external Artifact is published after each graph batch; `max_batch_seconds` only prevents starting another graph and cannot interrupt an active optimizer graph. After forced Runner loss, replay is bounded by the graph batch cap (one graph by default, maximum four) since the last confirmed Artifact. Candidate saves made since the last upload remain local until that Artifact succeeds.
+- A changed commit can resume only when calculation code/data fingerprints, frequency grid, RF constraints, numerical package versions/backend, seed, topology selection, and optimizer settings produce the same compatibility hash. Commit SHA, run IDs, platform, CPU, timings, and timestamps are history fields.
+- Local SIGTERM/resume integration with the real optimizer and a copied checkpoint passed. The first GitHub Actions P4-A batch and a later Artifact restore are still required for G1 final verification; do not merge without owner authorization. Phase 3 remains paused, and a finite seeded sample must not be reported as exhaustive or globally optimal.
 
 ## Gates
 | Gate | Work | Evidence to advance |

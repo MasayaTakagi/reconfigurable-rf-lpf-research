@@ -26,7 +26,10 @@ def load_reference(reference):
     path=Path(reference)
     if path.is_file():
         return json.loads(path.read_text(encoding="utf-8"))
-    return json.loads((Path(__file__).resolve().parent/(str(reference)+".json")).read_text(encoding="utf-8"))
+    candidate=(Path(__file__).resolve().parent/(str(reference)+".json"))
+    if not candidate.is_file() and str(reference)=="A7-03":
+        candidate=Path(__file__).resolve().parent.parent/"EXP-005/A7-03.json"
+    return json.loads(candidate.read_text(encoding="utf-8"))
 
 
 def build_settings(d):
@@ -112,7 +115,7 @@ def verify(d,samples_per_segment=61,check_reference=False):
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument("--reference",choices=("A7-01","A7-02"),default="A7-01")
+    p.add_argument("--reference",choices=("A7-01","A7-02","A7-03"),default="A7-01")
     p.add_argument("--points",type=int,default=61,
                    help="Samples PER listed frequency segment; use 7001 for <=0.02 MHz H3 grid")
     p.add_argument("--check-saved",action="store_true")

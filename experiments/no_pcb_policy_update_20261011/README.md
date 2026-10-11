@@ -64,15 +64,13 @@ A案のみL2への固定並列Cを**配置しない**（*印）。よってL2は
 
 次段階では、面積6以内の別トポロジー（3チップL＋4固定C＋2可変C、LQP01による5～9コイル構成、独立並列経路、結合利用Q改善）をP4-A等の自動探索と多初期値最適化で評価し、最大ILとH2/H3の同時性能を改善する。Phase 3は停止のまま。
 
-## 再現方法
+## 再現方法（GitHub上の正本）
 
 ```bash
-pip install numpy scipy numba
-# スクリーニング（1-D物理隣接kのみ）
-python reopt.py --run screen --n 20
-# 2種の部品構成で探索した後、結果ファイルをこのフォルダに配置
-python validate_reopt.py
-python dense_002.py
+pip install -r requirements.txt
+python scripts/check_no_pcb_candidates_20261011.py
 ```
 
-`reopt.py` / `reopt_mixed.py` は高速縮約モデル。`validate_reopt.py` は独立MNAとの照合と面積/素子/Q/チップ行列検査。`polish.py` 等は多段階精緻化を記録。最終成果物は JSON/CSV を正本とする。
+再計算スクリプトは `scripts/check_no_pcb_candidates_20261011.py`。リポジトリの `src/lpf/circuit.py` を使用し、シャントL1–Cf1の直列接続を**独立した内部ノードを持つ回路**として構築する。6設定の保存済み結果と照合し、結合制約、面積、可変C枝数・範囲、電力保存を検証する。401点/区間の確認は、保存した0.02MHz高密度スキャンの代用の連続周波数保証ではない。
+
+最適化コード（`reopt.py`、`reopt_mixed.py` など）は今回の付属アーカイブに保存されているが、GitHub上への探索器移植は**未完了**。GitHub内で再現できるのは**保存済み候補の回路応答の独立再計算**である。

@@ -80,7 +80,7 @@ class CandidateIndexGuardrails(unittest.TestCase):
             writer.writerows(rows)
 
     def test_additional_current_policy_candidate_does_not_require_audit_edit(self):
-        self._add_candidate("LPF-009")
+        self._add_candidate("LPF-TEST-ADDED")
         self.assertEqual(self._audit(), [])
 
     def test_duplicate_index_row_is_rejected(self):

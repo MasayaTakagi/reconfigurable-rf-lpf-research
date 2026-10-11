@@ -85,7 +85,7 @@
       "q": 40,
       "q_is_assumption": true,
       "min_pf_per_component": 0.02,
-      "max_pf_per_component": null,
+      "max_pf_per_component": 0.2,
       "max_count": 3,
       "area_units": 0,
       "common_across_settings": true,
@@ -96,8 +96,8 @@
       ],
       "footprint_and_routing_area_unmodeled": true,
       "parasitic_and_EM_validation_required": true,
-      "physical_implementation_notes": "Zero chip area cost does not mean zero PCB geometry, parasitic loss, routing area or zero manufacturing tolerance; 0.02 pF feasibility is unverified.",
-      "upper_limit_status": "not_specified_by_owner"
+      "physical_implementation_notes": "Chip area cost is zero, not actual PCB area; 0.02 to 0.2 pF has not been verified by EM or manufacturing tolerance.",
+      "upper_limit_status": "owner_approved_2026-10-11"
     }
   },
   "coupling_limits": {
@@ -142,7 +142,7 @@
     "chip_chip_weak_abs_k_above_0_1",
     "more_than_3_PCB_pattern_capacitors"
   ],
-  "policy_revision": "2026-10-11_owner_approved_fixed_PCB_pattern_cap_Q40_min_0p02pF_count3_zero_chip_cost",
+  "policy_revision": "2026-10-11_owner_approved_PCB_PATTERN_C_Q40_0p02_to_0p2pF_max3_zero_chip_area",
   "chip_inductor_placement": {
     "approved_layout": "single_linear_row",
     "strength_grouping": "selected subset of consecutive physical neighbor edges",

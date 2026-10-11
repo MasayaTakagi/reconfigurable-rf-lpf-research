@@ -107,6 +107,19 @@ jobs:
           assert len(p['completed_graph_ids']) == len(p['expected_graph_ids'])
           print('PASS: artifact-backed continuation completed declared small sample')
           PY
+      - name: Aggregate the completed one-shard checkpoint
+        run: |
+          mkdir -p results/shards/shard-0
+          cp results/checkpoint.json results/shards/shard-0/checkpoint.json
+          python scripts/aggregate_p4_a_shards.py --input-dir results/shards --expected-shards 1 --matrix-result success --output results/aggregate.json
+          python - <<'PY'
+          import json
+          with open('results/aggregate.json') as f: result=json.load(f)
+          assert result['status'] == 'completed', result
+          assert result['overall_complete'] is True, result
+          assert result['optimized_graphs'] == 3, result
+          print('PASS: real checkpoint passed G1 shard aggregation')
+          PY
       - uses: actions/upload-artifact@v7
         with:
           name: completed-checkpoint

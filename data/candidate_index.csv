@@ -1,4 +1,4 @@
 candidate_id,spec_id,objective,max_il_db,min_h2_db,min_h3_db,status,evidence
 LPF-007,2026-10-10,full_lpf,0.513168414,35.069970,35.069996,grid_verified_nonconverged_IL_target_fail,candidates/LPF-007.json
 LPF-008,2026-10-10,full_lpf,0.518587126,35.099999,35.099995,grid_verified_nonconverged_IL_target_fail,candidates/LPF-008.json
-LPF-009,none,2026-10-10,full_lpf,0.516062338,35.099269,35.105702,screened_better_than_LPF008_not_best_LPF007,candidates/LPF-009.json
+LPF-009,2026-10-10,full_lpf,0.516062338,35.099269,35.105702,screened_better_than_LPF008_not_best_LPF007,candidates/LPF-009.json

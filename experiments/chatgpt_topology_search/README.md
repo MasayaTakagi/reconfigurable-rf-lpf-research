@@ -1,5 +1,7 @@
 # ChatGPT主導トポロジー探索 — 専用作業フォルダ
 
+**全体方針と保存先の早見表**は[Phase 2研究・フォルダ運用ガイド](../../docs/research_workflow_ja.md)を参照してください。
+
 **本ディレクトリが、今後のChatGPT主導によるRF LPF回路の考案・専用最適化・比較実験の標準作業場所です。**
 
 GitHub上のパス: `experiments/chatgpt_topology_search/`

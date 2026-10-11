@@ -1,70 +1,74 @@
 #!/usr/bin/env python3
-"""Lightweight, stdlib-only audit of the historical evidence package.
-
-Confirms file integrity, band table arithmetic, required cases and saved numerical
-candidate metadata. This is NOT an EM, interval, or full circuit-model verification.
-"""
-from __future__ import annotations
-import argparse,csv,hashlib,json,sys
+"""Lightweight audit of active Phase 2 policy, bands, and baseline metadata."""
+import csv
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CASES = ('B71','B12','B28','B13+B14','B26','B8')
+CASES = ("B71", "B12", "B28", "B13+B14", "B26", "B8")
 
-def readcsv(name):
-    with (ROOT/name).open(newline='',encoding='utf-8') as f:
-        return list(csv.DictReader(f))
 
 def audit(detail=False):
-    issues=[]
-    policy=json.loads((ROOT/'data/design_constraints.json').read_text())
-    if policy['phase3']!='paused_until_explicit_owner_approval':issues.append('Phase 3 must remain paused')
-    bands=readcsv('data/bands.csv')
-    for c in CASES:
-        rows=[x for x in bands if x['case']==c]
-        ul=[x for x in rows if x['region']=='UL']
-        dl=[x for x in rows if x['region']=='DL']
-        h2=[x for x in rows if x['region']=='H2']
-        h3=[x for x in rows if x['region']=='H3']
-        if not ul or not dl or len(h2)!=len(ul) or len(h3)!=len(ul):
-            issues.append(f'{c}: incomplete pass/stop regions')
-        for mult, stop in ((2,h2),(3,h3)):
-            for u,s in zip(ul,stop):
-                if float(s['low_mhz'])!=mult*float(u['low_mhz']) or float(s['high_mhz'])!=mult*float(u['high_mhz']):
-                    issues.append(f'{c}: harmonic range error {mult}')
-    evidence=readcsv('data/evidence_register.csv')
-    if len(evidence)<4:issues.append('Not enough registered evidence records')
-    for r in evidence:
-        # Historical evidence files may live only in earlier Git commits.
-        if r['evidence'].startswith('history/') or r['evidence'].startswith('experiments/'):
-            continue
-        if not (ROOT/r['evidence']).is_file(): issues.append('Missing current evidence: '+r['evidence'])
-        if not r['globally_proven'].lower()=='no':issues.append('Unsupported optimality flag '+r['id'])
-        if float(r['min_h2_db'])<30 or float(r['min_h3_db'])<30:issues.append('Noncompliant saved candidate '+r['id'])
-    independent=json.loads((ROOT/'data/independent_validation/independently_verified.json').read_text())
-    items=[x for x in independent if abs(x['k']-.98)<1e-9]
-    if len(items)!=1:issues.append('Missing unique independent k=.98 case')
-    else:
-        x=items[0]
-        if abs(x['maxIL']-.2952083694863997)>0.00001:issues.append('Independent best-case IL mismatch')
-        if x['H2']<35.0 or x['H3']<35.0:issues.append('Independent strong-coupling H2/H3 below 35dB')
-    perband=readcsv('data/independent_validation/stack_band_verified.csv')
-    p=[x for x in perband if abs(float(x['k'])-.98)<1e-9]
-    if {x['band'].replace('B13+14','B13+B14') for x in p}!=set(CASES):issues.append('Missing 6-band independent validation')
-    manifest=[]  # Legacy archives are intentionally retired; see Git history.
-    # manifest=readcsv('data/archive_manifest.csv')
+    issues = []
+    policy = json.loads((ROOT / "data/design_constraints.json").read_text(encoding="utf-8"))
+    if policy.get("phase3") != "paused_until_explicit_owner_approval":
+        issues.append("Phase 3 unexpectedly enabled")
+    if policy["area_budget"]["hard_cap"] != 6:
+        issues.append("Chip area cap changed")
+    if policy["components"]["IC_VARIABLE_C"]["max_branches_principle"] != 2:
+        issues.append("Variable C branch limit changed")
+    if policy.get("canonical_docs") != "docs/specification.md":
+        issues.append("Specification link is not canonical")
+    if not (ROOT / "docs/specification.md").is_file():
+        issues.append("Specification document missing")
 
+    with (ROOT / "data/bands.csv").open(newline="", encoding="utf-8") as stream:
+        bands = list(csv.DictReader(stream))
+    for case in CASES:
+        for region in ("UL", "DL", "H2", "H3"):
+            if not any(x["case"] == case and x["region"] == region for x in bands):
+                issues.append(f"Missing {case}/{region}")
+        ul = [x for x in bands if x["case"] == case and x["region"] == "UL"]
+        for multiple, region in ((2, "H2"), (3, "H3")):
+            harmonics = [x for x in bands if x["case"] == case and x["region"] == region]
+            if len(ul) != len(harmonics):
+                issues.append(f"Invalid {case}/{region} segment count")
+                continue
+            for a, b in zip(ul, harmonics):
+                for end in ("low_mhz", "high_mhz"):
+                    if abs(float(b[end]) - multiple * float(a[end])) > 1e-8:
+                        issues.append(f"Invalid {case}/{region}/{end}")
+
+    with (ROOT / "data/candidate_index.csv").open(newline="", encoding="utf-8") as stream:
+        index = list(csv.DictReader(stream))
+    if {x["candidate_id"] for x in index} != {"LPF-007", "LPF-008"}:
+        issues.append("Active candidate index must contain LPF-007/008 only")
+    for row in index:
+        name = row["candidate_id"]
+        path = ROOT / "candidates" / (name + ".json")
+        if not path.is_file():
+            issues.append(f"Candidate JSON missing: {name}")
+            continue
+        item = json.loads(path.read_text(encoding="utf-8"))
+        if item["candidate_id"] != name or item["objective"] != "full_lpf":
+            issues.append(f"Candidate identity or objective mismatch: {name}")
+        if item["spec_id"] != policy["policy_version"]:
+            issues.append(f"Candidate spec mismatch: {name}")
+        perf = item["performance"]
+        for col, key in (("max_il_db", "worst_IL_db"), ("min_h2_db", "min_H2_db"), ("min_h3_db", "min_H3_db")):
+            if abs(float(row[col]) - float(perf[key])) > 1e-6:
+                issues.append(f"Candidate performance mismatch: {name} {key}")
+        if item["area_units"] > policy["area_budget"]["hard_cap"]:
+            issues.append(f"Candidate area cap exceeded: {name}")
+        if len(item["topology"]["variable_caps"]) > 2:
+            issues.append(f"Candidate variable C count exceeded: {name}")
     if detail:
-        print('Bands:',len(CASES),'segments:',len(bands),'evidence:',len(evidence),'archives:',len(manifest))
-        if items:print('Independent k=.98 case:', {k:items[0][k] for k in ['maxIL','H2','H3','qeff','leff']})
+        print("Cases:", len(CASES), "band segments:", len(bands), "active candidates:", len(index))
     return issues
 
-if __name__=='__main__':
-    parser=argparse.ArgumentParser()
-    parser.add_argument('--detail',action='store_true')
-    args=parser.parse_args()
-    errors=audit(args.detail)
+
+if __name__ == "__main__":
+    errors = audit(detail=True)
     if errors:
-        print('FAILED:',*errors,sep='\n- ')
-        sys.exit(1)
-    print('PASS: band arithmetic, historical evidence metadata, independent validation metadata.')
+        raise SystemExit("FAILED:\n- " + "\n- ".join(errors))
+    print("PASS: active policy, band definitions and baseline metadata")

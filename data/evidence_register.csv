@@ -1,5 +1,0 @@
-id,candidate,max_nominal_il_db,min_h2_db,min_h3_db,level,evidence,physical_reviewed,globally_proven
-R01,4 chip L 4C 3-series resonators,0.328924,35.05,35.05,optimizer grid plus local extrema,experiments/phase2_4chip_baseline/dense_verification.csv,no,no
-R02,4 chip L plus 3 weakly coupled PCB-L,0.32432,35.05,35.05,optimizer plus dense grid,experiments/weak_pcb/dense_verification.csv,no,no
-R03,4 chip L plus coupled 3 PCB-L,0.323391,35.04995,35.04991,optimizer plus dense grid,experiments/pcb_pcb_coupled/six_case_verified.csv,no,no
-R04,3 series-aiding PCB coils at k=0.98,0.2952083694864,35.09999999942075,35.09999999957702,independent seven-winding nodal crosscheck,data/independent_validation/independently_verified.json,no,no

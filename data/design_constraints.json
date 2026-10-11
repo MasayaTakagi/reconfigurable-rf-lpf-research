@@ -1,6 +1,6 @@
 {
   "policy_version": "2026-10-10",
-  "canonical_docs": "docs/11_component_cost_topology_rules_ja.md",
+  "canonical_docs": "docs/specification.md",
   "applicability": "new_phase2_matching_only_and_future_filter_studies",
   "historical_results_require_revalidation": true,
   "source_ohms": {

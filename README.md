@@ -6,6 +6,8 @@
 
 **コスト7探索（Phase 2・面積予算を実験的に拡張）:** [EXP-002](experiments/chatgpt_topology_search/runs/EXP-002/README.md) に、コスト6のLPF-007（0.513168dB）を上回った最大IL **0.508389dB** の [A7-01](experiments/chatgpt_topology_search/runs/EXP-002/A7-01.json) と、隣接結合を2組に限定した **0.511964dB** の [A7-02](experiments/chatgpt_topology_search/runs/EXP-002/A7-02.json) を保存。使用チップ面積は両方6⅔。既存の正式hard cap6は変更せず、この比較では7を実験予算として使用。独立MNAで数値を確認したが、最適化器未収束、EM未検証、コスト7の数学的限界は未証明。
 
+**旧0.32dB対現行0.51dBの制約比較:** [EXP-003の独立レビュー](experiments/chatgpt_topology_search/runs/EXP-003/README.md)で、旧4可変C回路CP07（0.328924dB）と現行A7-01（0.508389dB）を同じL/C Qで比較。旧回路でチップ結合だけ一列隣接へ変えても、4可変Cを保持した再最適化解は0.337660dBだった。**現在の2枝・対GND・各4pFという可変C機能制約が主要なボトルネック候補**。旧解は現行の正式候補ではない。
+
 **2方式を並行**：ChatGPTはRF理論から回路を発案して専用高速最適化、自動探索は有限のグラフ・素子・配置クラスを生成して比較。良好な構造と初期値を相互に利用し、共通MNAと同一の6設定評価で検証する。現在のP4-Aは可変CがIN/OUT接続に固定されており、LPF-007/008の内部トラップCを探索できないため、一般化が最優先。
 
 ## フォルダ構成と作業先

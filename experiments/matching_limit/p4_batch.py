@@ -3,18 +3,30 @@
 Searches a seeded subset only. Never report this as exhaustive or global.
 """
 import argparse
+from datetime import datetime, timezone
+import hashlib
+import importlib.metadata
 import json
+import os
+import platform
+import signal
+import subprocess
 import sys
+import time
 from pathlib import Path
 import numpy as np
 from scipy.optimize import minimize
 
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'src'))
+sys.path.insert(0,str(Path(__file__).resolve().parent))
 from coverage_sampler import sample_graphs
 from selection_patch import select_node_balanced
 from instantiate_graph import build_grounded_settings
 from coupling_layout import admissible_matrix,adjacent_patterns
+from p4_sharding import (CHECKPOINT_SCHEMA_VERSION, atomic_write_json,
+                         canonical_config_hash, canonical_graph_id,
+                         load_checkpoint, shard_for_graph)
 from lpf.evaluate import CASES,load_bands,evaluate_settings
 from lpf.circuit import solve
 from lpf.independent import solve_gain
@@ -98,49 +110,161 @@ def validate(graph,x,K,rows,points):
                 max_gain_mismatch=mismatch,max_power_residual=residual,
                 samples_per_segment=points)
 
+def handle_termination(signum,frame):
+    raise KeyboardInterrupt
+
 def run(args):
     graphs,counts=sample_graphs(max_internal=4,attempts_per_cell=args.attempts,
                                seed=args.seed,max_branches=8)
     graphs=[g for g in graphs if any(t!='GJM01' for _,_,t in g[1])]
     selected,eligible=select_node_balanced(graphs,args.per_bin)
     rows=load_bands();grid=frequency_grid(rows,args.coarse_points)
-    rng=np.random.default_rng(args.seed);results=[]
-    checkpoint=Path(args.output)
-    def save_partial():
-        payload=dict(method='bounded_sampled_search_not_global_optimum',
-                     status='partial_checkpoint',parameters=vars(args),
-                     sampled_graphs=len(graphs),eligible=eligible,
-                     optimized_graphs=len(results),results=results)
-        temp=checkpoint.with_suffix(checkpoint.suffix+'.tmp')
-        temp.write_text(json.dumps(payload,indent=2),encoding='utf-8')
-        temp.replace(checkpoint)
+    entries=[]
     for (internal_nodes,bin_idx),graph in selected:
-        best=None;bounds=bounds_for(graph)
-        for K in layout_candidates(graph,args.layouts):
-            for start in range(args.starts):
-                x=np.array([rng.uniform(lo,hi) for lo,hi in bounds])
-                if start==0:
-                    x[:len(graph[1])]=[2.0 for _ in graph[1]]
-                    x[len(graph[1]):]=1.0
-                result=minimize(objective,x,args=(graph,K,grid),method='SLSQP',bounds=bounds,
-                                options={'maxiter':args.iterations,'ftol':1e-6})
-                score=objective(result.x,graph,K,grid)
-                if best is None or score<best['coarse_il_db']:
-                    best=dict(coarse_il_db=score,converged=bool(result.success),
-                              values=result.x.tolist(),coupling=K.tolist())
-        if best is None:continue
-        K=np.array(best['coupling']);x=np.array(best['values'])
-        try:validation=validate(graph,x,K,rows,args.validation_points)
-        except (ValueError,np.linalg.LinAlgError,OverflowError) as exc:
-            validation={'error':str(exc)}
-        results.append(dict(internal_nodes=internal_nodes,
-                            area=sum(AREA[t] for _,_,t in graph[1])/3,
-                            bin=f'P{bin_idx+2}',graph=[graph[0],list(map(list,graph[1]))],
-                            **best,validation=validation))
-        save_partial()
-    return dict(method='bounded_sampled_search_not_global_optimum',
-                parameters=vars(args),sampled_graphs=len(graphs),eligible=eligible,
-                optimized_graphs=len(results),results=results)
+        entries.append((canonical_graph_id(graph),internal_nodes,bin_idx,graph))
+    entries.sort(key=lambda item:item[0])
+    all_graph_ids=[item[0] for item in entries]
+    if len(all_graph_ids)!=len(set(all_graph_ids)):
+        raise ValueError('Selected graph set contains duplicate canonical graph IDs')
+    shard_entries=[item for item in entries
+                   if shard_for_graph(item[0],args.shard_count)==args.shard_index]
+    expected_graph_ids=[item[0] for item in shard_entries]
+
+    source_files=(
+        Path(__file__), Path(__file__).with_name('p4_sharding.py'),
+        ROOT/'experiments/matching_limit/coverage_sampler.py',
+        ROOT/'experiments/matching_limit/selection_patch.py',
+        ROOT/'experiments/matching_limit/enumerate_grounded.py',
+        ROOT/'experiments/matching_limit/instantiate_graph.py',
+        ROOT/'experiments/matching_limit/coupling_layout.py',
+        *sorted((ROOT/'src/lpf').glob('*.py')),
+        ROOT/'data/design_constraints.json', ROOT/'data/bands.csv',
+        ROOT/'docs/specification.md', ROOT/'requirements.txt',
+    )
+    source_fingerprints={str(path.relative_to(ROOT)):
+                         hashlib.sha256(path.read_bytes()).hexdigest()
+                         for path in source_files}
+    def package_version(name):
+        try:return importlib.metadata.version(name)
+        except importlib.metadata.PackageNotFoundError:return 'missing'
+    source_commit=os.environ.get('GITHUB_SHA')
+    if not source_commit:
+        try:source_commit=subprocess.check_output(
+            ['git','rev-parse','HEAD'],cwd=ROOT,text=True,stderr=subprocess.DEVNULL).strip()
+        except (OSError,subprocess.CalledProcessError):source_commit='unknown'
+    parameters={name:getattr(args,name) for name in (
+        'attempts','per_bin','starts','layouts','iterations','coarse_points',
+        'validation_points','seed')}
+    run_config=dict(
+        algorithm='p4-a-bounded-sharded-v1',
+        p4_a_limits=dict(max_internal_nodes=4,max_branches=8,max_chip_area=6,
+                         max_pcb_inductors=3),
+        parameters=parameters,
+        shard_count=args.shard_count,
+        shard_assignment='sha256-canonical-graph-id-mod-v1',
+        per_graph_seed='sha256-base-seed-and-graph-id-v1',
+        selected_graph_ids=all_graph_ids,
+        source_commit=source_commit,
+        source_fingerprints=source_fingerprints,
+        runtime=dict(python=sys.version.split()[0],platform=platform.platform(),
+                     numpy=package_version('numpy'),scipy=package_version('scipy')))
+    config_hash=canonical_config_hash(run_config)
+    checkpoint=Path(args.checkpoint or (Path(args.output).with_suffix('.checkpoint.json')))
+    if args.resume:
+        payload=load_checkpoint(checkpoint,config_hash=config_hash,
+                                shard_index=args.shard_index,shard_count=args.shard_count,
+                                expected_graph_ids=expected_graph_ids)
+    else:
+        payload=dict(schema_version=CHECKPOINT_SCHEMA_VERSION,
+                     method='bounded_sampled_search_not_global_optimum',
+                     status='running',source_commit=source_commit,
+                     config_hash=config_hash,run_config=run_config,
+                     shard_index=args.shard_index,shard_count=args.shard_count,
+                     expected_graph_ids=expected_graph_ids,completed_graph_ids=[],
+                     sampled_graphs=len(graphs),eligible=eligible,results=[],
+                     started_at_utc=datetime.now(timezone.utc).isoformat(),
+                     elapsed_seconds=0.0,resume_count=0,
+                     run_segments=[dict(started_at_utc=datetime.now(timezone.utc).isoformat(),
+                                        elapsed_seconds=0.0,status='running')])
+        atomic_write_json(checkpoint,payload)
+
+    if args.resume:
+        payload['resume_count']=int(payload.get('resume_count',0))+1
+        payload.setdefault('run_segments',[]).append(
+            dict(started_at_utc=datetime.now(timezone.utc).isoformat(),
+                 elapsed_seconds=0.0,status='running'))
+    results=list(payload['results'])
+    completed=set(payload['completed_graph_ids'])
+    elapsed_before=float(payload.get('elapsed_seconds',0.0))
+    invocation_started=time.monotonic()
+    current_graph_id=None
+    interrupted=False
+
+    def save_checkpoint(status):
+        payload['status']=status
+        payload['results']=results
+        payload['completed_graph_ids']=sorted(completed)
+        payload['optimized_graphs']=len(results)
+        payload['elapsed_seconds']=round(elapsed_before+time.monotonic()-invocation_started,3)
+        payload['updated_at_utc']=datetime.now(timezone.utc).isoformat()
+        if payload.get('run_segments'):
+            payload['run_segments'][-1].update(
+                elapsed_seconds=round(time.monotonic()-invocation_started,3),
+                status=status,updated_at_utc=payload['updated_at_utc'])
+        if current_graph_id is not None:
+            payload['current_graph_id']=current_graph_id
+        else:
+            payload.pop('current_graph_id',None)
+        atomic_write_json(checkpoint,payload)
+
+    for graph_id,internal_nodes,bin_idx,graph in shard_entries:
+        if graph_id in completed:
+            continue
+        current_graph_id=graph_id
+        save_checkpoint('running')
+        try:
+            best=None;bounds=bounds_for(graph)
+            seed_material=f'{args.seed}:{graph_id}'.encode('ascii')
+            optimization_seed=int.from_bytes(hashlib.sha256(seed_material).digest()[:8],'big')
+            rng=np.random.default_rng(optimization_seed)
+            for K in layout_candidates(graph,args.layouts):
+                for start in range(args.starts):
+                    x=np.array([rng.uniform(lo,hi) for lo,hi in bounds])
+                    if start==0:
+                        x[:len(graph[1])]=[2.0 for _ in graph[1]]
+                        x[len(graph[1]):]=1.0
+                    result=minimize(objective,x,args=(graph,K,grid),method='SLSQP',bounds=bounds,
+                                    options={'maxiter':args.iterations,'ftol':1e-6})
+                    score=objective(result.x,graph,K,grid)
+                    if best is None or score<best['coarse_il_db']:
+                        best=dict(coarse_il_db=score,converged=bool(result.success),
+                                  values=result.x.tolist(),coupling=K.tolist())
+            if best is None:
+                continue
+            K=np.array(best['coupling']);x=np.array(best['values'])
+            try:validation=validate(graph,x,K,rows,args.validation_points)
+            except (ValueError,np.linalg.LinAlgError,OverflowError) as exc:
+                validation={'error':str(exc)}
+            results.append(dict(graph_id=graph_id,optimization_seed=optimization_seed,
+                                internal_nodes=internal_nodes,
+                                area=sum(AREA[t] for _,_,t in graph[1])/3,
+                                bin=f'P{bin_idx+2}',graph=[graph[0],list(map(list,graph[1]))],
+                                **best,validation=validation))
+            completed.add(graph_id)
+            save_checkpoint('running')
+        except KeyboardInterrupt:
+            interrupted=True
+            save_checkpoint('interrupted')
+            break
+    status=('interrupted' if interrupted else
+            'completed' if completed==set(expected_graph_ids) else 'partial')
+    save_checkpoint(status)
+    payload['finished_at_utc']=datetime.now(timezone.utc).isoformat() if status=='completed' else None
+    atomic_write_json(checkpoint,payload)
+    output=Path(args.output)
+    if output.resolve()!=checkpoint.resolve():
+        atomic_write_json(output,payload)
+    return payload
 
 def main():
     p=argparse.ArgumentParser()
@@ -153,13 +277,28 @@ def main():
     p.add_argument('--validation-points',type=int,default=21)
     p.add_argument('--seed',type=int,default=20261011)
     p.add_argument('--output',default='p4_batch_result.json')
+    p.add_argument('--checkpoint',default=None,help='Atomic per-shard checkpoint JSON path')
+    p.add_argument('--shard-count',type=int,default=1)
+    p.add_argument('--shard-index',type=int,default=0)
+    p.add_argument('--resume',action='store_true',help='Resume a compatible checkpoint')
     args=p.parse_args()
     if min(args.attempts,args.per_bin,args.starts,args.layouts,args.iterations,args.coarse_points,args.validation_points)<1:
         p.error('All budget arguments must be positive')
-    report=run(args)
-    report['status']='completed'
-    Path(args.output).write_text(json.dumps(report,indent=2),encoding='utf-8')
-    print(json.dumps({'optimized_graphs':report['optimized_graphs'],
+    if not 1<=args.shard_count<=64:
+        p.error('--shard-count must be between 1 and 64')
+    if not 0<=args.shard_index<args.shard_count:
+        p.error('--shard-index must be in [0, shard-count)')
+    if args.resume and not args.checkpoint:
+        p.error('--resume requires --checkpoint')
+    previous_sigterm=signal.signal(signal.SIGTERM,handle_termination)
+    try:
+        report=run(args)
+    finally:
+        signal.signal(signal.SIGTERM,previous_sigterm)
+    print(json.dumps({'status':report['status'],'shard_index':report['shard_index'],
+                      'shard_count':report['shard_count'],
+                      'optimized_graphs':report.get('optimized_graphs',len(report['results'])),
                       'results':[(r['internal_nodes'],r['bin'],r['area'],r['coarse_il_db'],r['validation'])
                                  for r in report['results']]},indent=2))
-if __name__=='__main__':main()
+    return 0 if report['status']=='completed' else 130
+if __name__=='__main__':raise SystemExit(main())

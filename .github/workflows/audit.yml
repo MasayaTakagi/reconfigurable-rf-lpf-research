@@ -1,22 +1,27 @@
 name: Dataset integrity and circuit regression
+
 on:
   push:
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
 jobs:
   audit:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
-          python-version: '3.11'
-          cache: 'pip'
-      - run: python -m pip install -r requirements.txt
-      - run: python scripts/audit_results.py
-      - run: python -m unittest discover -s tests -v
-      - run: python experiments/matching_cost_20261010/verify_adjacent_1d.py
-      - run: python experiments/matching_cost_20261010/reoptimize_lqp02.py
-      - run: python experiments/matching_limit/enumerate_graphs.py --nodes 3 --branches 6
-      - run: python experiments/matching_limit/parallel_chip_screen.py
-      - run: python experiments/matching_limit/graph_mna_screen.py --max-candidates 4 --max-raw 200
-      - run: python experiments/matching_limit/grounded_mna_screen.py --max-raw 3000 --per-bin 1
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Install scientific dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Audit saved research data
+        run: python scripts/audit_results.py
+      - name: Run regression tests
+        run: python -m unittest discover -s tests -v

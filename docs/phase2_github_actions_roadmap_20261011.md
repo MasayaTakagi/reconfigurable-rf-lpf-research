@@ -1,6 +1,6 @@
 # Phase 2 compute and topology-search roadmap (2026-10-11)
 
-Repository visibility verified public on 2026-10-11. This plan is a proposal; new workflows and benchmark results are not yet implemented.
+Repository visibility verified public on 2026-10-11. G1's manual P4-A sharding infrastructure is implemented on `codex/g1-p4-shards`; no search workflow has been dispatched and no numerical results have been generated. The remaining gates below are still proposals until their evidence is produced.
 
 ## Objective and boundaries
 Six cases: B71, B12, B28, B13+B14, B26, B8. Pass all UL/DL. Mandatory H2/H3 attenuation >=30dB; nominal exploration target >=35dB. Worst passband IL target <=0.30dB, chip area <=6. Fixed topology, L, fixed C and coupling; only two grounded IC variable C (0..4pF each) change by case. Preserve all approved Q and physical coupling constraints. This remains **research Phase 2**; do not start switch-C discretization or other Phase 3 tasks.
@@ -13,7 +13,12 @@ Distinguish matching-only IL frontier from LPF optimization with H2/H3 constrain
 3. GitHub Actions: manually launched long-running matrix batches, bounded budgets, artifact outputs. Public repository standard GitHub-hosted runners are generally free; check current platform limits.
 4. GitHub: source, seeds, configurations, validation reports and immutable result manifests.
 
-Existing workflow: `.github/workflows/audit.yml`. Do not launch expensive jobs automatically on push.
+Existing workflows: `.github/workflows/audit.yml` runs saved-data audit and regression tests only; `.github/workflows/lpf-p4-a.yml` is manual-only and provides bounded, resumable P4-A shards. Do not launch expensive jobs automatically on push.
+
+## G1 implementation status
+- Deterministic graph IDs and shard assignment, atomic per-shard checkpoints, resume validation, and completeness-aware aggregation are implemented.
+- The manual workflow caps the matrix at 8 slots and parallel execution at 4 jobs. Its defaults are deliberately small; tune only after a measured runner pilot.
+- Run the workflow manually for the C0 pilot. Phase 3 remains paused, and a finite seeded sample must not be reported as exhaustive or globally optimal.
 
 ## Gates
 | Gate | Work | Evidence to advance |

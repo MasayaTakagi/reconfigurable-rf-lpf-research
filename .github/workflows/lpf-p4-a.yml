@@ -1,0 +1,189 @@
+name: LPF P4-A resumable shards
+
+on:
+  workflow_dispatch:
+    inputs:
+      shard_count:
+        description: Number of deterministic shards
+        required: true
+        default: "4"
+        type: choice
+        options: ["1", "2", "4", "8"]
+      attempts:
+        description: Seeded graph sampling attempts per cell
+        required: true
+        default: "50"
+        type: choice
+        options: ["50", "100", "200"]
+      per_bin:
+        description: Selected candidates per node and area cell
+        required: true
+        default: "1"
+        type: choice
+        options: ["1", "2"]
+      starts:
+        description: SLSQP starts per graph and layout
+        required: true
+        default: "1"
+        type: choice
+        options: ["1", "2"]
+      layouts:
+        description: Coupling layouts per graph
+        required: true
+        default: "1"
+        type: choice
+        options: ["1", "2", "3"]
+      iterations:
+        description: Maximum SLSQP iterations per start
+        required: true
+        default: "3"
+        type: choice
+        options: ["3", "10", "15"]
+      coarse_points:
+        description: Passband points per segment during optimization
+        required: true
+        default: "2"
+        type: choice
+        options: ["2", "3"]
+      validation_points:
+        description: Passband points per segment during validation
+        required: true
+        default: "3"
+        type: choice
+        options: ["3", "21"]
+      resume_run_id:
+        description: Optional prior workflow run ID containing shard checkpoints
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: lpf-p4-a-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Install scientific dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Audit saved research data
+        run: python scripts/audit_results.py
+      - name: Run regression tests
+        run: python -m unittest discover -s tests -v
+
+  shards:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        shard_index: [0, 1, 2, 3, 4, 5, 6, 7]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - name: Mark inactive matrix slot
+        if: ${{ matrix.shard_index >= fromJSON(inputs.shard_count) }}
+        run: echo "Shard slot is outside the requested shard count."
+      - uses: actions/checkout@v7
+        if: ${{ matrix.shard_index < fromJSON(inputs.shard_count) }}
+      - uses: actions/setup-python@v7
+        if: ${{ matrix.shard_index < fromJSON(inputs.shard_count) }}
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Install scientific dependencies
+        if: ${{ matrix.shard_index < fromJSON(inputs.shard_count) }}
+        run: python -m pip install -r requirements.txt
+      - name: Create shard output directory
+        if: ${{ matrix.shard_index < fromJSON(inputs.shard_count) }}
+        run: mkdir -p "results/shard-${{ matrix.shard_index }}"
+      - name: Restore previous shard checkpoint
+        if: ${{ inputs.resume_run_id != '' && matrix.shard_index < fromJSON(inputs.shard_count) }}
+        uses: actions/download-artifact@v7
+        with:
+          name: lpf-p4-a-shard-${{ matrix.shard_index }}
+          path: results/shard-${{ matrix.shard_index }}
+          run-id: ${{ inputs.resume_run_id }}
+          github-token: ${{ github.token }}
+      - name: Run or resume this P4-A shard
+        if: ${{ matrix.shard_index < fromJSON(inputs.shard_count) }}
+        env:
+          RESUME_RUN_ID: ${{ inputs.resume_run_id }}
+        run: |
+          RESUME_ARGS=()
+          if [[ -n "$RESUME_RUN_ID" ]]; then
+            RESUME_ARGS+=(--resume)
+          fi
+          python experiments/matching_limit/p4_batch.py \
+            --attempts "${{ inputs.attempts }}" \
+            --per-bin "${{ inputs.per_bin }}" \
+            --starts "${{ inputs.starts }}" \
+            --layouts "${{ inputs.layouts }}" \
+            --iterations "${{ inputs.iterations }}" \
+            --coarse-points "${{ inputs.coarse_points }}" \
+            --validation-points "${{ inputs.validation_points }}" \
+            --seed 20261011 \
+            --shard-count "${{ inputs.shard_count }}" \
+            --shard-index "${{ matrix.shard_index }}" \
+            --checkpoint "results/shard-${{ matrix.shard_index }}/checkpoint.json" \
+            --output "results/shard-${{ matrix.shard_index }}/result.json" \
+            "${RESUME_ARGS[@]}"
+      - name: Upload checkpoint and partial result
+        if: ${{ always() && matrix.shard_index < fromJSON(inputs.shard_count) }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: lpf-p4-a-shard-${{ matrix.shard_index }}
+          path: results/shard-${{ matrix.shard_index }}/
+          if-no-files-found: warn
+          retention-days: 14
+
+  aggregate:
+    needs: [preflight, shards]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Download available shard artifacts
+        if: always()
+        continue-on-error: true
+        uses: actions/download-artifact@v7
+        with:
+          pattern: lpf-p4-a-shard-*
+          path: results/shards
+          merge-multiple: false
+      - name: Aggregate and account for missing or failed shards
+        run: >-
+          python scripts/aggregate_p4_a_shards.py
+          --input-dir results/shards
+          --expected-shards "${{ inputs.shard_count }}"
+          --matrix-result "${{ needs.shards.result }}"
+          --output results/p4_a_aggregate.json
+      - name: Upload aggregate report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: lpf-p4-a-aggregate-${{ github.run_id }}
+          path: results/p4_a_aggregate.json
+          if-no-files-found: warn
+          retention-days: 14

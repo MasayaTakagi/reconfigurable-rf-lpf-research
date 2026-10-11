@@ -59,7 +59,10 @@ class PCBPatternCPolicyTests(unittest.TestCase):
             check_graph(excess)
         with self.assertRaises(ValueError):
             build_grounded_settings((3,((1,2,'LQP02'),(2,0,'PCB_PATTERN_C'))),
-                                    values=[2e-9,0.019e-12])\n        with self.assertRaises(ValueError):\n            build_grounded_settings((3,((1,2,'LQP02'),(2,0,'PCB_PATTERN_C'))),\n                                    values=[2e-9,0.201e-12])
+                                    values=[2e-9,0.019e-12])
+        with self.assertRaises(ValueError):
+            build_grounded_settings((3,((1,2,'LQP02'),(2,0,'PCB_PATTERN_C'))),
+                                    values=[2e-9,0.201e-12])
 
     def test_fixed_across_settings(self):
         graph=(3,((1,2,'LQP02'),(2,0,'PCB_PATTERN_C')))

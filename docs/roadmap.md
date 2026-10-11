@@ -14,6 +14,8 @@
 
 RF仕様・物理制約の正本は[設計制約](../data/design_constraints.json)と[帯域表](../data/bands.csv)。6設定B71/B12/B28/B13+B14/B26/B8のUL/DL全域最悪ILとULのH2/H3全域最小減衰、源50Ω、負荷60−j40Ω、面積≤6、PCB-L≤3、対GND可変C≤2枝・各0–4pF、チップL単列・隣接強結合、全結合行列SPDを維持する。
 
+**新規のChatGPT探索の作業先**：[`experiments/chatgpt_topology_search/`](../experiments/chatgpt_topology_search/) → 個別実験は`runs/EXP-NNN/`。自動P4-Aの現行実装は`experiments/matching_limit/`。保存場所の原則は[フォルダ構成ガイド](repository_layout.md)に記載する。
+
 ## 2本の探索トラック：同時進行
 
 | トラック | 強み | 担当する内容 | 共通の成果物 |

@@ -1,0 +1,199 @@
+{
+  "description": "Historical RF LPF four-independent-variable-capacitor comparison; all 6 UL/DL, H2/H3; L Q25, C Q80; 50ohm source, 60-j40ohm load.",
+  "C_Q": 80,
+  "L_Q": 25,
+  "legacy_CP07": {
+    "source_archive": "lpf_phase2_search_20261010.zip:first.json",
+    "study": "2026-10-10 Phase2 current-affordability CP07 historical 4-tunable-C",
+    "valid_for_current_policy": false,
+    "fixed_chip_inductor_L_nH": [
+      0.40000000000000047,
+      5.204599914444665,
+      3.9740544310088546,
+      3.9698284022692176
+    ],
+    "full_pairwise_signed_k": [
+      0.16,
+      0.020705367297434114,
+      0.1322007104819821,
+      -0.25,
+      -0.08246877909743189,
+      0.08471759904667274
+    ],
+    "k_order": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "old_topology": "3 series L||C resonators: L0 0-1, L3 1-2, L2 2-OUT; one shunt L1-C1 series at node2 to GND; legacy nodes IN0,n1=1,n2=2,OUT3,GND=-1",
+    "C_band_order": [
+      "C0",
+      "C1",
+      "C2",
+      "C3"
+    ],
+    "case_map": {
+      "B71": [
+        26.4405755285733,
+        1.6403130390635339,
+        3.098045288142871,
+        1.740851046255699
+      ],
+      "B12": [
+        24.57428473945746,
+        1.4891260696050777,
+        2.8806729429454765,
+        1.6487457533601055
+      ],
+      "B28": [
+        22.692239248231125,
+        1.3648767322830813,
+        2.90724902291442,
+        1.6032308765918473
+      ],
+      "B13+B14": [
+        17.07203156544156,
+        1.4418969105299164,
+        2.070493110943178,
+        1.2885474384451192
+      ],
+      "B26": [
+        18.11114713074045,
+        1.177335923210696,
+        1.855582606697202,
+        1.0787112744692078
+      ],
+      "B8": [
+        17.30962097684366,
+        1.021703471955313,
+        1.436593420826138,
+        0.8596636961486449
+      ]
+    },
+    "performance": {
+      "worst_IL_db": 0.3289240193235216,
+      "min_H2_db": 35.04999999996436,
+      "min_H3_db": 35.049999999975924,
+      "grid_only": true
+    }
+  },
+  "legacy_with_2026_10_11_row_coupling": {
+    "derivation": "Controlled numerical experiment: same old 4-setting-tunable C topology and Q=25/80; allow k only on physical-neighbor pairs 3-0,0-1,1-2, each |k|<=0.4. Other k=0. Three SLSQP initial points; selected best finite-grid feasible result, nonconverged.",
+    "valid_for_current_policy": false,
+    "optimizer_success": false,
+    "global_optimality_proven": false,
+    "starts_attempted": 3,
+    "fixed_chip_inductor_L_nH": [
+      0.46298240033750415,
+      4.339586391297124,
+      5.56294672423717,
+      2.9079782306911373
+    ],
+    "full_pairwise_signed_k": [
+      0.007076394141346318,
+      0,
+      0.28718332969661503,
+      -0.1398260690977554,
+      0,
+      0
+    ],
+    "k_order": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "physical_chip_order": [
+      3,
+      0,
+      1,
+      2
+    ],
+    "case_map": {
+      "B71": [
+        26.43902465493622,
+        1.674443808607834,
+        2.0777994469972016,
+        2.5737188719626007
+      ],
+      "B12": [
+        24.589743317797826,
+        1.54899219134755,
+        2.0451216230229488,
+        2.5134377724806596
+      ],
+      "B28": [
+        22.81167045997814,
+        1.4696598978868176,
+        1.8416353958300382,
+        2.3491418598711786
+      ],
+      "B13+B14": [
+        17.461804360553053,
+        1.252167886006256,
+        1.5807770518316282,
+        2.141049065609967
+      ],
+      "B26": [
+        18.810822412434142,
+        1.2597088319208738,
+        1.2570159949673632,
+        1.7157940162205796
+      ],
+      "B8": [
+        15.669161257194757,
+        1.1624611907434002,
+        0.8265603250916845,
+        1.444804912162607
+      ]
+    },
+    "performance": {
+      "worst_IL_db": 0.3376603645361489,
+      "min_H2_db": 35.049999899735155,
+      "min_H3_db": 35.04999910666298,
+      "grid_only": true
+    }
+  },
+  "selected_legacy_result": "reference_is_NOT_a_current_design_candidate"
+}

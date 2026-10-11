@@ -1,0 +1,170 @@
+{
+  "candidate_id": "LPF-007",
+  "spec_id": "2026-10-10",
+  "experiment_id": "no_pcb_tunable_shunt_traps_20261011",
+  "objective": "full_lpf",
+  "status": "nominal_35dB_grid_verified_IL_0p30_not_met_optimizer_nonconverged",
+  "title": "Two tunable grounded shunt-L traps, lowest IL in this search",
+  "topology": {
+    "n_nodes": 5,
+    "ground": 0,
+    "input_node": 1,
+    "output_node": 3,
+    "inductors": [
+      {
+        "id": "L0",
+        "a": 1,
+        "b": 2,
+        "L_nH": 3.519439827954867,
+        "Q": 25
+      },
+      {
+        "id": "L1",
+        "a": 3,
+        "b": 4,
+        "L_nH": 8.475292697969769,
+        "Q": 25
+      },
+      {
+        "id": "L2",
+        "a": 2,
+        "b": 5,
+        "L_nH": 5.7234809368073565,
+        "Q": 25
+      },
+      {
+        "id": "L3",
+        "a": 2,
+        "b": 3,
+        "L_nH": 6.5046542201982644,
+        "Q": 25
+      }
+    ],
+    "fixed_caps": [
+      {
+        "id": "Cf0",
+        "a": 2,
+        "b": 3,
+        "C_pF": 0.10000044331046679,
+        "Q": 80
+      },
+      {
+        "id": "Cf1",
+        "a": 1,
+        "b": 3,
+        "C_pF": 0.21612485558304528,
+        "Q": 80
+      },
+      {
+        "id": "Cf2",
+        "a": 5,
+        "b": 0,
+        "C_pF": 0.2250656316254979,
+        "Q": 80
+      }
+    ],
+    "variable_caps": [
+      {
+        "id": "Cv0",
+        "a": 4,
+        "b": 0,
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      },
+      {
+        "id": "Cv1",
+        "a": 5,
+        "b": 0,
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      }
+    ]
+  },
+  "chip_physical_order": [
+    "L1",
+    "L2",
+    "L3",
+    "L0"
+  ],
+  "strong_neighbor_pairs": [
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      3,
+      0
+    ]
+  ],
+  "neighbor_k_values": [
+    -0.006001890332365034,
+    -0.3999999795265161,
+    0.39999999993195323
+  ],
+  "all_nonlisted_chip_couplings_zero": true,
+  "ic_variable_C_pf_by_setting": {
+    "B71": [
+      1.1241100034246123,
+      2.1979685547664367
+    ],
+    "B12": [
+      1.0554199191825389,
+      2.010115629106788
+    ],
+    "B28": [
+      0.9805034538958022,
+      1.9627832358173998
+    ],
+    "B13+B14": [
+      0.5802709451572989,
+      1.7190033634120407
+    ],
+    "B26": [
+      0.4783197904099531,
+      1.5872123901857247
+    ],
+    "B8": [
+      0.388633460553386,
+      1.3758113402305605
+    ]
+  },
+  "performance": {
+    "worst_IL_db": 0.5131684137962829,
+    "min_H2_db": 35.06996955649531,
+    "min_H3_db": 35.06999621989002,
+    "frequency_spacing_mhz_max": 0.02,
+    "max_independent_MNA_error_db": 3.907985046680551e-13,
+    "min_K_eigenvalue": 0.4342986689750371
+  },
+  "area_units": 6,
+  "part_counts": {
+    "LQP02": 4,
+    "LQP01": 0,
+    "GJM01_fixed": 3,
+    "IC_variable_branches": 2,
+    "PCB_L": 0
+  },
+  "validation": {
+    "fixed_components_shared_by_six_cases": true,
+    "full_band_grid": true,
+    "independent_MNA": true,
+    "power_balance": true,
+    "solver_converged": false,
+    "global_optimality_proven": false,
+    "physical_coupling_EM_verified": false,
+    "cap_catalog_low_end_verified": false,
+    "phase3_authorized": false
+  },
+  "caveats": [
+    "Two strong adjacent couplings at the k=0.4 bound; physical simultaneous realization not demonstrated.",
+    "Minimum fixed C close to 0.1pF search bound; catalog availability/stray capacitance must be checked.",
+    "0.02MHz sampled band edges and interior are not rigorous interval proofs.",
+    "Only a finite optimization topology and initial-value search. Q(f), tolerances and large-signal not yet evaluated."
+  ]
+}

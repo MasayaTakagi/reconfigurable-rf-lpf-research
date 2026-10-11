@@ -2,6 +2,7 @@ cost_budget,scope,benchmark_id,actual_chip_cost,worst_IL_db,min_H2_db,min_H3_db,
 4,chip_area_at_most_4,,,,,,not_searched_in_EXP-002,
 5,chip_area_at_most_5,,,,,,not_searched_in_EXP-002,
 6,chip_area_at_most_6,LPF-007,6,0.5131684137962829,35.06996955649531,35.06999621989002,saved_current_policy_baseline,candidates/LPF-007.json
-7,chip_area_at_most_7,A7-01,6.666666666666667,0.5083889589116496,35.06997772973304,35.06999999948592,finite_grid_dense_validated_global_optimum_unproven,experiments/chatgpt_topology_search/runs/EXP-002/A7-01.json
+7,chip_area_at_most_7,A7-03,6.666666666666667,0.5073307596899004,35.019990526576365,35.01999999264241,finite_grid_dense_validated_global_optimum_unproven,experiments/chatgpt_topology_search/runs/EXP-005/A7-03.json
+7,previous_best_20261011,A7-01,6.666666666666667,0.5083889589116496,35.06997772973304,35.06999999948592,finite_grid_dense_validated_global_optimum_unproven,experiments/chatgpt_topology_search/runs/EXP-002/A7-01.json
 7,chip_area_at_most_7_alternate_zero_third_k,A7-02,6.666666666666667,0.5119635616282749,35.069925817963174,35.069999906775465,finite_grid_dense_validated_global_optimum_unproven,experiments/chatgpt_topology_search/runs/EXP-002/A7-02.json
 7,chip_area_strictly_equal_to_7,,,,,,not_resolved_5L_topologies_unconverged,

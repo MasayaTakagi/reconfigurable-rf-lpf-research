@@ -1,0 +1,33 @@
+{
+  "experiment_id": "EXP-NNN",
+  "origin": "ai_hypothesis",
+  "phase": "Phase 2",
+  "objective": "full_lpf",
+  "spec_id": "2026-10-10",
+  "constraints_source": "data/design_constraints.json",
+  "bands_source": "data/bands.csv",
+  "baseline_candidate_id": "LPF-007",
+  "hypothesis": "<describe circuit mechanism>",
+  "topology_ref": "circuit.json",
+  "optimization": {
+    "method": null,
+    "seed": null,
+    "max_iterations": null,
+    "max_function_evaluations": null,
+    "multi_start_count": null
+  },
+  "execution": {
+    "source_commit_sha": null,
+    "python_version": null,
+    "numpy_version": null,
+    "scipy_version": null,
+    "github_actions_run_ids": []
+  },
+  "evaluation": {
+    "passbands": "six settings UL and DL",
+    "harmonics": "UL H2 and H3",
+    "frequency_grid": null,
+    "independent_solver_checked": false
+  },
+  "status": "planned_not_run"
+}

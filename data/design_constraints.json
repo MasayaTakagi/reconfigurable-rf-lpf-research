@@ -1,5 +1,5 @@
 {
-  "policy_version": "2026-10-11",
+  "policy_version": "2026-10-10",
   "canonical_docs": "docs/specification.md",
   "applicability": "new_phase2_matching_only_and_future_filter_studies",
   "historical_results_require_revalidation": true,
@@ -158,5 +158,7 @@
     "layout_two_dimensional": "not_approved",
     "inductance_matrix_requirement": "positive_definite_full_chip_plus_PCB_mutual_inductance_matrix",
     "model_notes": "Upper bounds do not imply simultaneous physical realizability; variable coupling coefficients require physical justification"
-  }
+  },
+  "latest_owner_approved_extension_date": "2026-10-11",
+  "policy_version_semantics": "Base current-policy ID retained for LPF-007/008 regression compatibility; policy_revision and git blob hash record additive component-rule changes."
 }

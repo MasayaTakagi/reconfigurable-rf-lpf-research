@@ -1,0 +1,88 @@
+{
+  "experiment_id": "EXP-004",
+  "research_phase": "Phase 2",
+  "goal": {
+    "max_IL_db": 0.4,
+    "min_H2_db": 35,
+    "min_H3_db": 35,
+    "chip_cost_budget": 7
+  },
+  "policy_source": "data/design_constraints.json",
+  "override_only": "experimental chip area <=7; official policy hard_cap=6 remains unchanged",
+  "baseline": {
+    "reference": "experiments/chatgpt_topology_search/runs/EXP-002/A7-01.json",
+    "max_IL_db": 0.5083889589116496,
+    "min_H2_db": 35.06997772973304,
+    "min_H3_db": 35.06999999948592
+  },
+  "explored_configurations": {
+    "enumeration_size": 140,
+    "optimization_runs_completed": 98,
+    "unfinished_or_not_reliably_persisted": 42,
+    "families": [
+      {
+        "family": "3 series fixed LC + 2 grounded tunables",
+        "completed": 7,
+        "planned": 44,
+        "lowest_finite_grid_feasible_IL_db": 1.334242986712182
+      },
+      {
+        "family": "2 series + 2 variable shunt LC alternate edges",
+        "completed": 67,
+        "planned": 72,
+        "lowest_finite_grid_feasible_IL_db": 0.6738613989808377
+      },
+      {
+        "family": "5 LQP02 + 3 fixed GJM01",
+        "completed": 24,
+        "planned": 24,
+        "feasible_35dB_found": false
+      }
+    ],
+    "note": "All optimizations use small finite frequency grids and limited starts, often non-converged. Worse performance here does NOT imply circuit-family inferior or global lower bound."
+  },
+  "raw_local_artifact": "lpf_phase2_target040_20261011.zip",
+  "controlled_target_sensitivity": [
+    {
+      "stop_target_dB": 30.05,
+      "IL_db": 0.4151271650780614,
+      "min_H2_db": 30.049999953605855,
+      "min_H3_db": 30.04999941612839,
+      "solver_converged": false,
+      "reported_as": "nominal_approx_boundary_not_certified"
+    },
+    {
+      "stop_target_dB": 32,
+      "IL_db": 0.4385402815060021,
+      "min_H2_db": 30.311852791232795,
+      "min_H3_db": 32.031917430825125,
+      "solver_converged": false,
+      "feasible": false
+    },
+    {
+      "stop_target_dB": 33,
+      "IL_db": 0.4670720805920935,
+      "min_H2_db": 32.999998335828835,
+      "min_H3_db": 32.99999996054522,
+      "solver_converged": false
+    },
+    {
+      "stop_target_dB": 34,
+      "IL_db": 0.48642325808968145,
+      "min_H2_db": 33.999955005816666,
+      "min_H3_db": 33.99999964226191,
+      "solver_converged": false
+    }
+  ],
+  "new_35dB_target_candidate_better_than_baseline": false,
+  "target_0p4_achieved": false,
+  "physical_implementation_verified": false,
+  "rigorous_continuous_frequency_verification": false,
+  "recommended_follow_on": [
+    "Increase starts/iterations for promising partial candidates, especially 5-chip topologies.",
+    "Systematically synthesize multi-transmission-zero topologies with two grounded tunable nodes.",
+    "Separate 35dB full-LPF objective and 30dB relaxed sensitivity.",
+    "Run manually sharded GitHub Actions with checkpoints and independent MNA confirmation.",
+    "Keep A7-01 and LPF-007 baselines immutable until better valid solution passes."
+  ]
+}

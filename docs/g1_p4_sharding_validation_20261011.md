@@ -54,7 +54,8 @@ Implement deterministic P4-A shards, atomic resumable checkpoints, explicit resu
 - P4-A validation requires at least two points per passband segment. The workflow smoke recommendation and default now use `validation_points=3`, and the invalid choice `1` is removed. The runner CLI rejects values below two; validation exceptions now fail the graph/job instead of being stored as a normal result row.
 - Post-synchronization `python -m unittest discover -s tests -v`: **PASS**, 81 tests, including the real SIGTERM/resume integration test and checks for invalid validation grids and failed validation.
 - Post-synchronization `python scripts/audit_results.py`: **PASS**. `python scripts/check_no_pcb_candidates_20261011.py`: **PASS** for LPF-005/006; `python scripts/verify_no_pcb_tunable_candidates.py`: **PASS** for LPF-007/008 (the report explicitly remains a finite-grid check and says the IL objective is unmet).
-- Python compilation and `git diff --check`: **PASS**. `actionlint` is unavailable; GitHub Actions YAML is checked locally with a duplicate-key rejecting parser. GitHub CI for the synchronized PR is pending the branch update.
+- Python compilation and `git diff --check`: **PASS**. `actionlint` is unavailable; GitHub Actions YAML is checked locally with a duplicate-key rejecting parser.
+- GitHub PR CI run [#173](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38126524645): **PASS** on synchronized code commit `510577ecb3d227f5fa9bf5744fce94cd0679d110` — audit, LPF-005/006 checker, and all 81 unit tests.
 
 ## First post-merge smoke run
 

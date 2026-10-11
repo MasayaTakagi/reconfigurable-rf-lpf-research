@@ -15,7 +15,7 @@ class CostSevenReferenceTests(unittest.TestCase):
     def test_two_references_have_unchanged_approved_area_policy(self):
         canonical=json.loads((ROOT/"data/design_constraints.json").read_text(encoding="utf-8"))
         self.assertEqual(canonical["area_budget"]["hard_cap"],6)
-        for name in ("A7-01","A7-02"):
+        for name in ("A7-01","A7-02","A7-03"):
             obj=module.load_reference(name)
             self.assertEqual(obj["study_override"]["exploratory_cost_cap"],7)
             self.assertFalse(obj["study_override"]["canonical_policy_hard_cap_modified"])

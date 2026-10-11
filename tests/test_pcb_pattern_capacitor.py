@@ -22,7 +22,7 @@ class PCBPatternCPolicyTests(unittest.TestCase):
         self.assertAlmostEqual(c['min_pf_per_component'],0.02)
         self.assertEqual(c['area_units'],0)
         self.assertEqual(c['max_count'],3)
-        self.assertIsNone(c['max_pf_per_component'])
+        self.assertAlmostEqual(c['max_pf_per_component'],0.2)
         self.assertTrue(c['common_across_settings'])
 
     def test_zero_chip_cost_and_max_three(self):
@@ -31,10 +31,10 @@ class PCBPatternCPolicyTests(unittest.TestCase):
         self.assertFalse(check_counts(n_lqp02=4,n_gjm01=3,n_pcb_pattern_c=4))
         self.assertFalse(check_counts(n_pcb_pattern_c=-1))
 
-    def test_minimum_q_and_upper_unspecified(self):
+    def test_minimum_maximum_and_q(self):
         self.assertTrue(validate_pcb_pattern_caps([0.02,0.05,0.2],[40,40,40]))
-        self.assertTrue(validate_pcb_pattern_caps([120.0],[40]))  # no approved upper limit
-        for values, qs in (([0.01999],[40]),([0.02]*4,[40]*4),([0.02],[80])):
+        self.assertTrue(validate_pcb_pattern_caps([0.2],[40]))  # upper boundary
+        for values, qs in (([0.01999],[40]),([0.200001],[40]),([0.02]*4,[40]*4),([0.02],[80])):
             with self.assertRaises(ValueError):
                 validate_pcb_pattern_caps(values,qs)
 
@@ -59,7 +59,7 @@ class PCBPatternCPolicyTests(unittest.TestCase):
             check_graph(excess)
         with self.assertRaises(ValueError):
             build_grounded_settings((3,((1,2,'LQP02'),(2,0,'PCB_PATTERN_C'))),
-                                    values=[2e-9,0.019e-12])
+                                    values=[2e-9,0.019e-12])\n        with self.assertRaises(ValueError):\n            build_grounded_settings((3,((1,2,'LQP02'),(2,0,'PCB_PATTERN_C'))),\n                                    values=[2e-9,0.201e-12])
 
     def test_fixed_across_settings(self):
         graph=(3,((1,2,'LQP02'),(2,0,'PCB_PATTERN_C')))

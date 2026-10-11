@@ -13,7 +13,7 @@
 | [`src/lpf/`](src/lpf/) | 両探索で共用するMNA、独立解析、評価、制約検証 |
 | [`candidates/`](candidates/) | 現行比較候補LPF-007/008の正式な記録 |
 | [`data/`](data/) | **RF制約の正本**`design_constraints.json`、帯域`bands.csv`、候補索引 |
-| [`docs/`](docs/) | [設計仕様](docs/specification.md)と[Phase 2ロードマップ](docs/roadmap.md)だけを現行管理 |
+| [`docs/`](docs/) | [設計仕様](docs/specification.md)、[Phase 2ロードマップ](docs/roadmap.md)、[歴史的結果の出典索引](docs/historical_results.md) |
 | [`scripts/`](scripts/)・[`tests/`](tests/) | 監査、候補検証、Artifacts、回帰テスト |
 | [`.github/workflows/`](.github/workflows/) | 短いCIと手動のP4-A計算 |
 
@@ -22,7 +22,7 @@
 - AI探索の専用スクリプト・未検証解は実験フォルダへ。広く使える解析・最適化処理は`src/lpf/`へ移す。
 - 有望解は独立MNA、SPD、電力収支、6設定のUL/DLとH2/H3を確認してから`candidates/`へ登録する。最適化未収束とジョブ失敗を区別する。
 - `matching_only`はH2/H3制約を含まず、`full_lpf`候補との性能比較に混ぜない。
-- **過去の実験・旧ロードマップ・旧候補はGit履歴に残すだけ**とし、現行ツリーでは保守しない。削除は研究結果が無効になったことを意味しない。
+- **過去の実験・旧ロードマップ・旧候補はGit履歴に保管**し、[歴史的結果の索引](docs/historical_results.md)から元コミット・検証状態を追跡する。削除は研究結果が無効になったことを意味しない。
 - Phase 2継続。**Phase 3は明示承認まで停止**。旧Phase 4以降の計画は破棄する。
 
 ## 検証・実行
@@ -34,4 +34,4 @@ python -m unittest discover -s tests -v
 python scripts/verify_no_pcb_tunable_candidates.py
 ```
 
-大規模P4-Aは[手動Actions](.github/workflows/lpf-p4-a.yml)で実行。G1の1/2シャードsmokeと再開は[1シャード](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38128578799)・[2シャード](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38128871403)で成功済み。詳細な実行結果はGitHub履歴で追跡する。
+自動CIでは、基準値を固定したLPF-007/008の有限グリッド回帰と、matching-onlyの解析的既知回路の回帰も検証する。新しい候補は\`data/candidate_index.csv\`へ追加でき、LPF-007/008を削除することはできない。\n\n大規模P4-Aは[手動Actions](.github/workflows/lpf-p4-a.yml)で実行。**以下のG1 smokeはPR #10より前の計算構成の結果**であり、PR #10の新ハッシュで再実行が必要。旧G1の1/2シャードsmokeと再開は[1シャード](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38128578799)・[2シャード](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38128871403)で成功済み。詳細な実行結果はGitHub履歴で追跡する。

@@ -1,3 +1,7 @@
+> **履歴資料（現行ロードマップではない）**：本書はG1実装・smoke実行前の計算基盤計画であり、以下の「未起動」「未マージ」等の記述は記録当時の状態を表します。G1は2026-10-11にmainへマージされ、実機1/2シャードsmokeとArtifact再開検証が成功しました。今後の開発計画は [現行Phase 2ロードマップ](roadmap.md)、コードの責務分担は [アーキテクチャ](architecture.md)、実行記録は [G1検証ログ](g1_p4_sharding_validation_20261011.md) を参照してください。Phase 4以降の旧案は現行計画として継承しません。
+
+---
+
 # Phase 2 compute and topology-search roadmap (2026-10-11)
 
 Repository visibility verified public on 2026-10-11. G1's manual P4-A sharding infrastructure is implemented on `codex/g1-p4-shards`; no search workflow has been dispatched and no numerical results have been generated. The remaining gates below are still proposals until their evidence is produced.

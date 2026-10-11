@@ -62,3 +62,23 @@ Implement deterministic P4-A shards, atomic resumable checkpoints, explicit resu
 Use `lpf-p4-a.yml` with `shard_count=1`, `attempts=1`, `per_bin=1`, `starts=1`, `layouts=1`, `iterations=1`, `coarse_points=2`, `validation_points=3`, `max_graphs_per_batch=1`, and `max_batch_seconds=600`. Leave `resume_run_id` empty for the first run. For each continuation, use the same calculation inputs and set `resume_run_id` to the immediately preceding successful run ID. With the current sampler these settings select three graph units, so the expected smoke sequence is one initial run plus two resume runs, each uploading a shard Artifact; the final aggregate should report `completed`.
 
 This smoke test is a matching-only software check. Its IL and harmonic validation values are not RF performance limits or a full-LPF sign-off. Phase 3 remains paused.
+
+## G1 final GitHub Actions validation (2026-10-11; later evidence)
+
+The earlier sections above are **historical implementation-time snapshots**. PR #9 was subsequently merged into `main` at commit `35642be3e89f46b6ba135391cc857d76de433b92`. The post-merge audit workflow [38128129547](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38128129547) succeeded.
+
+Five manually dispatched, bounded P4-A smoke runs were completed on the same commit, using `attempts=1`, `per_bin=1`, `starts=1`, `layouts=1`, `iterations=1`, `coarse_points=2`, `validation_points=3`, `max_graphs_per_batch=1`, and `max_batch_seconds=600`:
+
+| Shards | Run | Resume source | Aggregate | Completed / expected |
+|---|---|---|---|---|
+| 1 | [38128179109](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38128179109) | new | in_progress | 1/3 |
+| 1 | [38128467262](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38128467262) | 38128179109 | in_progress | 2/3 |
+| 1 | [38128578799](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38128578799) | 38128467262 | **completed** | 3/3 |
+| 2 | [38128744932](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38128744932) | new | in_progress | 2/3 |
+| 2 | [38128871403](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38128871403) | 38128744932 | **completed** | 3/3 |
+
+All five workflow runs, including their preflight, active shard and aggregate jobs, concluded successfully. Shard and aggregate Artifacts were created for all runs. The GitHub-hosted aggregate log in the final two-shard run directly reports `status=completed`, `overall_complete=true`, `expected_shards=2`, `received_shards=[0,1]`, `optimized_graphs=3`, `missing_shards=[]`, and `errors=[]`. Cross-run restoration was reported and verified by Codex using checkpoint contents; audit of GitHub logs also confirms available shard artifact downloads in the aggregate step.
+
+The final 1-shard and 2-shard runs had identical graph counts, and the Codex report compares seeds, initial values and evaluation counts; observed cross-run numerical differences were within `rtol=1e-7, atol=1e-9`. The sample was intentionally stopped at one SLSQP iteration per candidate: all three optimizer candidates remained **non-converged**. Hence **G1 infrastructure is complete, but no full-LPF optimization or RF performance limit is established by these tests**.
+
+Artifacts have a 14-day retention period (expected expiry circa 2026-10-25). This documentation preserves the run references and conclusions beyond artifact expiry. See the [current Phase 2 roadmap](roadmap.md) for subsequent work.

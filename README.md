@@ -1,5 +1,7 @@
 # Reconfigurable RF LPF Research — Phase 2
 
+**ChatGPTプロジェクトの運用指示の正本：** [docs/chatgpt_project_instructions.md](docs/chatgpt_project_instructions.md)。ChatGPTアプリの指示欄はこの正本への短い参照とし、**数値RF制約の正本は引き続き [data/design_constraints.json](data/design_constraints.json)** とする。研究結果は実験記録と検証状態を参照する。
+
 **2026-10-12 LQP02シリーズ別新ルール（Phase 2）:** インダクタは **LQP02HV：Q25・0.4～27nH（優先）**、**LQP02HQ：Q20・0.2～56nH（必要時のみ、可能な限り低いL）**。旧「56nHでQ25」を含むEXP011等の結果は履歴値であり、新ルール下の性能実証値ではない。新Q条件で再最適化・独立MNA検証した[EXP-015](experiments/chatgpt_topology_search/runs/EXP-015/README.md)と[仕様更新](docs/inductor_series_policy.md)を参照。実際のSRF/Q(f)/寄生は未検証、Phase 3は停止継続。
 
 **目標**：現行RF制約の範囲で、ChatGPT主導探索の最良候補 **LPF-007** を超える `full_lpf` を発見する。先行候補は6設定UL/DL最大IL **0.513168414 dB**、UL H2/H3最小 **35.070 / 35.070 dB**（有限グリッド・最適化未収束）。当面はH2/H3≥35 dBを維持してIL改善、最終公称目標はIL≤0.30 dB。必須減衰は30 dB。有限探索結果を理論限界や実装証明と呼ばない。

@@ -66,10 +66,11 @@ def enumerate_grounded(max_internal=1,max_branches=4,max_raw=100000,
     counts['unique']=len(seen);counts['truncated']=truncated
     return counts,examples
 
-def count_variable_layouts(graph, constraint_id='RF-F001'):
+def count_variable_layouts(graph, constraint_id='RF-F001',max_layouts=32):
     policy=load_constraint(constraint_id,
                            allow_trial=constraint_id in {'RF-T001','RF-T002'})
-    return len(enumerate_variable_c_layouts(graph,policy))
+    return len(enumerate_variable_c_layouts(
+        graph,policy,max_layouts=max_layouts))
 
 def main():
     p=argparse.ArgumentParser()
@@ -80,15 +81,18 @@ def main():
     p.add_argument('--constraint-id',choices=('RF-F001','RF-T001','RF-T002'),default=None)
     p.add_argument('--max-variable-layouts',type=int,default=32)
     a=p.parse_args()
+    if a.max_variable_layouts<1:
+        p.error('--max-variable-layouts must be positive')
     constraint_id=a.constraint_id or 'RF-F001'
     series_mode=a.series_mode or ('legacy' if a.constraint_id is None else 'both')
     if a.constraint_id is not None and series_mode=='legacy':
         p.error('New constraint-scoped searches require explicit LQP02HV/HQ labels')
     series_mode=None if series_mode=='legacy' else series_mode
     counts,examples=enumerate_grounded(a.internal,a.branches,a.max_raw,series_mode)
-    layout_counts=[count_variable_layouts(graph,constraint_id) for graph in examples]
-    counts['variable_layout_candidates']=sum(layout_counts)
-    counts['variable_layouts_at_cli_cap']=sum(min(x,a.max_variable_layouts) for x in layout_counts)
+    layout_counts=[count_variable_layouts(graph,constraint_id,a.max_variable_layouts)
+                   for graph in examples]
+    counts['variable_layout_candidates_after_cap']=sum(layout_counts)
+    counts['max_variable_layouts_per_graph']=a.max_variable_layouts
     print(dict(counts))
     print('coverage='+('TRUNCATED_INCOMPLETE' if counts['truncated'] else 'COMPLETE_WITHIN_DECLARED_GROUNDED_GRAPH_CLASS'))
 if __name__=='__main__':main()

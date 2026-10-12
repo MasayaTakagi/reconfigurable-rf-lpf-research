@@ -44,39 +44,38 @@ def enumerate_variable_c_layouts(graph, resolved_policy, *, max_layouts=None):
         shunt_count = layout["shunt_to_ground"]
         bridge_count = layout["non_ground_bridge"]
     active_nodes = tuple(range(1, n_nodes))
-    candidates = []
-    for shunts in combinations(active_nodes, shunt_count):
-        shunt_edges = tuple((node, 0) for node in shunts)
-        if bridge_count == 0:
-            candidates.append({"edges": shunt_edges,
-                               "roles": (None,) * branch_count})
-            continue
-        for a, b in combinations(active_nodes, 2):
-            edges = shunt_edges + ((a, b),)
-            roles = (None,) * shunt_count + ("bridge",)
-            metadata = tuple({"a": x, "b": y, **({"role": "bridge"}
-                            if role == "bridge" else {})}
-                             for (x, y), role in zip(edges, roles))
-            try:
-                validate_variable_c_connections(metadata, resolved_policy)
-                validate_bridge_topology(
-                    [(x, y) for x, y, _ in fixed_edges], metadata,
-                    1, 2, n_nodes - 1)
-            except ValueError:
+    def generate():
+        for shunts in combinations(active_nodes, shunt_count):
+            shunt_edges = tuple((node, 0) for node in shunts)
+            if bridge_count == 0:
+                yield {"edges": shunt_edges,
+                       "roles": (None,) * branch_count}
                 continue
-            candidates.append({"edges": edges, "roles": roles})
-    unique = []
-    seen = set()
-    for candidate in candidates:
-        key = (candidate["edges"], candidate["roles"])
-        if key not in seen:
-            seen.add(key)
-            unique.append(candidate)
-    if max_layouts is None or len(unique) <= max_layouts:
-        return unique
+            for a, b in combinations(active_nodes, 2):
+                edges = shunt_edges + ((a, b),)
+                roles = (None,) * shunt_count + ("bridge",)
+                metadata = tuple({"a": x, "b": y, **({"role": "bridge"}
+                                if role == "bridge" else {})}
+                                 for (x, y), role in zip(edges, roles))
+                try:
+                    validate_variable_c_connections(metadata, resolved_policy)
+                    validate_bridge_topology(
+                        [(x, y) for x, y, _ in fixed_edges], metadata,
+                        1, 2, n_nodes - 1)
+                except ValueError:
+                    continue
+                yield {"edges": edges, "roles": roles}
+
+    if max_layouts is None:
+        return list(generate())
     if max_layouts == 1:
-        return [unique[0]]
-    # Keep deterministic coverage across the complete ordered layout class.
-    indices = [round(i * (len(unique) - 1) / (max_layouts - 1))
-               for i in range(max_layouts)]
-    return [unique[index] for index in indices]
+        first=next(generate(),None)
+        return [] if first is None else [first]
+    # Two bounded-memory passes preserve even coverage of the full ordered
+    # class without retaining every candidate layout in memory.
+    total=sum(1 for _ in generate())
+    if total<=max_layouts:
+        return list(generate())
+    indices={round(i*(total-1)/(max_layouts-1)) for i in range(max_layouts)}
+    return [candidate for index,candidate in enumerate(generate())
+            if index in indices]

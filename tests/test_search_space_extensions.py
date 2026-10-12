@@ -11,7 +11,7 @@ sys.path.insert(0,str(ROOT/'src'))
 sys.path.insert(0,str(ROOT/'experiments'/'matching_limit'))
 
 from coverage_sampler import sample_graphs
-from enumerate_grounded import enumerate_grounded
+from enumerate_grounded import count_variable_layouts,enumerate_grounded
 from instantiate_graph import build_grounded_settings,check_graph
 from lpf.constraint_versions import load_constraint
 from lpf.evaluate import CASES
@@ -71,6 +71,11 @@ class PolicyLayoutEnumerationTests(unittest.TestCase):
         self.assertTrue(all(all(b==0 for _,b in row['edges']) for row in layouts))
         self.assertTrue(any((3,0) in row['edges'] or (4,0) in row['edges']
                             for row in layouts))
+        capped=enumerate_variable_c_layouts(self.graph,policy,max_layouts=3)
+        indices=[round(i*(len(layouts)-1)/2) for i in range(3)]
+        self.assertEqual(capped,[layouts[index] for index in indices])
+        self.assertEqual(count_variable_layouts(
+            self.graph,'RF-F001',max_layouts=2),2)
 
     def test_trial_t001_and_t002_layout_shapes_and_bridge_bypass(self):
         t1=load_constraint('RF-T001',allow_trial=True)

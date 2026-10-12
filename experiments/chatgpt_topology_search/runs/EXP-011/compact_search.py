@@ -19,9 +19,9 @@ def incidence(edge):
  return v
 
 class Compact:
- def __init__(self,d,bands,points=31,gjm_edges=None,pcb_edges=None,var_edges=None):
+ def __init__(self,d,bands,points=31,gjm_edges=None,pcb_edges=None,var_edges=None,inductor_edges=None):
   top=d['topology'];self.points=points;self.bands=bands
-  self.L_edges=tuple(tuple(x['nodes']) for x in top['inductors'])
+  self.L_edges=tuple(map(tuple,inductor_edges if inductor_edges is not None else [x['nodes'] for x in top['inductors']]))
   self.gjm_edges=tuple(map(tuple,gjm_edges if gjm_edges is not None else [x['nodes'] for x in top['fixed_capacitors']]))
   self.pcb_edges=tuple(map(tuple,pcb_edges if pcb_edges is not None else [x['nodes'] for x in top['pcb_pattern_capacitors']]))
   self.var_edges=tuple(map(tuple,var_edges if var_edges is not None else [x['nodes'] for x in top['variable_capacitors']]))
@@ -79,7 +79,7 @@ class Compact:
   W=np.linalg.solve(Y.transpose(0,2,1),np.broadcast_to(self.eout,(len(Y),5))[...,None])[...,0]
   out=V[:,2]
   ildb=-10*np.log10(np.maximum(200*60/5200*abs(out)**2,1e-300))
-  mul=20/np.log(10)/out
+  mul=(20/np.log(10))/np.where(np.abs(out)>1e-200,out,1e-200+0j)
   jac=np.zeros((len(Y),self.n))
   R=W@self.B@Zi;D=V@self.B@Zi
   neighbors=[self.row[i:i+2] for i in range(3)]
@@ -130,6 +130,9 @@ def jobs(family,d):
  top=d['topology'];f=[tuple(z['nodes']) for z in top['fixed_capacitors']]
  pcb=[tuple(z['nodes']) for z in top['pcb_pattern_capacitors']];var=[tuple(z['nodes']) for z in top['variable_capacitors']]
  if family=='baseline':return [dict(gjm_edges=f,pcb_edges=pcb,var_edges=var)]
+ if family=='ind_edges':
+  edges=[tuple(z['nodes']) for z in top['inductors']]
+  return [dict(gjm_edges=f,pcb_edges=pcb,var_edges=var,inductor_edges=edges[:i]+[e]+edges[i+1:]) for i in range(4) for e in ALL_EDGES if e!=edges[i]]
  if family=='fixed_gjm':return [dict(gjm_edges=[e],pcb_edges=pcb,var_edges=var) for e in ALL_EDGES]
  if family=='var3':return [dict(gjm_edges=f,pcb_edges=pcb,var_edges=var[:2]+[e]) for e in ALL_EDGES if 0 not in e and e!=var[2]]
  if family=='pcb1':return [dict(gjm_edges=f,pcb_edges=[e],var_edges=var) for e in ALL_EDGES]
@@ -137,9 +140,8 @@ def jobs(family,d):
  raise ValueError('unknown family')
 
 def main():
- p=argparse.ArgumentParser();p.add_argument('--candidate',default=str(HERE/'EXP011-01.json'));p.add_argument('--family',choices=['baseline','fixed_gjm','var3','pcb1','gjm2'],default='baseline');p.add_argument('--starts',type=int,default=2);p.add_argument('--max-new-jobs',type=int,default=4);p.add_argument('--shards',type=int,default=1);p.add_argument('--shard-index',type=int,default=0);p.add_argument('--points',type=int,default=31);p.add_argument('--iterations',type=int,default=160);p.add_argument('--rejection',type=float,default=30.001);p.add_argument('--seed',type=int,default=20261012);p.add_argument('--checkpoint',default='');p.add_argument('--check-jac',action='store_true');a=p.parse_args()
- d=json.loads(Path(a.candidate).read_text())
- with (ROOT/'data/bands.csv').open(newline='') as band_file:BANDS=list(csv.DictReader(band_file))
+ p=argparse.ArgumentParser();p.add_argument('--candidate',default=str(HERE/'EXP011-01.json'));p.add_argument('--family',choices=['baseline','fixed_gjm','var3','pcb1','gjm2','ind_edges'],default='baseline');p.add_argument('--starts',type=int,default=2);p.add_argument('--max-new-jobs',type=int,default=4);p.add_argument('--shards',type=int,default=1);p.add_argument('--shard-index',type=int,default=0);p.add_argument('--points',type=int,default=31);p.add_argument('--iterations',type=int,default=160);p.add_argument('--rejection',type=float,default=30.001);p.add_argument('--seed',type=int,default=20261012);p.add_argument('--checkpoint',default='');p.add_argument('--check-jac',action='store_true');a=p.parse_args()
+ d=json.loads(Path(a.candidate).read_text());BANDS=list(csv.DictReader((ROOT/'data/bands.csv').open()))
  refmodel=Compact(d,BANDS,points=a.points);ref=refmodel.ref_x(d)
  if a.check_jac:
   z,j=refmodel._eval(ref)

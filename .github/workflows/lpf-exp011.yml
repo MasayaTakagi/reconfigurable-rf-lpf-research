@@ -5,7 +5,7 @@ on:
       family:
         type: choice
         description: Candidate graph family for short bounded search
-        options: [fixed_gjm, var3, pcb1, gjm2, baseline]
+        options: [fixed_gjm, var3, pcb1, gjm2, ind_edges, baseline]
         default: gjm2
         required: true
       starts:

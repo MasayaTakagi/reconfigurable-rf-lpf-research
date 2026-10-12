@@ -74,7 +74,7 @@ def evaluate(d,bands):
 
 def main():
  bands=list(csv.DictReader((ROOT/'data'/'bands.csv').open(newline='')))
- for name in ('EXP009-01','EXP009-L15','EXP009-L12'):
+ for name in ('EXP009-01','EXP009-02','EXP009-L15','EXP009-L12'):
   d=json.loads((HERE/(name+'.json')).read_text())
   print(json.dumps(evaluate(d,bands),sort_keys=True),flush=True)
 if __name__=='__main__':main()

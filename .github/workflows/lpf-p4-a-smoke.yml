@@ -27,9 +27,13 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-          cache: pip
-          cache-dependency-path: requirements.txt
-      - run: python -m pip install -r requirements.txt
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.12.23"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - run: uv sync --frozen
+      - run: echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
       - run: mkdir -p results
       - name: Persist one explicit-series RF-T002 graph into a checkpoint
         run: python experiments/matching_limit/p4_batch.py --constraint-id RF-T002 --series-mode both --require-lqp02 --require-both-series --max-topology-graphs 2 --max-variable-layouts 4 --attempts 1 --per-bin 1 --starts 1 --layouts 1 --iterations 1 --coarse-points 2 --validation-points 3 --seed 20261012 --shard-count 1 --shard-index 0 --checkpoint results/checkpoint.json --output results/result.json --max-graphs-per-batch 1 --max-batch-seconds 600
@@ -50,9 +54,13 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-          cache: pip
-          cache-dependency-path: requirements.txt
-      - run: python -m pip install -r requirements.txt
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.12.23"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - run: uv sync --frozen
+      - run: echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
       - uses: actions/download-artifact@v7
         with:
           name: first-checkpoint
@@ -95,9 +103,13 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-          cache: pip
-          cache-dependency-path: requirements.txt
-      - run: python -m pip install -r requirements.txt
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.12.23"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - run: uv sync --frozen
+      - run: echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
       - uses: actions/download-artifact@v7
         with:
           name: second-checkpoint

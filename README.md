@@ -24,6 +24,12 @@
 
 **2方式を並行**：ChatGPTはRF理論から回路を発案して専用高速最適化、自動探索は有限のグラフ・素子・配置クラスを生成して比較。良好な構造と初期値を相互に利用し、共通MNAと同一の6設定評価で検証する。現在のP4-Aは可変CがIN/OUT接続に固定されており、LPF-007/008の内部トラップCを探索できないため、一般化が最優先。
 
+## ローカル計算基盤（Stage 2）
+
+大規模P4-A探索の主たる実行基盤は、ユーザー指示によりUbuntu 24.04 / WSL2のローカル環境へ移行する。Python 3.12の環境はuvで管理し、依存条件の正本を`pyproject.toml`、固定版を`uv.lock`とする。GitHub Actionsはuv lockを使うCI・回帰試験として維持し、既存の手動P4-A・実験workflowも削除せず利用可能な状態を保つ。
+
+[`docs/local_execution.md`](docs/local_execution.md)にuvセットアップ、P4-Aのplan/run/status/resume/aggregate操作、resource監視、チェックポイント・再開規則を記載する。`scripts/local_p4.py plan`は計算せず、`run`だけがジョブを開始する。P4-Aは`matching_only`であり`full_lpf`性能達成を示さない。Stage 2は計算基盤の構築・小規模検証で、**大規模探索は未着手**。Phase 2継続、Phase 3停止。
+
 ## フォルダ構成と作業先
 
 | フォルダ | 用途 |
@@ -33,8 +39,8 @@
 | [`src/lpf/`](src/lpf/) | 両探索で共用するMNA、独立解析、評価、制約検証 |
 | [`candidates/`](candidates/) | 現行比較候補LPF-007/008の正式な記録 |
 | [`data/`](data/) | **現行RF制約の互換コピー**`design_constraints.json`（正本は`constraints/formal/RF-F001.json`）、帯域`bands.csv`、候補索引 |
-| [`docs/`](docs/) | [設計仕様](docs/specification.md)、[Phase 2ロードマップ](docs/roadmap.md)、[歴史的結果の出典索引](docs/historical_results.md) |
-| [`scripts/`](scripts/)・[`tests/`](tests/) | 監査、候補検証、Artifacts、回帰テスト |
+| [`docs/`](docs/) | [設計仕様](docs/specification.md)、[Phase 2ロードマップ](docs/roadmap.md)、[ローカル実行](docs/local_execution.md)、[歴史的結果の出典索引](docs/historical_results.md) |
+| [`scripts/`](scripts/)・[`tests/`](tests/) | 監査、候補検証、Artifacts、ローカル実行マネージャー、回帰テスト |
 | [`.github/workflows/`](.github/workflows/) | 短いCIと手動のP4-A計算 |
 
 ## 基本ルール
@@ -52,11 +58,13 @@
 ## 検証・実行
 
 ```bash
-python -m pip install -r requirements.txt
-python scripts/audit_results.py
-python -m unittest discover -s tests -v
-python scripts/verify_no_pcb_tunable_candidates.py
+uv sync --frozen
+uv run --frozen python scripts/audit_results.py
+uv run --frozen python -m unittest discover -s tests -v
+uv run --frozen python scripts/verify_no_pcb_tunable_candidates.py
 ```
+
+`requirements.txt`は後方互換用の依存条件ミラー。通常の開発・CI・ローカル探索は`uv.lock`で固定したuv環境を利用する。
 
 自動CIでは、基準値を固定したLPF-007/008の有限グリッド回帰と、matching-onlyの解析的既知回路の回帰も検証する。新しい候補は `data/candidate_index.csv` へ追加でき、LPF-007/008を削除することはできない。
 

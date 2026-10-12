@@ -2,6 +2,23 @@
 
 **2026-10-12 RF-F001の正式方針更新：** チップ面積コストのハード上限を廃止し、6設定UL/DL最悪ILとのパレート評価軸とする。以下にある「hard cap6」「面積最大6」は過去の探索条件・旧実験予算の記録であり現行正式RF制約を表さない。P4-Aでは当面の計算範囲として面積6までを維持し、探索範囲の拡張は別管理する。旧候補の実測/数値記録は不変更。詳細は[制約版管理](../data/constraints/README.md)。
 
+## 2026-10-12 Stage 2：WSL2ローカル実行基盤
+
+**大規模P4-Aの主計算先をGitHub ActionsからWSL2ローカルへ移す方針**を反映した。これは計算環境の変更であり、RF-F001・RF-T001/T002/T003、P4-Aの回路探索、評価関数は変更せず、Phase 2を維持する。Phase 3への移行・大規模探索の開始はしていない。
+
+- uv管理を導入。`pyproject.toml`を依存条件の正本、Python 3.12対象の`uv.lock`を固定環境としてGit管理し、`requirements.txt`は互換ミラーとして維持。監査・既存手動探索Actionsも`uv sync --frozen`を利用する。
+- `scripts/local_p4.py`は計画、独立worker起動、RAM・CPU/RSS監視、SIGINT/SIGTERM停止、チェックポイント再開、互換性拒否、集計を提供する。既存`p4_batch.py`/`p4_sharding.py`と集計器を再利用し、RF解析・最適化本体は変更しない。既定worker数2、最大4、利用可能RAMが1.5 GiB未満では新規起動を保留する。
+- `docs/local_execution.md`に環境構築・plan/run/status/resume/aggregate・停止・復旧・結果保管を記載。GitHub ActionsはCI・回帰試験用として維持し、既存P4-A等の手動探索workflowも保存する。
+- 最終回帰: `uv lock --check`、`uv sync --frozen`、`uv pip check`、`scripts/audit_results.py`、ユニット203件、`scripts/verify_no_pcb_tunable_candidates.py`がすべて終了コード0。既存の5L試験コードから未close fileの`ResourceWarning`が1件出るが試験結果には影響なし。
+- WSL2小規模ベンチ（RF-F001、`matching_only`、seed `20261013`、4シャード、最大5グラフ、SLSQP各1反復、粗2点/検証3点条件）では、1/2/4 workerすべて5グラフ・9候補を処理。グラフIDと数値・最適化結果は3条件で一致（完了時刻メタデータのみ異なる）し、失敗0・未実行0・収束0（全9件は1反復のため非収束）。これは実行基盤の比較でありRF性能試験ではない。
+
+| worker | 最大同時worker | wall time（uv起動込み） | 合計ピークworker RSS | 最低available RAM | host CPU peak |
+|---:|---:|---:|---:|---:|---:|
+| 1 | 1 | 7.06 s | 79.27 MiB | 5.69 GiB | 9.6% |
+| 2 | 2 | 5.24 s | 158.09 MiB | 5.63 GiB | 13.0% |
+| 4 | 4 | 3.97 s | 316.20 MiB | 5.53 GiB | 25.3% |
+
+追加で1秒のwall-time制限による中断を実行し、終了コード130・各実行中シャードのcheckpoint保存を確認。`resume`後は5グラフ・9候補でcompleted、重複IDなし、失敗・未実行0。小規模機能検証であり、長時間停止時の実機環境挙動・4-worker時の大規模RAM需要・大規模計算性能は未検証。`results/`はGit管理外であり、生出力を正式研究候補に昇格させていない。
 
 ## 当面の目標
 

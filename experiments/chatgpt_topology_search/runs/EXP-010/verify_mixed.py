@@ -123,7 +123,7 @@ def analyze(d,bands):
 
 def main():
     bands=list(csv.DictReader((ROOT/'data/bands.csv').open(newline='')))
-    for name in ('EXP010-02',):
+    for name in ('EXP010-02','EXP010-03','EXP010-04'):
         d=json.loads((HERE/(name+'.json')).read_text())
         print(json.dumps(analyze(d,bands),indent=2),flush=True)
 if __name__=='__main__':main()

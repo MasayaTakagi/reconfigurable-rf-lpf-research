@@ -1,0 +1,3579 @@
+{
+  "generated_on": "2026-10-12",
+  "method": "exact 9x9 MNA at finite-grid maximum passband IL; source Pavs=5mW",
+  "candidates": {
+    "EXP010-01": {
+      "candidate_id": "EXP010-01",
+      "objective": "full_lpf",
+      "component_counts": {
+        "LQP02": 4,
+        "GJM01": 3,
+        "PCB_PATTERN_C": 0,
+        "IC_VARIABLE_C": 3
+      },
+      "chip_area_cost": 6.0,
+      "fixed_element_Q": {
+        "L": [
+          25.0
+        ],
+        "GJM01": 80,
+        "IC_variable_C": 80,
+        "PCB_pattern_C": 40
+      },
+      "min_K_eigenvalue": 0.43384632805143203,
+      "frequency_grid_per_passband_interval": 7001,
+      "worst_passband": {
+        "setting": "B8",
+        "frequency_MHz": 960.0,
+        "total_IL_dB": 0.3061153266450551,
+        "reflection_dB": 0.025517811321619094,
+        "absorbed_network_dissipation_dB": 0.2805975153234362,
+        "inductor_dissipation_dB_allocated": 0.22555032450738033,
+        "GJM01_dissipation_dB_allocated": 0.027325012825015767,
+        "IC_variable_C_dissipation_dB_allocated": 0.02772217799104009,
+        "PCB_C_dissipation_dB_allocated": 0.0,
+        "P_available_W": 0.005,
+        "P_reflected_W": 2.929232534572889e-05,
+        "P_load_W": 0.004659705522979288,
+        "P_inductor_W": 0.00024999022586472374,
+        "P_capacitor_W": 6.101192581025997e-05,
+        "P_total_dissipation_W": 0.0003110021516749837,
+        "power_residual_W": -5.421010862427522e-20,
+        "max_nodal_vs_full_MNA_voltage_difference_V": 6.206335383118183e-16,
+        "component_losses": [
+          {
+            "id": "L0",
+            "type": "LQP02",
+            "loss_W": 8.773601902103551e-05,
+            "pct_source_available": 1.75472038042071,
+            "loss_dB_allocated": 0.07915864507394195
+          },
+          {
+            "id": "L1",
+            "type": "LQP02",
+            "loss_W": 5.384191180513758e-06,
+            "pct_source_available": 0.10768382361027516,
+            "loss_dB_allocated": 0.004857814195630994
+          },
+          {
+            "id": "L2",
+            "type": "LQP02",
+            "loss_W": 4.08853064806455e-05,
+            "pct_source_available": 0.81770612961291,
+            "loss_dB_allocated": 0.03688821877893495
+          },
+          {
+            "id": "L3",
+            "type": "LQP02",
+            "loss_W": 0.00011598470918252898,
+            "pct_source_available": 2.3196941836505793,
+            "loss_dB_allocated": 0.10464564645887242
+          },
+          {
+            "id": "Cf1",
+            "type": "GJM01",
+            "loss_W": 7.033922262723604e-06,
+            "pct_source_available": 0.14067844525447207,
+            "loss_dB_allocated": 0.0063462619125577106
+          },
+          {
+            "id": "Cf2",
+            "type": "GJM01",
+            "loss_W": 2.299249743988188e-05,
+            "pct_source_available": 0.45984994879763763,
+            "loss_dB_allocated": 0.02074467208012657
+          },
+          {
+            "id": "Cf3",
+            "type": "GJM01",
+            "loss_W": 2.594428551255917e-07,
+            "pct_source_available": 0.005188857102511835,
+            "loss_dB_allocated": 0.00023407883233148399
+          },
+          {
+            "id": "Cv0",
+            "type": "IC_VARIABLE_C",
+            "loss_W": 6.724254650465334e-06,
+            "pct_source_available": 0.1344850930093067,
+            "loss_dB_allocated": 0.006066868467503288
+          },
+          {
+            "id": "Cv1",
+            "type": "IC_VARIABLE_C",
+            "loss_W": 2.4001805634745425e-05,
+            "pct_source_available": 0.4800361126949084,
+            "loss_dB_allocated": 0.021655306846313862
+          },
+          {
+            "id": "Cv2",
+            "type": "IC_VARIABLE_C",
+            "loss_W": 2.9673181319782193e-12,
+            "pct_source_available": 5.934636263956439e-08,
+            "loss_dB_allocated": 2.6772229404940244e-09
+          }
+        ],
+        "region": "DL"
+      },
+      "settings_at_their_individual_worst_passband_frequency": [
+        {
+          "setting": "B71",
+          "frequency_MHz": 698.0,
+          "total_IL_dB": 0.28519106834790653,
+          "reflection_dB": 0.03547334548937628,
+          "absorbed_network_dissipation_dB": 0.24971772285853014,
+          "inductor_dissipation_dB_allocated": 0.19707745840273488,
+          "GJM01_dissipation_dB_allocated": 0.014326285590944354,
+          "IC_variable_C_dissipation_dB_allocated": 0.038313978864850884,
+          "PCB_C_dissipation_dB_allocated": 0.0,
+          "P_available_W": 0.005,
+          "P_reflected_W": 4.067385927773507e-05,
+          "P_load_W": 0.0046822101005778724,
+          "P_inductor_W": 0.00021870023580675802,
+          "P_capacitor_W": 5.841580433763478e-05,
+          "P_total_dissipation_W": 0.0002771160401443928,
+          "power_residual_W": 2.168404344971009e-19,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 8.005932084973443e-16,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 7.683701295876692e-05,
+              "pct_source_available": 1.5367402591753385,
+              "loss_dB_allocated": 0.06924017785948754
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 1.1495688772995708e-05,
+              "pct_source_available": 0.22991377545991415,
+              "loss_dB_allocated": 0.010359116064111903
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 2.555898663546508e-05,
+              "pct_source_available": 0.5111797327093016,
+              "loss_dB_allocated": 0.023031983056102753
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.0001048085474395303,
+              "pct_source_available": 2.096170948790606,
+              "loss_dB_allocated": 0.0944461814230327
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 3.236578383745057e-06,
+              "pct_source_available": 0.06473156767490114,
+              "loss_dB_allocated": 0.002916579579517752
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 1.23797857542046e-05,
+              "pct_source_available": 0.247595715084092,
+              "loss_dB_allocated": 0.011155802841313792
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 2.8176070275008363e-07,
+              "pct_source_available": 0.005635214055001673,
+              "loss_dB_allocated": 0.00025390317011281005
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.3118810500279683e-05,
+              "pct_source_available": 0.26237621000559364,
+              "loss_dB_allocated": 0.011821760599045222
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.5118611139115306e-05,
+              "pct_source_available": 0.5023722227823061,
+              "loss_dB_allocated": 0.02263514725369355
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 4.280257857540054e-06,
+              "pct_source_available": 0.08560515715080108,
+              "loss_dB_allocated": 0.0038570710121121096
+            }
+          ],
+          "region": "UL"
+        },
+        {
+          "setting": "B12",
+          "frequency_MHz": 746.0,
+          "total_IL_dB": 0.2791147782706058,
+          "reflection_dB": 0.01599087519775527,
+          "absorbed_network_dissipation_dB": 0.263123903072851,
+          "inductor_dissipation_dB_allocated": 0.20803954728446997,
+          "GJM01_dissipation_dB_allocated": 0.016522220592026328,
+          "IC_variable_C_dissipation_dB_allocated": 0.038562135196354694,
+          "PCB_C_dissipation_dB_allocated": 0.0,
+          "P_available_W": 0.005,
+          "P_reflected_W": 1.8376323531914348e-05,
+          "P_load_W": 0.004688765647566972,
+          "P_inductor_W": 0.00023154890543844307,
+          "P_capacitor_W": 6.130912346266927e-05,
+          "P_total_dissipation_W": 0.0002928580289011123,
+          "power_residual_W": 9.75781955236954e-19,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 1.6326319374041212e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 7.96998624083344e-05,
+              "pct_source_available": 1.593997248166688,
+              "loss_dB_allocated": 0.07160786729986247
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 1.0655416790006076e-05,
+              "pct_source_available": 0.21310833580012153,
+              "loss_dB_allocated": 0.0095735632216561
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 2.9885861236871938e-05,
+              "pct_source_available": 0.5977172247374387,
+              "loss_dB_allocated": 0.026851524217540414
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00011130776500323064,
+              "pct_source_available": 2.226155300064613,
+              "loss_dB_allocated": 0.10000659254541099
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 3.891953046338438e-06,
+              "pct_source_available": 0.07783906092676876,
+              "loss_dB_allocated": 0.0034967997291091273
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 1.4197470249416084e-05,
+              "pct_source_available": 0.28394940498832166,
+              "loss_dB_allocated": 0.01275598896777542
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 2.998788510387319e-07,
+              "pct_source_available": 0.005997577020774637,
+              "loss_dB_allocated": 0.00026943189514178116
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.2071991973696002e-05,
+              "pct_source_available": 0.24143983947392003,
+              "loss_dB_allocated": 0.01084631231693357
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.643182491158333e-05,
+              "pct_source_available": 0.5286364982316666,
+              "loss_dB_allocated": 0.023748179150732532
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 4.416004430596674e-06,
+              "pct_source_available": 0.08832008861193347,
+              "loss_dB_allocated": 0.0039676437286885885
+            }
+          ],
+          "region": "DL"
+        },
+        {
+          "setting": "B28",
+          "frequency_MHz": 803.0,
+          "total_IL_dB": 0.30611526039856013,
+          "reflection_dB": 0.006055417097877167,
+          "absorbed_network_dissipation_dB": 0.30005984330068275,
+          "inductor_dissipation_dB_allocated": 0.23617458514243375,
+          "GJM01_dissipation_dB_allocated": 0.019848966130982467,
+          "IC_variable_C_dissipation_dB_allocated": 0.044036292027266534,
+          "PCB_C_dissipation_dB_allocated": 0.0,
+          "P_available_W": 0.005,
+          "P_reflected_W": 6.966698568733043e-06,
+          "P_load_W": 0.004659705594057594,
+          "P_inductor_W": 0.0002623594418349666,
+          "P_capacitor_W": 7.096826553870172e-05,
+          "P_total_dissipation_W": 0.00033332770737366834,
+          "power_residual_W": 4.7704895589362195e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 1.8149684782055937e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 8.541637028530594e-05,
+              "pct_source_available": 1.7083274057061189,
+              "loss_dB_allocated": 0.07689136581253393
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 1.4937548813895848e-05,
+              "pct_source_available": 0.29875097627791697,
+              "loss_dB_allocated": 0.013446702621001382
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.828670221360913e-05,
+              "pct_source_available": 0.7657340442721826,
+              "loss_dB_allocated": 0.034465487304470604
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00012371882052215568,
+              "pct_source_available": 2.4743764104431136,
+              "loss_dB_allocated": 0.11137102940442782
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 4.9306743292464294e-06,
+              "pct_source_available": 0.09861348658492858,
+              "loss_dB_allocated": 0.004438567013398112
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 1.6636456009488987e-05,
+              "pct_source_available": 0.33272912018977974,
+              "loss_dB_allocated": 0.01497604991381617
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 4.825058318335071e-07,
+              "pct_source_available": 0.009650116636670142,
+              "loss_dB_allocated": 0.0004343492037681859
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.433715034666969e-05,
+              "pct_source_available": 0.2867430069333938,
+              "loss_dB_allocated": 0.012906227088939197
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.9610013839746202e-05,
+              "pct_source_available": 0.592200276794924,
+              "loss_dB_allocated": 0.026654778214777228
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 4.971465181716903e-06,
+              "pct_source_available": 0.09942930363433806,
+              "loss_dB_allocated": 0.004475286723550111
+            }
+          ],
+          "region": "DL"
+        },
+        {
+          "setting": "B13+B14",
+          "frequency_MHz": 798.0,
+          "total_IL_dB": 0.25260285254256243,
+          "reflection_dB": 0.0013215511367200721,
+          "absorbed_network_dissipation_dB": 0.2512813014058425,
+          "inductor_dissipation_dB_allocated": 0.20131643315182068,
+          "GJM01_dissipation_dB_allocated": 0.018260451535253533,
+          "IC_variable_C_dissipation_dB_allocated": 0.03170441671876824,
+          "PCB_C_dissipation_dB_allocated": 0.0,
+          "P_available_W": 0.005,
+          "P_reflected_W": 1.5212605032169517e-06,
+          "P_load_W": 0.004717476213964087,
+          "P_inductor_W": 0.00022512787792168236,
+          "P_capacitor_W": 5.58746476110146e-05,
+          "P_total_dissipation_W": 0.000281002525532697,
+          "power_residual_W": -8.131516293641283e-19,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 9.424642647609475e-16,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 8.028912856506947e-05,
+              "pct_source_available": 1.6057825713013891,
+              "loss_dB_allocated": 0.0717970654403393
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 7.440091133178654e-06,
+              "pct_source_available": 0.14880182266357306,
+              "loss_dB_allocated": 0.006653163628971239
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 2.867147915612051e-05,
+              "pct_source_available": 0.5734295831224102,
+              "loss_dB_allocated": 0.025638938945202226
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00010872717906731373,
+              "pct_source_available": 2.1745435813462746,
+              "loss_dB_allocated": 0.09722726513730792
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 4.459424035715894e-06,
+              "pct_source_available": 0.08918848071431787,
+              "loss_dB_allocated": 0.003987757309621746
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 1.571845028297497e-05,
+              "pct_source_available": 0.31436900565949943,
+              "loss_dB_allocated": 0.014055932898472817
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 2.4239957381911923e-07,
+              "pct_source_available": 0.004847991476382384,
+              "loss_dB_allocated": 0.0002167613271589704
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 9.306429347224201e-06,
+              "pct_source_available": 0.18612858694448403,
+              "loss_dB_allocated": 0.00832210199313641
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.3425690535682566e-05,
+              "pct_source_available": 0.46851381071365134,
+              "loss_dB_allocated": 0.02094798967723835
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.722253835597847e-06,
+              "pct_source_available": 0.05444507671195694,
+              "loss_dB_allocated": 0.0024343250483934826
+            }
+          ],
+          "region": "UL"
+        },
+        {
+          "setting": "B26",
+          "frequency_MHz": 894.0,
+          "total_IL_dB": 0.2911587210933673,
+          "reflection_dB": 0.0068038594691707255,
+          "absorbed_network_dissipation_dB": 0.2843548616241965,
+          "inductor_dissipation_dB_allocated": 0.2271878451925185,
+          "GJM01_dissipation_dB_allocated": 0.02381990142799472,
+          "IC_variable_C_dissipation_dB_allocated": 0.03334711500368328,
+          "PCB_C_dissipation_dB_allocated": 0.0,
+          "P_available_W": 0.005,
+          "P_reflected_W": 7.827099943860376e-06,
+          "P_load_W": 0.004675780680804137,
+          "P_inductor_W": 0.00025278437694706507,
+          "P_capacitor_W": 6.360784230493786e-05,
+          "P_total_dissipation_W": 0.0003163922192520029,
+          "power_residual_W": -5.421010862427522e-19,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 9.155133597044475e-16,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 8.577564959981743e-05,
+              "pct_source_available": 1.7155129919963485,
+              "loss_dB_allocated": 0.07709014788778579
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 8.553648879973188e-06,
+              "pct_source_available": 0.17107297759946374,
+              "loss_dB_allocated": 0.007687520411838768
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.79347738086656e-05,
+              "pct_source_available": 0.758695476173312,
+              "loss_dB_allocated": 0.03409356077911835
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00012052030465860884,
+              "pct_source_available": 2.4104060931721767,
+              "loss_dB_allocated": 0.10831661611377559
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 6.137700830743149e-06,
+              "pct_source_available": 0.12275401661486299,
+              "loss_dB_allocated": 0.0055162073028938285
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 2.0017241422545077e-05,
+              "pct_source_available": 0.4003448284509015,
+              "loss_dB_allocated": 0.01799032835972595
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 3.486716892346015e-07,
+              "pct_source_available": 0.00697343378469203,
+              "loss_dB_allocated": 0.0003133657653749407
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 9.419376799012655e-06,
+              "pct_source_available": 0.1883875359802531,
+              "loss_dB_allocated": 0.008465586140524074
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.5337541057573956e-05,
+              "pct_source_available": 0.5067508211514791,
+              "loss_dB_allocated": 0.02277190317245208
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.3473105058284307e-06,
+              "pct_source_available": 0.04694621011656862,
+              "loss_dB_allocated": 0.002109625690707123
+            }
+          ],
+          "region": "DL"
+        },
+        {
+          "setting": "B8",
+          "frequency_MHz": 960.0,
+          "total_IL_dB": 0.3061153266450551,
+          "reflection_dB": 0.025517811321619094,
+          "absorbed_network_dissipation_dB": 0.2805975153234362,
+          "inductor_dissipation_dB_allocated": 0.22555032450738033,
+          "GJM01_dissipation_dB_allocated": 0.027325012825015767,
+          "IC_variable_C_dissipation_dB_allocated": 0.02772217799104009,
+          "PCB_C_dissipation_dB_allocated": 0.0,
+          "P_available_W": 0.005,
+          "P_reflected_W": 2.929232534572889e-05,
+          "P_load_W": 0.004659705522979288,
+          "P_inductor_W": 0.00024999022586472374,
+          "P_capacitor_W": 6.101192581025997e-05,
+          "P_total_dissipation_W": 0.0003110021516749837,
+          "power_residual_W": -5.421010862427522e-20,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 6.206335383118183e-16,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 8.773601902103551e-05,
+              "pct_source_available": 1.75472038042071,
+              "loss_dB_allocated": 0.07915864507394195
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 5.384191180513758e-06,
+              "pct_source_available": 0.10768382361027516,
+              "loss_dB_allocated": 0.004857814195630994
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 4.08853064806455e-05,
+              "pct_source_available": 0.81770612961291,
+              "loss_dB_allocated": 0.03688821877893495
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00011598470918252898,
+              "pct_source_available": 2.3196941836505793,
+              "loss_dB_allocated": 0.10464564645887242
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 7.033922262723604e-06,
+              "pct_source_available": 0.14067844525447207,
+              "loss_dB_allocated": 0.0063462619125577106
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 2.299249743988188e-05,
+              "pct_source_available": 0.45984994879763763,
+              "loss_dB_allocated": 0.02074467208012657
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 2.594428551255917e-07,
+              "pct_source_available": 0.005188857102511835,
+              "loss_dB_allocated": 0.00023407883233148399
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 6.724254650465334e-06,
+              "pct_source_available": 0.1344850930093067,
+              "loss_dB_allocated": 0.006066868467503288
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.4001805634745425e-05,
+              "pct_source_available": 0.4800361126949084,
+              "loss_dB_allocated": 0.021655306846313862
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.9673181319782193e-12,
+              "pct_source_available": 5.934636263956439e-08,
+              "loss_dB_allocated": 2.6772229404940244e-09
+            }
+          ],
+          "region": "DL"
+        }
+      ],
+      "stored_reference_worst_IL_db": 0.30611532664505514,
+      "stored_H2_min_db": 30.006006250880635,
+      "stored_H3_min_db": 30.01500001121037,
+      "notes": [
+        "The loss allocation is an exact accounting partition, not a causal improvement predicted by removing individual components.",
+        "Reflection and internal dissipation dB add exactly, but component dB allocations are proportional shares of internal dissipated power.",
+        "Reported values are from 7001-point per passband interval finite-grid local extrema. No EM, nonlinear, process variation or continuous frequency guarantee."
+      ],
+      "source_repo_path": "experiments/chatgpt_topology_search/runs/EXP-010/EXP010-01.json"
+    },
+    "EXP010-02": {
+      "candidate_id": "EXP010-02",
+      "objective": "full_lpf",
+      "component_counts": {
+        "LQP02": 4,
+        "GJM01": 3,
+        "PCB_PATTERN_C": 1,
+        "IC_VARIABLE_C": 3
+      },
+      "chip_area_cost": 6.0,
+      "fixed_element_Q": {
+        "L": [
+          25.0
+        ],
+        "GJM01": 80,
+        "IC_variable_C": 80,
+        "PCB_pattern_C": 40
+      },
+      "min_K_eigenvalue": 0.45260353445940604,
+      "frequency_grid_per_passband_interval": 7001,
+      "worst_passband": {
+        "setting": "B8",
+        "frequency_MHz": 960.0,
+        "total_IL_dB": 0.2999074438468574,
+        "reflection_dB": 0.009756767522752223,
+        "absorbed_network_dissipation_dB": 0.29015067632410524,
+        "inductor_dissipation_dB_allocated": 0.2322831221268022,
+        "GJM01_dissipation_dB_allocated": 0.03341855589487841,
+        "IC_variable_C_dissipation_dB_allocated": 0.024349020694281076,
+        "PCB_C_dissipation_dB_allocated": 9.997760814355453e-05,
+        "P_available_W": 0.005,
+        "P_reflected_W": 1.1220285380349791e-05,
+        "P_load_W": 0.004666370951884978,
+        "P_inductor_W": 0.00025810766653321473,
+        "P_capacitor_W": 6.43010962014567e-05,
+        "P_total_dissipation_W": 0.0003224087627346714,
+        "power_residual_W": 5.963111948670274e-19,
+        "max_nodal_vs_full_MNA_voltage_difference_V": 1.6690311775283584e-15,
+        "component_losses": [
+          {
+            "id": "L0",
+            "type": "LQP02",
+            "loss_W": 9.846409501116529e-05,
+            "pct_source_available": 1.9692819002233057,
+            "loss_dB_allocated": 0.08861242950968419
+          },
+          {
+            "id": "L1",
+            "type": "LQP02",
+            "loss_W": 4.589157466841365e-06,
+            "pct_source_available": 0.0917831493368273,
+            "loss_dB_allocated": 0.00412999675153881
+          },
+          {
+            "id": "L2",
+            "type": "LQP02",
+            "loss_W": 5.1168197025155606e-05,
+            "pct_source_available": 1.023363940503112,
+            "loss_dB_allocated": 0.04604864597105256
+          },
+          {
+            "id": "L3",
+            "type": "LQP02",
+            "loss_W": 0.00010388621703005245,
+            "pct_source_available": 2.077724340601049,
+            "loss_dB_allocated": 0.09349204989452663
+          },
+          {
+            "id": "Cf1",
+            "type": "GJM01",
+            "loss_W": 3.4771135472899714e-06,
+            "pct_source_available": 0.06954227094579943,
+            "loss_dB_allocated": 0.0031292165846998534
+          },
+          {
+            "id": "Cf2",
+            "type": "GJM01",
+            "loss_W": 3.052119576576493e-05,
+            "pct_source_available": 0.6104239153152985,
+            "loss_dB_allocated": 0.02746744697179651
+          },
+          {
+            "id": "Cf3",
+            "type": "GJM01",
+            "loss_W": 3.135621908294063e-06,
+            "pct_source_available": 0.06271243816588126,
+            "loss_dB_allocated": 0.0028218923383820454
+          },
+          {
+            "id": "Cpcb0",
+            "type": "PCB_PATTERN_C",
+            "loss_W": 1.1109282029289314e-07,
+            "pct_source_available": 0.0022218564058578624,
+            "loss_dB_allocated": 9.997760814355453e-05
+          },
+          {
+            "id": "Cv0",
+            "type": "IC_VARIABLE_C",
+            "loss_W": 6.117207274299723e-06,
+            "pct_source_available": 0.12234414548599447,
+            "loss_dB_allocated": 0.005505160011154774
+          },
+          {
+            "id": "Cv1",
+            "type": "IC_VARIABLE_C",
+            "loss_W": 2.093886476599902e-05,
+            "pct_source_available": 0.4187772953199804,
+            "loss_dB_allocated": 0.01884386057556819
+          },
+          {
+            "id": "Cv2",
+            "type": "IC_VARIABLE_C",
+            "loss_W": 1.195161016672003e-13,
+            "pct_source_available": 2.390322033344006e-09,
+            "loss_dB_allocated": 1.0755811174678564e-10
+          }
+        ],
+        "region": "DL"
+      },
+      "settings_at_their_individual_worst_passband_frequency": [
+        {
+          "setting": "B71",
+          "frequency_MHz": 698.0,
+          "total_IL_dB": 0.2838654694801387,
+          "reflection_dB": 0.03859126425854219,
+          "absorbed_network_dissipation_dB": 0.2452742052215966,
+          "inductor_dissipation_dB_allocated": 0.19375347413003755,
+          "GJM01_dissipation_dB_allocated": 0.016959475978391328,
+          "IC_variable_C_dissipation_dB_allocated": 0.034435069691000124,
+          "PCB_C_dissipation_dB_allocated": 0.00012618542216760785,
+          "P_available_W": 0.005,
+          "P_reflected_W": 4.423301728088261e-05,
+          "P_load_W": 0.004683639471662423,
+          "P_inductor_W": 0.00021496614626050542,
+          "P_capacitor_W": 5.716136479619007e-05,
+          "P_total_dissipation_W": 0.0002721275110566955,
+          "power_residual_W": -1.5178830414797062e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 1.0235750533041806e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 7.904130557343112e-05,
+              "pct_source_available": 1.5808261114686224,
+              "loss_dB_allocated": 0.07124157836493641
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 1.119699694142706e-05,
+              "pct_source_available": 0.2239399388285412,
+              "loss_dB_allocated": 0.010092087033071032
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 2.805706696016215e-05,
+              "pct_source_available": 0.5611413392032429,
+              "loss_dB_allocated": 0.025288420023321895
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 9.667077678548508e-05,
+              "pct_source_available": 1.9334155357097014,
+              "loss_dB_allocated": 0.0871313887087082
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 1.5833867354270291e-06,
+              "pct_source_available": 0.03166773470854058,
+              "loss_dB_allocated": 0.0014271395111145916
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 1.582089609119407e-05,
+              "pct_source_available": 0.3164179218238814,
+              "loss_dB_allocated": 0.014259703841015284
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 1.4119640047806438e-06,
+              "pct_source_available": 0.028239280095612874,
+              "loss_dB_allocated": 0.0012726326262614534
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 1.400005550322173e-07,
+              "pct_source_available": 0.002800011100644346,
+              "loss_dB_allocated": 0.00012618542216760785
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.2266396575015295e-05,
+              "pct_source_available": 0.24532793150030588,
+              "loss_dB_allocated": 0.011055959242000226
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.191215704169902e-05,
+              "pct_source_available": 0.43824314083398036,
+              "loss_dB_allocated": 0.019749884464911046
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 4.026563793041801e-06,
+              "pct_source_available": 0.08053127586083603,
+              "loss_dB_allocated": 0.00362922598408885
+            }
+          ],
+          "region": "UL"
+        },
+        {
+          "setting": "B12",
+          "frequency_MHz": 746.0,
+          "total_IL_dB": 0.27391896609631594,
+          "reflection_dB": 0.014591353964615188,
+          "absorbed_network_dissipation_dB": 0.25932761213170036,
+          "inductor_dissipation_dB_allocated": 0.2057600233886351,
+          "GJM01_dissipation_dB_allocated": 0.019248275292528167,
+          "IC_variable_C_dissipation_dB_allocated": 0.03417346018459524,
+          "PCB_C_dissipation_dB_allocated": 0.00014585326594185379,
+          "P_available_W": 0.005,
+          "P_reflected_W": 1.67707282795527e-05,
+          "P_load_W": 0.004694378549764675,
+          "P_inductor_W": 0.00022918473978490424,
+          "P_capacitor_W": 5.966598217087039e-05,
+          "P_total_dissipation_W": 0.0002888507219557746,
+          "power_residual_W": -1.463672932855431e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 1.4475537224895361e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 8.247481862495071e-05,
+              "pct_source_available": 1.6494963724990142,
+              "loss_dB_allocated": 0.07404515948649154
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 1.1379046428629534e-05,
+              "pct_source_available": 0.22758092857259066,
+              "loss_dB_allocated": 0.010216006796493506
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.0913745138456255e-05,
+              "pct_source_available": 0.6182749027691251,
+              "loss_dB_allocated": 0.02775408575932608
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00010441712959286774,
+              "pct_source_available": 2.0883425918573546,
+              "loss_dB_allocated": 0.09374477134632399
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 1.934466435382064e-06,
+              "pct_source_available": 0.03868932870764128,
+              "loss_dB_allocated": 0.0017367467806203413
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 1.7808641157247387e-05,
+              "pct_source_available": 0.35617282314494775,
+              "loss_dB_allocated": 0.0159884398257671
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 1.6964844698874282e-06,
+              "pct_source_available": 0.03392968939774856,
+              "loss_dB_allocated": 0.0015230886861407238
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 1.6245790728029492e-07,
+              "pct_source_available": 0.0032491581456058987,
+              "loss_dB_allocated": 0.00014585326594185379
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.2079285086571233e-05,
+              "pct_source_available": 0.24158570173142463,
+              "loss_dB_allocated": 0.010844674842939071
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.1509508504937492e-05,
+              "pct_source_available": 0.4301901700987498,
+              "loss_dB_allocated": 0.019311045653422246
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 4.475138609564489e-06,
+              "pct_source_available": 0.08950277219128978,
+              "loss_dB_allocated": 0.004017739688233921
+            }
+          ],
+          "region": "DL"
+        },
+        {
+          "setting": "B28",          "frequency_MHz": 803.0,
+          "total_IL_dB": 0.2999073702655924,
+          "reflection_dB": 0.0064196700800327414,
+          "absorbed_network_dissipation_dB": 0.29348770018555953,
+          "inductor_dissipation_dB_allocated": 0.23193398536218987,
+          "GJM01_dissipation_dB_allocated": 0.022928464071209614,
+          "IC_variable_C_dissipation_dB_allocated": 0.03840323934037376,
+          "PCB_C_dissipation_dB_allocated": 0.00022201141178627217,
+          "P_available_W": 0.005,
+          "P_reflected_W": 7.3854584373237095e-06,
+          "P_load_W": 0.00466637103094596,
+          "P_inductor_W": 0.0002578198594627494,
+          "P_capacitor_W": 6.842365115396505e-05,
+          "P_total_dissipation_W": 0.0003262435106167144,
+          "power_residual_W": 1.5178830414797062e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 9.43689570931383e-16,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 8.962998074199015e-05,
+              "pct_source_available": 1.792599614839803,
+              "loss_dB_allocated": 0.08063086639153821
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 1.4956506605067077e-05,
+              "pct_source_available": 0.29913013210134154,
+              "loss_dB_allocated": 0.013454829240996948
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.977642651303807e-05,
+              "pct_source_available": 0.7955285302607614,
+              "loss_dB_allocated": 0.0357827560059163
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00011345694560265409,
+              "pct_source_available": 2.269138912053082,
+              "loss_dB_allocated": 0.10206553372373842
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 2.4297416200458867e-06,
+              "pct_source_available": 0.048594832400917734,
+              "loss_dB_allocated": 0.0021857883970301684
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 2.0937734143773794e-05,
+              "pct_source_available": 0.41875468287547585,
+              "loss_dB_allocated": 0.018835523898503598
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 2.1200066993676465e-06,
+              "pct_source_available": 0.04240013398735293,
+              "loss_dB_allocated": 0.0019071517756758486
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 2.467898393436326e-07,
+              "pct_source_available": 0.004935796786872652,
+              "loss_dB_allocated": 0.00022201141178627217
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.4001458867672594e-05,
+              "pct_source_available": 0.2800291773534519,
+              "loss_dB_allocated": 0.012595671112501228
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.3988795579320662e-05,
+              "pct_source_available": 0.4797759115864132,
+              "loss_dB_allocated": 0.02158024976952794
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 4.699124404440834e-06,
+              "pct_source_available": 0.09398248808881667,
+              "loss_dB_allocated": 0.004227318458344594
+            }
+          ],
+          "region": "DL"
+        },
+        {
+          "setting": "B13+B14",
+          "frequency_MHz": 798.0,
+          "total_IL_dB": 0.2628753813243815,
+          "reflection_dB": 0.007960890718307335,
+          "absorbed_network_dissipation_dB": 0.25491449060607413,
+          "inductor_dissipation_dB_allocated": 0.20277546821820047,
+          "GJM01_dissipation_dB_allocated": 0.022747523159460294,
+          "IC_variable_C_dissipation_dB_allocated": 0.029320194688607262,
+          "PCB_C_dissipation_dB_allocated": 7.130453980608534e-05,
+          "P_available_W": 0.005,
+          "P_reflected_W": 9.15691897952918e-06,
+          "P_load_W": 0.004706330978470893,
+          "P_inductor_W": 0.00022631932249543243,
+          "P_capacitor_W": 5.81927800541437e-05,
+          "P_total_dissipation_W": 0.00028451210254957615,
+          "power_residual_W": 1.8431436932253575e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 1.191874962812805e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 8.521943767424243e-05,
+              "pct_source_available": 1.7043887534848485,
+              "loss_dB_allocated": 0.07635411411252795
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 4.769723587944586e-06,
+              "pct_source_available": 0.09539447175889172,
+              "loss_dB_allocated": 0.004273532295663258
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.770741403410015e-05,
+              "pct_source_available": 0.754148280682003,
+              "loss_dB_allocated": 0.03378473588447807
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 9.862274719914527e-05,
+              "pct_source_available": 1.9724549439829053,
+              "loss_dB_allocated": 0.08836308592553119
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 2.1623466323166453e-06,
+              "pct_source_available": 0.043246932646332906,
+              "loss_dB_allocated": 0.001937399096035673
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 2.1286978824025826e-05,
+              "pct_source_available": 0.4257395764805165,
+              "loss_dB_allocated": 0.01907250804040327
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 1.939367146050572e-06,
+              "pct_source_available": 0.03878734292101144,
+              "loss_dB_allocated": 0.0017376160230213513
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 7.95835673889144e-08,
+              "pct_source_available": 0.0015916713477782877,
+              "loss_dB_allocated": 7.130453980608534e-05
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 6.830558783115713e-06,
+              "pct_source_available": 0.13661117566231426,
+              "loss_dB_allocated": 0.006119980124393416
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.309515656040363e-05,
+              "pct_source_available": 0.4619031312080726,
+              "loss_dB_allocated": 0.020692582204080278
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.798788540842398e-06,
+              "pct_source_available": 0.05597577081684796,
+              "loss_dB_allocated": 0.002507632360133568
+            }
+          ],
+          "region": "UL"
+        },
+        {
+          "setting": "B26",
+          "frequency_MHz": 894.0,
+          "total_IL_dB": 0.2862574190320776,
+          "reflection_dB": 0.009341121900681476,
+          "absorbed_network_dissipation_dB": 0.27691629713139576,
+          "inductor_dissipation_dB_allocated": 0.22327570114574885,
+          "GJM01_dissipation_dB_allocated": 0.026904228500074803,
+          "IC_variable_C_dissipation_dB_allocated": 0.026553260629753668,
+          "PCB_C_dissipation_dB_allocated": 0.000183106855818439,
+          "P_available_W": 0.005,
+          "P_reflected_W": 1.0742806673239784e-05,
+          "P_load_W": 0.004681060589074517,
+          "P_inductor_W": 0.0002484967971116094,
+          "P_capacitor_W": 5.969980714063433e-05,
+          "P_total_dissipation_W": 0.0003081966042522438,
+          "power_residual_W": -7.589415207398531e-19,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 9.586729210015212e-16,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 9.176283193526568e-05,
+              "pct_source_available": 1.8352566387053137,
+              "loss_dB_allocated": 0.08244939523411171
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 9.935287706831794e-06,
+              "pct_source_available": 0.19870575413663588,
+              "loss_dB_allocated": 0.008926909137711263
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.5805809198275885e-05,
+              "pct_source_available": 0.7161161839655177,
+              "loss_dB_allocated": 0.03217171105125063
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.0001109928682712361,
+              "pct_source_available": 2.2198573654247222,
+              "loss_dB_allocated": 0.09972768572267525
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 3.0757789226433345e-06,
+              "pct_source_available": 0.06151557845286669,
+              "loss_dB_allocated": 0.002763603811014362
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 2.4195741061679013e-05,
+              "pct_source_available": 0.4839148212335802,
+              "loss_dB_allocated": 0.021740002740803847
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 2.6717948355167625e-06,
+              "pct_source_available": 0.053435896710335246,
+              "loss_dB_allocated": 0.0024006219482565956
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 2.0379050190668592e-07,
+              "pct_source_available": 0.004075810038133718,
+              "loss_dB_allocated": 0.000183106855818439
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.026619969881693e-05,
+              "pct_source_available": 0.2053239939763386,
+              "loss_dB_allocated": 0.009224235332200736
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.6961796968409367e-05,
+              "pct_source_available": 0.33923593936818736,
+              "loss_dB_allocated": 0.015240265286447457
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.3247051516622355e-06,
+              "pct_source_available": 0.04649410303324471,
+              "loss_dB_allocated": 0.0020887600111054736
+            }
+          ],
+          "region": "DL"
+        },
+        {
+          "setting": "B8",
+          "frequency_MHz": 960.0,
+          "total_IL_dB": 0.2999074438468574,
+          "reflection_dB": 0.009756767522752223,
+          "absorbed_network_dissipation_dB": 0.29015067632410524,
+          "inductor_dissipation_dB_allocated": 0.2322831221268022,
+          "GJM01_dissipation_dB_allocated": 0.03341855589487841,
+          "IC_variable_C_dissipation_dB_allocated": 0.024349020694281076,
+          "PCB_C_dissipation_dB_allocated": 9.997760814355453e-05,
+          "P_available_W": 0.005,
+          "P_reflected_W": 1.1220285380349791e-05,
+          "P_load_W": 0.004666370951884978,
+          "P_inductor_W": 0.00025810766653321473,
+          "P_capacitor_W": 6.43010962014567e-05,
+          "P_total_dissipation_W": 0.0003224087627346714,
+          "power_residual_W": 5.963111948670274e-19,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 1.6690311775283584e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 9.846409501116529e-05,
+              "pct_source_available": 1.9692819002233057,
+              "loss_dB_allocated": 0.08861242950968419
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 4.589157466841365e-06,
+              "pct_source_available": 0.0917831493368273,
+              "loss_dB_allocated": 0.00412999675153881
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 5.1168197025155606e-05,
+              "pct_source_available": 1.023363940503112,
+              "loss_dB_allocated": 0.04604864597105256
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00010388621703005245,
+              "pct_source_available": 2.077724340601049,
+              "loss_dB_allocated": 0.09349204989452663
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 3.4771135472899714e-06,
+              "pct_source_available": 0.06954227094579943,
+              "loss_dB_allocated": 0.0031292165846998534
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 3.052119576576493e-05,
+              "pct_source_available": 0.6104239153152985,
+              "loss_dB_allocated": 0.02746744697179651
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 3.135621908294063e-06,
+              "pct_source_available": 0.06271243816588126,
+              "loss_dB_allocated": 0.0028218923383820454
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 1.1109282029289314e-07,
+              "pct_source_available": 0.0022218564058578624,
+              "loss_dB_allocated": 9.997760814355453e-05
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 6.117207274299723e-06,
+              "pct_source_available": 0.12234414548599447,
+              "loss_dB_allocated": 0.005505160011154774
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.093886476599902e-05,
+              "pct_source_available": 0.4187772953199804,
+              "loss_dB_allocated": 0.01884386057556819
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.195161016672003e-13,
+              "pct_source_available": 2.390322033344006e-09,
+              "loss_dB_allocated": 1.0755811174678564e-10
+            }
+          ],
+          "region": "DL"
+        }
+      ],
+      "stored_reference_worst_IL_db": 0.29990744384685586,
+      "stored_H2_min_db": 30.0017896779293,
+      "stored_H3_min_db": 30.00195627696315,
+      "notes": [
+        "The loss allocation is an exact accounting partition, not a causal improvement predicted by removing individual components.",
+        "Reflection and internal dissipation dB add exactly, but component dB allocations are proportional shares of internal dissipated power.",
+        "Reported values are from 7001-point per passband interval finite-grid local extrema. No EM, nonlinear, process variation or continuous frequency guarantee."
+      ],
+      "source_repo_path": "experiments/chatgpt_topology_search/runs/EXP-010/EXP010-02.json"
+    },
+    "EXP010-03": {
+      "candidate_id": "EXP010-03",
+      "objective": "full_lpf",
+      "component_counts": {
+        "LQP02": 4,
+        "GJM01": 3,
+        "PCB_PATTERN_C": 1,
+        "IC_VARIABLE_C": 3
+      },
+      "chip_area_cost": 6.0,
+      "fixed_element_Q": {
+        "L": [
+          25.0
+        ],
+        "GJM01": 80,
+        "IC_variable_C": 80,
+        "PCB_pattern_C": 40
+      },
+      "min_K_eigenvalue": 0.4531185725377112,
+      "frequency_grid_per_passband_interval": 7001,
+      "worst_passband": {
+        "setting": "B8",
+        "frequency_MHz": 960.0,
+        "total_IL_dB": 0.2999537584801568,
+        "reflection_dB": 0.00955782495108843,
+        "absorbed_network_dissipation_dB": 0.2903959335290688,
+        "inductor_dissipation_dB_allocated": 0.23244761893998217,
+        "GJM01_dissipation_dB_allocated": 0.03477406420110818,
+        "IC_variable_C_dissipation_dB_allocated": 0.02307448526335594,
+        "PCB_C_dissipation_dB_allocated": 9.976512462247474e-05,
+        "P_available_W": 0.005,
+        "P_reflected_W": 1.0991753027422651e-05,
+        "P_load_W": 0.0046663211883912915,
+        "P_inductor_W": 0.00025829507155429165,
+        "P_capacitor_W": 6.439198702699291e-05,
+        "P_total_dissipation_W": 0.00032268705858128457,
+        "power_residual_W": 1.4094628242311558e-18,
+        "max_nodal_vs_full_MNA_voltage_difference_V": 1.2225062931717347e-15,
+        "component_losses": [
+          {
+            "id": "L0",
+            "type": "LQP02",
+            "loss_W": 9.847261244850923e-05,
+            "pct_source_available": 1.9694522489701844,
+            "loss_dB_allocated": 0.08861850966306328
+          },
+          {
+            "id": "L1",
+            "type": "LQP02",
+            "loss_W": 4.576070547323642e-06,
+            "pct_source_available": 0.09152141094647284,
+            "loss_dB_allocated": 0.004118145562847802
+          },
+          {
+            "id": "L2",
+            "type": "LQP02",
+            "loss_W": 5.132377251899119e-05,
+            "pct_source_available": 1.026475450379824,
+            "loss_dB_allocated": 0.04618782946677006
+          },
+          {
+            "id": "L3",
+            "type": "LQP02",
+            "loss_W": 0.00010392261603946758,
+            "pct_source_available": 2.0784523207893515,
+            "loss_dB_allocated": 0.09352313424730102
+          },
+          {
+            "id": "Cf1",
+            "type": "GJM01",
+            "loss_W": 3.476530949601436e-06,
+            "pct_source_available": 0.06953061899202873,
+            "loss_dB_allocated": 0.0031286363171515266
+          },
+          {
+            "id": "Cf2",
+            "type": "GJM01",
+            "loss_W": 3.202563064049647e-05,
+            "pct_source_available": 0.6405126128099293,
+            "loss_dB_allocated": 0.02882084254507353
+          },
+          {
+            "id": "Cf3",
+            "type": "GJM01",
+            "loss_W": 3.138670447755347e-06,
+            "pct_source_available": 0.06277340895510694,
+            "loss_dB_allocated": 0.0028245853388831183
+          },
+          {
+            "id": "Cpcb0",
+            "type": "PCB_PATTERN_C",
+            "loss_W": 1.1085869633983402e-07,
+            "pct_source_available": 0.0022171739267966804,
+            "loss_dB_allocated": 9.976512462247474e-05
+          },
+          {
+            "id": "Cv0",
+            "type": "IC_VARIABLE_C",
+            "loss_W": 6.109435619648116e-06,
+            "pct_source_available": 0.1221887123929623,
+            "loss_dB_allocated": 0.005498067594974687
+          },
+          {
+            "id": "Cv1",
+            "type": "IC_VARIABLE_C",
+            "loss_W": 1.953043304246169e-05,
+            "pct_source_available": 0.3906086608492338,
+            "loss_dB_allocated": 0.017576032830470555
+          },
+          {
+            "id": "Cv2",
+            "type": "IC_VARIABLE_C",
+            "loss_W": 4.2763069001915355e-10,
+            "pct_source_available": 8.55261380038307e-06,
+            "loss_dB_allocated": 3.8483791069827034e-07
+          }
+        ],
+        "region": "DL"
+      },
+      "settings_at_their_individual_worst_passband_frequency": [
+        {
+          "setting": "B71",
+          "frequency_MHz": 698.0,
+          "total_IL_dB": 0.2828709664530983,
+          "reflection_dB": 0.03817432776485956,
+          "absorbed_network_dissipation_dB": 0.2446966386882389,
+          "inductor_dissipation_dB_allocated": 0.19335625421508357,
+          "GJM01_dissipation_dB_allocated": 0.017628621963271397,
+          "IC_variable_C_dissipation_dB_allocated": 0.03358625804848016,
+          "PCB_C_dissipation_dB_allocated": 0.0001255044614037568,
+          "P_available_W": 0.005,
+          "P_reflected_W": 4.375722507504817e-05,
+          "P_load_W": 0.004684712114115638,
+          "P_inductor_W": 0.00021456016625355826,
+          "P_capacitor_W": 5.6970494555756074e-05,
+          "P_total_dissipation_W": 0.00027153066080931436,
+          "power_residual_W": -1.0842021724855044e-19,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 5.23691153334427e-16,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 7.892520037074104e-05,
+              "pct_source_available": 1.5785040074148209,
+              "loss_dB_allocated": 0.07112541611674078
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 1.1139729482969219e-05,
+              "pct_source_available": 0.22279458965938437,
+              "loss_dB_allocated": 0.010038845529467131
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 2.7896974213935738e-05,
+              "pct_source_available": 0.5579394842787146,
+              "loss_dB_allocated": 0.025140055268073017
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 9.659826218591225e-05,
+              "pct_source_available": 1.931965243718245,
+              "loss_dB_allocated": 0.08705193730080263
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 1.582097410303634e-06,
+              "pct_source_available": 0.03164194820607268,
+              "loss_dB_allocated": 0.0014257466071227079
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 1.6567910100707408e-05,
+              "pct_source_available": 0.3313582020141482,
+              "loss_dB_allocated": 0.014930586106366356
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 1.411811549949944e-06,
+              "pct_source_available": 0.028236230998998878,
+              "loss_dB_allocated": 0.001272289249782334
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 1.3926758259600528e-07,
+              "pct_source_available": 0.0027853516519201053,
+              "loss_dB_allocated": 0.0001255044614037568
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.223201255243275e-05,
+              "pct_source_available": 0.244640251048655,
+              "loss_dB_allocated": 0.011023183706220943
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.103312894211513e-05,
+              "pct_source_available": 0.42066257884230257,
+              "loss_dB_allocated": 0.018954529620676033
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 4.004266417651202e-06,
+              "pct_source_available": 0.08008532835302404,
+              "loss_dB_allocated": 0.0036085447215831825
+            }
+          ],
+          "region": "UL"
+        },
+        {
+          "setting": "B12",
+          "frequency_MHz": 746.0,
+          "total_IL_dB": 0.2866335212523333,
+          "reflection_dB": 0.02367443456062841,
+          "absorbed_network_dissipation_dB": 0.26295908669170515,
+          "inductor_dissipation_dB_allocated": 0.20770202758159875,
+          "GJM01_dissipation_dB_allocated": 0.020497786445734374,
+          "IC_variable_C_dissipation_dB_allocated": 0.03462013469814729,
+          "PCB_C_dissipation_dB_allocated": 0.00013913796622474936,
+          "P_available_W": 0.005,
+          "P_reflected_W": 2.7182044815241868e-05,
+          "P_load_W": 0.004680655223332266,
+          "P_inductor_W": 0.00023076894794925553,
+          "P_capacitor_W": 6.139378390323814e-05,
+          "P_total_dissipation_W": 0.00029216273185249365,
+          "power_residual_W": -6.505213034913027e-19,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 1.4043333874306805e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 8.397499306078663e-05,
+              "pct_source_available": 1.6794998612157326,
+              "loss_dB_allocated": 0.0755811233698192
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 1.0798678033713614e-05,
+              "pct_source_available": 0.21597356067427229,
+              "loss_dB_allocated": 0.009719276976971742
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.4331707362854726e-05,
+              "pct_source_available": 0.6866341472570945,
+              "loss_dB_allocated": 0.030900020531232975
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00010166356949190057,
+              "pct_source_available": 2.0332713898380113,
+              "loss_dB_allocated": 0.09150160670357484
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 1.905555276410173e-06,
+              "pct_source_available": 0.03811110552820346,
+              "loss_dB_allocated": 0.0017150821117676446
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 1.9168803343652017e-05,
+              "pct_source_available": 0.3833760668730403,
+              "loss_dB_allocated": 0.017252751534252934
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 1.6998659190424314e-06,
+              "pct_source_available": 0.03399731838084863,
+              "loss_dB_allocated": 0.0015299527997137963
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 1.5459031603757496e-07,
+              "pct_source_available": 0.003091806320751499,
+              "loss_dB_allocated": 0.00013913796622474936
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.1675535047235134e-05,
+              "pct_source_available": 0.2335107009447027,
+              "loss_dB_allocated": 0.010508486189155754
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.281185336642186e-05,
+              "pct_source_available": 0.4562370673284372,
+              "loss_dB_allocated": 0.020531654016734555
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 3.977580634438951e-06,
+              "pct_source_available": 0.07955161268877901,
+              "loss_dB_allocated": 0.0035799944922569778
+            }
+          ],
+          "region": "DL"
+        },
+        {
+          "setting": "B28",
+          "frequency_MHz": 803.0,
+          "total_IL_dB": 0.299953640081563,
+          "reflection_dB": 0.00643357788653712,
+          "absorbed_network_dissipation_dB": 0.2935200621950259,
+          "inductor_dissipation_dB_allocated": 0.23197973080278447,
+          "GJM01_dissipation_dB_allocated": 0.02382276648840481,
+          "IC_variable_C_dissipation_dB_allocated": 0.0374944596167927,
+          "PCB_C_dissipation_dB_allocated": 0.0002231052870439387,
+          "P_available_W": 0.005,
+          "P_reflected_W": 7.4014467145664345e-06,
+          "P_load_W": 0.004666321315605865,
+          "P_inductor_W": 0.0002578689347431742,
+          "P_capacitor_W": 6.84083029363906e-05,
+          "P_total_dissipation_W": 0.0003262772376795648,
+          "power_residual_W": 3.74049749507499e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 4.577566798522237e-16,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 8.961017046832587e-05,
+              "pct_source_available": 1.7922034093665176,
+              "loss_dB_allocated": 0.0806136002505983
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 1.5034668695871603e-05,
+              "pct_source_available": 0.30069337391743206,
+              "loss_dB_allocated": 0.013525236765145731
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.970350708469119e-05,
+              "pct_source_available": 0.7940701416938237,
+              "loss_dB_allocated": 0.035717403861020555
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00011352058849428553,
+              "pct_source_available": 2.2704117698857105,
+              "loss_dB_allocated": 0.10212348992601988
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 2.430383825758576e-06,
+              "pct_source_available": 0.04860767651517152,
+              "loss_dB_allocated": 0.0021863811792934076
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 2.192872814637785e-05,
+              "pct_source_available": 0.438574562927557,
+              "loss_dB_allocated": 0.019727155026682913
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 2.12230257102848e-06,
+              "pct_source_available": 0.0424460514205696,
+              "loss_dB_allocated": 0.0019092302824284893
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 2.4800409288560145e-07,
+              "pct_source_available": 0.004960081857712029,
+              "loss_dB_allocated": 0.0002231052870439387
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.4055382358738182e-05,
+              "pct_source_available": 0.2811076471747636,
+              "loss_dB_allocated": 0.012644267597249214
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.293015588577851e-05,
+              "pct_source_available": 0.4586031177155702,
+              "loss_dB_allocated": 0.020628042671935635
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 4.693346055823407e-06,
+              "pct_source_available": 0.09386692111646813,
+              "loss_dB_allocated": 0.00422214934760785
+            }
+          ],
+          "region": "DL"
+        },
+        {
+          "setting": "B13+B14",
+          "frequency_MHz": 798.0,
+          "total_IL_dB": 0.26278575577510366,
+          "reflection_dB": 0.007990271533971208,
+          "absorbed_network_dissipation_dB": 0.25479548424113274,
+          "inductor_dissipation_dB_allocated": 0.20270290538687658,
+          "GJM01_dissipation_dB_allocated": 0.023649775092265367,
+          "IC_variable_C_dissipation_dB_allocated": 0.028370700376193297,
+          "PCB_C_dissipation_dB_allocated": 7.210338579750651e-05,
+          "P_available_W": 0.005,
+          "P_reflected_W": 9.190682831173154e-06,
+          "P_load_W": 0.004706428104239021,
+          "P_inductor_W": 0.0002262398734027851,
+          "P_capacitor_W": 5.8141339527018606e-05,
+          "P_total_dissipation_W": 0.0002843812129298037,
+          "power_residual_W": 2.222614453595284e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 2.210013198821679e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 8.524779354589984e-05,
+              "pct_source_available": 1.7049558709179968,
+              "loss_dB_allocated": 0.07637900061414106
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 4.822367513986335e-06,
+              "pct_source_available": 0.0964473502797267,
+              "loss_dB_allocated": 0.004320670318746234
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.76533966824021e-05,
+              "pct_source_available": 0.753067933648042,
+              "loss_dB_allocated": 0.03373610845166574
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 9.851631566049684e-05,
+              "pct_source_available": 1.970326313209937,
+              "loss_dB_allocated": 0.08826712600232353
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 2.16131565957268e-06,
+              "pct_source_available": 0.0432263131914536,
+              "loss_dB_allocated": 0.0019364622029891146
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 2.2293259557075158e-05,
+              "pct_source_available": 0.44586519114150314,
+              "loss_dB_allocated": 0.019973970170667793
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 1.9413075294159576e-06,
+              "pct_source_available": 0.03882615058831915,
+              "loss_dB_allocated": 0.0017393427186084593
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 8.04757131803606e-08,
+              "pct_source_available": 0.001609514263607212,
+              "loss_dB_allocated": 7.210338579750651e-05
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 6.879383174777147e-06,
+              "pct_source_available": 0.1375876634955429,
+              "loss_dB_allocated": 0.006163683420712858
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.202970782043715e-05,
+              "pct_source_available": 0.44059415640874294,
+              "loss_dB_allocated": 0.01973783715868908
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.755890072560147e-06,
+              "pct_source_available": 0.05511780145120293,
+              "loss_dB_allocated": 0.0024691797967913596
+            }
+          ],
+          "region": "UL"
+        },
+        {
+          "setting": "B26",
+          "frequency_MHz": 894.0,
+          "total_IL_dB": 0.2871188388397066,
+          "reflection_dB": 0.008506572273475154,
+          "absorbed_network_dissipation_dB": 0.27861226656623134,
+          "inductor_dissipation_dB_allocated": 0.22441846001564367,
+          "GJM01_dissipation_dB_allocated": 0.028074827996873556,
+          "IC_variable_C_dissipation_dB_allocated": 0.025933447110851653,
+          "PCB_C_dissipation_dB_allocated": 0.00018553144286244405,
+          "P_available_W": 0.005,
+          "P_reflected_W": 9.783968145328101e-06,
+          "P_load_W": 0.004680132196336644,
+          "P_inductor_W": 0.00024976838852196496,
+          "P_capacitor_W": 6.031544699606187e-05,
+          "P_total_dissipation_W": 0.00031008383551802684,
+          "power_residual_W": 1.2468324983583301e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 1.907678490446994e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 9.198097697092076e-05,
+              "pct_source_available": 1.8396195394184152,
+              "loss_dB_allocated": 0.08264548338042833
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 1.0067396813619238e-05,
+              "pct_source_available": 0.20134793627238473,
+              "loss_dB_allocated": 0.009045619033892036
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.647877884588056e-05,
+              "pct_source_available": 0.7295755769176113,
+              "loss_dB_allocated": 0.032776411059415644
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00011124123589154439,
+              "pct_source_available": 2.2248247178308875,
+              "loss_dB_allocated": 0.09995094654190766
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 3.079309369013178e-06,
+              "pct_source_available": 0.06158618738026356,
+              "loss_dB_allocated": 0.0027667787368732956
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 2.5487991926978433e-05,
+              "pct_source_available": 0.5097598385395686,
+              "loss_dB_allocated": 0.02290112023780238
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 2.678811641070913e-06,
+              "pct_source_available": 0.053576232821418254,
+              "loss_dB_allocated": 0.0024069290221978806
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 2.0648875988489282e-07,
+              "pct_source_available": 0.004129775197697857,
+              "loss_dB_allocated": 0.00018553144286244405
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.0358208878810907e-05,              "pct_source_available": 0.20716417757621813,
+              "loss_dB_allocated": 0.009306915494226702
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.6150336938706644e-05,
+              "pct_source_available": 0.3230067387741329,
+              "loss_dB_allocated": 0.014511178800353162
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.3542994815969e-06,
+              "pct_source_available": 0.047085989631938004,
+              "loss_dB_allocated": 0.0021153528162717876
+            }
+          ],
+          "region": "DL"
+        },
+        {
+          "setting": "B8",
+          "frequency_MHz": 960.0,
+          "total_IL_dB": 0.2999537584801568,
+          "reflection_dB": 0.00955782495108843,
+          "absorbed_network_dissipation_dB": 0.2903959335290688,
+          "inductor_dissipation_dB_allocated": 0.23244761893998217,
+          "GJM01_dissipation_dB_allocated": 0.03477406420110818,
+          "IC_variable_C_dissipation_dB_allocated": 0.02307448526335594,
+          "PCB_C_dissipation_dB_allocated": 9.976512462247474e-05,
+          "P_available_W": 0.005,
+          "P_reflected_W": 1.0991753027422651e-05,
+          "P_load_W": 0.0046663211883912915,
+          "P_inductor_W": 0.00025829507155429165,
+          "P_capacitor_W": 6.439198702699291e-05,
+          "P_total_dissipation_W": 0.00032268705858128457,
+          "power_residual_W": 1.4094628242311558e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 1.2225062931717347e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 9.847261244850923e-05,
+              "pct_source_available": 1.9694522489701844,
+              "loss_dB_allocated": 0.08861850966306328
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 4.576070547323642e-06,
+              "pct_source_available": 0.09152141094647284,
+              "loss_dB_allocated": 0.004118145562847802
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 5.132377251899119e-05,
+              "pct_source_available": 1.026475450379824,
+              "loss_dB_allocated": 0.04618782946677006
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00010392261603946758,
+              "pct_source_available": 2.0784523207893515,
+              "loss_dB_allocated": 0.09352313424730102
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 3.476530949601436e-06,
+              "pct_source_available": 0.06953061899202873,
+              "loss_dB_allocated": 0.0031286363171515266
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 3.202563064049647e-05,
+              "pct_source_available": 0.6405126128099293,
+              "loss_dB_allocated": 0.02882084254507353
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 3.138670447755347e-06,
+              "pct_source_available": 0.06277340895510694,
+              "loss_dB_allocated": 0.0028245853388831183
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 1.1085869633983402e-07,
+              "pct_source_available": 0.0022171739267966804,
+              "loss_dB_allocated": 9.976512462247474e-05
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 6.109435619648116e-06,
+              "pct_source_available": 0.1221887123929623,
+              "loss_dB_allocated": 0.005498067594974687
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.953043304246169e-05,
+              "pct_source_available": 0.3906086608492338,
+              "loss_dB_allocated": 0.017576032830470555
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 4.2763069001915355e-10,
+              "pct_source_available": 8.55261380038307e-06,
+              "loss_dB_allocated": 3.8483791069827034e-07
+            }
+          ],
+          "region": "DL"
+        }
+      ],
+      "stored_reference_worst_IL_db": 0.2999537584801625,
+      "stored_H2_min_db": 30.00448764068823,
+      "stored_H3_min_db": 30.00485351634861,
+      "notes": [
+        "The loss allocation is an exact accounting partition, not a causal improvement predicted by removing individual components.",
+        "Reflection and internal dissipation dB add exactly, but component dB allocations are proportional shares of internal dissipated power.",
+        "Reported values are from 7001-point per passband interval finite-grid local extrema. No EM, nonlinear, process variation or continuous frequency guarantee."
+      ],
+      "source_repo_path": "experiments/chatgpt_topology_search/runs/EXP-010/EXP010-03.json"
+    },
+    "EXP010-04": {
+      "candidate_id": "EXP010-04",
+      "objective": "full_lpf",
+      "component_counts": {
+        "LQP02": 4,
+        "GJM01": 3,
+        "PCB_PATTERN_C": 1,
+        "IC_VARIABLE_C": 3
+      },
+      "chip_area_cost": 6.0,
+      "fixed_element_Q": {
+        "L": [
+          25.0
+        ],
+        "GJM01": 80,
+        "IC_variable_C": 80,
+        "PCB_pattern_C": 40
+      },
+      "min_K_eigenvalue": 0.4489189099897112,
+      "frequency_grid_per_passband_interval": 7001,
+      "worst_passband": {
+        "setting": "B8",
+        "frequency_MHz": 960.0,
+        "total_IL_dB": 0.2999954436023126,
+        "reflection_dB": 0.0094696234803561,
+        "absorbed_network_dissipation_dB": 0.2905258201219565,
+        "inductor_dissipation_dB_allocated": 0.2324984037132936,
+        "GJM01_dissipation_dB_allocated": 0.03482793085693738,
+        "IC_variable_C_dissipation_dB_allocated": 0.023099664233618568,
+        "PCB_C_dissipation_dB_allocated": 9.982131810696983e-05,
+        "P_available_W": 0.005,
+        "P_reflected_W": 1.0890429535727801e-05,
+        "P_load_W": 0.004666276399603189,
+        "P_inductor_W": 0.00025835293007483827,
+        "P_capacitor_W": 6.44802407862452e-05,
+        "P_total_dissipation_W": 0.00032283317086108344,
+        "power_residual_W": 3.2526065174565133e-19,
+        "max_nodal_vs_full_MNA_voltage_difference_V": 2.2121037052315357e-15,
+        "component_losses": [
+          {
+            "id": "L0",
+            "type": "LQP02",
+            "loss_W": 9.916810969757227e-05,
+            "pct_source_available": 1.9833621939514454,
+            "loss_dB_allocated": 0.08924391605418017
+          },
+          {
+            "id": "L1",
+            "type": "LQP02",
+            "loss_W": 4.561371839978005e-06,
+            "pct_source_available": 0.0912274367995601,
+            "loss_dB_allocated": 0.004104895079883366
+          },
+          {
+            "id": "L2",
+            "type": "LQP02",
+            "loss_W": 5.125176333195597e-05,
+            "pct_source_available": 1.0250352666391194,
+            "loss_dB_allocated": 0.04612277150764083
+          },
+          {
+            "id": "L3",
+            "type": "LQP02",
+            "loss_W": 0.00010337168520533205,
+            "pct_source_available": 2.067433704106641,
+            "loss_dB_allocated": 0.09302682107158924
+          },
+          {
+            "id": "Cf1",
+            "type": "GJM01",
+            "loss_W": 3.4801952385316055e-06,
+            "pct_source_available": 0.06960390477063211,
+            "loss_dB_allocated": 0.003131916627904379
+          },
+          {
+            "id": "Cf2",
+            "type": "GJM01",
+            "loss_W": 3.209110329410206e-05,
+            "pct_source_available": 0.6418220658820412,
+            "loss_dB_allocated": 0.028879603908946755
+          },
+          {
+            "id": "Cf3",
+            "type": "GJM01",
+            "loss_W": 3.129603674116286e-06,
+            "pct_source_available": 0.0625920734823257,
+            "loss_dB_allocated": 0.0028164103200862475
+          },
+          {
+            "id": "Cpcb0",
+            "type": "PCB_PATTERN_C",
+            "loss_W": 1.1092175088079375e-07,
+            "pct_source_available": 0.002218435017615875,
+            "loss_dB_allocated": 9.982131810696983e-05
+          },
+          {
+            "id": "Cv0",
+            "type": "IC_VARIABLE_C",
+            "loss_W": 6.083421467800565e-06,
+            "pct_source_available": 0.12166842935601128,
+            "loss_dB_allocated": 0.005474626434347391
+          },
+          {
+            "id": "Cv1",
+            "type": "IC_VARIABLE_C",
+            "loss_W": 1.9584995360813002e-05,
+            "pct_source_available": 0.3916999072162601,
+            "loss_dB_allocated": 0.017625037799270386
+          },
+          {
+            "id": "Cv2",
+            "type": "IC_VARIABLE_C",
+            "loss_W": 8.78812820827691e-19,
+            "pct_source_available": 1.7576256416553818e-14,
+            "loss_dB_allocated": 7.908661146054267e-16
+          }
+        ],
+        "region": "DL"
+      },
+      "settings_at_their_individual_worst_passband_frequency": [
+        {
+          "setting": "B71",
+          "frequency_MHz": 698.0,
+          "total_IL_dB": 0.2797632185016779,
+          "reflection_dB": 0.03668641168680234,
+          "absorbed_network_dissipation_dB": 0.24307680681487548,
+          "inductor_dissipation_dB_allocated": 0.19216345851943936,
+          "GJM01_dissipation_dB_allocated": 0.017664518960086126,
+          "IC_variable_C_dissipation_dB_allocated": 0.03312935350652307,
+          "PCB_C_dissipation_dB_allocated": 0.00011947582882691527,
+          "P_available_W": 0.005,
+          "P_reflected_W": 4.205889893227036e-05,
+          "P_load_W": 0.004688065625476032,
+          "P_inductor_W": 0.00021334904567334937,
+          "P_capacitor_W": 5.6526429918346346e-05,
+          "P_total_dissipation_W": 0.00026987547559169573,
+          "power_residual_W": 2.3852447794681098e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 1.457101633618084e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 7.909449973288506e-05,
+              "pct_source_available": 1.5818899946577012,
+              "loss_dB_allocated": 0.07124040592994632
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 1.0556879406714702e-05,
+              "pct_source_available": 0.21113758813429404,
+              "loss_dB_allocated": 0.009508579949651744
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 2.7632134647296553e-05,
+              "pct_source_available": 0.552642692945931,
+              "loss_dB_allocated": 0.02488826019043507
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 9.606553188645308e-05,
+              "pct_source_available": 1.9213106377290616,
+              "loss_dB_allocated": 0.08652621244940624
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 1.580106440940811e-06,
+              "pct_source_available": 0.031602128818816216,
+              "loss_dB_allocated": 0.0014232016719911565
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 1.662917888459109e-05,
+              "pct_source_available": 0.3325835776918218,
+              "loss_dB_allocated": 0.014977899323224518
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 1.4027069411035212e-06,
+              "pct_source_available": 0.02805413882207042,
+              "loss_dB_allocated": 0.001263417964870452
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 1.3264776902772195e-07,
+              "pct_source_available": 0.0026529553805544393,
+              "loss_dB_allocated": 0.00011947582882691527
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.1798406109585174e-05,
+              "pct_source_available": 0.2359681221917035,
+              "loss_dB_allocated": 0.010626822894282024
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.0937380380471915e-05,
+              "pct_source_available": 0.4187476076094383,
+              "loss_dB_allocated": 0.01885829586699259
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 4.04600339262611e-06,
+              "pct_source_available": 0.0809200678525222,
+              "loss_dB_allocated": 0.0036442347452484507
+            }
+          ],
+          "region": "UL"
+        },
+        {
+          "setting": "B12",
+          "frequency_MHz": 746.0,
+          "total_IL_dB": 0.28146674909423913,
+          "reflection_dB": 0.020036752589964905,
+          "absorbed_network_dissipation_dB": 0.2614299965042739,
+          "inductor_dissipation_dB_allocated": 0.20686649933043375,
+          "GJM01_dissipation_dB_allocated": 0.020307550459891972,
+          "IC_variable_C_dissipation_dB_allocated": 0.034111389498014254,
+          "PCB_C_dissipation_dB_allocated": 0.00014455721593392335,
+          "P_available_W": 0.005,
+          "P_reflected_W": 2.3015031636543614e-05,
+          "P_load_W": 0.004686227081024073,
+          "P_inductor_W": 0.00023007331641695277,
+          "P_capacitor_W": 6.068457092242955e-05,
+          "P_total_dissipation_W": 0.0002907578873393823,
+          "power_residual_W": 1.0842021724855044e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 1.0778315928076987e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 8.406651092339817e-05,
+              "pct_source_available": 1.6813302184679635,
+              "loss_dB_allocated": 0.0755869698254397
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 1.119891515165894e-05,
+              "pct_source_available": 0.22397830303317878,
+              "loss_dB_allocated": 0.01006931359881739
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.276286908048648e-05,
+              "pct_source_available": 0.6552573816097296,
+              "loss_dB_allocated": 0.029458175073283497
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00010204502126140918,
+              "pct_source_available": 2.0409004252281835,
+              "loss_dB_allocated": 0.09175204083289316
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 1.9179218891807352e-06,
+              "pct_source_available": 0.0383584377836147,
+              "loss_dB_allocated": 0.001724466762955725
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 1.8972797750941692e-05,
+              "pct_source_available": 0.37945595501883383,
+              "loss_dB_allocated": 0.017059067580565534
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 1.6949841724068348e-06,
+              "pct_source_available": 0.033899683448136694,
+              "loss_dB_allocated": 0.001524016116370712
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 1.6077401700888335e-07,
+              "pct_source_available": 0.003215480340177667,
+              "loss_dB_allocated": 0.00014455721593392335
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.1930958851930365e-05,
+              "pct_source_available": 0.23861917703860727,
+              "loss_dB_allocated": 0.01072751820937556
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.1909193958078006e-05,
+              "pct_source_available": 0.4381838791615601,
+              "loss_dB_allocated": 0.019699278159860216
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 4.0979402828830365e-06,
+              "pct_source_available": 0.08195880565766073,
+              "loss_dB_allocated": 0.00368459312877848
+            }
+          ],
+          "region": "DL"
+        },
+        {
+          "setting": "B28",
+          "frequency_MHz": 803.0,
+          "total_IL_dB": 0.29999540073860137,
+          "reflection_dB": 0.0064102379989771415,
+          "absorbed_network_dissipation_dB": 0.2935851627396242,
+          "inductor_dissipation_dB_allocated": 0.2319630669278016,
+          "GJM01_dissipation_dB_allocated": 0.02388911560353652,
+          "IC_variable_C_dissipation_dB_allocated": 0.037510955691867735,
+          "PCB_C_dissipation_dB_allocated": 0.00022202451641838272,
+          "P_available_W": 0.005,
+          "P_reflected_W": 7.374615380795755e-06,
+          "P_load_W": 0.004666276445658097,
+          "P_inductor_W": 0.0002578498860897497,
+          "P_capacitor_W": 6.849905287135918e-05,
+          "P_total_dissipation_W": 0.00032634893896110886,
+          "power_residual_W": -1.463672932855431e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 1.336885555457667e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 9.018821327384971e-05,
+              "pct_source_available": 1.8037642654769943,
+              "loss_dB_allocated": 0.0811337746508025
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 1.4894150725069534e-05,
+              "pct_source_available": 0.29788301450139065,
+              "loss_dB_allocated": 0.0133988536270655
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.9720056229174155e-05,
+              "pct_source_available": 0.7944011245834831,
+              "loss_dB_allocated": 0.03573236428833247
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00011304746586165629,
+              "pct_source_available": 2.2609493172331256,
+              "loss_dB_allocated": 0.10169807436160112
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 2.432375167199382e-06,
+              "pct_source_available": 0.04864750334398763,
+              "loss_dB_allocated": 0.0021881770523885535
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 2.2007585581643533e-05,
+              "pct_source_available": 0.4401517116328707,
+              "loss_dB_allocated": 0.01979813574715803
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 2.1151534714479864e-06,
+              "pct_source_available": 0.04230306942895973,
+              "loss_dB_allocated": 0.001902802803989935
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 2.4680220444503123e-07,
+              "pct_source_available": 0.004936044088900624,
+              "loss_dB_allocated": 0.00022202451641838272
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.3940941329892219e-05,
+              "pct_source_available": 0.27881882659784435,
+              "loss_dB_allocated": 0.012541341614619766
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.3031524752049932e-05,
+              "pct_source_available": 0.4606304950409986,
+              "loss_dB_allocated": 0.02071927662457655
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 4.724670364681099e-06,
+              "pct_source_available": 0.09449340729362198,
+              "loss_dB_allocated": 0.004250337452671419
+            }
+          ],
+          "region": "DL"
+        },
+        {
+          "setting": "B13+B14",
+          "frequency_MHz": 798.0,
+          "total_IL_dB": 0.2656416059425298,
+          "reflection_dB": 0.008346167359481434,
+          "absorbed_network_dissipation_dB": 0.2572954385830487,
+          "inductor_dissipation_dB_allocated": 0.20450418561157824,
+          "GJM01_dissipation_dB_allocated": 0.023698897982408616,
+          "IC_variable_C_dissipation_dB_allocated": 0.029012276662053523,
+          "PCB_C_dissipation_dB_allocated": 8.007832700832869e-05,
+          "P_available_W": 0.005,
+          "P_reflected_W": 9.599653126560499e-06,
+          "P_load_W": 0.004703334250696299,
+          "P_inductor_W": 0.00022816657201038106,
+          "P_capacitor_W": 5.8899524166762606e-05,
+          "P_total_dissipation_W": 0.00028706609617714366,
+          "power_residual_W": -2.8731357570865868e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 4.965068306494546e-16,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 8.63774126872602e-05,
+              "pct_source_available": 1.727548253745204,
+              "loss_dB_allocated": 0.07741950225749833
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 5.346806847233345e-06,
+              "pct_source_available": 0.1069361369446669,
+              "loss_dB_allocated": 0.004792307524636502
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.7932548868035835e-05,
+              "pct_source_available": 0.7586509773607167,
+              "loss_dB_allocated": 0.03399869203485303
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 9.850980360785169e-05,
+              "pct_source_available": 1.970196072157034,
+              "loss_dB_allocated": 0.08829368379459039
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 2.1742270147448433e-06,
+              "pct_source_available": 0.043484540294896866,
+              "loss_dB_allocated": 0.0019487452568856453
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 2.23202051905148e-05,
+              "pct_source_available": 0.44640410381029605,
+              "loss_dB_allocated": 0.020005451915900606
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 1.9465733756245125e-06,
+              "pct_source_available": 0.03893146751249025,
+              "loss_dB_allocated": 0.001744700809622366
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 8.934387974102289e-08,
+              "pct_source_available": 0.0017868775948204577,
+              "loss_dB_allocated": 8.007832700832869e-05
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 7.307748331318174e-06,
+              "pct_source_available": 0.14615496662636346,
+              "loss_dB_allocated": 0.006549886374602666
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.2283037614898667e-05,
+              "pct_source_available": 0.4456607522979733,
+              "loss_dB_allocated": 0.0199721388643192
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.7783887599205896e-06,
+              "pct_source_available": 0.055567775198411794,
+              "loss_dB_allocated": 0.0024902514231316566
+            }
+          ],
+          "region": "UL"
+        },
+        {
+          "setting": "B26",
+          "frequency_MHz": 894.0,
+          "total_IL_dB": 0.2857845175594545,
+          "reflection_dB": 0.009075738868170346,
+          "absorbed_network_dissipation_dB": 0.27670877869128385,
+          "inductor_dissipation_dB_allocated": 0.22306826793043444,
+          "GJM01_dissipation_dB_allocated": 0.028006664218599868,
+          "IC_variable_C_dissipation_dB_allocated": 0.025451633241251853,
+          "PCB_C_dissipation_dB_allocated": 0.0001822133009976986,
+          "P_available_W": 0.005,
+          "P_reflected_W": 1.0437920308217543e-05,
+          "P_load_W": 0.004681570335586621,
+          "P_inductor_W": 0.0002482869723879012,
+          "P_capacitor_W": 5.970477171726342e-05,
+          "P_total_dissipation_W": 0.00030799174410516466,
+          "power_residual_W": -3.848917712323541e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 1.2008898127460164e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 9.239029003319618e-05,
+              "pct_source_available": 1.8478058006639237,
+              "loss_dB_allocated": 0.0830061350907182
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 9.844308774026402e-06,
+              "pct_source_available": 0.19688617548052806,
+              "loss_dB_allocated": 0.008844414534016262
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.580850884603322e-05,
+              "pct_source_available": 0.7161701769206644,
+              "loss_dB_allocated": 0.03217141023805687
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00011024386473464544,
+              "pct_source_available": 2.204877294692909,
+              "loss_dB_allocated": 0.0990463080676431
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 3.0748448394620238e-06,
+              "pct_source_available": 0.061496896789240474,
+              "loss_dB_allocated": 0.002762530413484761
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 2.5433556518830953e-05,
+              "pct_source_available": 0.508671130376619,
+              "loss_dB_allocated": 0.022850250036891947
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 2.664521308095816e-06,
+              "pct_source_available": 0.053290426161916316,
+              "loss_dB_allocated": 0.0023938837682231616
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 2.028131981893218e-07,
+              "pct_source_available": 0.004056263963786436,
+              "loss_dB_allocated": 0.0001822133009976986
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.0188948331227658e-05,
+              "pct_source_available": 0.20377896662455317,
+              "loss_dB_allocated": 0.009154048778398156
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.5859151756993187e-05,
+              "pct_source_available": 0.31718303513986373,
+              "loss_dB_allocated": 0.014248325150751097
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.2809357644644584e-06,
+              "pct_source_available": 0.045618715289289166,
+              "loss_dB_allocated": 0.0020492593121026015
+            }
+          ],
+          "region": "DL"
+        },
+        {
+          "setting": "B8",
+          "frequency_MHz": 960.0,
+          "total_IL_dB": 0.2999954436023126,
+          "reflection_dB": 0.0094696234803561,
+          "absorbed_network_dissipation_dB": 0.2905258201219565,
+          "inductor_dissipation_dB_allocated": 0.2324984037132936,
+          "GJM01_dissipation_dB_allocated": 0.03482793085693738,
+          "IC_variable_C_dissipation_dB_allocated": 0.023099664233618568,
+          "PCB_C_dissipation_dB_allocated": 9.982131810696983e-05,
+          "P_available_W": 0.005,
+          "P_reflected_W": 1.0890429535727801e-05,
+          "P_load_W": 0.004666276399603189,
+          "P_inductor_W": 0.00025835293007483827,
+          "P_capacitor_W": 6.44802407862452e-05,
+          "P_total_dissipation_W": 0.00032283317086108344,
+          "power_residual_W": 3.2526065174565133e-19,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 2.2121037052315357e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 9.916810969757227e-05,
+              "pct_source_available": 1.9833621939514454,
+              "loss_dB_allocated": 0.08924391605418017
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 4.561371839978005e-06,
+              "pct_source_available": 0.0912274367995601,
+              "loss_dB_allocated": 0.004104895079883366
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 5.125176333195597e-05,
+              "pct_source_available": 1.0250352666391194,
+              "loss_dB_allocated": 0.04612277150764083
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00010337168520533205,
+              "pct_source_available": 2.067433704106641,
+              "loss_dB_allocated": 0.09302682107158924
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 3.4801952385316055e-06,
+              "pct_source_available": 0.06960390477063211,
+              "loss_dB_allocated": 0.003131916627904379
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 3.209110329410206e-05,
+              "pct_source_available": 0.6418220658820412,
+              "loss_dB_allocated": 0.028879603908946755
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 3.129603674116286e-06,
+              "pct_source_available": 0.0625920734823257,
+              "loss_dB_allocated": 0.0028164103200862475
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 1.1092175088079375e-07,
+              "pct_source_available": 0.002218435017615875,
+              "loss_dB_allocated": 9.982131810696983e-05
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 6.083421467800565e-06,
+              "pct_source_available": 0.12166842935601128,
+              "loss_dB_allocated": 0.005474626434347391
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.9584995360813002e-05,
+              "pct_source_available": 0.3916999072162601,
+              "loss_dB_allocated": 0.017625037799270386
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 8.78812820827691e-19,
+              "pct_source_available": 1.7576256416553818e-14,
+              "loss_dB_allocated": 7.908661146054267e-16
+            }
+          ],
+          "region": "DL"
+        }
+      ],
+      "stored_reference_worst_IL_db": 0.2999954436023214,
+      "stored_H2_min_db": 30.006907111569184,
+      "stored_H3_min_db": 30.00698897972677,
+      "notes": [
+        "The loss allocation is an exact accounting partition, not a causal improvement predicted by removing individual components.",
+        "Reflection and internal dissipation dB add exactly, but component dB allocations are proportional shares of internal dissipated power.",
+        "Reported values are from 7001-point per passband interval finite-grid local extrema. No EM, nonlinear, process variation or continuous frequency guarantee."
+      ],
+      "source_repo_path": "experiments/chatgpt_topology_search/runs/EXP-010/EXP010-04.json"
+    },
+    "EXP010-05": {
+      "candidate_id": "EXP010-05",
+      "objective": "full_lpf",
+      "component_counts": {
+        "LQP02": 4,
+        "GJM01": 3,
+        "PCB_PATTERN_C": 1,
+        "IC_VARIABLE_C": 3
+      },
+      "chip_area_cost": 6.0,
+      "fixed_element_Q": {
+        "L": [
+          25.0
+        ],
+        "GJM01": 80,
+        "IC_variable_C": 80,
+        "PCB_pattern_C": 40
+      },
+      "min_K_eigenvalue": 0.4545619078763558,
+      "frequency_grid_per_passband_interval": 7001,
+      "worst_passband": {
+        "setting": "B8",
+        "frequency_MHz": 960.0,
+        "total_IL_dB": 0.29989057738336233,
+        "reflection_dB": 0.009862902407966948,
+        "absorbed_network_dissipation_dB": 0.29002767497539544,
+        "inductor_dissipation_dB_allocated": 0.23223643637676922,
+        "GJM01_dissipation_dB_allocated": 0.03480683687010125,
+        "IC_variable_C_dissipation_dB_allocated": 0.022884348767740134,
+        "PCB_C_dissipation_dB_allocated": 0.00010005296078484678,
+        "P_available_W": 0.005,
+        "P_reflected_W": 1.1342201986386515e-05,
+        "P_load_W": 0.004666389074456511,
+        "P_inductor_W": 0.0002580530975912577,
+        "P_capacitor_W": 6.421562596584321e-05,
+        "P_total_dissipation_W": 0.00032226872355710097,
+        "power_residual_W": 9.75781955236954e-19,
+        "max_nodal_vs_full_MNA_voltage_difference_V": 1.1443916996305594e-15,
+        "component_losses": [
+          {
+            "id": "L0",
+            "type": "LQP02",
+            "loss_W": 9.820106093418378e-05,
+            "pct_source_available": 1.9640212186836754,
+            "loss_dB_allocated": 0.08837663509041102
+          },
+          {
+            "id": "L1",
+            "type": "LQP02",
+            "loss_W": 4.605855275185946e-06,
+            "pct_source_available": 0.09211710550371892,
+            "loss_dB_allocated": 0.004145067141455483
+          },
+          {
+            "id": "L2",
+            "type": "LQP02",
+            "loss_W": 5.114043958633892e-05,
+            "pct_source_available": 1.0228087917267785,
+            "loss_dB_allocated": 0.04602414601930035
+          },
+          {
+            "id": "L3",
+            "type": "LQP02",
+            "loss_W": 0.00010410574179554908,
+            "pct_source_available": 2.0821148359109816,
+            "loss_dB_allocated": 0.09369058812560235
+          },
+          {
+            "id": "Cf1",
+            "type": "GJM01",
+            "loss_W": 3.4761504663922067e-06,
+            "pct_source_available": 0.06952300932784414,
+            "loss_dB_allocated": 0.003128382507940565
+          },
+          {
+            "id": "Cf2",
+            "type": "GJM01",
+            "loss_W": 3.20591873552444e-05,
+            "pct_source_available": 0.641183747104888,
+            "loss_dB_allocated": 0.028851858373388387
+          },
+          {
+            "id": "Cf3",
+            "type": "GJM01",
+            "loss_W": 3.140815721777409e-06,
+            "pct_source_available": 0.06281631443554818,
+            "loss_dB_allocated": 0.0028265959887722987
+          },
+          {
+            "id": "Cpcb0",
+            "type": "PCB_PATTERN_C",
+            "loss_W": 1.1117539028982897e-07,
+            "pct_source_available": 0.0022235078057965796,
+            "loss_dB_allocated": 0.00010005296078484678
+          },
+          {
+            "id": "Cv0",
+            "type": "IC_VARIABLE_C",
+            "loss_W": 6.138492418658366e-06,
+            "pct_source_available": 0.12276984837316732,
+            "loss_dB_allocated": 0.005524373151656868
+          },
+          {
+            "id": "Cv1",
+            "type": "IC_VARIABLE_C",
+            "loss_W": 1.9289802726797618e-05,
+            "pct_source_available": 0.3857960545359524,
+            "loss_dB_allocated": 0.017359973918151212
+          },
+          {
+            "id": "Cv2",
+            "type": "IC_VARIABLE_C",
+            "loss_W": 1.8866833877784934e-12,
+            "pct_source_available": 3.773366775556987e-08,
+            "loss_dB_allocated": 1.6979320559947088e-09
+          }
+        ],
+        "region": "DL"
+      },
+      "settings_at_their_individual_worst_passband_frequency": [
+        {
+          "setting": "B71",
+          "frequency_MHz": 698.0,
+          "total_IL_dB": 0.2800493942942429,
+          "reflection_dB": 0.036763299499781917,
+          "absorbed_network_dissipation_dB": 0.24328609479446106,
+          "inductor_dissipation_dB_allocated": 0.19237607551010724,
+          "GJM01_dissipation_dB_allocated": 0.017641863814176643,
+          "IC_variable_C_dissipation_dB_allocated": 0.033146520375926566,
+          "PCB_C_dissipation_dB_allocated": 0.00012163509425058189,
+          "P_available_W": 0.005,
+          "P_reflected_W": 4.214667390745443e-05,
+          "P_load_W": 0.004687756718328806,
+          "P_inductor_W": 0.00021357622372162224,
+          "P_capacitor_W": 5.652038404212056e-05,
+          "P_total_dissipation_W": 0.0002700966077637428,
+          "power_residual_W": -3.2526065174565133e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 1.1801832636420706e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 7.846624962833503e-05,
+              "pct_source_available": 1.5693249925667003,
+              "loss_dB_allocated": 0.07067747945188198            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 1.08283516998765e-05,
+              "pct_source_available": 0.21656703399753,
+              "loss_dB_allocated": 0.009753500497230429
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 2.764803237414831e-05,
+              "pct_source_available": 0.5529606474829662,
+              "loss_dB_allocated": 0.024903614602005783
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 9.66335900192624e-05,
+              "pct_source_available": 1.932671800385248,
+              "loss_dB_allocated": 0.08704148095898906
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 1.579061981705363e-06,
+              "pct_source_available": 0.03158123963410726,
+              "loss_dB_allocated": 0.0014223200585456216
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 1.6597733747110844e-05,
+              "pct_source_available": 0.33195467494221687,
+              "loss_dB_allocated": 0.014950198224277315
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 1.4092294193318092e-06,
+              "pct_source_available": 0.028184588386636185,
+              "loss_dB_allocated": 0.0012693455313537068
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 1.3503947428586567e-07,
+              "pct_source_available": 0.0027007894857173135,
+              "loss_dB_allocated": 0.00012163509425058189
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.2023640764391447e-05,
+              "pct_source_available": 0.2404728152878289,
+              "loss_dB_allocated": 0.010830141966606937
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.0765610830468507e-05,
+              "pct_source_available": 0.4153122166093702,
+              "loss_dB_allocated": 0.018704360661150134
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 4.010067824826732e-06,
+              "pct_source_available": 0.08020135649653463,
+              "loss_dB_allocated": 0.003612017748169499
+            }
+          ],
+          "region": "UL"
+        },
+        {
+          "setting": "B12",
+          "frequency_MHz": 746.0,
+          "total_IL_dB": 0.28138517597382373,
+          "reflection_dB": 0.01800276697671922,
+          "absorbed_network_dissipation_dB": 0.26338240899710486,
+          "inductor_dissipation_dB_allocated": 0.2085597289458079,
+          "GJM01_dissipation_dB_allocated": 0.020198443228381577,
+          "IC_variable_C_dissipation_dB_allocated": 0.034468896429703855,
+          "PCB_C_dissipation_dB_allocated": 0.00015534039321152775,
+          "P_available_W": 0.005,
+          "P_reflected_W": 2.0683552154833396e-05,
+          "P_load_W": 0.00468631510280929,
+          "P_inductor_W": 0.00023201352487482003,
+          "P_capacitor_W": 6.098782016105777e-05,
+          "P_total_dissipation_W": 0.0002930013450358778,
+          "power_residual_W": -9.75781955236954e-19,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 8.881784197001252e-16,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 8.321612101897565e-05,
+              "pct_source_available": 1.6643224203795133,
+              "loss_dB_allocated": 0.0748039652128171
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 1.2144066252524059e-05,
+              "pct_source_available": 0.24288132505048116,
+              "loss_dB_allocated": 0.01091644621705942
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.222254440077276e-05,
+              "pct_source_available": 0.6444508880154551,
+              "loss_dB_allocated": 0.028965230064908042
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00010443079320254755,
+              "pct_source_available": 2.0886158640509507,
+              "loss_dB_allocated": 0.09387408745102335
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 1.9367816572156746e-06,
+              "pct_source_available": 0.03873563314431349,
+              "loss_dB_allocated": 0.0017409961668142045
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 1.8822987156956046e-05,
+              "pct_source_available": 0.3764597431391209,
+              "loss_dB_allocated": 0.016920207998750277
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 1.710110841351037e-06,
+              "pct_source_available": 0.03420221682702074,
+              "loss_dB_allocated": 0.0015372390628170978
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 1.7280935474274623e-07,
+              "pct_source_available": 0.0034561870948549246,
+              "loss_dB_allocated": 0.00015534039321152775
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.260470200152517e-05,
+              "pct_source_available": 0.25209404003050334,
+              "loss_dB_allocated": 0.011330517194198595
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.136812436794644e-05,
+              "pct_source_available": 0.4273624873589288,
+              "loss_dB_allocated": 0.01920806223974954
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 4.372304781320664e-06,
+              "pct_source_available": 0.08744609562641327,
+              "loss_dB_allocated": 0.00393031699575572
+            }
+          ],
+          "region": "DL"
+        },
+        {
+          "setting": "B28",
+          "frequency_MHz": 803.0,
+          "total_IL_dB": 0.2998905692390017,
+          "reflection_dB": 0.006427514798346624,
+          "absorbed_network_dissipation_dB": 0.29346305444065485,
+          "inductor_dissipation_dB_allocated": 0.23195656569424794,
+          "GJM01_dissipation_dB_allocated": 0.023875421220630064,
+          "IC_variable_C_dissipation_dB_allocated": 0.037408803355509494,
+          "PCB_C_dissipation_dB_allocated": 0.0002222641702673305,
+          "P_available_W": 0.005,
+          "P_reflected_W": 7.394476654453123e-06,
+          "P_load_W": 0.00466638908320743,
+          "P_inductor_W": 0.00025784521759192124,
+          "P_capacitor_W": 6.837122254619419e-05,
+          "P_total_dissipation_W": 0.00032621644013811546,
+          "power_residual_W": 2.168404344971009e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 7.108895957933346e-16,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 8.942535678402342e-05,
+              "pct_source_available": 1.7885071356804683,
+              "loss_dB_allocated": 0.08044670690163229
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 1.5018470699093596e-05,
+              "pct_source_available": 0.3003694139818719,
+              "loss_dB_allocated": 0.013510558457806318
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.9770418689812516e-05,
+              "pct_source_available": 0.7954083737962503,
+              "loss_dB_allocated": 0.03577731563790803
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00011363097141899172,
+              "pct_source_available": 2.2726194283798344,
+              "loss_dB_allocated": 0.10222198469690132
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 2.4290587291993685e-06,
+              "pct_source_available": 0.04858117458398737,
+              "loss_dB_allocated": 0.002185171887059941
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 2.1987163030868548e-05,
+              "pct_source_available": 0.4397432606173709,
+              "loss_dB_allocated": 0.019779567267644346
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 2.1239331232684765e-06,
+              "pct_source_available": 0.04247866246536953,
+              "loss_dB_allocated": 0.001910682065925777
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 2.47071054763805e-07,
+              "pct_source_available": 0.004941421095276099,
+              "loss_dB_allocated": 0.0002222641702673305
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.405481796537174e-05,
+              "pct_source_available": 0.2810963593074348,
+              "loss_dB_allocated": 0.012643660166174017
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.2845423039222195e-05,
+              "pct_source_available": 0.4569084607844439,
+              "loss_dB_allocated": 0.02055165466903064
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 4.6837556035000585e-06,
+              "pct_source_available": 0.09367511207000118,
+              "loss_dB_allocated": 0.004213488520304838
+            }
+          ],
+          "region": "DL"
+        },
+        {
+          "setting": "B13+B14",
+          "frequency_MHz": 798.0,
+          "total_IL_dB": 0.26724084592099856,
+          "reflection_dB": 0.009247119160991971,
+          "absorbed_network_dissipation_dB": 0.2579937267600069,
+          "inductor_dissipation_dB_allocated": 0.20489059153770728,
+          "GJM01_dissipation_dB_allocated": 0.02387879045175202,
+          "IC_variable_C_dissipation_dB_allocated": 0.029149453939861035,
+          "PCB_C_dissipation_dB_allocated": 7.489083068660537e-05,
+          "P_available_W": 0.005,
+          "P_reflected_W": 1.0634813378241732e-05,
+          "P_load_W": 0.004701602620259373,
+          "P_inductor_W": 0.00022853207783321157,
+          "P_capacitor_W": 5.923048852917546e-05,
+          "P_total_dissipation_W": 0.000287762566362387,
+          "power_residual_W": -1.6263032587282567e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 1.4432899320127035e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 8.561199933369807e-05,
+              "pct_source_available": 1.7122399866739615,
+              "loss_dB_allocated": 0.07675549687606276
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 5.023218984503247e-06,
+              "pct_source_available": 0.10046437969006494,
+              "loss_dB_allocated": 0.004503570434910477
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.892381728027026e-05,
+              "pct_source_available": 0.7784763456054052,
+              "loss_dB_allocated": 0.034897175149655145
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 9.897304223473999e-05,
+              "pct_source_available": 1.9794608446947999,
+              "loss_dB_allocated": 0.0887343490770789
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 2.165783855655976e-06,
+              "pct_source_available": 0.04331567711311952,
+              "loss_dB_allocated": 0.0019417350051489414
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 2.2517189142659127e-05,
+              "pct_source_available": 0.45034378285318255,
+              "loss_dB_allocated": 0.020187801410412765
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 1.95109329593172e-06,
+              "pct_source_available": 0.0390218659186344,
+              "loss_dB_allocated": 0.0017492540361903172
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 8.353217694876632e-08,
+              "pct_source_available": 0.001670643538975326,
+              "loss_dB_allocated": 7.489083068660537e-05
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 7.05525419328555e-06,
+              "pct_source_available": 0.141105083865711,
+              "loss_dB_allocated": 0.006325392998728907
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.26482841395273e-05,
+              "pct_source_available": 0.45296568279054605,
+              "loss_dB_allocated": 0.02030533472000599
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.8093517251670225e-06,
+              "pct_source_available": 0.05618703450334045,
+              "loss_dB_allocated": 0.0025187262211261393
+            }
+          ],
+          "region": "UL"
+        },
+        {
+          "setting": "B26",
+          "frequency_MHz": 894.0,
+          "total_IL_dB": 0.2867833809183297,
+          "reflection_dB": 0.007843864019460332,
+          "absorbed_network_dissipation_dB": 0.278939516898869,
+          "inductor_dissipation_dB_allocated": 0.2246333383914001,
+          "GJM01_dissipation_dB_allocated": 0.02816134924328506,
+          "IC_variable_C_dissipation_dB_allocated": 0.02595804475115269,
+          "PCB_C_dissipation_dB_allocated": 0.00018678451303114288,
+          "P_available_W": 0.005,
+          "P_reflected_W": 9.02243194738328e-06,
+          "P_load_W": 0.004680493713261185,
+          "P_inductor_W": 0.0002500363720200894,
+          "P_capacitor_W": 6.0447482771340576e-05,
+          "P_total_dissipation_W": 0.00031048385479143,
+          "power_residual_W": 1.5178830414797062e-18,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 2.0740677722252305e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 9.207049530326737e-05,
+              "pct_source_available": 1.8414099060653475,
+              "loss_dB_allocated": 0.08271637666243593
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 1.0164525810977578e-05,
+              "pct_source_available": 0.20329051621955155,
+              "loss_dB_allocated": 0.009131836890922387
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 3.683359924925716e-05,
+              "pct_source_available": 0.7366719849851432,
+              "loss_dB_allocated": 0.03309140305261995
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.0001109677516565873,
+              "pct_source_available": 2.219355033131746,
+              "loss_dB_allocated": 0.09969372178542182
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 3.0737477905331567e-06,
+              "pct_source_available": 0.061474955810663125,
+              "loss_dB_allocated": 0.0027614631502699003
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 2.558908008367268e-05,
+              "pct_source_available": 0.5117816016734535,
+              "loss_dB_allocated": 0.02298929727351203
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 2.6831942541429437e-06,
+              "pct_source_available": 0.053663885082858874,
+              "loss_dB_allocated": 0.0024105888195031277
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 2.079073494713021e-07,
+              "pct_source_available": 0.004158146989426042,
+              "loss_dB_allocated": 0.00018678451303114288
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.043079144010128e-05,
+              "pct_source_available": 0.2086158288020256,
+              "loss_dB_allocated": 0.009371050636849471
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.62186466359798e-05,
+              "pct_source_available": 0.32437293271959605,
+              "loss_dB_allocated": 0.014570875063480258
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 2.2441152174394194e-06,
+              "pct_source_available": 0.044882304348788385,
+              "loss_dB_allocated": 0.002016119050822961
+            }
+          ],
+          "region": "DL"
+        },
+        {
+          "setting": "B8",
+          "frequency_MHz": 960.0,
+          "total_IL_dB": 0.29989057738336233,
+          "reflection_dB": 0.009862902407966948,
+          "absorbed_network_dissipation_dB": 0.29002767497539544,
+          "inductor_dissipation_dB_allocated": 0.23223643637676922,
+          "GJM01_dissipation_dB_allocated": 0.03480683687010125,
+          "IC_variable_C_dissipation_dB_allocated": 0.022884348767740134,
+          "PCB_C_dissipation_dB_allocated": 0.00010005296078484678,
+          "P_available_W": 0.005,
+          "P_reflected_W": 1.1342201986386515e-05,
+          "P_load_W": 0.004666389074456511,
+          "P_inductor_W": 0.0002580530975912577,
+          "P_capacitor_W": 6.421562596584321e-05,
+          "P_total_dissipation_W": 0.00032226872355710097,
+          "power_residual_W": 9.75781955236954e-19,
+          "max_nodal_vs_full_MNA_voltage_difference_V": 1.1443916996305594e-15,
+          "component_losses": [
+            {
+              "id": "L0",
+              "type": "LQP02",
+              "loss_W": 9.820106093418378e-05,
+              "pct_source_available": 1.9640212186836754,
+              "loss_dB_allocated": 0.08837663509041102
+            },
+            {
+              "id": "L1",
+              "type": "LQP02",
+              "loss_W": 4.605855275185946e-06,
+              "pct_source_available": 0.09211710550371892,
+              "loss_dB_allocated": 0.004145067141455483
+            },
+            {
+              "id": "L2",
+              "type": "LQP02",
+              "loss_W": 5.114043958633892e-05,
+              "pct_source_available": 1.0228087917267785,
+              "loss_dB_allocated": 0.04602414601930035
+            },
+            {
+              "id": "L3",
+              "type": "LQP02",
+              "loss_W": 0.00010410574179554908,
+              "pct_source_available": 2.0821148359109816,
+              "loss_dB_allocated": 0.09369058812560235
+            },
+            {
+              "id": "Cf1",
+              "type": "GJM01",
+              "loss_W": 3.4761504663922067e-06,
+              "pct_source_available": 0.06952300932784414,
+              "loss_dB_allocated": 0.003128382507940565
+            },
+            {
+              "id": "Cf2",
+              "type": "GJM01",
+              "loss_W": 3.20591873552444e-05,
+              "pct_source_available": 0.641183747104888,
+              "loss_dB_allocated": 0.028851858373388387
+            },
+            {
+              "id": "Cf3",
+              "type": "GJM01",
+              "loss_W": 3.140815721777409e-06,
+              "pct_source_available": 0.06281631443554818,
+              "loss_dB_allocated": 0.0028265959887722987
+            },
+            {
+              "id": "Cpcb0",
+              "type": "PCB_PATTERN_C",
+              "loss_W": 1.1117539028982897e-07,
+              "pct_source_available": 0.0022235078057965796,
+              "loss_dB_allocated": 0.00010005296078484678
+            },
+            {
+              "id": "Cv0",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 6.138492418658366e-06,
+              "pct_source_available": 0.12276984837316732,
+              "loss_dB_allocated": 0.005524373151656868
+            },
+            {
+              "id": "Cv1",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.9289802726797618e-05,
+              "pct_source_available": 0.3857960545359524,
+              "loss_dB_allocated": 0.017359973918151212
+            },
+            {
+              "id": "Cv2",
+              "type": "IC_VARIABLE_C",
+              "loss_W": 1.8866833877784934e-12,
+              "pct_source_available": 3.773366775556987e-08,
+              "loss_dB_allocated": 1.6979320559947088e-09
+            }
+          ],
+          "region": "DL"
+        }
+      ],
+      "stored_reference_worst_IL_db": 0.29989057738336594,
+      "stored_H2_min_db": 30.000956918117442,
+      "stored_H3_min_db": 30.000965695857982,
+      "notes": [
+        "The loss allocation is an exact accounting partition, not a causal improvement predicted by removing individual components.",
+        "Reflection and internal dissipation dB add exactly, but component dB allocations are proportional shares of internal dissipated power.",
+        "Reported values are from 7001-point per passband interval finite-grid local extrema. No EM, nonlinear, process variation or continuous frequency guarantee."
+      ],
+      "source_repo_path": "experiments/chatgpt_topology_search/runs/EXP-010/EXP010-05.json"
+    }
+  }
+}

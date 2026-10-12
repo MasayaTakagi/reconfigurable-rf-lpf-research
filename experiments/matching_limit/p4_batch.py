@@ -21,18 +21,43 @@ ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'src'))
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from coverage_sampler import sample_graphs
+from search_space import enumerate_variable_c_layouts
 from selection_patch import select_node_balanced
 from instantiate_graph import build_grounded_settings
-from coupling_layout import admissible_matrix,adjacent_patterns
+from coupling_layout import (admissible_matrix,adjacent_patterns,
+                             validate_coupling_matrix)
 from p4_sharding import (CHECKPOINT_SCHEMA_VERSION, atomic_write_json,
                          CheckpointCompatibilityError, CheckpointCorruptError,
                          canonical_config_hash, canonical_graph_id,
                          load_checkpoint, shard_for_graph)
 from lpf.evaluate import CASES,load_bands,evaluate_settings
 from lpf.circuit import solve
+from lpf.constraint_versions import constraint_fingerprint, load_constraint
 from lpf.independent import solve_gain
 
-AREA={'LQP01':2,'LQP02':3,'PCB_L':0,'GJM01':2}
+AREA={'LQP01':2,'LQP02':3,'LQP02HV':3,'LQP02HQ':3,'PCB_L':0,'GJM01':2}
+
+def _search_profile(args):
+    constraint_id=getattr(args,'constraint_id',None)
+    requested_series=getattr(args,'series_mode',None)
+    legacy=constraint_id is None and requested_series is None
+    constraint_id=constraint_id or 'RF-F001'
+    series_mode=requested_series or ('legacy' if legacy else 'both')
+    if not legacy and series_mode=='legacy':
+        raise ValueError('New constraint-scoped candidates require explicit LQP02HV/HQ series labels')
+    if legacy and series_mode!='legacy':
+        legacy=False
+    policy=load_constraint(constraint_id,allow_trial=constraint_id.startswith('RF-T'))
+    variable_layout_limit=getattr(args,'max_variable_layouts',None)
+    if variable_layout_limit is None:
+        variable_layout_limit=1 if legacy else 32
+    if type(variable_layout_limit) is not int or variable_layout_limit<1:
+        raise ValueError('max_variable_layouts must be a positive integer')
+    return {'constraint_id':constraint_id,'policy':policy,
+            'constraint_sha256':constraint_fingerprint(policy),
+            'series_mode':series_mode,'legacy':legacy,
+            'require_explicit_series':not legacy,
+            'max_variable_layouts':variable_layout_limit}
 
 def frequency_grid(rows,points):
     return {c:sorted(set(float(f) for r in rows if r['case']==c and r['region'] in ('UL','DL')
@@ -45,7 +70,8 @@ def layout_candidates(graph,max_layouts):
     """
     import itertools
     types=[t for _,_,t in graph[1] if t!='GJM01']
-    chips=[i for i,t in enumerate(types) if t in ('LQP01','LQP02')]
+    chips=[i for i,t in enumerate(types)
+           if t in ('LQP01','LQP02','LQP02HV','LQP02HQ')]
     pcbs=[i for i,t in enumerate(types) if t=='PCB_L']
     chip_pairs=list(zip(chips,chips[1:]))
     pcb_pairs=list(itertools.combinations(pcbs,2))
@@ -68,20 +94,34 @@ def layout_candidates(graph,max_layouts):
         if len(unique)>=max_layouts:break
     return unique
 
-def bounds_for(graph):
+def bounds_for(graph, *, variable_count=2):
     b=[]
     for _,_,t in graph[1]:
         b.append((.05,100.) if t=='GJM01' else (.3,3.) if t=='PCB_L'
-                 else (.4,12.) if t=='LQP02' else (.3,12.))
-    return b+[(0.,4.)]*12
+                 else (.4,12.) if t=='LQP02' else
+                 (.4,27.) if t=='LQP02HV' else
+                 (.2,56.) if t=='LQP02HQ' else (.3,12.))
+    return b+[(0.,4.)]*(6*variable_count)
 
-def settings_for(graph,x,K):
+def settings_for(graph,x,K,*,variable_layout=None,resolved_policy=None,
+                 require_explicit_series=False):
     values=[float(v)*(1e-12 if t=='GJM01' else 1e-9) for v,(_,_,t) in zip(x,graph[1])]
-    return build_grounded_settings(graph,values,np.asarray(x[len(values):]).reshape(6,2),coupling=K)
+    if variable_layout is None:
+        variable_edges=[(1,0),(2,0)];roles=None
+    else:
+        variable_edges=variable_layout['edges'];roles=variable_layout['roles']
+    caps=np.asarray(x[len(values):],float).reshape(6,len(variable_edges))
+    return build_grounded_settings(
+        graph,values,caps,coupling=K,variable_cap_edges=variable_edges,
+        variable_roles=roles,resolved_policy=resolved_policy,
+        require_explicit_series=require_explicit_series)
 
-def objective(x,graph,K,grid):
+def objective(x,graph,K,grid,*,variable_layout=None,resolved_policy=None,
+              require_explicit_series=False):
     try:
-        settings=settings_for(graph,x,K)
+        settings=settings_for(graph,x,K,variable_layout=variable_layout,
+                              resolved_policy=resolved_policy,
+                              require_explicit_series=require_explicit_series)
         worst=-np.inf
         for c in CASES:
             for f in grid[c]:
@@ -92,28 +132,53 @@ def objective(x,graph,K,grid):
     except (ValueError,np.linalg.LinAlgError,OverflowError,FloatingPointError):
         return 1e5
 
-def validate(graph,x,K,rows,points):
-    settings=settings_for(graph,x,K)
+def validate(graph,x,K,rows,points,*,variable_layout=None,resolved_policy=None,
+             require_explicit_series=False):
+    settings=settings_for(graph,x,K,variable_layout=variable_layout,
+                          resolved_policy=resolved_policy,
+                          require_explicit_series=require_explicit_series)
     report=evaluate_settings(lambda c:settings[c],samples_per_segment=points,bands=rows)
-    mismatch=0.;residual=0.
+    mismatch=0.;residual=0.;condition=None;minimum_eigenvalue=None
+    inductor_types=[t for _,_,t in graph[1] if t not in ('GJM01','PCB_PATTERN_C')]
+    physical_order=[i for i,t in enumerate(inductor_types)
+                    if t in ('LQP01','LQP02','LQP02HV','LQP02HQ','LQW04')]
     for c in CASES:
-        for r in rows:
-            if r['case']!=c or r['region'] not in ('UL','DL'):continue
-            for f in np.linspace(float(r['low_mhz']),float(r['high_mhz']),points):
-                params=settings[c];mna=solve(float(f)*1e6,**params)
-                nodal=solve_gain(float(f)*1e6,**params)
-                mismatch=max(mismatch,abs(mna['gain']-nodal))
-                residual=max(residual,abs(mna['power_residual']))
+        params=settings[c]
+        validate_coupling_matrix(inductor_types,
+            [branch.value for branch in params['inductors']],K,
+            chip_order=physical_order)
+        eigenvalues=np.linalg.eigvalsh(np.asarray(K,float)*np.sqrt(np.outer(
+            [branch.value for branch in params['inductors']],
+            [branch.value for branch in params['inductors']])))
+        minimum_eigenvalue=float(eigenvalues.min()) if len(eigenvalues) else None
+        frequencies=[]
+        for row in rows:
+            if row['case']!=c or row['region'] not in ('UL','DL'):continue
+            frequencies.extend(float(f)*1e6 for f in np.linspace(
+                float(row['low_mhz']),float(row['high_mhz']),points))
+        for f_hz in frequencies:
+            mna=solve(f_hz,**params)
+            nodal=solve_gain(f_hz,**params)
+            mismatch=max(mismatch,abs(mna['gain']-nodal))
+            residual=max(residual,abs(mna['power_residual']))
+            # Main MNA condition-number diagnostics arrive in R2-B3.
+            # Until then report unmeasured as None, not a fabricated zero.
+            observed=mna.get('mna_condition_number')
+            if observed is not None:
+                condition=max(0.0 if condition is None else condition,float(observed))
     return dict(worst_il_db=report['worst_il_db'][0],
                 worst_il_case=report['worst_il_db'][1],
                 worst_il_region=report['worst_il_db'][2],
                 min_h2_db=report['min_h2_db'][0],
                 min_h3_db=report['min_h3_db'][0],
                 max_gain_mismatch=mismatch,max_power_residual=residual,
+                max_condition_number=condition,
+                min_inductance_eigenvalue=minimum_eigenvalue,
+                formulations_compared=['main_augmented_MNA','independent_nodal_admittance'],
                 samples_per_segment=points)
 
 # Registry validation/provenance sources change the checkpoint configuration hash.
-ALGORITHM_VERSION='p4-a-bounded-sharded-v5-r2-core'
+ALGORITHM_VERSION='p4-a-bounded-sharded-v6-policy-series-variable-layouts'
 
 
 def handle_termination(signum, frame):
@@ -129,11 +194,14 @@ def _source_fingerprints():
         ROOT/'experiments/matching_limit/enumerate_grounded.py',
         ROOT/'experiments/matching_limit/instantiate_graph.py',
         ROOT/'experiments/matching_limit/coupling_layout.py',
+        ROOT/'experiments/matching_limit/search_space.py',
         *sorted((ROOT/'src/lpf').glob('*.py')),
         ROOT/'data/design_constraints.json', ROOT/'data/bands.csv',
         ROOT/'docs/specification.md', ROOT/'requirements.txt',
         ROOT/'data/constraints/registry.json',
         ROOT/'data/constraints/formal/RF-F001.json',
+        ROOT/'data/constraints/trial/RF-T001.json',
+        ROOT/'data/constraints/trial/RF-T002.json',
     )
     missing=[str(path) for path in source_files if not path.is_file()]
     if missing:
@@ -174,14 +242,14 @@ def _execution_metadata():
     }
 
 
-def build_run_config(args, grid, all_graph_ids):
+def build_run_config(args, grid, all_graph_ids, candidate_plan=None):
     """Calculation compatibility only; commit and runner metadata live elsewhere.
 
     Cross-commit resume is allowed only when this full hash remains identical,
     including calculation-source contents and exact numerical package versions.
     """
-    constraints_path=ROOT/'data/design_constraints.json'
-    constraints=json.loads(constraints_path.read_text(encoding='utf-8'))
+    profile=_search_profile(args)
+    constraints=profile['policy']
     compatibility={
         'algorithm_version':ALGORITHM_VERSION,
         'analysis_mode':'matching_only',
@@ -191,13 +259,29 @@ def build_run_config(args, grid, all_graph_ids):
             'max_internal_nodes':4,'max_branches':8,
             'max_chip_area_in_this_job_only':6,
             'area_is_formal_RF_feasibility_constraint':False,
-            'chip_inductor_scope':'LQP02HV_Q25_from_0.4_to_12_nH_only',
-            'max_pcb_inductors':3,'max_independent_variable_c_branches':2,
+            'chip_inductor_scope':(
+                'legacy_LQP02HV_Q25_from_0.4_to_12_nH_only'
+                if profile['legacy'] else profile['series_mode']),
+            'constraint_id':profile['constraint_id'],
+            'effective_constraint_sha256':profile['constraint_sha256'],
+            'max_variable_c_layouts_per_graph':profile['max_variable_layouts'],
+            'variable_c_layout_policy':(
+                'historical_input_output_two_shunts'
+                if profile['legacy'] else 'enumerated_policy_scoped_layouts'),
+            'max_pcb_inductors':3,
+            'max_independent_variable_c_branches':
+                constraints['components']['IC_VARIABLE_C']['max_branches_principle'],
         },
         'rf_design_constraints':constraints,
         'topology_search':{
             'attempts_per_cell':args.attempts,'per_node_area_bin':args.per_bin,
             'max_internal_nodes':4,'max_branches':8,'seed':args.seed,
+            'series_mode':profile['series_mode'],
+            'explicit_series_required':profile['require_explicit_series'],
+            'require_lqp02_component':bool(getattr(args,'require_lqp02',False)),
+            'require_both_lqp02_series':bool(getattr(args,'require_both_series',False)),
+            'max_topology_graphs':getattr(args,'max_topology_graphs',None),
+            'planned_optimizer_candidates_by_graph':candidate_plan,
             'selected_graph_ids':all_graph_ids,
         },
         'optimization':{
@@ -271,20 +355,46 @@ def _numeric_backend_signature(module):
 
 
 def run(args, progress_callback=None, candidate_progress_callback=None):
+    profile=_search_profile(args)
     graphs,counts=sample_graphs(max_internal=4,attempts_per_cell=args.attempts,
-                               seed=args.seed,max_branches=8)
+                               seed=args.seed,max_branches=8,
+                               series_mode=None if profile['legacy'] else profile['series_mode'])
+    if getattr(args,'require_lqp02',False):
+        if profile['legacy']:
+            raise ValueError('--require-lqp02 is available only with explicit-series new runs')
+        graphs=[graph for graph in graphs
+                if any(t in ('LQP02HV','LQP02HQ') for _,_,t in graph[1])]
+    if getattr(args,'require_both_series',False):
+        if profile['legacy'] or profile['series_mode']!='both':
+            raise ValueError('--require-both-series requires an explicit both-series search')
+        graphs=[graph for graph in graphs
+                if {'LQP02HV','LQP02HQ'} <= {t for _,_,t in graph[1]}]
     graphs=[g for g in graphs if any(t!='GJM01' for _,_,t in g[1])]
     selected,eligible=select_node_balanced(graphs,args.per_bin)
+    max_topology_graphs=getattr(args,'max_topology_graphs',None)
+    if max_topology_graphs is not None:
+        if type(max_topology_graphs) is not int or max_topology_graphs<1:
+            raise ValueError('max_topology_graphs must be a positive integer')
+        selected=selected[:max_topology_graphs]
     rows=load_bands();grid=frequency_grid(rows,args.coarse_points)
     entries=sorted((canonical_graph_id(graph),internal_nodes,bin_idx,graph)
                   for (internal_nodes,bin_idx),graph in selected)
     all_graph_ids=[item[0] for item in entries]
     if len(all_graph_ids)!=len(set(all_graph_ids)):
         raise ValueError('Selected graph set contains duplicate canonical graph IDs')
+    candidate_plan={}
+    for graph_id,_,_,graph in entries:
+        c_layouts=enumerate_variable_c_layouts(
+            graph,profile['policy'],max_layouts=profile['max_variable_layouts'])
+        k_layouts=layout_candidates(graph,args.layouts)
+        if not c_layouts or not k_layouts:
+            raise ValueError(f'No admissible optimizer candidates for graph {graph_id}')
+        candidate_plan[graph_id]=len(c_layouts)*len(k_layouts)*args.starts
     shard_entries=[item for item in entries
                    if shard_for_graph(item[0],args.shard_count)==args.shard_index]
     expected_graph_ids=[item[0] for item in shard_entries]
-    run_config=build_run_config(args,grid,all_graph_ids)
+    run_config=build_run_config(args,grid,all_graph_ids,
+                                {key:candidate_plan[key] for key in sorted(candidate_plan)})
     config_hash=canonical_config_hash(run_config)
     checkpoint=Path(args.checkpoint or Path(args.output).with_suffix('.checkpoint.json'))
     source_commit=_source_commit()
@@ -328,6 +438,9 @@ def run(args, progress_callback=None, candidate_progress_callback=None):
             'shard_index':args.shard_index,'shard_count':args.shard_count,
             'global_expected_graph_ids':all_graph_ids,
             'expected_graph_ids':expected_graph_ids,'completed_graph_ids':[],
+            'planned_optimizer_candidates':sum(candidate_plan[x] for x in expected_graph_ids),
+            'planned_optimizer_candidates_by_graph':{
+                x:candidate_plan[x] for x in expected_graph_ids},
             'sampled_graphs':len(graphs),'eligible':eligible,'results':[],
             'partial_optimization_runs':{},'candidate_execution_log':[],
             'interrupted_candidate_attempts':[],
@@ -395,18 +508,29 @@ def run(args, progress_callback=None, candidate_progress_callback=None):
         unit_started=datetime.now(timezone.utc).isoformat()
         try:
             save_checkpoint('running')
-            bounds=bounds_for(graph)
+            variable_layouts=enumerate_variable_c_layouts(
+                graph,profile['policy'],max_layouts=profile['max_variable_layouts'])
+            if not variable_layouts:
+                raise RuntimeError('No policy-compatible variable-C layouts were generated')
             graph_seed_material=f'{args.seed}:{graph_id}'.encode('ascii')
             graph_seed=int.from_bytes(hashlib.sha256(graph_seed_material).digest()[:8],'big')
             candidate_records=list(partial_runs.get(graph_id,[]))
             saved_candidate_keys={record['candidate_key'] for record in candidate_records}
-            candidate_layouts=layout_candidates(graph,args.layouts)
-            for layout_index,K in enumerate(candidate_layouts):
+            coupling_layouts=layout_candidates(graph,args.layouts)
+            candidate_layouts=[(variable_index,variable_layout,layout_index,K)
+                for variable_index,variable_layout in enumerate(variable_layouts)
+                for layout_index,K in enumerate(coupling_layouts)]
+            bounds=bounds_for(graph,variable_count=len(variable_layouts[0]['edges']))
+            for variable_index,variable_layout,layout_index,K in candidate_layouts:
                 for start_index in range(args.starts):
-                    candidate_key=f'{graph_id}:{layout_index}:{start_index}'
+                    candidate_key=(f'{graph_id}:{layout_index}:{start_index}'
+                        if profile['legacy'] else
+                        f'{graph_id}:v{variable_index}:k{layout_index}:s{start_index}')
                     if candidate_key in saved_candidate_keys:
                         continue
-                    rng_seed=_candidate_seed(graph_seed,layout_index,start_index)
+                    rng_layout_index=(layout_index if profile['legacy'] else
+                                      variable_index*max(1,len(coupling_layouts))+layout_index)
+                    rng_seed=_candidate_seed(graph_seed,rng_layout_index,start_index)
                     rng=np.random.default_rng(rng_seed)
                     initial=np.array([rng.uniform(lo,hi) for lo,hi in bounds])
                     if start_index==0:
@@ -415,7 +539,8 @@ def run(args, progress_callback=None, candidate_progress_callback=None):
                     evaluation_count=0
                     current_candidate_attempt={
                         'graph_id':graph_id,'candidate_key':candidate_key,
-                        'layout_index':layout_index,'start_index':start_index,
+                        'layout_index':layout_index,'variable_layout_index':variable_index,
+                        'start_index':start_index,
                         'rng_seed':rng_seed,'initial_values':initial.tolist(),
                         'objective_evaluation_count':0,
                         'started_at_utc':datetime.now(timezone.utc).isoformat(),
@@ -426,7 +551,10 @@ def run(args, progress_callback=None, candidate_progress_callback=None):
                         nonlocal evaluation_count
                         evaluation_count+=1
                         current_candidate_attempt['objective_evaluation_count']=evaluation_count
-                        return objective(values,graph,K,grid)
+                        return objective(values,graph,K,grid,
+                            variable_layout=variable_layout,
+                            resolved_policy=profile['policy'],
+                            require_explicit_series=profile['require_explicit_series'])
 
                     optimized=minimize(
                         counted_objective,initial,method='SLSQP',bounds=bounds,
@@ -436,7 +564,10 @@ def run(args, progress_callback=None, candidate_progress_callback=None):
                     candidate_record={
                         'graph_id':graph_id,
                         'candidate_key':candidate_key,
-                        'layout_index':layout_index,'start_index':start_index,
+                        'layout_index':layout_index,'variable_layout_index':variable_index,
+                        'variable_cap_edges':[list(edge) for edge in variable_layout['edges']],
+                        'variable_cap_roles':list(variable_layout['roles']),
+                        'start_index':start_index,
                         'rng_seed':rng_seed,'initial_values':initial.tolist(),
                         'result_values':final_values.tolist(),
                         'coupling':np.asarray(K,float).tolist(),
@@ -448,7 +579,8 @@ def run(args, progress_callback=None, candidate_progress_callback=None):
                         'completed_at_utc':datetime.now(timezone.utc).isoformat(),
                     }
                     candidate_records.append(candidate_record)
-                    candidate_records.sort(key=lambda item:(item['layout_index'],item['start_index']))
+                    candidate_records.sort(key=lambda item:(
+                        item.get('variable_layout_index',0),item['layout_index'],item['start_index']))
                     partial_runs[graph_id]=candidate_records
                     payload.setdefault('candidate_execution_log',[]).append({
                         'graph_id':graph_id,'candidate_key':candidate_key,
@@ -467,12 +599,21 @@ def run(args, progress_callback=None, candidate_progress_callback=None):
             K=np.asarray(best['coupling'],float)
             x=np.asarray(best['result_values'],float)
             # A validation exception is a job failure, never a normal result row.
-            validation=validate(graph,x,K,rows,args.validation_points)
+            best_layout_index=int(best.get('variable_layout_index',0))
+            best_layout=variable_layouts[best_layout_index]
+            validation=validate(graph,x,K,rows,args.validation_points,
+                variable_layout=best_layout,resolved_policy=profile['policy'],
+                require_explicit_series=profile['require_explicit_series'])
             row={
                 'graph_id':graph_id,'optimization_seed':graph_seed,
                 'internal_nodes':internal_nodes,
                 'area':sum(AREA[t] for _,_,t in graph[1])/3,
                 'bin':f'P{bin_idx+2}','graph':[graph[0],list(map(list,graph[1]))],
+                'constraint_id':profile['constraint_id'],
+                'effective_constraint_sha256':profile['constraint_sha256'],
+                'inductor_series_mode':profile['series_mode'],
+                'variable_cap_edges':[list(edge) for edge in best_layout['edges']],
+                'variable_cap_roles':list(best_layout['roles']),
                 'coarse_il_db':best['coarse_il_db'],'converged':best['converged'],
                 'values':best['result_values'],'coupling':best['coupling'],
                 'best_candidate_key':best['candidate_key'],
@@ -558,6 +699,18 @@ def _parse_args():
     p.add_argument('--iterations',type=int,default=25)
     p.add_argument('--coarse-points',type=int,default=2)
     p.add_argument('--validation-points',type=int,default=21)
+    p.add_argument('--constraint-id',choices=('RF-F001','RF-T001','RF-T002'),default=None,
+                   help='New policy-scoped search; omitted preserves the historical P4-A profile')
+    p.add_argument('--series-mode',choices=('legacy','HV','HQ','both'),default=None,
+                   help='Explicit LQP02 series alphabet for new runs')
+    p.add_argument('--max-variable-layouts',type=int,default=None,
+                   help='Maximum deterministic C-position layouts per graph (new default: 32)')
+    p.add_argument('--require-lqp02',action='store_true',
+                   help='Restrict a new explicit-series smoke/search to graphs containing LQP02')
+    p.add_argument('--require-both-series',action='store_true',
+                   help='Restrict a new search to graphs containing both explicit HV and HQ components')
+    p.add_argument('--max-topology-graphs',type=int,default=None,
+                   help='Bound the selected graph sample for small reproducible jobs')
     p.add_argument('--seed',type=int,default=20261011)
     p.add_argument('--output',default='p4_batch_result.json')
     p.add_argument('--checkpoint',default=None,help='Atomic per-shard checkpoint JSON path')
@@ -589,6 +742,13 @@ def _parse_args():
         p.error('--max-batch-seconds must be positive')
     if args.validation_points<2:
         p.error('--validation-points must be at least 2')
+    if args.max_variable_layouts is not None and args.max_variable_layouts<1:
+        p.error('--max-variable-layouts must be positive')
+    if args.max_topology_graphs is not None and args.max_topology_graphs<1:
+        p.error('--max-topology-graphs must be positive')
+    if ((args.constraint_id is not None or args.series_mode not in (None,'legacy'))
+            and args.series_mode=='legacy'):
+        p.error('New constraint-scoped searches require explicit LQP02HV/HQ labels')
     if args.resume and args.resume_artifact_missing:
         p.error('--resume cannot be combined with --resume-artifact-missing')
     if args.resume_artifact_missing and not args.resume_run_id:

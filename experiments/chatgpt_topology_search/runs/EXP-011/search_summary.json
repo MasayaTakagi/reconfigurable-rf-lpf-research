@@ -1,0 +1,142 @@
+{
+  "date": "2026-10-12",
+  "study": "EXP-011 Q25 chip cost up to 6, 6-setting full-LPF, local nonconvex finite search",
+  "summary": {
+    "gjm_screen": {
+      "description": "3-GJM single-edge rewires (from EXP010-05; 33)",
+      "jobs_total": 33,
+      "jobs_completed": 33,
+      "optimizer_starts_completed": 66,
+      "optimizer_failures_recorded": 0,
+      "n_locally_201_grid_feasible": 33,
+      "best_201_grid_feasible_il_db": 0.2943262959589877,
+      "incomplete": false,
+      "not_global_optimality_proof": true
+    },
+    "pcb2_screen": {
+      "description": "add second PCB C (14)",
+      "jobs_total": 14,
+      "jobs_completed": 14,
+      "optimizer_starts_completed": 28,
+      "optimizer_failures_recorded": 0,
+      "n_locally_201_grid_feasible": 26,
+      "best_201_grid_feasible_il_db": 0.3001033894621231,
+      "incomplete": false,
+      "not_global_optimality_proof": true
+    },
+    "var_screen": {
+      "description": "third variable-C edge rewire (9)",
+      "jobs_total": 9,
+      "jobs_completed": 9,
+      "optimizer_starts_completed": 27,
+      "optimizer_failures_recorded": 0,
+      "n_locally_201_grid_feasible": 14,
+      "best_201_grid_feasible_il_db": 0.30957135035286515,
+      "incomplete": false,
+      "not_global_optimality_proof": true
+    },
+    "pair_screen": {
+      "description": "two GJM simultaneous rewires (156)",
+      "jobs_total": 156,
+      "jobs_completed": 156,
+      "optimizer_starts_completed": 156,
+      "optimizer_failures_recorded": 0,
+      "n_locally_201_grid_feasible": 129,
+      "best_201_grid_feasible_il_db": 0.2943262959593721,
+      "incomplete": false,
+      "not_global_optimality_proof": true
+    },
+    "lscan_results": {
+      "description": "inductor-edge changes (incomplete)",
+      "jobs_total": 56,
+      "jobs_completed": 17,
+      "optimizer_starts_completed": 34,
+      "optimizer_failures_recorded": 0,
+      "n_locally_201_grid_feasible": 16,
+      "best_201_grid_feasible_il_db": 0.3032676811649209,
+      "incomplete": true,
+      "not_global_optimality_proof": true
+    },
+    "single_fixed_results": {
+      "description": "one GJM after merge, fixed-edge placement",
+      "jobs_total": 15,
+      "jobs_completed": 15,
+      "optimizer_starts_completed": 30,
+      "optimizer_failures_recorded": 0,
+      "n_locally_201_grid_feasible": 20,
+      "best_201_grid_feasible_il_db": 0.2938279380458626,
+      "incomplete": false,
+      "not_global_optimality_proof": true
+    },
+    "compact_baseline": {
+      "description": "compact baseline multi-start",
+      "jobs_total": null,
+      "jobs_completed": 1,
+      "optimizer_starts_completed": 3,
+      "optimizer_failures_recorded": 0,
+      "n_locally_201_grid_feasible": 3,
+      "best_201_grid_feasible_il_db": 0.2938279380477462,
+      "incomplete": false,
+      "not_global_optimality_proof": true
+    },
+    "compact_fixed_gjm": {
+      "description": "compact 1 GJM edge placements",
+      "jobs_total": null,
+      "jobs_completed": 15,
+      "optimizer_starts_completed": 30,
+      "optimizer_failures_recorded": 0,
+      "n_locally_201_grid_feasible": 25,
+      "best_201_grid_feasible_il_db": 0.29382793804773744,
+      "incomplete": false,
+      "not_global_optimality_proof": true
+    },
+    "compact_var3": {
+      "description": "compact 3rd C alternate edge",
+      "jobs_total": null,
+      "jobs_completed": 9,
+      "optimizer_starts_completed": 18,
+      "optimizer_failures_recorded": 0,
+      "n_locally_201_grid_feasible": 14,
+      "best_201_grid_feasible_il_db": 0.387970377844282,
+      "incomplete": false,
+      "not_global_optimality_proof": true
+    },
+    "compact_gjm2": {
+      "description": "compact second GJM",
+      "jobs_total": null,
+      "jobs_completed": 14,
+      "optimizer_starts_completed": 28,
+      "optimizer_failures_recorded": 0,
+      "n_locally_201_grid_feasible": 27,
+      "best_201_grid_feasible_il_db": 0.2938279380477354,
+      "incomplete": false,
+      "not_global_optimality_proof": true
+    },
+    "compact_pcb1": {
+      "description": "compact PCB C addition",
+      "jobs_total": null,
+      "jobs_completed": 15,
+      "optimizer_starts_completed": 30,
+      "optimizer_failures_recorded": 0,
+      "n_locally_201_grid_feasible": 29,
+      "best_201_grid_feasible_il_db": 0.294056761994514,
+      "incomplete": false,
+      "not_global_optimality_proof": true
+    },
+    "compact_ind_edges": {
+      "description": "56 single-L-edge rewires around true compact EXP011-01; one optimizer start each",
+      "jobs_total": 56,
+      "jobs_completed": 56,
+      "optimizer_starts_completed": 56,
+      "optimizer_failures_recorded": 0,
+      "n_locally_201_grid_feasible": 17,
+      "best_201_grid_feasible_il_db": 0.29856711032906613,
+      "incomplete": false,
+      "not_global_optimality_proof": true
+    }
+  },
+  "full_optimization_vectors_available_only_for_saved_candidate_JSON_and_local_prototype_checkpoints_not_all_committed": true,
+  "do_not_conflate_201_grid_screening_with_dense_independent_validation": true,
+  "manual_github_actions_large_jobs_have_not_run": true,
+  "prior_L_rewire_trial_partial_and_new_compact_L_rewire_trial_completed_are_separate_experiments": true
+}

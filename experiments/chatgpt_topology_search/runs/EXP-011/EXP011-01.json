@@ -1,0 +1,329 @@
+{
+  "id": "EXP011-01",
+  "experiment": "EXP-011",
+  "phase": "Phase 2",
+  "objective": "full_lpf",
+  "approved_for_study_only": {
+    "three_variable_C_branches": true,
+    "non_ground_variable_C": true,
+    "min_rejection_db": 30
+  },
+  "base_canonical_two_grounded_variable_C_policy_modified": false,
+  "source_ohms": 50,
+  "load_ohms": {
+    "real": 60,
+    "imag": -40,
+    "frequency_dependent": false
+  },
+  "chip_area_cost_units": 4.666666666666667,
+  "components": {
+    "LQP02": {
+      "count": 4,
+      "Q": 25
+    },
+    "GJM01": {
+      "count": 1,
+      "Q": 80
+    },
+    "IC_VARIABLE_C": {
+      "count": 3,
+      "Q": 80,
+      "range_pf": [
+        0,
+        4
+      ]
+    },
+    "PCB_PATTERN_C": {
+      "count": 0,
+      "Q": 40,
+      "min_pf": 0.02,
+      "max_pf": 0.2,
+      "area_units": 0
+    }
+  },
+  "topology": {
+    "input_node": 1,
+    "output_node": 3,
+    "ground_node": 0,
+    "inductors": [
+      {
+        "id": "L0",
+        "nodes": [
+          1,
+          2
+        ],
+        "L_nH": 3.4084616011657642,
+        "Q": 25
+      },
+      {
+        "id": "L1",
+        "nodes": [
+          3,
+          4
+        ],
+        "L_nH": 55.99999999977252,
+        "Q": 25
+      },
+      {
+        "id": "L2",
+        "nodes": [
+          2,
+          5
+        ],
+        "L_nH": 8.04453326111069,
+        "Q": 25
+      },
+      {
+        "id": "L3",
+        "nodes": [
+          2,
+          3
+        ],
+        "L_nH": 4.853728404004065,
+        "Q": 25
+      }
+    ],
+    "fixed_capacitors": [
+      {
+        "id": "Cf3",
+        "nodes": [
+          1,
+          2
+        ],
+        "C_pF": 0.780468567289133,
+        "Q": 80
+      }
+    ],
+    "variable_capacitors": [
+      {
+        "id": "Cv0",
+        "nodes": [
+          4,
+          0
+        ],
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      },
+      {
+        "id": "Cv1",
+        "nodes": [
+          5,
+          0
+        ],
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      },
+      {
+        "id": "Cv2",
+        "nodes": [
+          2,
+          3
+        ],
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      }
+    ],
+    "physical_chip_row": [
+      "L1",
+      "L2",
+      "L3",
+      "L0"
+    ],
+    "signed_adjacent_k": [
+      0.012921955677951433,
+      -0.3731669847779207,
+      0.4
+    ],
+    "nominal_nonadjacent_k_zero": true,
+    "pcb_pattern_capacitors": []
+  },
+  "variable_C_pf_by_setting": {
+    "B71": [
+      0.2655710118970864,
+      1.4905637169005168,
+      0.926012967688509
+    ],
+    "B12": [
+      0.23319316276592664,
+      1.4447089109110012,
+      0.7909183255681816
+    ],
+    "B28": [
+      0.23985905343565994,
+      1.325692834408903,
+      0.6926177929900169
+    ],
+    "B13+B14": [
+      0.17773375234919175,
+      1.2653835161596694,
+      0.47218527998014626
+    ],
+    "B26": [
+      0.15563317025942675,
+      1.1786053852732299,
+      0.3056833282662742
+    ],
+    "B8": [
+      0.12656459961354002,
+      1.0422793219599482,
+      5.021313933021417e-16
+    ]
+  },
+  "verified_dense_metrics": {
+    "id": "EXP011-01",
+    "worst_IL_db": 0.29382173854790583,
+    "min_H2_db": 30.000099927068177,
+    "min_H3_db": 30.00009999911857,
+    "limiting": {
+      "IL": {
+        "db": 0.29382173854790583,
+        "frequency_mhz": 960.0,
+        "setting": "B8"
+      },
+      "H2": {
+        "db": 30.000099927068177,
+        "frequency_mhz": 1760.0,
+        "setting": "B8"
+      },
+      "H3": {
+        "db": 30.00009999911857,
+        "frequency_mhz": 2640.0,
+        "setting": "B8"
+      }
+    },
+    "metrics_by_setting": {
+      "B71": {
+        "IL": {
+          "db": 0.27714997225963156,
+          "frequency_mhz": 698.0
+        },
+        "H2": {
+          "db": 30.44617032628794,
+          "frequency_mhz": 1396.0
+        },
+        "H3": {
+          "db": 30.16854076120839,
+          "frequency_mhz": 2094.0
+        }
+      },
+      "B12": {
+        "IL": {
+          "db": 0.2832419293311286,
+          "frequency_mhz": 746.0
+        },
+        "H2": {
+          "db": 30.049227516089516,
+          "frequency_mhz": 1398.0
+        },
+        "H3": {
+          "db": 33.207907729795714,
+          "frequency_mhz": 2097.0
+        }
+      },
+      "B28": {
+        "IL": {
+          "db": 0.2938217385133308,
+          "frequency_mhz": 803.0
+        },
+        "H2": {
+          "db": 30.000099977101105,
+          "frequency_mhz": 1406.0
+        },
+        "H3": {
+          "db": 30.00009999918076,
+          "frequency_mhz": 2109.0
+        }
+      },
+      "B13+B14": {
+        "IL": {
+          "db": 0.25485426659298754,
+          "frequency_mhz": 798.0
+        },
+        "H2": {
+          "db": 30.000099986864285,
+          "frequency_mhz": 1554.0
+        },
+        "H3": {
+          "db": 31.753411387438227,
+          "frequency_mhz": 2394.0
+        }
+      },
+      "B26": {
+        "IL": {
+          "db": 0.2922527140273223,
+          "frequency_mhz": 894.0
+        },
+        "H2": {
+          "db": 30.330945521858798,
+          "frequency_mhz": 1628.0
+        },
+        "H3": {
+          "db": 30.02443870279256,
+          "frequency_mhz": 2547.0
+        }
+      },
+      "B8": {
+        "IL": {
+          "db": 0.29382173854790583,
+          "frequency_mhz": 960.0
+        },
+        "H2": {
+          "db": 30.000099927068177,
+          "frequency_mhz": 1760.0
+        },
+        "H3": {
+          "db": 30.00009999911857,
+          "frequency_mhz": 2640.0
+        }
+      }
+    },
+    "min_K_eigenvalue": 0.45288819957842413,
+    "max_power_balance_W": 8.673617379884035e-18,
+    "max_MNA_discrepancy_V": 2.1355566272775288e-15,
+    "independent_9x9_MNA_representative_points": 54,
+    "dense_points_per_individual_interval": 7001,
+    "numerical_not_EM_verified": true,
+    "not_global_optimality_proven": true,
+    "continuous_interval_proof": false
+  },
+  "optimization": {
+    "method": "analytic-Jacobian SLSQP on finite-frequency grid",
+    "success": true,
+    "message": "Optimization terminated successfully",
+    "nit": 27,
+    "nfev": 31,
+    "points_per_interval_in_optimizer": 51,
+    "target_min_H2_H3_db": 30.0001,
+    "global_optimality_proven": false
+  },
+  "verification": {
+    "finite_dense_grid_7001_per_each_segment": true,
+    "independent_MNA_verified": true,
+    "status": "pending independent verifier",
+    "9x9_MNA_spots": 54,
+    "MNA_power_balance_residual_W": 9.540979117872439e-18,
+    "K_min_eigenvalue": 0.4545619078763558
+  },
+  "engineering_warnings": [
+    "Nominal worst IL 0.2999074dB is only 0.00009256dB below 0.30dB, not a tolerance margin",
+    "Nominal H2min 30.00179dB and H3min 30.00196dB have negligible rejection margin, unrobust to component/rounding/parasitics",
+    "All chip L and C Q values frequency-independent assumptions as user approved; actual Q(f) / SRF excluded",
+    "Chip L1≈50.4nH within LQP02HQ 0.2-56nH nominal package range, yet SRF not verified",
+    "Strong chip k up to 0.4 not EM verified",
+    "Minimization not converged and 7001 finite-grid does not prove entire continuum.",
+    "Near-zero H2/H3 margin (<0.001dB); do not prefer this candidate over EXP010-03/04 for robustness."
+  ],
+  "inductor_study_range_nH": {
+    "minimum": 0.4,
+    "maximum": 56.0,
+    "LQP02HQ_product_series_reference": "Murata LQP02HQ_02 nominal inductance range 0.2..56nH at 0402(01005)"
+  },
+  "description": "small IL gain from bounded local multistart; rejection headroom under 0.001dB; nominal-only",
+  "numerical_model": "4 LQP02 Q25, 1 GJM Q80, three variable C Q80, no PCB fixed C",
+  "derivation": "two Q80 GJM exactly parallel with Q80 variables absorbed; bounded Q40 PCB pattern C at effective zero omitted and entire circuit retuned; reduced circuit independently re-evaluated",
+  "verification_status": "independent 9x9 MNA spot + 7001 per individual segment verified; 2nd formulation",
+  "published_source": "EXP010-05, not a replacement for canonical two grounded variable-C policy"
+}

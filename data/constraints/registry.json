@@ -24,6 +24,13 @@
       "base_constraint_id": "RF-F001",
       "approved_at": "2026-10-12",
       "description": "Two ground shunts plus one non-ground bridge variable C; not series; Phase 2 comparison only."
+    },
+    "RF-T003": {
+      "file": "data/constraints/trial/RF-T003.json",
+      "state": "study_authorized",
+      "base_constraint_id": "RF-F001",
+      "approved_at": "2026-10-12",
+      "description": "Two variable C, one GND shunt and one non-ground bridge; 30dB H2/H3 Phase 2 study only, no main-path series variable C."
     }
   },
   "historical": {

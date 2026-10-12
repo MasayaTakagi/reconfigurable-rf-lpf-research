@@ -112,7 +112,8 @@ def validate(graph,x,K,rows,points):
                 max_gain_mismatch=mismatch,max_power_residual=residual,
                 samples_per_segment=points)
 
-ALGORITHM_VERSION='p4-a-bounded-sharded-v3'
+# Registry validation/provenance sources change the checkpoint configuration hash.
+ALGORITHM_VERSION='p4-a-bounded-sharded-v4-provenance'
 
 
 def handle_termination(signum, frame):

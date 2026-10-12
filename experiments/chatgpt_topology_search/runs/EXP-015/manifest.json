@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-015",
+  "phase": "Phase 2",
+  "purpose": "EXP-015 — LQP02HV/HQのシリーズ別Q・SRFリスクを考慮した再最適化（Phase 2、2026-10-12）",
+  "objective": "full_lpf",
+  "constraints": {
+    "class": "historical",
+    "constraint_id": null,
+    "base_constraint_id": null,
+    "effective_constraint_sha256": null,
+    "effective_constraints": null,
+    "legacy_policy_version": null
+  },
+  "code": {
+    "execution_sha": null,
+    "working_tree_dirty": null,
+    "archive_sha": "641a2792d65f754534f4828507024faab52fbc7b"
+  },
+  "random_seed": null,
+  "environment": null,
+  "search_scope": {
+    "max_search_area": 6,
+    "area_bound_role": "historical_experiment_search_scope_only_not_RF_F001_constraint",
+    "source_documents": [
+      "experiments/chatgpt_topology_search/runs/EXP-015/README.md",
+      "experiments/chatgpt_topology_search/runs/EXP-015/summary.json"
+    ],
+    "conditions": "multiple_historical_comparison_conditions_see_sources"
+  },
+  "bands_sha256": null,
+  "execution": {
+    "status": "unknown",
+    "elapsed_seconds": null,
+    "evaluation_count": null
+  },
+  "validation": {
+    "numerical": "reported_in_sources",
+    "independent": "reported_in_sources",
+    "implementation": "not_run",
+    "analysis_grid": {
+      "source": "experiments/chatgpt_topology_search/runs/EXP-015/README.md",
+      "coverage": "selected_saved_results_only_see_source_for_each_grid"
+    },
+    "independent_grid": {
+      "source": "experiments/chatgpt_topology_search/runs/EXP-015/README.md",
+      "coverage": "selected_saved_results_only_not_every_search_trial"
+    }
+  },
+  "evidence": [
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/EXP011-01_HQ1_rows.json",
+      "sha256": "8937e4b338a3b6165ae1a18c3a8662e106fe30d57258e8eb3cef214efb83a489"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/EXP011-01_HV4_rows.json",
+      "sha256": "3e5030d103e6379c7841fcbecc3d1232f8b63f3440e4628d86e7858ba6ee5d55"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/EXP015-HQ2C-01.json",
+      "sha256": "968333c648ed81c51ce714aa707683a7c2fea5052dd7e256357c5a8fa409ac91"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/EXP015-HQ35-01.json",
+      "sha256": "c163524858482ec42d31a43450a4ca0d26a9505aa81c10640e1891fc89fe91ec"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/EXP015-HQ3C-01.json",
+      "sha256": "6a1a77b63fcd13ace8d8dcf40ebb4ce063f26ad182430d2beb13ec84b1ddab2c"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/EXP015-HQ40-01.json",
+      "sha256": "22749ba89d21ec4bfced89da9efe815f95e536a8582a411c11234f5742f71b0c"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/EXP015-HQ45-01.json",
+      "sha256": "6b6908d36ded6f4ff49ae6261e4c454bdb7fd0513107a543bb61046fd851443d"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/EXP015-HQ50-01.json",
+      "sha256": "4b1944fc65791da6403738161a79584feb46d85a8d244bfce2a119973ec38d09"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/EXP015-HQ56-01.json",
+      "sha256": "f9e957f02a7088b2c2bf4c650bd927efe5af44a1bcabb8e3d24160eec19eed21"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/EXP015-HV2C-01.json",
+      "sha256": "722fa91a502209ee62efba7f92232423db93ca2578733fb9ee00397eb6b78e9b"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/EXP015-HV3C-01.json",
+      "sha256": "f7721303c468bd7a5777d0001be133ad92653ecb0b1312236316846131c05fb9"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/HQ_L_tradeoff.json",
+      "sha256": "67c03d0cbe8d3637c48b00394296e3f21247608f183e5450e47bd48fc8ba2d5b"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/README.md",
+      "sha256": "abb7aab3912375af3207128f79b66c61e35e8f41c2c82834652a0ccb626efd35"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/hq_srf_tradeoff.py",
+      "sha256": "446940095fe68be11254972c11d0cdba67c3f97e3279afc006c2ba8e387a3277"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/make_manifest.py",
+      "sha256": "3d8fbe57b687224af4a0db1808086cd94b337671ccb7566f827dfd931b958b74"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/reopt.py",
+      "sha256": "65f1ccd8d51ca479359784853b820f9d6185292d7181e79728a12fdc72c3219f"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/rewire015.py",
+      "sha256": "b3c744ef7e24e2bc112cad4becf8833128a39741c9583a4eb5cdf1d931130875"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/rewire015_results.json",
+      "sha256": "d661ccd73d3c53f7814422d8204f168874f2bd645fc97df25f8be54082824877"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/row_screen.py",
+      "sha256": "6b57e4a17c447b154afd19a12693a482efce9828f7bf3b0b3bf4eb44c43a9a10"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/summary.json",
+      "sha256": "ff996493f5f5de3fbcfe031055bb7f50a5be19f5598a4bb442fd0cdb7127a479"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/verification_log.txt",
+      "sha256": "31920e930edf691b0ed64dc729d6d8a99f412be19b6d951e41b6a5872551423c"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-015/verify015.py",
+      "sha256": "a12f58de6a273207cddc1cfacfe1d707cc0aff5363d022999be68fb834a8023c"
+    }
+  ],
+  "limitations": [
+    "This is an inventory of historical evidence, not a new numerical run or an RF-F001 compliance certificate.",
+    "The original execution code SHA, complete resolved RF policy/hash, full seed provenance and runtime environment are unknown. Archive SHA is only the evidence snapshot.",
+    "Per-trial completion, convergence and validation differ; consult the source documents and saved result records. Unknown experiment status does not mean not executed.",
+    "Historical relaxed variable-C/Q/harmonic conditions are not retrospectively registered or approved as RF-Txxx.",
+    "Evidence SHA-256 hashes identify archived files, not the effective RF constraints. Continuous-frequency/global-optimality and physical implementation are unproven."
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-006",
+  "phase": "Phase 2",
+  "purpose": "EXP-006：0.40dB目標に向けたコスト7探索の継続（2026-10-12）",
+  "objective": "full_lpf",
+  "constraints": {
+    "class": "historical",
+    "constraint_id": null,
+    "base_constraint_id": null,
+    "effective_constraint_sha256": null,
+    "effective_constraints": null,
+    "legacy_policy_version": null
+  },
+  "code": {
+    "execution_sha": null,
+    "working_tree_dirty": null,
+    "archive_sha": "641a2792d65f754534f4828507024faab52fbc7b"
+  },
+  "random_seed": null,
+  "environment": null,
+  "search_scope": {
+    "max_search_area": 7,
+    "area_bound_role": "historical_experiment_search_scope_only_not_RF_F001_constraint",
+    "source_documents": [
+      "experiments/chatgpt_topology_search/runs/EXP-006/README.md",
+      "experiments/chatgpt_topology_search/runs/EXP-006/screening_summary.json"
+    ],
+    "conditions": "historical_conditions_see_sources"
+  },
+  "bands_sha256": null,
+  "execution": {
+    "status": "unknown",
+    "elapsed_seconds": null,
+    "evaluation_count": null
+  },
+  "validation": {
+    "numerical": "reported_in_sources",
+    "independent": "reported_in_sources",
+    "implementation": "not_run",
+    "analysis_grid": {
+      "source": "experiments/chatgpt_topology_search/runs/EXP-006/README.md",
+      "coverage": "selected_saved_results_only_see_source_for_each_grid"
+    },
+    "independent_grid": {
+      "source": "experiments/chatgpt_topology_search/runs/EXP-006/README.md",
+      "coverage": "selected_saved_results_only_not_every_search_trial"
+    }
+  },
+  "evidence": [
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-006/A7-04.json",
+      "sha256": "37e02bf771c8cce76fbf1e6bbf618d9881d79cdbd4a2226ffbb9827eef859e85"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-006/A7-04_six_band.csv",
+      "sha256": "cc7a3f24818af577ea254f424471e339317d85ebbf342ba4d7590217105110c7"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-006/LOSS_BREAKDOWN.json",
+      "sha256": "66d7a232187bc2951ecef3a929e52c0192f2ad0f5b9ff79aba4b337b26a46f8e"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-006/LOSS_REVIEW.md",
+      "sha256": "fc0faab8e1f4b2a62b45006c5126120ec6df1a50f4e2fc5c3e1e4d92c2449125"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-006/README.md",
+      "sha256": "199f46376153e38f5f3698644bb6c950a525c596eaba802e5b729a64c0258157"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-006/screening_summary.json",
+      "sha256": "af124d8d5823f89c26a415c70bb2c0b81d15539a04d5e604ce54a7f4b4786131"
+    }
+  ],
+  "limitations": [
+    "This is an inventory of historical evidence, not a new numerical run or an RF-F001 compliance certificate.",
+    "The original execution code SHA, complete resolved RF policy/hash, full seed provenance and runtime environment are unknown. Archive SHA is only the evidence snapshot.",
+    "Per-trial completion, convergence and validation differ; consult the source documents and saved result records. Unknown experiment status does not mean not executed.",
+    "Historical relaxed variable-C/Q/harmonic conditions are not retrospectively registered or approved as RF-Txxx.",
+    "Evidence SHA-256 hashes identify archived files, not the effective RF constraints. Continuous-frequency/global-optimality and physical implementation are unproven."
+  ]
+}

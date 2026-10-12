@@ -37,18 +37,19 @@ class VersionedConstraintsTests(unittest.TestCase):
             trial_dir.mkdir(parents=True)
             trial = {
                 "constraint_id": "RF-T001", "status": "trial",
-                "base_constraint_id": "RF-F001",
+                "base_constraint_id": "RF-F001", "study_authorized": True,
                 "overrides": {"components": {
                     "IC_VARIABLE_C": {"max_branches_principle": 3}}}
             }
             (trial_dir / "RF-T001.json").write_text(json.dumps(trial))
             registry = {
-                "active_formal_id": "RF-F001",
+                "schema_version": 1, "active_formal_id": "RF-F001",
                 "formal": {"RF-F001": {
-                    "file": "data/constraints/formal/RF-F001.json"}},
+                    "file": "data/constraints/formal/RF-F001.json", "state": "approved",
+                    "effective_constraint_sha256": constraint_fingerprint(load_constraint())}},
                 "trial": {"RF-T001": {
                     "file": "data/constraints/trial/RF-T001.json",
-                    "state": "study_authorized"}}
+                    "state": "study_authorized", "base_constraint_id": "RF-F001"}}
             }
             (root / "data/constraints/registry.json").write_text(
                 json.dumps(registry))

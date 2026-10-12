@@ -46,6 +46,51 @@ class IndependentFormulationTests(unittest.TestCase):
         self.assertLess(abs(primary['power_residual']),1e-12)
         self.assertAlmostEqual(primary['gain'],independent['gain'],delta=1e-10)
 
+    def test_branch_current_scaling_handles_near_open_variable_capacitors(self):
+        cases=(
+            ("RF-F001 B12",dict(
+                n_nodes=3,source_node=1,load_node=2,
+                inductors=(Branch(1,3,4.222581345828091e-9,15),),
+                capacitors=(
+                    Branch(2,3,8.565692174367778e-12,80),
+                    Branch(2,0,1.1833552151420807e-29,80),
+                    Branch(3,0,0.07871175265744901e-12,80),
+                ),coupling=np.eye(1)),699e6,1.9081129108397328e21),
+            ("RF-F001 B28",dict(
+                n_nodes=3,source_node=1,load_node=2,
+                inductors=(
+                    Branch(1,2,2.6326505617733322e-9,15),
+                    Branch(1,3,2.0761250963658995e-9,15),
+                    Branch(1,3,2.076125829511095e-9,15),
+                    Branch(2,3,2.3045007732595213e-9,15),
+                ),capacitors=(Branch(1,0,5.551115123125783e-29,80),
+                              Branch(2,0,0.0,80)),coupling=np.eye(4)),
+             703e6,4.153574550851294e19),
+        )
+        for label,params,frequency,expected_raw_condition in cases:
+            with self.subTest(case=label):
+                report=validate_circuit(
+                    params,[frequency],
+                    inductor_types=["LQP01"]*len(params["inductors"]),
+                    physical_order=list(range(len(params["inductors"]))),
+                )
+                primary=solve(frequency,**params)
+                nodal=solve_state(frequency,**params)
+                branch=solve_branch_current(frequency,**params)
+                self.assertAlmostEqual(
+                    np.log10(branch["raw_condition_number"]),
+                    np.log10(expected_raw_condition),delta=0.1)
+                self.assertLess(branch["condition_number"],1e3)
+                self.assertGreater(branch["raw_condition_number"],1e13)
+                self.assertLess(report["max_condition_number"],1e13)
+                self.assertGreater(report["max_raw_branch_condition_number"],1e13)
+                self.assertLess(report["max_gain_discrepancy"],1e-12)
+                self.assertGreater(report["min_inductance_eigenvalue"],0)
+                self.assertAlmostEqual(primary["gain"],nodal["gain"],delta=1e-12)
+                self.assertAlmostEqual(primary["gain"],branch["gain"],delta=1e-12)
+                for result in (primary,nodal,branch):
+                    self.assertLess(abs(result["power_residual"]),1e-12)
+
     def test_source_topology_map_is_checked_separately(self):
         params=multi_inductor_bridge()
         self.assertTrue(validate_connection_map(

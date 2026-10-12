@@ -19,9 +19,9 @@ class TestEXP010(unittest.TestCase):
     def test_Q25_extended_legacy_GJM_checkpoint(self):
         self.assertIn('EXP010-01',self.run_script('verify.py'))
 
-    def test_all_three_mixed_GJM_PCB_C_checkpoints(self):
+    def test_all_four_mixed_GJM_PCB_C_checkpoints(self):
         s=self.run_script('verify_mixed.py')
-        for k in ('EXP010-02','EXP010-03','EXP010-04'):
+        for k in ('EXP010-02','EXP010-03','EXP010-04','EXP010-05'):
             self.assertIn(k,s)
         self.assertIn('"global_optimum_proven": false',s)
 

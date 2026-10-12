@@ -24,6 +24,7 @@ class TestExp011(unittest.TestCase):
   with (ROOT/'data/bands.csv').open(newline='') as band_file:
    bands=list(csv.DictReader(band_file))
   mdl=opt.Compact(d,bands,points=3)
+  self.assertEqual(len(opt.jobs('ind_edges',d)),56)
   x=mdl.ref_x(d);_,jac=mdl._eval(x)
   diffs=[]
   for i in (0,1,2,3,4,5,6,7,8,9,12,17,25):

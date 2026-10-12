@@ -19,11 +19,11 @@ def summarize(checkpoint,artifact_name):
                               if row.get('status')=='completed'}
     failed_candidate_keys={row['candidate_key'] for row in failed_attempts
                            if row.get('candidate_key') not in completed_candidate_keys}
-    optimizer_success=(len(completed_candidate_keys) if candidate_log
+    optimizer_completed=(len(completed_candidate_keys) if candidate_log
                       else int(payload.get('completed_optimizer_candidates',0)))
     optimizer_failed=len(failed_candidate_keys)
     optimizer_planned=int(payload.get('planned_optimizer_candidates',0))
-    optimizer_unrun=max(0,optimizer_planned-optimizer_success-optimizer_failed)
+    optimizer_unrun=max(0,optimizer_planned-optimizer_completed-optimizer_failed)
     evaluation_count=sum(int(row.get('objective_evaluation_count',0))
                          for row in payload.get('candidate_execution_log',[]))
     evaluation_count+=sum(int(row.get('objective_evaluation_count',0))
@@ -75,7 +75,7 @@ def summarize(checkpoint,artifact_name):
             'method':config['optimization']['method'],
             'iterations_per_call':config['optimization']['iterations'],
             'planned_optimizer_candidates':optimizer_planned,
-            'successful_optimizer_candidates':optimizer_success,
+            'completed_optimizer_candidates':optimizer_completed,
             'failed_optimizer_candidates':optimizer_failed,
             'unrun_optimizer_candidates':optimizer_unrun,
             'optimizer_converged_candidates':sum(bool(row.get('converged'))

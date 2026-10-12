@@ -55,7 +55,7 @@ class P4SmokeSummaryTests(unittest.TestCase):
         self.assertEqual(result['source_commit_sha'],'feedface')
         self.assertEqual(result['effective_constraint_sha256'],'abc123')
         self.assertEqual(result['inductor_series'],['LQP02HV'])
-        self.assertEqual(result['optimization']['successful_optimizer_candidates'],2)
+        self.assertEqual(result['optimization']['completed_optimizer_candidates'],2)
         self.assertEqual(result['optimization']['failed_optimizer_candidates'],1)
         self.assertEqual(result['optimization']['unrun_optimizer_candidates'],1)
         self.assertEqual(result['optimization']['optimizer_converged_candidates'],1)

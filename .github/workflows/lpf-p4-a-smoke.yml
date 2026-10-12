@@ -9,7 +9,7 @@ on:
 permissions:
   contents: read
 
-# Deliberately small and manually dispatched: RF-T002, explicit HV/HQ, 2 graphs,
+# Deliberately small on manual dispatch or r2/** push: RF-T002, both series, 2 graphs,
 # at most 4 variable-C layouts per graph, 1 graph per run, and 1 SLSQP iteration.
 # Separate jobs force a real GitHub Artifact upload/download across runners.
 # Not a performance search, P4-A coverage test, or full LPF validation.
@@ -128,7 +128,9 @@ jobs:
           assert result['optimized_graphs'] == 2, result
           with open('results/smoke_summary.json') as f: summary=json.load(f)
           assert summary['optimization']['planned_optimizer_candidates'] == 8
-          assert summary['optimization']['successful_optimizer_candidates'] == 8
+          assert summary['optimization']['completed_optimizer_candidates'] == 8
+          assert (summary['optimization']['optimizer_converged_candidates']
+                  + summary['optimization']['optimizer_nonconverged_candidates'] == 8)
           assert summary['optimization']['failed_optimizer_candidates'] == 0
           assert summary['optimization']['unrun_optimizer_candidates'] == 0
           assert summary['constraint_id'] == 'RF-T002'

@@ -17,7 +17,7 @@ for tag,name in sel.items():
  p=D/name;d=json.loads(p.read_text());
  d['id']=tag;d['phase']='Phase 2';d['policy_revision']='2026-10-12_LQP02HV_Q25_HQ_Q20';d['part_series_per_L']={f'L{i}':s for i,s in enumerate(d['chip_series'])};d['source_original_experiment']=d['base_candidate']
  d['status']='pass_numerical_only' if d['meets_0p30_and_30db'] else 'harmonic_pass_IL_over_0p30'
- d['chip_area_cost_units']=4+(2/3)*len([e for e in d['fixed_C_edges'] if e not in [(3,1)]])
+ d['chip_area_cost_units']=4+(2/3)*len({'EXP011-01': [(1,2)], 'EXP014-02': [(1,2),(5,0)]}[d['base_candidate']])
  d['LQP02_HQ_present']=any(s=='LQP02HQ' for s in d['chip_series']);d['physical_SRF_verified']=False
  d['note']='Prior GJM count inferred from original base; independent MNA in *_independent_MNA.json. Prior nominal reference values remain historical.'
  dst=D/(tag+'.json');dst.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n')

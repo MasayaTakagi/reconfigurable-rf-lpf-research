@@ -4,11 +4,11 @@ import numpy as np
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 import mixed_study as engine
 p=argparse.ArgumentParser();p.add_argument('--id',type=int,default=19);p.add_argument('--seed-index',type=int,default=0);p.add_argument('--grid',type=int,default=31);p.add_argument('--maxiter',type=int,default=300);p.add_argument('--target',type=float,default=30.001);args=p.parse_args()
-P=Path(__file__).resolve().parent;r=json.load(open(P/'followup_results.json'))
-s=[z for z in r['attempts'] if z['job']['id']==args.id and z['run'].get('result')][args.seed_index]
+P=Path(__file__).resolve().parent;r=json.load(open(P/'followup_results_compact.json'))
+s=[z for z in r['trials'] if z['job']['id']==args.id and 'x' in z][args.seed_index]
 engine.CHIP_ROW=s['job']['physical_row']
 m=engine.Model(s['job'],list(csv.DictReader(open(P.parents[3]/'data'/'bands.csv'))))
-x=np.array(s['run']['result']['x'])
+x=np.array(s['x'])
 print('initial',m.metrics(x,201)[:,0].max(),m.metrics(x,201)[:,1:].min(),flush=True)
 o=engine.local_optimize(m,x,args.grid,args.target,args.maxiter)
 a=m.metrics(np.array(o['x']),7001)

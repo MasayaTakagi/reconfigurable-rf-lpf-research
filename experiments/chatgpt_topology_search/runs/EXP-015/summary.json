@@ -1,0 +1,166 @@
+{
+  "phase": "2",
+  "date": "2026-10-12",
+  "project_model": "constant_Q_series_specific_HV25_to27_HQ20_to56",
+  "scope": "six_setting_full_lpf_minimax",
+  "historical_reference_only": {
+    "EXP011-01_Q25_all_L": "old model IL0.293821738, L1 56nH",
+    "EXP014-02_Q25_all_L": "old model IL0.343189953, L1 28.560nH"
+  },
+  "approved_hard_bounds": {
+    "chip_area_cost": 6,
+    "chip_neighbor_abs_k_max": 0.4,
+    "HV_L_nH": [
+      0.4,
+      27
+    ],
+    "HQ_L_nH": [
+      0.2,
+      56
+    ],
+    "HV_Q": 25,
+    "HQ_Q": 20,
+    "IC_C_pf": [
+      0,
+      4
+    ],
+    "PCB_C_pf": [
+      0.02,
+      0.2
+    ],
+    "GJM_Q": 80,
+    "IC_C_Q": 80,
+    "PCB_C_Q": 40
+  },
+  "new_candidates": {
+    "EXP015-HV3C-01": {
+      "file": "EXP015-HV3C-01.json",
+      "base": "EXP011-01",
+      "variable_C_count": 3,
+      "chip_area": 4.666666666666667,
+      "HQ_count": 0,
+      "largest_L_nH": 25.062105293942828,
+      "worst_IL_db": 0.32140280187014103,
+      "min_H2_db": 30.007999999431703,
+      "min_H3_db": 30.00799999997975,
+      "meets_IL_0p30": false,
+      "dense_grid_samples_per_interval": 7001,
+      "independent_9x9_verified": true
+    },
+    "EXP015-HQ3C-01": {
+      "file": "EXP015-HQ3C-01.json",
+      "base": "EXP011-01",
+      "variable_C_count": 3,
+      "chip_area": 4.666666666666667,
+      "HQ_count": 1,
+      "largest_L_nH": 52.59279782309507,
+      "worst_IL_db": 0.3019453791082774,
+      "min_H2_db": 30.00009999999826,
+      "min_H3_db": 30.000099999999726,
+      "meets_IL_0p30": false,
+      "dense_grid_samples_per_interval": 7001,
+      "independent_9x9_verified": true
+    },
+    "EXP015-HV2C-01": {
+      "file": "EXP015-HV2C-01.json",
+      "base": "EXP014-02",
+      "variable_C_count": 2,
+      "chip_area": 5.333333333333333,
+      "HQ_count": 0,
+      "largest_L_nH": 25.709569671780493,
+      "worst_IL_db": 0.34353903360718974,
+      "min_H2_db": 30.00999999997298,
+      "min_H3_db": 30.009999999970308,
+      "meets_IL_0p30": false,
+      "dense_grid_samples_per_interval": 7001,
+      "independent_9x9_verified": true
+    },
+    "EXP015-HQ2C-01": {
+      "file": "EXP015-HQ2C-01.json",
+      "base": "EXP014-02",
+      "variable_C_count": 2,
+      "chip_area": 5.333333333333333,
+      "HQ_count": 1,
+      "largest_L_nH": 25.040461210981945,
+      "worst_IL_db": 0.3502242047350975,
+      "min_H2_db": 30.00999999997831,
+      "min_H3_db": 30.009999999915536,
+      "meets_IL_0p30": false,
+      "dense_grid_samples_per_interval": 7001,
+      "independent_9x9_verified": true
+    },
+    "EXP015-HQ35-01": {
+      "file": "EXP015-HQ35-01.json",
+      "base": "EXP011-01",
+      "variable_C_count": 3,
+      "chip_area": 4.666666666666667,
+      "HQ_count": 1,
+      "largest_L_nH": 34.99999999999999,
+      "worst_IL_db": 0.3180424402411779,
+      "min_H2_db": 30.006000000010037,
+      "min_H3_db": 30.0059999999881,
+      "meets_IL_0p30": false,
+      "dense_grid_samples_per_interval": 7001,
+      "independent_9x9_verified": true
+    },
+    "EXP015-HQ40-01": {
+      "file": "EXP015-HQ40-01.json",
+      "base": "EXP011-01",
+      "variable_C_count": 3,
+      "chip_area": 4.666666666666667,
+      "HQ_count": 1,
+      "largest_L_nH": 40.0,
+      "worst_IL_db": 0.3120532179114174,
+      "min_H2_db": 30.00599999820366,
+      "min_H3_db": 30.005999999994476,
+      "meets_IL_0p30": false,
+      "dense_grid_samples_per_interval": 7001,
+      "independent_9x9_verified": true
+    },
+    "EXP015-HQ45-01": {
+      "file": "EXP015-HQ45-01.json",
+      "base": "EXP011-01",
+      "variable_C_count": 3,
+      "chip_area": 4.666666666666667,
+      "HQ_count": 1,
+      "largest_L_nH": 44.99999999993255,
+      "worst_IL_db": 0.3071462111126648,
+      "min_H2_db": 30.005999999614666,
+      "min_H3_db": 30.005999999976698,
+      "meets_IL_0p30": false,
+      "dense_grid_samples_per_interval": 7001,
+      "independent_9x9_verified": true
+    },
+    "EXP015-HQ50-01": {
+      "file": "EXP015-HQ50-01.json",
+      "base": "EXP011-01",
+      "variable_C_count": 3,
+      "chip_area": 4.666666666666667,
+      "HQ_count": 1,
+      "largest_L_nH": 49.99999999999999,
+      "worst_IL_db": 0.3030870334825247,
+      "min_H2_db": 30.005999998973202,
+      "min_H3_db": 30.005999999996877,
+      "meets_IL_0p30": false,
+      "dense_grid_samples_per_interval": 7001,
+      "independent_9x9_verified": true
+    },
+    "EXP015-HQ56-01": {
+      "file": "EXP015-HQ56-01.json",
+      "base": "EXP011-01",
+      "variable_C_count": 3,
+      "chip_area": 4.666666666666667,
+      "HQ_count": 1,
+      "largest_L_nH": 52.601470086169044,
+      "worst_IL_db": 0.3020373282566003,
+      "min_H2_db": 30.005999998125468,
+      "min_H3_db": 30.005999999975693,
+      "meets_IL_0p30": false,
+      "dense_grid_samples_per_interval": 7001,
+      "independent_9x9_verified": true
+    }
+  },
+  "large_actions_dispatched": false,
+  "physical_SRF_EM_validated": false,
+  "global_optimum_proven": false
+}

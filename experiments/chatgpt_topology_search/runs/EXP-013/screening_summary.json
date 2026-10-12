@@ -1,0 +1,158 @@
+{
+  "experiment": "EXP-013",
+  "date": "2026-10-12",
+  "objective": "Cost-4 no GJM 3-C Phase2 UL/DL 6-setting minimax, H2/H3 >=30dB",
+  "model": {
+    "Q_LQP02": 25,
+    "Q_PCB_C": 40,
+    "Q_IC_C": 80,
+    "source_ohm": 50,
+    "load_ohm": {
+      "real": 60,
+      "imag": -40
+    },
+    "chip_cost": 4,
+    "three_variable_C_study_exception": true,
+    "max_PCB_C": 3
+  },
+  "baseline": {
+    "id": "C4-PCB-01",
+    "IL_db": 0.30482006827987995,
+    "minimum_H2_dB": 30.000049999150242,
+    "minimum_H3_db": 30.000049999999256
+  },
+  "new_verified": {
+    "id": "EXP013-ROW-01",
+    "IL_db": 0.30481726655771096,
+    "minimum_H2_dB": 30.000049999997955,
+    "minimum_H3_db": 30.000049999997415,
+    "MNA_spot_checks": 54,
+    "MNA_power_balance_max_W": 6.071532165918825e-18,
+    "min_K_eig": 0.4339788714439178,
+    "meets_IL_le_0.3": false
+  },
+  "results_by_family": {
+    "baseline": {
+      "n_runs": 2,
+      "n_harmonic_201point_feasible": 2,
+      "n_errors": 0,
+      "n_optimizer_not_converged": 0,
+      "best_feasible_IL_201_db": 0.3048208458073876,
+      "best_job_index": 0,
+      "best_seed": 20261012,
+      "intended_screening_evidence_only": true
+    },
+    "ind1": {
+      "n_runs": 60,
+      "n_harmonic_201point_feasible": 8,
+      "n_errors": 2,
+      "n_optimizer_not_converged": 54,
+      "best_feasible_IL_201_db": 0.30482084580546864,
+      "best_job_index": 24,
+      "best_seed": 20283020,
+      "intended_screening_evidence_only": true
+    },
+    "indpair_main": {
+      "n_runs": 48,
+      "n_harmonic_201point_feasible": 1,
+      "n_errors": 4,
+      "n_optimizer_not_converged": 43,
+      "best_feasible_IL_201_db": 0.6793194659193289,
+      "best_job_index": 19,
+      "best_seed": 20278435,
+      "intended_screening_evidence_only": true
+    },
+    "pcb1": {
+      "n_runs": 45,
+      "n_harmonic_201point_feasible": 42,
+      "n_errors": 0,
+      "n_optimizer_not_converged": 2,
+      "best_feasible_IL_201_db": 0.30482084580540353,
+      "best_job_index": 9,
+      "best_seed": 20269396,
+      "intended_screening_evidence_only": true
+    },
+    "pcb2": {
+      "n_runs": 28,
+      "n_harmonic_201point_feasible": 26,
+      "n_errors": 0,
+      "n_optimizer_not_converged": 0,
+      "best_feasible_IL_201_db": 0.30493911497059345,
+      "best_job_index": 2,
+      "best_seed": 20262977,
+      "intended_screening_evidence_only": true
+    },
+    "pcb3": {
+      "n_runs": 91,
+      "n_harmonic_201point_feasible": 81,
+      "n_errors": 0,
+      "n_optimizer_not_converged": 17,
+      "best_feasible_IL_201_db": 0.30539035287257466,
+      "best_job_index": 27,
+      "best_seed": 20285771,
+      "intended_screening_evidence_only": true
+    },
+    "physical_row": {
+      "n_runs": 24,
+      "n_harmonic_201point_feasible": 13,
+      "n_errors": 0,
+      "n_optimizer_not_converged": 10,
+      "best_feasible_IL_201_db": 0.3048180712811028,
+      "best_job_index": 7,
+      "best_seed": 20267431,
+      "intended_screening_evidence_only": true
+    },
+    "refine_physical_row": {
+      "n_runs": 9,
+      "n_1001_grid_harmonic_feasible": 9,
+      "best_IL_db": 0.30481726655771096,
+      "maxiter_refine": 280,
+      "dense_verified_best_file": "EXP013-ROW-01.json"
+    },
+    "var1_var3": {
+      "n_runs": 17,
+      "n_harmonic_201point_feasible": 4,
+      "n_errors": 0,
+      "n_optimizer_not_converged": 16,
+      "best_feasible_IL_201_db": 0.43476298656050116,
+      "best_job_index": 3,
+      "best_seed": 20263763,
+      "intended_screening_evidence_only": true
+    },
+    "var2_var3": {
+      "n_runs": 14,
+      "n_harmonic_201point_feasible": 0,
+      "n_errors": 0,
+      "n_optimizer_not_converged": 14,
+      "best_feasible_IL_201_db": null,
+      "best_job_index": null,
+      "best_seed": null,
+      "intended_screening_evidence_only": true
+    },
+    "var3": {
+      "n_runs": 18,
+      "n_harmonic_201point_feasible": 9,
+      "n_errors": 0,
+      "n_optimizer_not_converged": 10,
+      "best_feasible_IL_201_db": 0.4283279165635496,
+      "best_job_index": 3,
+      "best_seed": 20263763,
+      "intended_screening_evidence_only": true
+    }
+  },
+  "method": "finite local analytic Jacobian SLSQP; coarse frequency optimization grids 9/13/21/31, reported 201-sample grid metrics; row refine 61 points optimization and 7001 individual segment verification; no global bound",
+  "physical_q_frequency_or_em_validated": false,
+  "actions_executed": false,
+  "screening_attempts_completed": 347,
+  "refinement_attempts_completed": 9,
+  "limitations": [
+    "Completed attempts only; do not interpret as all possible graphs or convergence.",
+    "Only one-start in pcb3/ind1/indpair, nonconvergence and rank deficiency possible; not an exhaustive proof",
+    "Some (a,b) chip L edges searched also appear reversed against baseline, resulting in physical graph-equivalent trials, hence 60 rather than 56 single-L trials",
+    "Physical chip row permutations include reversed-equivalent physical layouts",
+    "Var1 group partial extra second starts only on first jobs; see saved record counts",
+    "All low-IL accepted only after independent MNA and dense verification",
+    "Minimum rejection margin ~0.00005 dB not robust",
+    "L1 56nH bound, k abs=0.4 bound, EM/SRF unverified"
+  ]
+}

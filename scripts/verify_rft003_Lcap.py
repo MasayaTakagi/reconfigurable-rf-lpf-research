@@ -28,6 +28,7 @@ def verify(points=9):
         assert all(z["kind"]=="GJM01" for z in c["fixed_capacitors"][:1])
         assert all(z["kind"]=="PCB_PATTERN_C" for z in c["fixed_capacitors"][1:])
         assert abs(c["chip_cost"]-(6+2/3))<1e-10
+        c=dict(c, candidate_id=entry["id"])
         result=check(c,points)
         assert result["IL_goal_pass"]
         if points==7001:

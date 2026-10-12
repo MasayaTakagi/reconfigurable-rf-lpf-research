@@ -10,7 +10,7 @@ permissions:
   pull-requests: read
 jobs:
   cleanup:
-    if: github.event.head_commit.message == 'chore: one-shot cleanup merged Phase2 LPF branches'
+    if: "github.event.head_commit.message == 'chore: one-shot cleanup merged Phase2 LPF branches'"
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

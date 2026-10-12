@@ -1,0 +1,224 @@
+{
+  "benchmark_id": "A7-04",
+  "experiment": "EXP-006",
+  "objective": "full_lpf",
+  "study_phase": "Phase 2",
+  "current_policy_id": "2026-10-10",
+  "current_policy_revision": "2026-10-11_owner_approved_PCB_PATTERN_C_Q40_0p02_to_0p2pF_max3_zero_chip_area",
+  "study_override": {
+    "parameter": "chip_area_cost_cap",
+    "approved_base_cap": 6,
+    "exploratory_cost_cap": 7,
+    "owner_request": "Compare area costs 4-7; first explore 7",
+    "canonical_policy_hard_cap_modified": false
+  },
+  "status": "nominal_35dB_dense_grid_verified_independent_MNA_spot_verified_nonconverged_extremely_low_rejection_margin",
+  "description": "Fixed-topology A7-03 constrained minimax continuation: 35.002dB boundary with minimal nominal RF IL",
+  "source_ohms": 50,
+  "load_ohms": {
+    "real": 60,
+    "imag": -40,
+    "frequency_dependent": false
+  },
+  "chip_area_cost_units": 6.666666666666667,
+  "chip_cost_budget": 7,
+  "components": {
+    "LQP02": {
+      "count": 4,
+      "Q": 25
+    },
+    "GJM01": {
+      "count": 4,
+      "Q": 80
+    },
+    "IC_VARIABLE_C": {
+      "count": 2,
+      "Q": 80,
+      "connection": "to_ground_only",
+      "range_pf": [
+        0,
+        4
+      ]
+    },
+    "PCB_L": {
+      "count": 0
+    },
+    "PCB_PATTERN_C": {
+      "count": 0
+    }
+  },
+  "topology": {
+    "ground": 0,
+    "input_node": 1,
+    "output_node": 3,
+    "n_nodes": 5,
+    "inductors": [
+      {
+        "id": "L0",
+        "a": 1,
+        "b": 2,
+        "L_nH": 3.172571601303419,
+        "Q": 25
+      },
+      {
+        "id": "L1",
+        "a": 3,
+        "b": 4,
+        "L_nH": 7.763725734363848,
+        "Q": 25
+      },
+      {
+        "id": "L2",
+        "a": 2,
+        "b": 5,
+        "L_nH": 5.754712919516239,
+        "Q": 25
+      },
+      {
+        "id": "L3",
+        "a": 2,
+        "b": 3,
+        "L_nH": 6.8423046933017995,
+        "Q": 25
+      }
+    ],
+    "fixed_caps": [
+      {
+        "id": "Cf0",
+        "a": 2,
+        "b": 3,
+        "C_pF": 0.10000000000309532,
+        "Q": 80,
+        "type": "GJM01"
+      },
+      {
+        "id": "Cf1",
+        "a": 1,
+        "b": 3,
+        "C_pF": 0.10000000000007427,
+        "Q": 80,
+        "type": "GJM01"
+      },
+      {
+        "id": "Cf2",
+        "a": 5,
+        "b": 0,
+        "C_pF": 0.288139572113673,
+        "Q": 80,
+        "type": "GJM01"
+      },
+      {
+        "id": "Cf3",
+        "a": 1,
+        "b": 2,
+        "C_pF": 0.6586596957600853,
+        "Q": 80,
+        "type": "GJM01"
+      }
+    ],
+    "variable_caps": [
+      {
+        "id": "Cv0",
+        "a": 4,
+        "b": 0,
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      },
+      {
+        "id": "Cv1",
+        "a": 5,
+        "b": 0,
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      }
+    ]
+  },
+  "physical_chip_row": [
+    "L1",
+    "L2",
+    "L3",
+    "L0"
+  ],
+  "nominal_adjacent_k": [
+    -0.0031792058372998853,
+    -0.39999999996865543,
+    0.3999999999557616
+  ],
+  "designated_strong_adjacent_pairs": [
+    [
+      "L1",
+      "L2"
+    ],
+    [
+      "L2",
+      "L3"
+    ],
+    [
+      "L3",
+      "L0"
+    ]
+  ],
+  "all_other_nominal_chip_k_zero": true,
+  "variable_C_pf_by_setting": {
+    "B71": [
+      1.1939758741220194,
+      2.1108530076651295
+    ],
+    "B12": [
+      1.1222450673422575,
+      1.9495188234856105
+    ],
+    "B28": [
+      1.0372831389959292,
+      1.8825301052666865
+    ],
+    "B13+B14": [
+      0.6400769596278885,
+      1.6229757012156747
+    ],
+    "B26": [
+      0.5107828936089486,
+      1.5036777143510225
+    ],
+    "B8": [
+      0.4395878827913158,
+      1.305161635418466
+    ]
+  },
+  "verified_dense_metrics": {
+    "worst_IL_db": 0.5069507587408923,
+    "min_H2_db": 35.00199466813014,
+    "min_H3_db": 35.00199999008966,
+    "all_six_settings": true,
+    "max_frequency_step_mhz_less_than": 0.02,
+    "points_per_segment": 7001,
+    "max_spot_MNA_power_balance_residual_W": 6.071532165918825e-18,
+    "min_K_eigenvalue": 0.43431010819157867,
+    "independent_MNA_spot_checks": 54
+  },
+  "verification": {
+    "frequency_grid_not_interval_proof": true,
+    "independent_MNA_spot_checks": true,
+    "positive_definite_coupling": true,
+    "physical_k_EM_feasibility_verified": false,
+    "optimizer_slsqp_converged": false,
+    "full_global_optimality_proven": false,
+    "manufacturing_tolerance_checked": false,
+    "Phase3_authorized": false,
+    "finite_grid_not_interval_proof": true,
+    "quantities_all_6_settings_verified": true,
+    "global_optimum_proven": false
+  },
+  "engineering_caveats": [
+    "Only 0.001995dB rejection margin above nominal 35dB, not a tolerance-robust implementation. Keep A7-03 35.02dB as separate comparison checkpoint.",
+    "Finite grid is not an interval theorem, and 54 independent MNA spot checks are not every grid point.",
+    "Two strong adjacent chip couplings near |k|=0.4 are not experimentally or EM verified.",
+    "Small nonzero neighboring k≈-0.003179 requires physical control or zero-k reoptimization.",
+    "Two GJM01 fixed C elements near 0.100000pF numerical lower bound; market part matching, EM parasitics and Q(f) unknown.",
+    "Area=20/3 chip footprint units is under explicitly experimental cost<=7; canonical hard cap6 remains unchanged.",
+    "0.40dB target not achieved, SLSQP did not converge, global optimality unproven."
+  ],
+  "numerical_method": "SLSQP epigraph minimax, minimum nominal rejection target 35.002dB, numerical bounds retained; solver terminated positive directional derivative, success=False. Verified on 7001-point per segment grid and 54 9x9 independent MNA spots."
+}

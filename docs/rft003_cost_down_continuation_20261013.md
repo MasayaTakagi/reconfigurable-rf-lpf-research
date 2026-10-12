@@ -15,7 +15,7 @@
 | 6L/2GJM/3PCBの有望物理列を7種×12初期値で重点再最適化 | **84** | 73 | 76（301点） |
 | 6L/3GJM/3PCBからPCB-C枠を空けてGJM→PCB化またはGJMを外しPCB位置変更 | **72** | 59 | 62（301点） |
 | 成立6Lの減衰余裕を増減させた共同再最適化 | **5** | 5 | 5（7,001点） |
-| **合計** | **557** | **447** | *異なるグリッド数のため合計指標は参考扱い* |
+| **合計** | **557** | **358** | *異なるグリッド数のため合計指標は参考扱い* |
 
 最適化グリッドは主に13–23点/各独立帯域。成立選抜回路は6設定×全28独立区間×7,001点、完全11×11枝電流MNAで84代表点、電力収支・K SPDを確認。数値グリッドは数学的極値の証明ではない。これらは**前回までの探索回数と別の追加557開始点**。
 
@@ -75,4 +75,4 @@
 3. H2/H3実余裕30.03dB以上を求める場合は、IL目標と面積を同時に満たす**別グラフ**の発見が必要。名目0.3dB達成と公差耐性を分離。
 4. L1=27nHが上限、PCB-Cが0.02/0.20pFの両端点にある。実部品SRF、Q(f)、PCB製造分布、6個のL列で4組の強結合の同時配置・符号、IC寄生をEM/回路側から別検証する。
 
-**保存データ**：[\`cost_down_continuation_new_best.json\`](../data/validation/rft003_20261013/cost_down_continuation_new_best.json)、検証器\`scripts/verify_rft003_cost_down_new.py --points 7001\`、回帰\`tests/test_rft003_cost_down_continuation.py\`。原始557試行のコード・全ローカルログはユーザーへZIPで別途納品する。元最適化の実行Git SHAは取得されていないため、今回のコミットが最適化557回の完全再現を意味しない。正式候補索引と実験manifestは更新せず、Phase 3へ移行しない。
+**保存データ**：[`cost_down_continuation_new_best.json`](../data/validation/rft003_20261013/cost_down_continuation_new_best.json)、検証器`scripts/verify_rft003_cost_down_new.py --points 7001`、回帰`tests/test_rft003_cost_down_continuation.py`。原始557試行のコード・全ローカルログはユーザーへZIPで別途納品する。元最適化の実行Git SHAは取得されていないため、今回のコミットが最適化557回の完全再現を意味しない。正式候補索引と実験manifestは更新せず、Phase 3へ移行しない。

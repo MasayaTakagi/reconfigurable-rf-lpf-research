@@ -24,8 +24,7 @@ from coverage_sampler import sample_graphs
 from search_space import enumerate_variable_c_layouts
 from selection_patch import select_node_balanced
 from instantiate_graph import build_grounded_settings
-from coupling_layout import (admissible_matrix,adjacent_patterns,
-                             validate_coupling_matrix)
+from coupling_layout import admissible_matrix,adjacent_patterns
 from p4_sharding import (CHECKPOINT_SCHEMA_VERSION, atomic_write_json,
                          CheckpointCompatibilityError, CheckpointCorruptError,
                          canonical_config_hash, canonical_graph_id,
@@ -33,7 +32,7 @@ from p4_sharding import (CHECKPOINT_SCHEMA_VERSION, atomic_write_json,
 from lpf.evaluate import CASES,load_bands,evaluate_settings
 from lpf.circuit import solve
 from lpf.constraint_versions import constraint_fingerprint, load_constraint
-from lpf.independent import solve_gain
+from lpf.validation import validate_circuit
 
 AREA={'LQP01':2,'LQP02':3,'LQP02HV':3,'LQP02HQ':3,'PCB_L':0,'GJM01':2}
 
@@ -142,26 +141,27 @@ def validate(graph,x,K,rows,points,*,variable_layout=None,resolved_policy=None,
     inductor_types=[t for _,_,t in graph[1] if t not in ('GJM01','PCB_PATTERN_C')]
     physical_order=[i for i,t in enumerate(inductor_types)
                     if t in ('LQP01','LQP02','LQP02HV','LQP02HQ','LQW04')]
+    cap_types={'GJM01','PCB_PATTERN_C'}
+    expected_inductor_edges=[(a,b) for a,b,t in graph[1] if t not in cap_types]
+    expected_capacitor_edges=([(a,b) for a,b,t in graph[1] if t in cap_types]
+                              +list(variable_layout['edges'] if variable_layout
+                                    else ((1,0),(2,0))))
     for c in CASES:
-        params=settings[c]
-        validate_coupling_matrix(inductor_types,
-            [branch.value for branch in params['inductors']],K,
-            chip_order=physical_order)
-        eigenvalues=np.linalg.eigvalsh(np.asarray(K,float)*np.sqrt(np.outer(
-            [branch.value for branch in params['inductors']],
-            [branch.value for branch in params['inductors']])))
-        minimum_eigenvalue=float(eigenvalues.min()) if len(eigenvalues) else None
         frequencies=[]
-        for row in rows:
-            if row['case']!=c or row['region'] not in ('UL','DL'):continue
+        for r in rows:
+            if r['case']!=c or r['region'] not in ('UL','DL','H2','H3'):continue
             frequencies.extend(float(f)*1e6 for f in np.linspace(
-                float(row['low_mhz']),float(row['high_mhz']),points))
-        for f_hz in frequencies:
-            mna=solve(f_hz,**params)
-            nodal=solve_gain(f_hz,**params)
-            mismatch=max(mismatch,abs(mna['gain']-nodal))
-            residual=max(residual,abs(mna['power_residual']))
-            condition=max(condition,mna['mna_condition_number'])
+                float(r['low_mhz']),float(r['high_mhz']),points))
+        cross=validate_circuit(settings[c],frequencies,
+            expected_inductor_edges=expected_inductor_edges,
+            expected_capacitor_edges=expected_capacitor_edges,
+            inductor_types=inductor_types,physical_order=physical_order)
+        mismatch=max(mismatch,cross['max_gain_discrepancy'])
+        residual=max(residual,cross['max_power_residual_w'])
+        condition=max(condition,cross['max_condition_number'])
+        value=cross['min_inductance_eigenvalue']
+        if value is not None:
+            minimum_eigenvalue=value if minimum_eigenvalue is None else min(minimum_eigenvalue,value)
     return dict(worst_il_db=report['worst_il_db'][0],
                 worst_il_case=report['worst_il_db'][1],
                 worst_il_region=report['worst_il_db'][2],
@@ -170,7 +170,8 @@ def validate(graph,x,K,rows,points,*,variable_layout=None,resolved_policy=None,
                 max_gain_mismatch=mismatch,max_power_residual=residual,
                 max_condition_number=condition,
                 min_inductance_eigenvalue=minimum_eigenvalue,
-                formulations_compared=['main_augmented_MNA','independent_nodal_admittance'],
+                formulations_compared=['main_augmented_MNA','independent_nodal_admittance',
+                                       'branch_current_MNA'],
                 samples_per_segment=points)
 
 # Registry validation/provenance sources change the checkpoint configuration hash.

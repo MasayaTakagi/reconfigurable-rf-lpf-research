@@ -85,7 +85,9 @@ def check_baseline_metadata(item, policy):
         require(isinstance(a, int) and isinstance(b, int) and
                 0 <= a <= n_nodes and 0 <= b <= n_nodes and a != b,
                 f"{name}: invalid branch endpoints")
-    ql = policy["components"]["LQP02"]["q"]
+    # Historical LPF-007/008 replay uses the archived Q25 baseline only.
+    # New designs must use explicit LQP02HV Q25 / LQP02HQ Q20 series Q.
+    ql = policy["components"]["LQP02"]["legacy_baseline_q"]
     qf = policy["components"]["GJM01"]["q"]
     qv = policy["components"]["IC_VARIABLE_C"]["q"]
     for v in ls:

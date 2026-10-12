@@ -82,7 +82,7 @@ def validate_registry(*, root=ROOT):
                 ):
                     raise ValueError(f"Invalid trial variable-C layout: {cid}")
                 if (layout["branch_count"] != layout["shunt_to_ground"] + layout["non_ground_bridge"]
-                    or layout["branch_count"] != 3
+                    or layout["branch_count"] < 1
                     or layout["branch_count"] > resolved["components"]["IC_VARIABLE_C"]["max_branches_principle"]
                     or "shunt_to_ground" not in resolved["components"]["IC_VARIABLE_C"]["positions_allowed_by_default"]
                     or (layout["non_ground_bridge"] > 0) !=

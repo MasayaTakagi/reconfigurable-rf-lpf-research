@@ -116,6 +116,31 @@ class CouplingPhysicalAdjacencyTests(unittest.TestCase):
                             for pattern in adjacent_patterns(types)))
 
 
+    def test_nominal_nonstrong_zero_and_explicit_sensitivity_only(self):
+        limits=load_constraint('RF-F001')['coupling_limits']
+        self.assertEqual(limits['chip_chip_nonstrong_nominal_k'],0)
+        self.assertEqual(limits['chip_chip_nonstrong_abs_k_max'],.1)
+        types=['LQP02HV','LQP02HQ','LQP02HV']
+        values=[1e-9,2e-9,3e-9]
+        self.assertTrue(validate_coupling_matrix(types,values,np.eye(3)))
+        for value in (.05,-.05,.1,-.1):
+            with self.subTest(k=value):
+                matrix=np.eye(3)
+                matrix[0,2]=matrix[2,0]=value
+                with self.assertRaisesRegex(ValueError,'physical neighbors'):
+                    validate_coupling_matrix(types,values,matrix)
+                self.assertTrue(validate_coupling_matrix(
+                    types,values,matrix,nominal=False))
+        k=np.eye(3);k[0,2]=k[2,0]=.10001
+        with self.assertRaisesRegex(ValueError,'physical neighbors'):
+            validate_coupling_matrix(types,values,k,nominal=False)
+        k=np.eye(3);k[0,1]=k[1,0]=.4
+        self.assertTrue(validate_coupling_matrix(types,values,k))
+        with self.assertRaisesRegex(ValueError,'nominal must'):
+            validate_coupling_matrix(types,values,k,nominal='false')
+
+
+
 class SearchIndependentValidationTests(unittest.TestCase):
     def test_optimizer_validation_uses_all_three_formulations(self):
         graph=(6,((1,3,'LQP02HV'),(3,2,'LQP02HQ'),
@@ -155,5 +180,5 @@ class SearchIndependentValidationTests(unittest.TestCase):
                     resolved_policy=policy,require_explicit_series=True)
 
 
-if __name__=='__main__':
+if __name__=="__main__":
     unittest.main()

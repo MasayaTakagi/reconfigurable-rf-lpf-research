@@ -86,5 +86,33 @@ class IndependentFormulationTests(unittest.TestCase):
             solve(float('nan'),**multi_inductor_bridge())
 
 
+    def test_nonstrong_chip_nominal_and_weak_sensitivity_are_distinct(self):
+        types=['LQP02HV','LQP02HQ','LQP02HV']
+        values=[1.8e-9,2.4e-9,1.2e-9]
+        self.assertGreater(validate_inductor_coupling(
+            types,values,np.eye(3))['min_inductance_eigenvalue'],0)
+        base=multi_inductor_bridge()
+        for weak in (.05,-.05,.1,-.1):
+            with self.subTest(k=weak):
+                K=np.asarray(base['coupling']).copy()
+                K[0,2]=K[2,0]=weak
+                with self.assertRaisesRegex(ValueError,'nonadjacent'):
+                    validate_inductor_coupling(types,values,K)
+                self.assertGreater(validate_inductor_coupling(
+                    types,values,K,nominal=False)['min_inductance_eigenvalue'],0)
+                params=dict(base,coupling=K)
+                with self.assertRaisesRegex(ValueError,'nonadjacent'):
+                    validate_circuit(params,[703e6],
+                        inductor_types=types,physical_order=[0,1,2])
+                self.assertEqual(validate_circuit(params,[703e6],
+                    inductor_types=types,physical_order=[0,1,2],
+                    nominal=False)['frequency_count'],1)
+        K=np.eye(3);K[0,2]=K[2,0]=.10001
+        with self.assertRaisesRegex(ValueError,'nonadjacent'):
+            validate_inductor_coupling(types,values,K,nominal=False)
+        with self.assertRaisesRegex(ValueError,'nominal must'):
+            validate_inductor_coupling(types,values,np.eye(3),nominal='false')
+
+
 if __name__=='__main__':
     unittest.main()

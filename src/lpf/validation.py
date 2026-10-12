@@ -32,9 +32,14 @@ def validate_connection_map(params, *, expected_inductor_edges=None,
     return True
 
 
-def validate_inductor_coupling(types,values,coupling,physical_order=None):
-    """Enforce RF-F001 coupling bounds and the single-row neighbor restriction."""
+def validate_inductor_coupling(types,values,coupling,physical_order=None,*,nominal=True):
+    """Enforce RF-F001 nominal or explicit weak-coupling sensitivity rules.
+
+    Nonadjacent chip pairs have nominal k=0. Only nominal=False permits
+    |k|<=0.1 for a separate weak-coupling sensitivity calculation.
+    """
     k=np.asarray(coupling,float);l=np.asarray(values,float);n=len(types)
+    if type(nominal) is not bool:raise ValueError('nominal must be a boolean')
     if (l.shape!=(n,) or np.any(~np.isfinite(l)) or np.any(l<=0)
             or k.shape!=(n,n) or np.any(~np.isfinite(k))
             or not np.allclose(k,k.T,atol=1e-12,rtol=0)
@@ -55,7 +60,7 @@ def validate_inductor_coupling(types,values,coupling,physical_order=None):
         for j in range(i+1,n):
             pair=frozenset((i,j));value=abs(k[i,j])
             if i in chips and j in chips:
-                limit=.4 if pair in adjacent else .1
+                limit=.4 if pair in adjacent else (0.0 if nominal else .1)
             elif (i in chips and j in pcbs) or (j in chips and i in pcbs):
                 limit=.03
             elif i in pcbs and j in pcbs:
@@ -152,7 +157,7 @@ def solve_branch_current(f_hz,n_nodes,source_node,load_node,inductors=(),
 
 def validate_circuit(params,frequencies_hz,*,expected_inductor_edges=None,
                      expected_capacitor_edges=None,inductor_types=None,
-                     physical_order=None,gain_atol=1e-10):
+                     physical_order=None,gain_atol=1e-10,nominal=True):
     """Compare main MNA, nodal elimination, and all-branch-current MNA per Hz."""
     from .circuit import solve
     from .independent import solve_state
@@ -163,7 +168,8 @@ def validate_circuit(params,frequencies_hz,*,expected_inductor_edges=None,
     lv=[x.value for x in params.get("inductors",())]
     eigen={"min_inductance_eigenvalue":None}
     if inductor_types:
-        eigen=validate_inductor_coupling(inductor_types,lv,lmat,physical_order)
+        eigen=validate_inductor_coupling(inductor_types,lv,lmat,physical_order,
+                                         nominal=nominal)
     discrepancies=[];residuals=[];condition_numbers=[]
     for f_hz in frequencies_hz:
         primary=solve(f_hz,**params)

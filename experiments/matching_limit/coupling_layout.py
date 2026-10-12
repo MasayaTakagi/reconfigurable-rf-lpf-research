@@ -35,9 +35,15 @@ def admissible_matrix(types,values,chip_order=None,chip_edges=None,pcb_pairs=Non
 
 def validate_coupling_matrix(types,values,coupling,chip_order=None,
                              chip_strong_max=.4,chip_weak_max=.1,
-                             chip_pcb_max=.03,pcb_pcb_max=.6):
-    """Independently enforce the one-row physical-neighbor coupling policy."""
+                             chip_pcb_max=.03,pcb_pcb_max=.6,*,nominal=True):
+    """Check nominal (default) or explicit weak-coupling sensitivity topology.
+
+    Under RF-F001, nonadjacent chip-chip pairs have nominal k=0; only
+    nominal=False enables the separate weak-coupling sensitivity |k|<=0.1.
+    This flag never authorizes a nonadjacent *strong* coupling.
+    """
     n=len(types);L=np.asarray(values,float);K=np.asarray(coupling,float)
+    if type(nominal) is not bool:raise ValueError('nominal must be a boolean')
     if (L.shape!=(n,) or np.any(~np.isfinite(L)) or np.any(L<=0)
             or K.shape!=(n,n) or np.any(~np.isfinite(K))
             or not np.allclose(K,K.T,atol=1e-12,rtol=0)
@@ -54,7 +60,7 @@ def validate_coupling_matrix(types,values,coupling,chip_order=None,
         for j in range(i+1,n):
             pair=frozenset((i,j));k=abs(K[i,j])
             if i in chips and j in chips:
-                limit=chip_strong_max if pair in neighbors else chip_weak_max
+                limit=chip_strong_max if pair in neighbors else (0.0 if nominal else chip_weak_max)
             elif (i in chips and j in pcbs) or (j in chips and i in pcbs):
                 limit=chip_pcb_max
             elif i in pcbs and j in pcbs:

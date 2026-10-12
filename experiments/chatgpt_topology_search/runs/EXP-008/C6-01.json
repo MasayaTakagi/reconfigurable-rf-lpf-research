@@ -1,0 +1,151 @@
+{
+  "phase": "Phase 2",
+  "experiment": "EXP-008",
+  "objective": "full_lpf",
+  "source_ohms": 50,
+  "load_ohms": {
+    "real": 60,
+    "imag": -40,
+    "frequency_dependent": false
+  },
+  "chip_area_cost_units": 6,
+  "components": {
+    "LQP02": 4,
+    "GJM01": 3,
+    "IC_VARIABLE_C": 3,
+    "PCB_L": 0,
+    "PCB_PATTERN_C": 0
+  },
+  "physical_chip_row": [
+    "L1",
+    "L2",
+    "L3",
+    "L0"
+  ],
+  "edge_indexing": "1-based; 0=GND",
+  "inductor_edges": {
+    "L0": [
+      1,
+      2
+    ],
+    "L1": [
+      3,
+      4
+    ],
+    "L2": [
+      2,
+      5
+    ],
+    "L3": [
+      2,
+      3
+    ]
+  },
+  "fixed_capacitor_edges": {
+    "Cf1": [
+      1,
+      3
+    ],
+    "Cf2": [
+      5,
+      0
+    ],
+    "Cf3": [
+      1,
+      2
+    ]
+  },
+  "variable_capacitor_edges": {
+    "Cv0": [
+      4,
+      0
+    ],
+    "Cv1": [
+      5,
+      0
+    ],
+    "Cv2": [
+      2,
+      3
+    ]
+  },
+  "variable_capacitance_range_pf": [
+    0,
+    4
+  ],
+  "Q": {
+    "LQP02": 25,
+    "GJM01": 80,
+    "IC_VARIABLE_C": 80
+  },
+  "chip_placement": "single physical row, only neighbor couplings nonzero",
+  "qualifications": [
+    "Numerical finite-grid finding, not globally optimal",
+    "Coil coupling EM/physical implementation not checked",
+    "L and C Q assumed constant across 617-2745 MHz",
+    "Optimizer did not converge",
+    "No fabrication tolerance, SRF or Phase 3 implementation verified"
+  ],
+  "id": "C6-01",
+  "rejection_target_db": 30,
+  "L_nH": [
+    3.209274976492969,
+    10.080982819136729,
+    8.072909185410442,
+    4.619792887304447
+  ],
+  "fixed_C_pf": [
+    0.12835525418563684,
+    0.1261833368104299,
+    0.8888665002457284
+  ],
+  "neighbor_k": [
+    -0.058457512817553105,
+    -0.37891086911744587,
+    0.39999999964010263
+  ],
+  "variable_C_pf_by_setting": {
+    "B71": [
+      0.5332724641843963,
+      1.3101726477708144,
+      1.837503071973065
+    ],
+    "B12": [
+      0.4880925646235703,
+      1.2268547999985877,
+      1.5294463155418796
+    ],
+    "B28": [
+      0.4689045358381571,
+      1.2832221821458984,
+      1.2675435449970636
+    ],
+    "B13+B14": [
+      0.37919738891189986,
+      1.1514721050961605,
+      0.5334337918636839
+    ],
+    "B26": [
+      0.3501048332854697,
+      1.075101788591154,
+      0.2883014906505046
+    ],
+    "B8": [
+      0.3197408927388851,
+      0.9389576171204072,
+      0.1
+    ]
+  },
+  "verification": {
+    "points_per_frequency_interval": 7001,
+    "worst_IL_db": 0.3409850711535688,
+    "min_H2_db": 30.019999999944638,
+    "min_H3_db": 30.02000000000022,
+    "worst_setting": "B8",
+    "K_min_eigenvalue": 0.44755160823458284,
+    "MNA_spots": 54,
+    "max_power_balance_residual_W": 8.673617379884035e-18,
+    "max_independent_MNA_IL_diff_dB": 5.115907697472721e-13
+  },
+  "derivation": "Remove Cf0=0.100pF parallel to Cv2 from optimized 4-L 4-GJM network. Add 0.100pF to each band's Cv2, Q=80 preserved; transfer-function difference <=3.91e-14 dB."
+}

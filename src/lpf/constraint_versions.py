@@ -12,15 +12,34 @@ def _read(path):
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
+def _same_kind(existing, replacement):
+    """Require type-compatible trial values, including nested list members."""
+    if isinstance(existing, bool):
+        return type(replacement) is bool
+    if isinstance(existing, (int, float)):
+        return type(replacement) in (int, float)
+    if isinstance(existing, list):
+        return isinstance(replacement, list) and (
+            not existing or all(
+                any(_same_kind(template, item) for template in existing)
+                for item in replacement))
+    return type(replacement) is type(existing)
+
+
 def _merge(base, overrides):
+    if not isinstance(overrides, dict):
+        raise ValueError("Trial overrides must be an object")
     result = copy.deepcopy(base)
     for key, value in overrides.items():
         if key not in result:
             raise ValueError(f"Unknown constraint override key: {key}")
+        existing = result[key]
         if isinstance(value, dict):
-            if not isinstance(result[key], dict):
+            if not isinstance(existing, dict):
                 raise ValueError(f"Not an object in base constraints: {key}")
-            result[key] = _merge(result[key], value)
+            result[key] = _merge(existing, value)
+        elif isinstance(existing, dict) or not _same_kind(existing, value):
+            raise ValueError(f"Constraint override type mismatch: {key}")
         else:
             result[key] = value
     return result

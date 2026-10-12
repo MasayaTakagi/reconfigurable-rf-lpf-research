@@ -15,7 +15,7 @@
     "imag": -40,
     "frequency_dependent": false
   },
-  "chip_area_cost_units": 6.0,
+  "chip_area_cost_units": 6,
   "components": {
     "LQP02": {
       "count": 4,
@@ -198,7 +198,7 @@
     "B8": [
       0.11878709846473727,
       0.3998652684969991,
-      1.7494547957608156e-07
+      1.7494547957608156e-7
     ]
   },
   "verified_dense_metrics": {
@@ -251,10 +251,12 @@
   "verification": {
     "finite_dense_grid_7001_per_each_segment": true,
     "independent_MNA_verified": true,
-    "status": "pending independent verifier",
+    "status": "passed finite-grid and independent 9x9 MNA regression",
     "9x9_MNA_spots": 54,
     "MNA_power_balance_residual_W": 9.540979117872439e-18,
-    "K_min_eigenvalue": 0.4545619078763558
+    "K_min_eigenvalue": 0.4545619078763558,
+    "evidence_script": "experiments/chatgpt_topology_search/runs/EXP-010/verify_mixed.py",
+    "verification_limits": "7001 samples per frequency interval; 54 independent MNA spot checks; no continuous-frequency theorem or EM validation"
   },
   "engineering_warnings": [
     "Nominal worst IL 0.2999074dB is only 0.00009256dB below 0.30dB, not a tolerance margin",
@@ -267,7 +269,7 @@
   ],
   "inductor_study_range_nH": {
     "minimum": 0.4,
-    "maximum": 56.0,
+    "maximum": 56,
     "LQP02HQ_product_series_reference": "Murata LQP02HQ_02 nominal inductance range 0.2..56nH at 0402(01005)"
   },
   "description": "small IL gain from bounded local multistart; rejection headroom under 0.001dB; nominal-only"

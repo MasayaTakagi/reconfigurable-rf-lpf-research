@@ -140,5 +140,22 @@
     "Adding mutually coupled PCB inductors or internal nodes has not been explored in this experiment.",
     "Canonical cost=6 hard cap is not modified, cost=7 is an exploratory budget.",
     "Phase 3 remains stopped."
-  ]
+  ],
+  "one_chip_L_rewire": {
+    "definition": "Starting from A7-04, move one of the four LQP02 electrical branches to another of the 15 possible 5-node edges; physical row and adjacent mutual-coupling parameterization preserved; 4 GJM01 and two grounded IC C unchanged.",
+    "planned": 44,
+    "completed": 44,
+    "script_errors": 0,
+    "grid_feasible_35dB": 20,
+    "optimizer": "One A7-04 warm start per graph; L-BFGS-B at most 48 iterations, 4 points/segment optimization, 31 points/segment screening",
+    "best_finite_grid": {
+      "worst_il_db": 2.8275622329926664,
+      "coarse_min_h2_db": 35.014563785434575,
+      "coarse_min_h3_db": 35.039077521027664
+    },
+    "independent_MNA_for_new_best": false,
+    "caveat": "This single-edge replacement experiment does not assess globally re-synthesized 4L graphs or coupled multi-edge changes; poor local results are not a structural limit."
+  },
+  "total_new_local_graph_optimizations": 103,
+  "total_new_local_graph_feasible_screen_count": 44
 }

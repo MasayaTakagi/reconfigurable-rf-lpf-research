@@ -1,0 +1,149 @@
+{
+  "success": true,
+  "termination": "Optimization terminated successfully",
+  "iterations": 18,
+  "evals": 21,
+  "secs": 0.055,
+  "target": 30.006,
+  "base_candidate": "EXP011-01",
+  "chip_series": [
+    "LQP02HV",
+    "LQP02HQ",
+    "LQP02HV",
+    "LQP02HV"
+  ],
+  "L_nH": [
+    3.5328905691420753,
+    52.601470086169044,
+    7.98034283825908,
+    4.853479663267232
+  ],
+  "Q_L": [
+    25.0,
+    20.0,
+    25.0,
+    25.0
+  ],
+  "fixed_C_pf": [
+    0.7445584333576497
+  ],
+  "signed_neighbor_k": [
+    0.00587411055159875,
+    -0.3999999999843922,
+    0.4
+  ],
+  "physical_row": [
+    1,
+    2,
+    3,
+    0
+  ],
+  "variable_C_edges": [
+    [
+      4,
+      0
+    ],
+    [
+      5,
+      0
+    ],
+    [
+      2,
+      3
+    ]
+  ],
+  "fixed_C_edges": [
+    [
+      1,
+      2
+    ]
+  ],
+  "Cv_by_setting_pF": {
+    "B71": [
+      0.2684902957368582,
+      1.5431910641031976,
+      0.9599455751864534
+    ],
+    "B12": [
+      0.2294694489945117,
+      1.4804828803670302,
+      0.8333968475826335
+    ],
+    "B28": [
+      0.24870725850823908,
+      1.3439455891720773,
+      0.7181590281212382
+    ],
+    "B13+B14": [
+      0.17653496865359838,
+      1.2684742426653401,
+      0.47243059810227933
+    ],
+    "B26": [
+      0.17967017254793435,
+      1.1120237446522576,
+      0.2603146676667518
+    ],
+    "B8": [
+      0.13414934919878452,
+      1.027188578884796,
+      0.0
+    ]
+  },
+  "worst_IL_db": 0.3020373282566003,
+  "min_H2_db": 30.005999998125468,
+  "min_H3_db": 30.005999999975693,
+  "per_setting_metrics": {
+    "B71": [
+      0.2877145702813961,
+      30.006244265067497,
+      30.00600000019254
+    ],
+    "B12": [
+      0.29041116170746045,
+      34.79140211795801,
+      32.371805911730036
+    ],
+    "B28": [
+      0.3020373282566003,
+      30.005999998125468,
+      30.005999999975693
+    ],
+    "B13+B14": [
+      0.2562951451191361,
+      33.47927789715808,
+      33.00235918116057
+    ],
+    "B26": [
+      0.29237192383858224,
+      31.201975262865083,
+      31.89746109813669
+    ],
+    "B8": [
+      0.3020373282547881,
+      30.006000003064628,
+      30.006000000150834
+    ]
+  },
+  "min_K_eigenvalue": 0.4342993251682821,
+  "samples_per_frequency_interval": 7001,
+  "meets_0p30_and_30db": false,
+  "independent_MNA_done": false,
+  "SRF_EM_verified": false,
+  "global_optimality_proven": false,
+  "id": "EXP015-HQ56-01",
+  "phase": "Phase 2",
+  "policy_revision": "2026-10-12_LQP02HV_Q25_HQ_Q20",
+  "part_series_per_L": {
+    "L0": "LQP02HV",
+    "L1": "LQP02HQ",
+    "L2": "LQP02HV",
+    "L3": "LQP02HV"
+  },
+  "source_original_experiment": "EXP011-01",
+  "status": "harmonic_pass_IL_over_0p30",
+  "chip_area_cost_units": 4.666666666666667,
+  "LQP02_HQ_present": true,
+  "physical_SRF_verified": false,
+  "note": "Prior GJM count inferred from original base; independent MNA in *_independent_MNA.json. Prior nominal reference values remain historical."
+}

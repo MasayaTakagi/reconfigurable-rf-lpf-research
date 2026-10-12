@@ -113,7 +113,7 @@ def validate(graph,x,K,rows,points):
                 samples_per_segment=points)
 
 # Registry validation/provenance sources change the checkpoint configuration hash.
-ALGORITHM_VERSION='p4-a-bounded-sharded-v4-provenance'
+ALGORITHM_VERSION='p4-a-bounded-sharded-v5-r2-core'
 
 
 def handle_termination(signum, frame):

@@ -4,10 +4,10 @@ import json,time,sys,csv,argparse
 from pathlib import Path
 import numpy as np
 from scipy.optimize import minimize
-ROOT=Path('/mnt/data/_smoke_root/experiments/chatgpt_topology_search/runs/EXP-010')
+ROOT=Path(__file__).resolve().parent
 sys.path.insert(0,str(ROOT))
 from mixed_study import Model,jobs,reference_vector,BANDS
-P=Path('/mnt/data/exp010')
+P=Path(__file__).resolve().parent
 CASES=('B71','B12','B28','B13+B14','B26','B8')
 pa=argparse.ArgumentParser();pa.add_argument('--count',type=int,default=24);pa.add_argument('--start',type=int,default=0);pa.add_argument('--iterations',type=int,default=75);pa.add_argument('--n',type=int,default=13);pa.add_argument('--target',type=float,default=30.007);pa.add_argument('--out',default='multistart_v2.json');args=pa.parse_args()
 model=Model(jobs('baseline')[0],list(csv.DictReader(BANDS.open())))

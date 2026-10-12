@@ -2,14 +2,15 @@
 
 ## Key numerical finding
 
-**Best finite-search cost-6 checkpoint:** [EXP009-01](EXP009-01.json) achieves six-setting worst UL/DL IL **0.307775390 dB** with minimum UL H2 **30.049481 dB** and H3 **30.049998 dB**, using **four LQP02 Q25 inductors, three GJM01 Q80 fixed capacitors, and three IC tunable Q80 capacitors**. All variable capacitors remain 0–4 pF. The Q values are constant-frequency lumped assumptions. The `0.30 dB` IL target is **not yet achieved**.
+**Best observed cost-6 IL checkpoint:** [EXP009-02](EXP009-02.json) achieves six-setting worst UL/DL IL **0.307229935 dB** with minimum UL H2 **30.011757 dB** and H3 **30.012000 dB**. [EXP009-01](EXP009-01.json) is retained as a separate ~0.05dB rejection-headroom comparator (IL 0.307775390 dB), using **four LQP02 Q25 inductors, three GJM01 Q80 fixed capacitors, and three IC tunable Q80 capacitors**. All variable capacitors remain 0–4 pF. The Q values are constant-frequency lumped assumptions. The `0.30 dB` IL target is **not yet achieved**.
 
-**Important engineering limit:** the L1 inductance converges to the **27 nH search upper bound**. Availability/SRF and Q(f) of such a small inductor at 617–2745 MHz are **not validated**. The two largest adjacent chip couplings are close to 0.4 and have not been EM validated. The harmonic attenuation margin is only about 0.05 dB. Consequently EXP009-01 is a **numerical Phase 2 checkpoint**, not an approved manufacturable circuit.
+**Important engineering limit:** the L1 inductance converges to the **27 nH search upper bound**. Availability/SRF and Q(f) of such a small inductor at 617–2745 MHz are **not validated**. The two largest adjacent chip couplings are close to 0.4 and have not been EM validated. The harmonic attenuation margin is 0.012–0.05 dB, depending on the checkpoint. Consequently EXP009-01 is a **numerical Phase 2 checkpoint**, not an approved manufacturable circuit.
 
 | Candidate | L1 upper bound | Worst IL | H2 minimum | H3 minimum | Cost | Status |
 |---|---:|---:|---:|---:|---:|---|
 | Earlier [C6-02](../EXP-008/C6-02.json) | 27 nH search range | 0.339093 dB | 30.030001 dB | 30.029976 dB | 6 | Separate preserved baseline |
-| **[EXP009-01](EXP009-01.json)** | **27 nH** | **0.307775 dB** | **30.049481 dB** | **30.049998 dB** | **6** | Best-found; SRF concern |
+| **[EXP009-02](EXP009-02.json)** | **27 nH** | **0.307230 dB** | **30.011757 dB** | **30.012000 dB** | **6** | Lowest observed nominal IL, negligible attenuation margin |
+| **[EXP009-01](EXP009-01.json)** | **27 nH** | **0.307775 dB** | **30.049481 dB** | **30.049998 dB** | **6** | Slightly more margin, same SRF concern |
 | [EXP009-L15](EXP009-L15.json) | 15 nH | 0.314621 dB | 30.044973 dB | 30.044995 dB | 6 | L-range sensitivity only, not physically verified |
 | [EXP009-L12](EXP009-L12.json) | 12 nH | 0.323169 dB | 30.044939 dB | 30.044997 dB | 6 | L-range sensitivity only, not physically verified |
 
@@ -31,12 +32,12 @@
 - **14** local variable-C placement/control trials (13 unique edge/2-vs-3-variable combinations, with one duplicate edge label) started from C6-02. Their best 201-grid locally feasible trial was the original L3 placement at IL 0.339410 dB; **these are not limits on alternative variable placements**.
 - **25** one-at-a-time fixed-GJM rewires, one start each. The Cf3→parallel-L1 trial produced IL 0.310810 dB (H2≈30.0394 dB), with SLSQP hitting its 130-iteration limit.
 - **12** additional multistarts of the *original C6-02 topology* provided no improved 30 dB locally feasible result. They are not an exhaustive multistart for the new Cf3-parallel-L1 topology.
-- **4** continuation/bound-sensitivity optimizations from the Cf3-parallel-L1 result: a 31- and 91-point minimax continuation yielded IL 0.307775 dB; 15 nH and 12 nH L1 caps yielded the two additional sensitivity candidates above. All runs are local, nonconverged, and were not run with global-optimality certification.
-- Total **55** local optimizer executions across the above categories. The full iteration-level trace of these chat-time prototype runs was not retained in GitHub. Saved finished numerical vectors, declared graph choices, and the independent validator are retained.
+- **4** initial continuation/bound-sensitivity optimizations from the Cf3-parallel-L1 result: a 31- and 91-point minimax continuation yielded IL 0.307775 dB; 15 nH and 12 nH L1 caps yielded the two additional sensitivity candidates above. All runs are local, nonconverged, and were not run with global-optimality certification.
+- At least **58** local optimizer executions across these categories, including the three near-boundary continuations after the initial 55. The initial full iteration-level trace of these chat-time prototype runs was not retained in GitHub. A further 31/91/181-point experimental near-boundary continuation of EXP009-01 identified EXP009-02 (lowest IL at 30.0118 dB margin); its complete optimizer history is also not imported. All saved results are independently MNA checked. Saved finished numerical vectors, declared graph choices, and the independent validator are retained.
 
 ### Independent checks
 
-All three new candidates were verified at **7,001 frequency points per individual listed subband interval** and with a separate **9×9 MNA** solving the four inductor branch currents independently, at **54 representative frequencies per candidate**. For EXP009-01, maximum MNA power budget residual was about **8×10⁻18 W**, and minimum dimensionless k-matrix eigenvalue about **0.43414**. Reproducible from committed records:
+All four new candidates were verified at **7,001 frequency points per individual listed subband interval** and with a separate **9×9 MNA** solving the four inductor branch currents independently, at **54 representative frequencies per candidate**. For EXP009-01, maximum MNA power budget residual was about **8×10⁻18 W**, and minimum dimensionless k-matrix eigenvalue about **0.43414**. Reproducible from committed records:
 
 ```bash
 python -m pip install -r requirements.txt
@@ -46,6 +47,24 @@ python -m unittest discover -s tests -p 'test_exp009_checkpoints.py' -v
 ```
 
 The independent circuit formulation checks **numerical implementation, passivity and power conservation within the same lumped-component/Q assumptions**, but not actual part self-resonance, measured Q(f), IC routing parasitics, EM coupling, manufacturing tolerance, or a mathematical guarantee over continuous frequency.
+
+### L1 Q and self-resonance sensitivity (additional evidence, not a revised physical model)
+
+A cross-check against publicly listed LQP02 27 nH parts found 27 nH devices in the requested 01005/0402 package, e.g. LQP02HV27NH02L. Distributor specifications list nominal self-resonance **3.2 GHz** and minimum Q **16** for that variant; LQP02HQ27NHZ2E lists SRF **2.9 GHz** and minimum Q **12**. The Murata [LQP02HQ series Q table](https://pim.murata.com/asset/pim4/inductor/RD_LQP02HQ_02E_PDF_INDUCTOR?lastModifiedDatetime=20250708075445) reports representative **Q≈19 at 2.4 GHz** for 27 nH, rather than a universal constant Q=25. The SRF and Q numbers vary with the exact part number, frequency, and test conditions. Sources: [Mouser LQP02HQ 27nH](https://eu.mouser.com/ProductDetail/Murata-Electronics/LQP02HQ27NHZ2E), [Mouser LQP02HV 27nH](https://www.mouser.com/en/c/passive-components/inductors-chokes-coils/power-inductors-smd/?inductance=27+nH), [Murata RF series overview](https://www.murata.com/ja-jp/products/inductor/chip/overview/lineup/rf1).
+
+As a **sensitivity study**, keep all EXP009-01 fixed and tunable values unchanged and reduce only L1 Q (other L Q=25, C Q=80). The 1,501-point-per-subband numerical results were:
+
+| Hypothetical inductance Q vector [L0,L1,L2,L3] | Worst IL | Min H2 | Min H3 | Meets 30 dB? |
+|---|---:|---:|---:|---|
+| [25,25,25,25] | 0.307775 dB | 30.0495 dB | 30.0500 dB | Yes |
+| [25,22,25,25] | 0.309523 dB | **28.792 dB** | 30.038 dB | **No** |
+| [25,19,25,25] | 0.311820 dB | **27.451 dB** | 30.023 dB | **No** |
+| [25,16,25,25] | 0.314972 dB | **26.002 dB** | 30.001 dB | **No** |
+| [20,20,20,20] | 0.366208 dB | 28.750 dB | 29.231 dB | No |
+
+The loss change affects the bandwidth/depth of the rejection notch, not just the passband IL. After **separate three-start, per-setting variable-C retuning with fixed L/C/k unchanged**, the minimum H2 was still 29.668 dB (L1 Q22), 29.212 dB (Q19), and 28.750 dB (Q16). These **limited local trials** do not prove that better tuning or a reoptimized fixed topology could not meet 30 dB. This study also does **not** incorporate the actual near-SRF non-ideal frequency response, which requires real component S-parameters/EM.
+
+**Engineering consequence:** at present, EXP009-01/02 are mathematically valid only for the project constant-Q reference model. They are **not yet stable physical candidates**. A Q(f), SRF and tolerance-constrained search must precede promotion to an implementation shortlist.
 
 ### Further reproducible large-scale exploration
 

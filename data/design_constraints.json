@@ -197,7 +197,7 @@
   "inductor_series_optimization_policy": {
     "phase": "Phase 2",
     "primary_Rf_constraints_unchanged": true,
-    "primary_objective": "minimize_six_setting_full_UL_DL_worst_IL_while_satisfying_H2_H3_and_cost_constraints",
+    "primary_objective": "minimize_six_setting_full_UL_DL_worst_IL_with_H2_H3_requirements_and_chip_area_pareto_reporting",
     "preferred_first_pass": "optimize_with_all_LQP02HV_in_0.4_to_27nH_Q25",
     "conditional_fallback": "allow_LQP02HQ_Q20_0.2_to_56nH_when_HV_only_is_infeasible_or_substantially_worse_in_observed_local_search",
     "fallback_priority": [

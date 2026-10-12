@@ -21,7 +21,7 @@ Full technical and historical account: [EXP011 DISCOVERY_HISTORY](../experiments
 | P1 | Carry across known good element vectors when new topology is related; use multiple random starts. | Keep seeds, evaluations, success flags, failures, code SHA and per-shard checkpoint; never infer optimality from finite runs. |
 | P1 | Preserve Pareto records by (chip cost, worst IL, H2/H3 margin) rather than selecting the single smallest nominal IL. | Numerical 0.0001 dB rejection margin on EXP011-01 is not a manufacturable tolerance margin. |
 | P1 | Use loss budgets as a **search heuristic**, not a causal attribution. L0/L3 contribute ≈0.1797 dB of ≈0.2938 dB overall IL in EXP011-01. | Check redesigned network after any proposed current redistribution; reflected/dissipated watt decomposition does not predict ΔIL from removing an element. |
-| P2 | Explore simultaneous multi-L rewiring, physical inductor row order, and L/C rewiring; single-edge rewires are not enough. | Physical strong coupling only neighbors |k|≤0.4, other nominal 0, full SPD. |
+| P2 | Explore simultaneous multi-L rewiring, physical inductor row order, and L/C rewiring; single-edge rewires are not enough. | Physical strong coupling only neighboring pairs with abs(k)≤0.4, other nominal 0, full SPD. |
 
 ## Stop conditions and evidence levels
 

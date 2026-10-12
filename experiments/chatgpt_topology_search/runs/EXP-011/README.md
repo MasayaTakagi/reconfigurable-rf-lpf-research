@@ -2,6 +2,8 @@
 
 **結論:** EXP010-05（コスト6、最悪IL=0.299890577 dB）を起点に、固定GJMの接続変更と等Qの並列固定C・可変Cの合成、およびPCB固定Cの除去・全素子再最適化を行い、**チップコスト4⅔で最悪IL=0.293821739 dB**を得た。[EXP011-01](EXP011-01.json) は6設定のUL/DL全帯域で評価した、現時点の有限局所探索による最良記録である。数値検証は後述。**理論性能限界、大域最適、実基板性能の証明ではない。**
 
+**設計発見の系譜（再利用推奨）:** [DISCOVERY_HISTORY.md](DISCOVERY_HISTORY.md) でEXP-008～011の探索経路、同Q容量の等価縮約、非等価なPCB-C削除と全回路再最適化、失敗探索からの教訓を整理した。機械可読な変換履歴は [DISCOVERY_LINEAGE.json](DISCOVERY_LINEAGE.json)、横断的な探索器への提言は [docs/topology_search_lessons.md](../../../../docs/topology_search_lessons.md)。元の回路データや既存比較基準は変更しない。
+
 ## 制約と設計候補
 
 | 候補 | 最悪IL dB | 全UL H2最小減衰 dB | 全UL H3最小減衰 dB | チップ面積コスト | LQP02 Q25 | GJM01 Q80 | PCB-C Q40 | 可変IC C Q80 |

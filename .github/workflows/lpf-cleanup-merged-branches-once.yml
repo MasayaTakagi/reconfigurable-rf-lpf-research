@@ -1,0 +1,53 @@
+name: One-time LPF merged-branch cleanup
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/lpf-cleanup-merged-branches-once.yml
+permissions:
+  contents: write
+  pull-requests: read
+jobs:
+  cleanup:
+    if: github.event.head_commit.message == 'chore: one-shot cleanup merged Phase2 LPF branches'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Delete only exact merged PR heads with no extra commits
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const candidates = [
+              { pr: 15, branch: 'phase2/review-candidate-loss-budget-20261012', sha: '58fd2cf36706ba2b9ad6de914ce4e6b2d7086071', evidence: 'docs/constraint_group_loss_summary.md' },
+              { pr: 16, branch: 'phase2/exp-011-compact-q25-loss-min', sha: 'f4d8e9f2b2d271b56901527d5e3e2ee069a6fe47' },
+              { pr: 17, branch: 'phase2/exp-012-cost-minimization-2tunable', sha: '69f65c9a943ce725406396bed5c3132d66705cef' },
+              { pr: 18, branch: 'phase2/exp-013-cost4-graph-reduction-search', sha: '93e09ee1cf0a3061a4a4029d13b4d95f906fab41' },
+              { pr: 19, branch: 'phase2/exp-014-two-tunable-c-topology', sha: 'c2d7346b62b64afb22fad8a248934cd96a8ec116' },
+              { pr: 20, branch: 'phase2/lqp02-hv-hq-physical-series-policy', sha: '744bbedbc4586bee1713f8eb24e361b4545730e5', evidence: 'src/lpf/lqp02_series.py' },
+            ];
+            // Validate the entire deletion plan before touching any refs.
+            for (const c of candidates) {
+              const {data: p} = await github.rest.pulls.get({owner, repo, pull_number: c.pr});
+              if (!p.merged || p.state !== 'closed' || p.head.ref !== c.branch || p.head.sha !== c.sha) {
+                throw new Error('PR verification mismatch for #' + c.pr + ' ' + c.branch);
+              }
+              const {data: r} = await github.rest.git.getRef({owner, repo, ref: 'heads/' + c.branch});
+              if (r.object.sha !== c.sha) {
+                throw new Error('Branch head moved; will not delete ' + c.branch);
+              }
+              if (c.evidence) {
+                const {data: evidence} = await github.rest.repos.getContent({owner, repo, path: c.evidence, ref: 'main'});
+                if (evidence.type !== 'file') throw new Error('Missing merged evidence ' + c.evidence);
+              } else {
+                const {data: compare} = await github.rest.repos.compareCommits({owner, repo, base: 'main', head: c.sha});
+                if (compare.ahead_by !== 0) throw new Error('Unmerged commits on ' + c.branch);
+              }
+            }
+            for (const c of candidates) {
+              await github.rest.git.deleteRef({owner, repo, ref: 'heads/' + c.branch});
+              core.info('Deleted merged PR #' + c.pr + ' branch: ' + c.branch);
+            }
+            core.info('All six merged branches deleted successfully.');

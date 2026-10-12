@@ -1,0 +1,144 @@
+{
+  "experiment": "EXP-007",
+  "run_date": "2026-10-12",
+  "phase": "Phase 2",
+  "objective": "full_lpf",
+  "nominal_harmonic_target_db": 35,
+  "interim_worst_il_goal_db": 0.4,
+  "current_study_area_budget": 7,
+  "canonical_hard_cap_unchanged": 6,
+  "base_checkpoint": {
+    "id": "A7-04",
+    "path": "experiments/chatgpt_topology_search/runs/EXP-006/A7-04.json",
+    "worst_il_db": 0.5069507587408923,
+    "min_h2_db": 35.00199466813014,
+    "min_h3_db": 35.00199999008966
+  },
+  "rewire_fixed_GJM01": {
+    "definition": "4 LQP02 Q25, 4 fixed GJM01 Q80, 2 grounded IC variable C Q80, identical L graph and physical row as A7-04. Move one of four fixed GJM01 to a different circuit edge, 44 distinct selections, one local start each.",
+    "planned": 44,
+    "completed": 44,
+    "script_errors": 0,
+    "grid_feasible_35dB": 19,
+    "optimizer": "L-BFGS-B, at most 48 iterations, 4 frequency points/segment search, 31 points/segment screen",
+    "best": {
+      "replaced_fixed_C_index": 0,
+      "relocated_to_edge_internal_index": [
+        1,
+        -1
+      ],
+      "cost": 6.666666666666667,
+      "worst_il_db": 0.5245807919987855,
+      "min_h2_db": 35.02926032874604,
+      "min_h3_db": 35.02943786508305,
+      "dense_validation_points_per_segment": 7001,
+      "independent_full_MNA_spots": 54,
+      "min_normalized_coupling_eigenvalue": 0.4374121785540867,
+      "max_MNA_power_balance_residual_W": 7.724940478959219e-18,
+      "L_nH": [
+        3.305334593342116,
+        7.6378591637894075,
+        5.888388332758946,
+        7.158760462230027
+      ],
+      "fixed_C_pf": [
+        0.10000000000000002,
+        0.10735170989514844,
+        0.28839737880643945,
+        0.6956428113892441
+      ],
+      "neighbor_k": [
+        -0.0030291637884196317,
+        -0.3998453311833175,
+        0.39575766934392637
+      ],
+      "nominal_strong_pair_order": [
+        "L1-L2",
+        "L2-L3",
+        "L3-L0"
+      ],
+      "fixed_cap_edges_internal": [
+        [
+          1,
+          -1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          4,
+          -1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "variable_grounded_nodes_internal": [
+        3,
+        4
+      ],
+      "independent_SPD_and_power_checked": true,
+      "global_optimum_proven": false,
+      "EM_verified": false,
+      "solver_converged": false
+    }
+  },
+  "one_PCB_L": {
+    "definition": "Add one uncoupled PCB L Q12, 0.1 to 3.0 nH, zero chip area; check 15 unique 5-node edge locations; other components A7-04 as starting values, chip-PCB mutual coupling k=0.",
+    "planned": 15,
+    "completed": 15,
+    "errors": 0,
+    "grid_feasible_35dB": 5,
+    "one_start_each": true,
+    "best_finite_grid": {
+      "edge_internal": [
+        2,
+        3
+      ],
+      "worst_il_db": 1.0636427011016771,
+      "min_h2_db": 35.53764133549346,
+      "min_h3_db": 35.080043432827395
+    },
+    "only_coarse_grid_screening": true,
+    "PCB_PCB_coupling_not_in_scope": true,
+    "EM_verified": false
+  },
+  "stopband_sensitivity": {
+    "subject": "A7-04",
+    "method": "centered finite difference of minima wrt each grounded IC-C; per-branch shift +/-0.005pF, 151 points per band segment; measured condition of 2x2 H2/H3 Jacobian",
+    "finite_difference_pf": 0.005,
+    "condition_number_by_setting": {
+      "B71": 9.363832270126904,
+      "B12": 1.709,
+      "B28": 2.23,
+      "B13+B14": 1.961,
+      "B26": 1.815,
+      "B8": 2.92
+    },
+    "B71_J_dB_per_pF": [
+      [
+        18.1643,
+        3.9314
+      ],
+      [
+        -18.423,
+        -8.3761
+      ]
+    ],
+    "B71_stable_when_grid_151_601_2001": true,
+    "not_transmission_zero_root_sensitivity": true,
+    "not_global_controllability_proof": true
+  },
+  "new_best_found": false,
+  "goal_0p4_achieved": false,
+  "conclusion": "Neither tested fixed-C rewiring nor one uncoupled PCB-L addition beat A7-04. Limited finite local starts do not establish topology performance limits.",
+  "limitations": [
+    "All 44/15 trials use finite local optimization; new 35dB screen candidate counts are grid-only, not full continuum/EM/corner verified.",
+    "The sole dense-checked rewire was worse than A7-04, so no new official design best.",
+    "Adding mutually coupled PCB inductors or internal nodes has not been explored in this experiment.",
+    "Canonical cost=6 hard cap is not modified, cost=7 is an exploratory budget.",
+    "Phase 3 remains stopped."
+  ]
+}

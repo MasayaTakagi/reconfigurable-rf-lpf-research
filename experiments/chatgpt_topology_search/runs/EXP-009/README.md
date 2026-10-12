@@ -37,7 +37,7 @@
 
 ### Independent checks
 
-All four new candidates were verified at **7,001 frequency points per individual listed subband interval** and with a separate **9×9 MNA** solving the four inductor branch currents independently, at **54 representative frequencies per candidate**. For EXP009-01, maximum MNA power budget residual was about **8×10⁻18 W**, and minimum dimensionless k-matrix eigenvalue about **0.43414**. Reproducible from committed records:
+All four constant-Q25 candidates and the separate Q19 stress candidate were verified at **7,001 frequency points per individual listed subband interval** and with a separate **9×9 MNA** solving the four inductor branch currents independently, at **54 representative frequencies per candidate**. For EXP009-01, maximum MNA power budget residual was about **8×10⁻18 W**, and minimum dimensionless k-matrix eigenvalue about **0.43414**. Reproducible from committed records:
 
 ```bash
 python -m pip install -r requirements.txt
@@ -63,6 +63,8 @@ As a **sensitivity study**, keep all EXP009-01 fixed and tunable values unchange
 | [20,20,20,20] | 0.366208 dB | 28.750 dB | 29.231 dB | No |
 
 Reproduce these fixed-value stress calculations with [q_sensitivity.py](q_sensitivity.py). The loss change affects the bandwidth/depth of the rejection notch, not just the passband IL. After **separate three-start, per-setting variable-C retuning with fixed L/C/k unchanged**, the minimum H2 was still 29.668 dB (L1 Q22), 29.212 dB (Q19), and 28.750 dB (Q16). The recorded six-band retuning trial vectors and outcomes are in [q_retune_results.json](q_retune_results.json), and can be rerun with [q_retune.py](q_retune.py) (same seeded 3-start SLSQP procedure). These **limited local trials** do not prove that better tuning or a reoptimized fixed topology could not meet 30 dB. This study also does **not** incorporate the actual near-SRF non-ideal frequency response, which requires real component S-parameters/EM.
+
+**Additional whole-network Q continuation:** unlike merely changing Cv0/Cv1/Cv2, a short 31-point local SLSQP continuation that **jointly reoptimized all L/C/k and 6×3 C values** while changing L1 constant Q through 24→22→20→19 found finite-grid 30dB-feasible solutions at every step. The Q19 result, separately saved as [EXP009-Q19](EXP009-Q19.json), had **worst IL 0.317108 dB, min H2 30.021990 dB, min H3 30.019475 dB**. Its independent 7001-point/subband and 54-point 9×9 MNA checks passed, but SLSQP did not converge. This **does not undo** the physical-model concern: even this stress case still models an artificial frequency-constant Q19 for L1 and Q25 for other coils, with no actual self-resonance. It demonstrates that failure of per-band-C-only retuning is not proof that Q19 cannot be accommodated by reoptimizing the fixed circuit. [Joint-Q optimizer](q_joint.py) and [local-search parameter history](q_joint_results.json) are saved for further review. The numerical comparison is **not** a new owner-approved formal Q policy.
 
 **Engineering consequence:** at present, EXP009-01/02 are mathematically valid only for the project constant-Q reference model. They are **not yet stable physical candidates**. A Q(f), SRF and tolerance-constrained search must precede promotion to an implementation shortlist.
 

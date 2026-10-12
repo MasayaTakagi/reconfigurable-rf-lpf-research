@@ -2,9 +2,9 @@
 import csv,sys,json,os,time,hashlib,argparse
 import numpy as np
 from pathlib import Path
-sys.path.insert(0,'/mnt/data/_smoke_root/experiments/chatgpt_topology_search/runs/EXP-010')
+sys.path.insert(0,str(Path(__file__).resolve().parent))
 import mixed_study as engine
-P=Path('/mnt/data/exp010');BANDS=list(csv.DictReader(open('/mnt/data/_smoke_root/data/bands.csv')))
+P=Path(__file__).resolve().parent;BANDS=list(csv.DictReader(open(P.parents[3]/'data'/'bands.csv')))
 REF=json.load(open(P/'EXP010-02.json'))
 BASE=engine.jobs('baseline')[0]
 SEEDS=[20261012,20261013]

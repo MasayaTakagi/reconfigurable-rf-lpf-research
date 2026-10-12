@@ -142,7 +142,7 @@
   },
   "source_original_experiment": "EXP014-02",
   "status": "harmonic_pass_IL_over_0p30",
-  "chip_area_cost_units": 6.0,
+  "chip_area_cost_units": 5.333333333333333,
   "LQP02_HQ_present": true,
   "physical_SRF_verified": false,
   "note": "Prior GJM count inferred from original base; independent MNA in *_independent_MNA.json. Prior nominal reference values remain historical."

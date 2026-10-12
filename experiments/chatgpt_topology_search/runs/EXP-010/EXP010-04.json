@@ -15,7 +15,7 @@
     "imag": -40,
     "frequency_dependent": false
   },
-  "chip_area_cost_units": 6,
+  "chip_area_cost_units": 6.0,
   "components": {
     "LQP02": {
       "count": 4,
@@ -253,18 +253,16 @@
   },
   "verification": {
     "7k_point_subband_grid": true,
-    "54_independent_MNA_spots": true,
-    "power_balance_checked": true,
-    "inductor_K_SPD": true,
+    "54_independent_MNA_spots": false,
+    "power_balance_checked": false,
+    "inductor_K_SPD": false,
     "actual_LQP02_Q_frequency_verified": false,
     "LQP02_SRF_footprint_verified": false,
     "EM_and_layout_verified": false,
     "tolerances_verified": false,
     "continuous_band_proof": false,
     "global_optimimum_proven": false,
-    "Phase3_authorized": false,
-    "evidence_script": "experiments/chatgpt_topology_search/runs/EXP-010/verify_mixed.py",
-    "scope": "7001 points per specified subband; 54 independent MNA representative-frequency checks; no EM or physical Q(f) verification"
+    "Phase3_authorized": false
   },
   "engineering_warnings": [
     "Nominal worst IL 0.2999074dB is only 0.00009256dB below 0.30dB, not a tolerance margin",
@@ -278,7 +276,7 @@
   ],
   "inductor_study_range_nH": {
     "minimum": 0.4,
-    "maximum": 56,
+    "maximum": 56.0,
     "LQP02HQ_product_series_reference": "Murata LQP02HQ_02 nominal inductance range 0.2..56nH at 0402(01005)"
   },
   "description": "Phase2 Q25 nominal mixed GJM + PCB pattern C, tuned attenuation headroom on the EXP010-02 circuit; finite grid nonconverged search."

@@ -92,6 +92,47 @@ class LocalP4PlanningTests(unittest.TestCase):
                     with local_p4.exclusive_run_lock(directory):
                         self.fail("a second manager acquired the same run")
 
+    def test_child_keeps_shard_lock_after_parent_closes_fd(self):
+        # _spawn closes the manager's descriptor immediately. The independently
+        # running child must continue holding worker.lock across exec.
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            args = local_p4.make_parser().parse_args([
+                "run", "--root", str(root), "--shard-count", "1", "--workers", "1",
+            ])
+            run_id, directory = local_p4.create_run(root, args)
+            manager = local_p4.LocalRunManager(
+                directory, workers=1, memory_min_free_mib=0,
+                monitor_interval=0.1, memory_stall_timeout=1,
+                max_runtime=0, force_kill_after=0,
+            )
+            manager._prepare_shard(0, resume=False)
+            sleeper = [sys.executable, "-c", "import time; time.sleep(30)"]
+            with mock.patch.object(manager, "_worker_command", return_value=sleeper):
+                manager._spawn(0, resume=False)
+            child = manager._active[0]["process"]
+            try:
+                self.assertIsNone(child.poll())
+                with self.assertRaisesRegex(local_p4.RunLockedError, "still active"):
+                    local_p4.assert_no_active_shard_workers(directory, 1)
+                before = (directory / "manifest.json").read_bytes()
+                with self.assertRaisesRegex(local_p4.RunLockedError, "still active"):
+                    local_p4.resume_run(root, run_id, workers=1)
+                self.assertEqual((directory / "manifest.json").read_bytes(), before)
+                self.assertIsNone(child.poll())
+            finally:
+                if child.poll() is None:
+                    child.terminate()
+                try:
+                    child.wait(timeout=5)
+                except TimeoutError:
+                    child.kill()
+                    child.wait(timeout=5)
+                manager._active[0]["log"].close()
+            # The lock file persists, but its advisory lock was released.
+            self.assertTrue((directory / "shards/shard-0/worker.lock").exists())
+            local_p4.assert_no_active_shard_workers(directory, 1)
+
     def test_source_mismatch_rejects_resume_before_checkpoint_access(self):
         saved = {"compatibility": {"uv_lock_sha256": "old-lock"}}
         current = {

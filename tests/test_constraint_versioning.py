@@ -1,5 +1,6 @@
 """Formal/trial constraint identity, immutable snapshots and cost Pareto guardrails."""
 import json
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -24,6 +25,44 @@ class VersionedConstraintsTests(unittest.TestCase):
         self.assertTrue(check_counts(n_lqp02=8))
         self.assertFalse(check_counts(n_pcb=4))
         self.assertFalse(check_counts(n_var=3))
+
+    def test_authorized_trial_is_explicit_and_resolved_from_fixed_formal(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            directory = root / "data/constraints/formal"
+            directory.mkdir(parents=True)
+            (directory / "RF-F001.json").write_text(
+                (ROOT / "data/constraints/formal/RF-F001.json").read_text())
+            trial_dir = root / "data/constraints/trial"
+            trial_dir.mkdir(parents=True)
+            trial = {
+                "constraint_id": "RF-T001", "status": "trial",
+                "base_constraint_id": "RF-F001",
+                "overrides": {"components": {
+                    "IC_VARIABLE_C": {"max_branches_principle": 3}}}
+            }
+            (trial_dir / "RF-T001.json").write_text(json.dumps(trial))
+            registry = {
+                "active_formal_id": "RF-F001",
+                "formal": {"RF-F001": {
+                    "file": "data/constraints/formal/RF-F001.json"}},
+                "trial": {"RF-T001": {
+                    "file": "data/constraints/trial/RF-T001.json",
+                    "state": "study_authorized"}}
+            }
+            (root / "data/constraints/registry.json").write_text(
+                json.dumps(registry))
+            with self.assertRaises(ValueError):
+                load_constraint("RF-T001", root=root)
+            formal = load_constraint(root=root)
+            resolved = load_constraint("RF-T001", root=root, allow_trial=True)
+            self.assertEqual(formal["components"]["IC_VARIABLE_C"]
+                             ["max_branches_principle"], 2)
+            self.assertEqual(resolved["components"]["IC_VARIABLE_C"]
+                             ["max_branches_principle"], 3)
+            self.assertEqual(resolved["active_constraint_status"], "trial")
+            self.assertNotEqual(constraint_fingerprint(formal),
+                                constraint_fingerprint(resolved))
 
     def test_trials_are_not_automatically_adopted(self):
         with self.assertRaises(ValueError):

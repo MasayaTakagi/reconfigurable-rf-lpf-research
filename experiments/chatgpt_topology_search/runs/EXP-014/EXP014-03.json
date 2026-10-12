@@ -1,0 +1,297 @@
+{
+  "id": "EXP014-03",
+  "phase": "Phase 2",
+  "objective": "full_lpf",
+  "description": "2 dB-milli-unit nominal rejection headroom comparator",
+  "source_ohm": 50,
+  "load_ohm": {
+    "real": 60,
+    "imag": -40,
+    "frequency_dependent": false
+  },
+  "setting_order": [
+    "B71",
+    "B12",
+    "B28",
+    "B13+B14",
+    "B26",
+    "B8"
+  ],
+  "study_constraints": {
+    "two_tunable_C_branches": true,
+    "one_non_ground_variable_branch": true,
+    "canonical_two_grounded_C_policy_compliant": false,
+    "minimum_UL_H2_H3_rejection_db": 30,
+    "IL_target_db": 0.3,
+    "Q_frequency_independent": true,
+    "physical_EM_verified": false
+  },
+  "chip_area_cost_units": 5.333333333333333,
+  "components": {
+    "LQP02": {
+      "count": 4,
+      "Q": 25
+    },
+    "GJM01": {
+      "count": 2,
+      "Q": 80
+    },
+    "PCB_PATTERN_C": {
+      "count": 1,
+      "Q": 40
+    },
+    "IC_VARIABLE_C": {
+      "count": 2,
+      "Q": 80,
+      "cap_pf_bounds": [
+        0,
+        4
+      ]
+    }
+  },
+  "topology": {
+    "ground": 0,
+    "input_node": 1,
+    "output_node": 3,
+    "inductors": [
+      {
+        "id": "L0",
+        "nodes": [
+          1,
+          2
+        ],
+        "L_nH": 2.968662928013885,
+        "Q": 25
+      },
+      {
+        "id": "L1",
+        "nodes": [
+          3,
+          4
+        ],
+        "L_nH": 28.55911353048372,
+        "Q": 25
+      },
+      {
+        "id": "L2",
+        "nodes": [
+          2,
+          5
+        ],
+        "L_nH": 8.6613342448693,
+        "Q": 25
+      },
+      {
+        "id": "L3",
+        "nodes": [
+          2,
+          3
+        ],
+        "L_nH": 5.4636866469715075,
+        "Q": 25
+      }
+    ],
+    "fixed_capacitors": [
+      {
+        "id": "Cf0",
+        "nodes": [
+          1,
+          2
+        ],
+        "C_pF": 1.8339408788028009,
+        "Q": 80
+      },
+      {
+        "id": "Cf1",
+        "nodes": [
+          5,
+          0
+        ],
+        "C_pF": 0.8917311597067852,
+        "Q": 80
+      },
+      {
+        "id": "Cp2",
+        "nodes": [
+          3,
+          1
+        ],
+        "C_pF": 0.06356946511097147,
+        "Q": 40
+      }
+    ],
+    "variable_capacitors": [
+      {
+        "id": "Cv0",
+        "nodes": [
+          4,
+          0
+        ],
+        "Q": 80,
+        "min_pF": 0,
+        "max_pF": 4
+      },
+      {
+        "id": "Cv1",
+        "nodes": [
+          2,
+          3
+        ],
+        "Q": 80,
+        "min_pF": 0,
+        "max_pF": 4
+      }
+    ],
+    "physical_chip_row": [
+      "L0",
+      "L1",
+      "L2",
+      "L3"
+    ],
+    "signed_adjacent_k": [
+      0.05230793915282229,
+      -0.051585332537287205,
+      -0.17000767508611717
+    ],
+    "all_nonadjacent_chip_k_zero": true
+  },
+  "variable_C_pf_by_setting": {
+    "B71": [
+      0.4474940911527725,
+      2.041921715899845
+    ],
+    "B12": [
+      0.4426163821268361,
+      1.5860599759288996
+    ],
+    "B28": [
+      0.37427860906216126,
+      1.7485742460218299
+    ],
+    "B13+B14": [
+      0.32058315460882136,
+      1.1142061037787905
+    ],
+    "B26": [
+      0.22107829166089818,
+      0.8603456683890027
+    ],
+    "B8": [
+      0.16661780206934454,
+      0.6584583992677847
+    ]
+  },
+  "optimization_provenance": {
+    "source": "refined_best 151-grid",
+    "optimizer": "SLSQP epigraph minimax with analytic Jacobian",
+    "global_optimum_proven": false,
+    "source_full_iteration_traces_available": false
+  },
+  "verification": {
+    "id": "EXP014-03",
+    "worst_IL_db": 0.3432085222104061,
+    "min_H2_db": 30.001970911600683,
+    "min_H3_db": 30.001999999935933,
+    "frequency_extremum_checked": [
+      0.3432085222104061,
+      30.001970906479464,
+      30.001999999935933
+    ],
+    "by_setting": {
+      "B71": [
+        {
+          "value_db": 0.30337088090786324,
+          "critical_MHz": 698.0
+        },
+        {
+          "value_db": 30.00199999998874,
+          "critical_MHz": 1326.0
+        },
+        {
+          "value_db": 30.001999999983223,
+          "critical_MHz": 1989.0
+        }
+      ],
+      "B12": [
+        {
+          "value_db": 0.3216296833015676,
+          "critical_MHz": 746.0
+        },
+        {
+          "value_db": 32.962749529503064,
+          "critical_MHz": 1398.0
+        },
+        {
+          "value_db": 32.42015689922078,
+          "critical_MHz": 2148.0
+        }
+      ],
+      "B28": [
+        {
+          "value_db": 0.3432085222104061,
+          "critical_MHz": 803.0
+        },
+        {
+          "value_db": 30.0019999999911,
+          "critical_MHz": 1406.0
+        },
+        {
+          "value_db": 30.00200000001081,
+          "critical_MHz": 2244.0
+        }
+      ],
+      "B13+B14": [
+        {
+          "value_db": 0.2964236426280423,
+          "critical_MHz": 798.0
+        },
+        {
+          "value_db": 30.002000000004514,
+          "critical_MHz": 1554.0
+        },
+        {
+          "value_db": 30.001999999935933,
+          "critical_MHz": 2394.0
+        }
+      ],
+      "B26": [
+        {
+          "value_db": 0.3176577920460706,
+          "critical_MHz": 894.0
+        },
+        {
+          "value_db": 30.001999999992414,
+          "critical_MHz": 1628.0
+        },
+        {
+          "value_db": 30.00200000001012,
+          "critical_MHz": 2547.0
+        }
+      ],
+      "B8": [
+        {
+          "value_db": 0.34320852221036174,
+          "critical_MHz": 960.0
+        },
+        {
+          "value_db": 30.001970911600683,
+          "critical_MHz": 1760.71
+        },
+        {
+          "value_db": 30.001999999977752,
+          "critical_MHz": 2640.0
+        }
+      ]
+    },
+    "samples_per_individual_frequency_interval": 7001,
+    "independent_9x9_MNA_points": 72,
+    "max_power_balance_residual_W": 9.974659986866641e-18,
+    "max_MNA_voltage_discrepancy_V": 4.075062987548107e-15,
+    "min_K_eigenvalue": 0.8216350643014473,
+    "meets_IL_0p3_and_H2H3_30": false,
+    "phase3_authorized": false,
+    "real_component_Qf_or_EM_verified": false,
+    "global_optimality_proven": false
+  },
+  "model_warning": "Q25 fixed user-approved ideal lumped; SRF/EM/physical switch and tolerances not simulated"
+}

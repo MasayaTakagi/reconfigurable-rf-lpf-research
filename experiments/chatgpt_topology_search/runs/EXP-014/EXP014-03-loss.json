@@ -1,0 +1,29 @@
+{
+  "id": "EXP014-03",
+  "setting": "B28",
+  "frequency_MHz": 803.0,
+  "IL_db": 0.3432085222104061,
+  "source_available_power_mW": 5.0,
+  "delivered_load_power_mW": 4.6200763444557245,
+  "reflected_power_mW": 0.0029210809308668783,
+  "dissipated_L_power_mW": 0.31363509664391,
+  "dissipated_C_power_mW": 0.06336747796950001,
+  "dB_loss_accounting": {
+    "reflected": 0.0025379600898252663,
+    "L": {
+      "L0": 0.07903294474950667,
+      "L1": 0.014763328571184559,
+      "L2": 0.01321070210307583,
+      "L3": 0.1764028786972195
+    },
+    "C": {
+      "Cf0": 0.003562163867588553,
+      "Cf1": 0.02099744019153016,
+      "Cp2": 0.002156924412595304,
+      "Cv0": 0.016955232527466963,
+      "Cv1": 0.013588947000411291
+    }
+  },
+  "power_balance_residual_W": 1.0299920638612292e-18,
+  "not_causal_removal_sensitivity": true
+}

@@ -1,0 +1,287 @@
+{
+  "id": "EXP014-C4-01",
+  "phase": "Phase 2",
+  "objective": "full_lpf",
+  "description": "Cost-4 exploratory two-variable-C circuit: freeze low-range Cv0 as Q40 PCB pattern capacitor, reoptimize 6 settings jointly",
+  "source_ohm": 50,
+  "load_ohm": {
+    "real": 60,
+    "imag": -40,
+    "frequency_dependent": false
+  },
+  "setting_order": [
+    "B71",
+    "B12",
+    "B28",
+    "B13+B14",
+    "B26",
+    "B8"
+  ],
+  "study_constraints": {
+    "two_tunable_C_branches": true,
+    "one_non_ground_variable_branch": true,
+    "canonical_two_grounded_C_policy_compliant": false,
+    "minimum_UL_H2_H3_rejection_db": 30,
+    "IL_target_db": 0.3,
+    "Q_frequency_independent": true,
+    "physical_EM_verified": false
+  },
+  "chip_area_cost_units": 4,
+  "components": {
+    "LQP02": {
+      "count": 4,
+      "Q": 25
+    },
+    "GJM01": {
+      "count": 0,
+      "Q": 80
+    },
+    "PCB_PATTERN_C": {
+      "count": 2,
+      "Q": 40
+    },
+    "IC_VARIABLE_C": {
+      "count": 2,
+      "Q": 80,
+      "cap_pf_bounds": [
+        0,
+        4
+      ]
+    }
+  },
+  "topology": {
+    "ground": 0,
+    "input_node": 1,
+    "output_node": 3,
+    "inductors": [
+      {
+        "id": "L0",
+        "nodes": [
+          1,
+          2
+        ],
+        "L_nH": 3.8034837218537456,
+        "Q": 25
+      },
+      {
+        "id": "L1",
+        "nodes": [
+          3,
+          4
+        ],
+        "L_nH": 47.26502679847341,
+        "Q": 25
+      },
+      {
+        "id": "L2",
+        "nodes": [
+          2,
+          5
+        ],
+        "L_nH": 7.407415374826503,
+        "Q": 25
+      },
+      {
+        "id": "L3",
+        "nodes": [
+          2,
+          3
+        ],
+        "L_nH": 5.2364897709670535,
+        "Q": 25
+      }
+    ],
+    "fixed_capacitors": [
+      {
+        "id": "Cp0",
+        "nodes": [
+          4,
+          3
+        ],
+        "C_pF": 0.02,
+        "Q": 40
+      },
+      {
+        "id": "Cp1",
+        "nodes": [
+          4,
+          0
+        ],
+        "C_pF": 0.1999999999999989,
+        "Q": 40
+      }
+    ],
+    "variable_capacitors": [
+      {
+        "id": "Cv0",
+        "nodes": [
+          5,
+          0
+        ],
+        "Q": 80,
+        "min_pF": 0,
+        "max_pF": 4
+      },
+      {
+        "id": "Cv1",
+        "nodes": [
+          3,
+          1
+        ],
+        "Q": 80,
+        "min_pF": 0,
+        "max_pF": 4
+      }
+    ],
+    "physical_chip_row": [
+      "L1",
+      "L0",
+      "L3",
+      "L2"
+    ],
+    "signed_adjacent_k": [
+      0.016838808761726776,
+      0.4,
+      -0.39999999999999963
+    ],
+    "all_nonadjacent_chip_k_zero": true
+  },
+  "variable_C_pf_by_setting": {
+    "B71": [
+      2.041755067951866,
+      0.343449502288641
+    ],
+    "B12": [
+      1.8497966241377448,
+      0.30273050735122914
+    ],
+    "B28": [
+      1.7940225734226385,
+      0.29697209326711865
+    ],
+    "B13+B14": [
+      1.4026878703749395,
+      0.23711012505393828
+    ],
+    "B26": [
+      1.2539127895257003,
+      0.23062876738633664
+    ],
+    "B8": [
+      1.0829655406905618,
+      0.2001518964001734
+    ]
+  },
+  "optimization_provenance": {
+    "source": "cost4_2cv_results.jsonl idx=0, start=1",
+    "optimizer": "SLSQP minimax with analytic Jacobian",
+    "global_optimum_proven": false
+  },
+  "verification": {
+    "id": "EXP014-C4-01",
+    "worst_IL_db": 0.42134966544326496,
+    "min_H2_db": 30.00099999999965,
+    "min_H3_db": 30.00099999999996,
+    "frequency_extremum_checked": [
+      0.42134966544326496,
+      30.00099999999965,
+      30.00099999999996
+    ],
+    "by_setting": {
+      "B71": [
+        {
+          "value_db": 0.4151807692565853,
+          "critical_MHz": 698.0
+        },
+        {
+          "value_db": 30.000999999999806,
+          "critical_MHz": 1396.0
+        },
+        {
+          "value_db": 30.00099999999996,
+          "critical_MHz": 2094.0
+        }
+      ],
+      "B12": [
+        {
+          "value_db": 0.37943073913865877,
+          "critical_MHz": 746.0
+        },
+        {
+          "value_db": 32.74314069311315,
+          "critical_MHz": 1398.0
+        },
+        {
+          "value_db": 30.271199287031088,
+          "critical_MHz": 2097.0
+        }
+      ],
+      "B28": [
+        {
+          "value_db": 0.42134966544326496,
+          "critical_MHz": 803.0
+        },
+        {
+          "value_db": 30.001000000000033,
+          "critical_MHz": 1406.0
+        },
+        {
+          "value_db": 30.001000000000253,
+          "critical_MHz": 2109.0
+        }
+      ],
+      "B13+B14": [
+        {
+          "value_db": 0.2804981555996873,
+          "critical_MHz": 798.0
+        },
+        {
+          "value_db": 30.001000000000605,
+          "critical_MHz": 1596.0
+        },
+        {
+          "value_db": 30.001000000009665,
+          "critical_MHz": 2331.0
+        }
+      ],
+      "B26": [
+        {
+          "value_db": 0.3461564577783752,
+          "critical_MHz": 894.0
+        },
+        {
+          "value_db": 30.100554789685226,
+          "critical_MHz": 1698.0
+        },
+        {
+          "value_db": 30.216694154628332,
+          "critical_MHz": 2547.0
+        }
+      ],
+      "B8": [
+        {
+          "value_db": 0.42134966544326496,
+          "critical_MHz": 960.0
+        },
+        {
+          "value_db": 30.00099999999965,
+          "critical_MHz": 1760.0
+        },
+        {
+          "value_db": 30.000999999999976,
+          "critical_MHz": 2745.0
+        }
+      ]
+    },
+    "samples_per_individual_frequency_interval": 7001,
+    "independent_9x9_MNA_points": 72,
+    "max_power_balance_residual_W": 6.5052130349130266e-18,
+    "max_MNA_voltage_discrepancy_V": 3.654683207928474e-15,
+    "min_K_eigenvalue": 0.4341892228392849,
+    "meets_IL_0p3_and_H2H3_30": false,
+    "phase3_authorized": false,
+    "real_component_Qf_or_EM_verified": false,
+    "global_optimality_proven": false
+  },
+  "model_warning": "Constant Q25/80/40, SRF/EM/physical switch tolerances not modeled"
+}

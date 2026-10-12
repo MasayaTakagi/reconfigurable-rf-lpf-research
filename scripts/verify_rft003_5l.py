@@ -13,6 +13,8 @@ import csv
 import json
 from pathlib import Path
 import numpy as np
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.lpf.constraint_versions import (load_constraint, constraint_fingerprint,
                                           validate_variable_c_connections)
 

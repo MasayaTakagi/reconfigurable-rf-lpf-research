@@ -1,5 +1,7 @@
 # Phase 2 topology search lessons: EXP-011 compact-LPF discovery
 
+**Model history notice (2026-10-12):** 本文末のQ25一定・可変C3本等はEXP-011当時の探索条件であり、新正式条件RF-F001の性能実証ではない。現行LQP02HV/HQと制約版管理は[RF-F001](../data/constraints/formal/RF-F001.json)に従う。面積は現行ではハード制約ではなくパレート評価軸。
+
 **2026-10-12** — This is an implementation-oriented index of empirically supported exploration rules, not a global limit or an approved change to project RF constraints.
 
 ## Central discovery

@@ -17,7 +17,10 @@ class Exp015CommonModelTests(unittest.TestCase):
             with self.subTest(candidate=name):
                 result=audit_candidate(name,replay_points=7001)
                 replay=result['old_model_numerical_replay']
-                self.assertEqual(replay['max_summary_metric_delta_db'],0.0)
+                # Saved JSON is digest-locked; allow only numerical roundoff
+                # across BLAS/SciPy builds while remaining much tighter than
+                # the archive's replay tolerance.
+                self.assertLessEqual(replay['max_summary_metric_delta_db'],1e-12)
                 self.assertTrue(replay['matches_saved_within_tolerance'])
                 independent=result['new_model_independent_spot_checks']
                 self.assertEqual(independent['frequency_count'],72)

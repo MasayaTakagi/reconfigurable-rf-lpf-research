@@ -1,0 +1,283 @@
+{
+  "id": "EXP010-04",
+  "experiment": "EXP-010",
+  "phase": "Phase 2",
+  "objective": "full_lpf",
+  "approved_for_study_only": {
+    "three_variable_C_branches": true,
+    "non_ground_variable_C": true,
+    "min_rejection_db": 30
+  },
+  "base_canonical_two_grounded_variable_C_policy_modified": false,
+  "source_ohms": 50,
+  "load_ohms": {
+    "real": 60,
+    "imag": -40,
+    "frequency_dependent": false
+  },
+  "chip_area_cost_units": 6.0,
+  "components": {
+    "LQP02": {
+      "count": 4,
+      "Q": 25
+    },
+    "GJM01": {
+      "count": 3,
+      "Q": 80
+    },
+    "IC_VARIABLE_C": {
+      "count": 3,
+      "Q": 80,
+      "range_pf": [
+        0,
+        4
+      ]
+    },
+    "PCB_PATTERN_C": {
+      "count": 1,
+      "Q": 40,
+      "min_pf": 0.02,
+      "max_pf": 0.2,
+      "area_units": 0
+    }
+  },
+  "topology": {
+    "input_node": 1,
+    "output_node": 3,
+    "ground_node": 0,
+    "inductors": [
+      {
+        "id": "L0",
+        "nodes": [
+          1,
+          2
+        ],
+        "L_nH": 3.5653118112913735,
+        "Q": 25
+      },
+      {
+        "id": "L1",
+        "nodes": [
+          3,
+          4
+        ],
+        "L_nH": 50.617560074451895,
+        "Q": 25
+      },
+      {
+        "id": "L2",
+        "nodes": [
+          2,
+          5
+        ],
+        "L_nH": 7.954488865088885,
+        "Q": 25
+      },
+      {
+        "id": "L3",
+        "nodes": [
+          2,
+          3
+        ],
+        "L_nH": 4.67372273661007,
+        "Q": 25
+      }
+    ],
+    "fixed_capacitors": [
+      {
+        "id": "Cf1",
+        "nodes": [
+          1,
+          3
+        ],
+        "C_pF": 0.1000000000002368,
+        "Q": 80
+      },
+      {
+        "id": "Cf2",
+        "nodes": [
+          5,
+          0
+        ],
+        "C_pF": 0.6650427506085619,
+        "Q": 80
+      },
+      {
+        "id": "Cf3",
+        "nodes": [
+          1,
+          2
+        ],
+        "C_pF": 0.41114650086792215,
+        "Q": 80
+      }
+    ],
+    "variable_capacitors": [
+      {
+        "id": "Cv0",
+        "nodes": [
+          4,
+          0
+        ],
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      },
+      {
+        "id": "Cv1",
+        "nodes": [
+          5,
+          0
+        ],
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      },
+      {
+        "id": "Cv2",
+        "nodes": [
+          2,
+          3
+        ],
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      }
+    ],
+    "physical_chip_row": [
+      "L1",
+      "L2",
+      "L3",
+      "L0"
+    ],
+    "signed_adjacent_k": [
+      0.01283330780110197,
+      -0.3789623918881453,
+      0.39999993600374906
+    ],
+    "nominal_nonadjacent_k_zero": true,
+    "pcb_pattern_capacitors": [
+      {
+        "id": "Cpcb0",
+        "nodes": [
+          3,
+          4
+        ],
+        "C_pF": 0.02000000000001704,
+        "Q": 40,
+        "area_cost": 0
+      }
+    ]
+  },
+  "variable_C_pf_by_setting": {
+    "B71": [
+      0.27596658455529544,
+      0.8373385802993105,
+      0.8471326294717135
+    ],
+    "B12": [
+      0.25198785989956635,
+      0.7679705863503178,
+      0.6996694661050235
+    ],
+    "B28": [
+      0.2457563663363249,
+      0.6959849600488791,
+      0.6231657227673356
+    ],
+    "B13+B14": [
+      0.17043415837830933,
+      0.6639353223161144,
+      0.41928046568797217
+    ],
+    "B26": [
+      0.17699043613969237,
+      0.4146889130106664,
+      0.23945761044600833
+    ],
+    "B8": [
+      0.11778569541561221,
+      0.40587134278442855,
+      8.212783657324429e-14
+    ]
+  },
+  "verified_dense_metrics": {
+    "worst_IL_db": 0.2999954436023214,
+    "min_H2_db": 30.006907111569184,
+    "min_H3_db": 30.00698897972677,
+    "metrics_by_setting": {
+      "B71": [
+        0.27976321850168356,
+        30.105394884148815,
+        30.024610423635707
+      ],
+      "B12": [
+        0.2814667490942412,
+        35.78521675881654,
+        32.56697599612865
+      ],
+      "B28": [
+        0.2999954007386003,
+        30.006995644434056,
+        30.00698897972677
+      ],
+      "B13+B14": [
+        0.26564160594253644,
+        33.35292711420328,
+        31.986521770017188
+      ],
+      "B26": [
+        0.28578451755946327,
+        30.848180484172616,
+        31.224552230223882
+      ],
+      "B8": [
+        0.2999954436023214,
+        30.006907111569184,
+        30.007000510144163
+      ]
+    },
+    "points_per_each_frequency_segment": 7001,
+    "attenuation_30_pass": true
+  },
+  "optimization": {
+    "method": "SLSQP epigraph minimax, joint all L/C/k and 6*3 tunable C refinement from EXP010-02",
+    "success": false,
+    "message": "Positive directional derivative for linesearch",
+    "iterations": 202,
+    "evaluations": 6753,
+    "target_db": 30.007,
+    "optimizer_points_per_interval": 91,
+    "local_only": true,
+    "global_optimality_proven": false
+  },
+  "verification": {
+    "7k_point_subband_grid": true,
+    "54_independent_MNA_spots": false,
+    "power_balance_checked": false,
+    "inductor_K_SPD": false,
+    "actual_LQP02_Q_frequency_verified": false,
+    "LQP02_SRF_footprint_verified": false,
+    "EM_and_layout_verified": false,
+    "tolerances_verified": false,
+    "continuous_band_proof": false,
+    "global_optimimum_proven": false,
+    "Phase3_authorized": false
+  },
+  "engineering_warnings": [
+    "Nominal worst IL 0.2999074dB is only 0.00009256dB below 0.30dB, not a tolerance margin",
+    "Nominal H2min 30.00179dB and H3min 30.00196dB have negligible rejection margin, unrobust to component/rounding/parasitics",
+    "All chip L and C Q values frequency-independent assumptions as user approved; actual Q(f) / SRF excluded",
+    "Chip L1≈50.4nH within LQP02HQ 0.2-56nH nominal package range, yet SRF not verified",
+    "Strong chip k up to 0.4 not EM verified",
+    "Minimization not converged and 7001 finite-grid does not prove entire continuum.",
+    "Nominal IL is only 0.00000456dB below design requirement, insufficient implementation margin",
+    "Minimum stopband margin is only 0.0069071dB, not tolerance robust"
+  ],
+  "inductor_study_range_nH": {
+    "minimum": 0.4,
+    "maximum": 56.0,
+    "LQP02HQ_product_series_reference": "Murata LQP02HQ_02 nominal inductance range 0.2..56nH at 0402(01005)"
+  },
+  "description": "Phase2 Q25 nominal mixed GJM + PCB pattern C, tuned attenuation headroom on the EXP010-02 circuit; finite grid nonconverged search."
+}

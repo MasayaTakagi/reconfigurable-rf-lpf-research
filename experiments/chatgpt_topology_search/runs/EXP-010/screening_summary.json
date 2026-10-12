@@ -1,0 +1,126 @@
+{
+  "experiment": "EXP-010",
+  "phase": "Phase 2",
+  "scope": "single-start local SLSQP screen for 40 mixed-GJM/PCB topology variants around EXP010-02; not an exhaustive graph search",
+  "current_reference": "EXP010-02",
+  "hypotheses": {
+    "LQP02_Q": 25,
+    "GJM_Q": 80,
+    "IC_variable_C_Q": 80,
+    "PCB_pattern_C_Q": 40,
+    "LQP02HQ_numeric_range_nH": [
+      0.4,
+      56
+    ],
+    "chip_area_cost_cap": 6,
+    "tunable_C_count": 3,
+    "tunable_C_range_pf": [
+      0,
+      4
+    ],
+    "nominal_min_rejection_db": 30
+  },
+  "groups": {
+    "second_pcb": {
+      "assigned_count": 14,
+      "completed_count": 14,
+      "run_count": 14,
+      "failed_start_count": 0,
+      "unfinished": false,
+      "optimization_grid_points_per_interval": 13,
+      "screening_grid_points_per_interval": 201,
+      "target_min_rejection_db": 30.012,
+      "best_min30_feasible": [
+        {
+          "topology": "PCB2_1_-1",
+          "IL_db": 0.3007125161345934,
+          "min_stop_db": 30.01198534563763,
+          "converged": false
+        },
+        {
+          "topology": "PCB2_0_4",
+          "IL_db": 0.30089283955621404,
+          "min_stop_db": 30.01183633463924,
+          "converged": false
+        },
+        {
+          "topology": "PCB2_2_4",
+          "IL_db": 0.30091029344233716,
+          "min_stop_db": 30.011789616979677,
+          "converged": false
+        }
+      ],
+      "numerical_searches_only": true
+    },
+    "pcb_move": {
+      "assigned_count": 14,
+      "completed_count": 14,
+      "run_count": 14,
+      "failed_start_count": 0,
+      "unfinished": false,
+      "optimization_grid_points_per_interval": 13,
+      "screening_grid_points_per_interval": 201,
+      "target_min_rejection_db": 30.012,
+      "best_min30_feasible": [
+        {
+          "topology": "PCB_1_-1",
+          "IL_db": 0.30074635144950634,
+          "min_stop_db": 30.011922706904095,
+          "converged": false
+        },
+        {
+          "topology": "PCB_4_-1",
+          "IL_db": 0.3008000548592341,
+          "min_stop_db": 30.011974648903035,
+          "converged": false
+        },
+        {
+          "topology": "PCB_2_4",
+          "IL_db": 0.30089888647577534,
+          "min_stop_db": 30.009203195448908,
+          "converged": false
+        }
+      ],
+      "numerical_searches_only": true
+    },
+    "gjm_move": {
+      "assigned_count": 12,
+      "completed_count": 12,
+      "run_count": 12,
+      "failed_start_count": 0,
+      "unfinished": false,
+      "optimization_grid_points_per_interval": 13,
+      "screening_grid_points_per_interval": 201,
+      "target_min_rejection_db": 30.012,
+      "best_min30_feasible": [
+        {
+          "topology": "GJM_Cf3_2_3",
+          "IL_db": 0.3099626059851699,
+          "min_stop_db": 30.00245375590683,
+          "converged": false
+        },
+        {
+          "topology": "GJM_Cf3_2_4",
+          "IL_db": 0.3106430806796522,
+          "min_stop_db": 30.011921541908215,
+          "converged": false
+        },
+        {
+          "topology": "GJM_Cf3_1_2",
+          "IL_db": 0.31121067024872834,
+          "min_stop_db": 30.011280718390957,
+          "converged": false
+        }
+      ],
+      "numerical_searches_only": true
+    }
+  },
+  "completeness": {
+    "topology_variations_run": 40,
+    "failed_starts": 0,
+    "all_listed_variations_attempted_once": true,
+    "global_optimization_proven": false,
+    "no_improvement_to_best_EXP010_02": true
+  },
+  "global_optimization_proven": false
+}

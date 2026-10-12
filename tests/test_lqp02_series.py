@@ -12,6 +12,8 @@ from src.lpf.lqp02_series import load_policy, select_series, audit_saved_candida
 class TestLQP02Series(unittest.TestCase):
     def test_policy_and_limits(self):
         p = load_policy()
+        self.assertIsNone(p["q"], "New designs must not assume universal LQP02 Q25")
+        self.assertEqual(p["legacy_baseline_q"], 25)
         self.assertEqual(p["series"]["LQP02HV"]["q"], 25)
         self.assertEqual(p["series"]["LQP02HQ"]["q"], 20)
         self.assertEqual(p["series"]["LQP02HV"]["max_inductance_nH"], 27)

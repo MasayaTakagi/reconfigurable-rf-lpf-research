@@ -122,9 +122,21 @@
       "best_201_grid_feasible_il_db": 0.294056761994514,
       "incomplete": false,
       "not_global_optimality_proof": true
+    },
+    "compact_ind_edges": {
+      "description": "56 single-L-edge rewires around true compact EXP011-01; one optimizer start each",
+      "jobs_total": 56,
+      "jobs_completed": 56,
+      "optimizer_starts_completed": 56,
+      "optimizer_failures_recorded": 0,
+      "n_locally_201_grid_feasible": 17,
+      "best_201_grid_feasible_il_db": 0.29856711032906613,
+      "incomplete": false,
+      "not_global_optimality_proof": true
     }
   },
   "full_optimization_vectors_available_only_for_saved_candidate_JSON_and_local_prototype_checkpoints_not_all_committed": true,
   "do_not_conflate_201_grid_screening_with_dense_independent_validation": true,
-  "manual_github_actions_large_jobs_have_not_run": true
+  "manual_github_actions_large_jobs_have_not_run": true,
+  "prior_L_rewire_trial_partial_and_new_compact_L_rewire_trial_completed_are_separate_experiments": true
 }

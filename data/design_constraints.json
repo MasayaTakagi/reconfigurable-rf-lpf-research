@@ -55,7 +55,9 @@
       "srf_and_parasitic_validation": "part_number_specific_SRF_and_S_parameter_review_before_implementation",
       "historical_uniform_Q25_56nH_model": "legacy_numerical_only_requires_new_series_reoptimization",
       "active_rule_since": "2026-10-12",
-      "manufacturer_range_source": "https://www.murata.com/ja-jp/products/inductor/chip/overview/lineup/rf1"
+      "manufacturer_range_source": "https://www.murata.com/ja-jp/products/inductor/chip/overview/lineup/rf1",
+      "legacy_baseline_q": 25,
+      "legacy_baseline_q_usage": "for_immutable_LPF007_LPF008_regression_only_not_for_new_candidates"
     },
     "LQP01": {
       "category": "chip_inductor",

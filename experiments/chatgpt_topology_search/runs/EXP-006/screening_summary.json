@@ -1,0 +1,101 @@
+{
+  "experiment_id": "EXP-006",
+  "research_phase": "Phase 2",
+  "execution_type": "local_completed_numerical_runs",
+  "date": "2026-10-12",
+  "constraints": {
+    "objective": "full_lpf",
+    "min_h2_h3_db": 35,
+    "max_il_target_db": 0.4,
+    "source_ohms": 50,
+    "load_ohms": "60-j40",
+    "chip_L_Q25": true,
+    "GJM_IC_C_Q80": true,
+    "pattern_C_Q40": true,
+    "pattern_C_pf_range": [
+      0.02,
+      0.2
+    ],
+    "pattern_C_max3": true,
+    "IC_grounded_variable_branches": 2,
+    "chip_neighbor_abs_k_max": 0.4,
+    "chip_area_budget_exploratory": 7,
+    "canonical_policy_area_budget_unchanged": 6,
+    "Phase_3": "paused"
+  },
+  "prior_best": {
+    "candidate": "A7-03",
+    "worst_il_db": 0.5073307596899004,
+    "min_h2_db": 35.019990526576365,
+    "min_h3_db": 35.01999999264241
+  },
+  "new_best": {
+    "candidate": "A7-04",
+    "topology_changed": false,
+    "worst_il_db": 0.5069507587408923,
+    "min_h2_db": 35.00199466813014,
+    "min_h3_db": 35.00199999008966,
+    "cost": 6.666666666666667,
+    "min_K_eigenvalue": 0.43431010819157867,
+    "independent_MNA_spot_count": 54,
+    "max_MNA_power_residual_w": 6.071532165918825e-18,
+    "fine_grid_points_per_segment": 7001,
+    "solver": "SLSQP minimax epigraph 35.002dB local reoptimization",
+    "solver_success": false,
+    "nominal_stop_margin_dB": 0.00199466813014,
+    "physical_EM_verified": false,
+    "global_optimum_proven": false,
+    "continuous_interval_proven": false
+  },
+  "additional_screenings": [
+    {
+      "family": "Q40 PCB_PATTERN_C pair on 4L4GJM base",
+      "declared": 30,
+      "executed": 30,
+      "failures": 0,
+      "nominal_35dB_screening_eligible": 15,
+      "screened_best_il_db": 0.5116055095372412,
+      "screening_points_per_segment": 31,
+      "maxiter_range": [
+        55,
+        105
+      ],
+      "first_initialization": "A7-03 with each added cap 0.02pF and deterministic small parameter perturbation",
+      "independent_MNA_of_all_screens": false
+    },
+    {
+      "family": "Q40 PCB_PATTERN_C triple on 4L4GJM base",
+      "declared": 12,
+      "executed": 12,
+      "failures": 0,
+      "nominal_35dB_screening_eligible": 2,
+      "screened_best_il_db": 0.5253968579230532,
+      "screening_points_per_segment": 31,
+      "maxiter_range": [
+        65,
+        66
+      ],
+      "first_initialization": "A7-03 with each added cap 0.02pF and deterministic small parameter perturbation",
+      "independent_MNA_of_all_screens": false
+    },
+    {
+      "family": "5LQP02 plus 3GJM chip area exactly 7",
+      "declared": 56,
+      "executed": 56,
+      "failures": 0,
+      "nominal_35dB_screening_eligible": 32,
+      "screened_best_il_db": 0.6068160201432902,
+      "screening_points_per_segment": 31,
+      "maxiter": 65,
+      "topology_count": "14 fifth-coil connection choices x 4 fixed-GJM removals",
+      "chip_physical_row": "L1-L2-L3-L0-L4",
+      "first_initialization": "A7-03 values, added L 18nH and adjacent k 0, deterministic small perturbation",
+      "independent_MNA_of_all_screens": false
+    }
+  ],
+  "total_new_local_optimizations_screen": 98,
+  "result_interpretation": "Screening of a finite topology/seed and iteration set. The 35dB screened count is only coarse-grid feasibility, not dense independent validation. No global lower bound; no claim that 5L or pattern-C family is inferior.",
+  "archive_name": "lpf_phase2_EXP006_20261012.zip",
+  "provenance_note": "Full local scripts, JSONL per-run records, solver output and independent verification are packaged in attached ZIP; GitHub carries new reference and summary.",
+  "Phase3_started": false
+}

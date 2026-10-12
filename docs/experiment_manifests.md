@@ -56,7 +56,7 @@ python scripts/experiment_manifests.py audit
 
 試験条件を使う場合は `--constraint-id RF-Txxx --allow-trial` とする。
 台帳とtrialファイルで同じ正式基準版・検討承認状態が一致する必要がある。
-opt-inはユーザー承認の代用ではない。今回はRF-T条件を登録していない。
+opt-inはユーザー承認の代用ではない。2026-10-12より研究実行を承認された `RF-T001`（3対GND）と `RF-T002`（2対GND＋1非GNDブリッジ）が台帳に登録されている。両trialは正式採用ではなく、既存EXP-001～015を遡及分類しない。trialごとに接続内訳をsearch_scopeへ明記する。
 
 実行器は共通API `new_manifest` を開始前に呼び、結果保存時に次を記録する。
 既存の専用最適化器/P4-Aへの自動組み込みは後続R2～R4で行う。

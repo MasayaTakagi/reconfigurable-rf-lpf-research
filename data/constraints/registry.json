@@ -10,7 +10,22 @@
       "effective_constraint_sha256": "df6b4cbd347aac06538527cd68963b785207582152e17117a683c10058af0c54"
     }
   },
-  "trial": {},
+  "trial": {
+    "RF-T001": {
+      "file": "data/constraints/trial/RF-T001.json",
+      "state": "study_authorized",
+      "base_constraint_id": "RF-F001",
+      "approved_at": "2026-10-12",
+      "description": "Three ground-shunt variable C; Phase 2 comparison only; exact three-branch layout."
+    },
+    "RF-T002": {
+      "file": "data/constraints/trial/RF-T002.json",
+      "state": "study_authorized",
+      "base_constraint_id": "RF-F001",
+      "approved_at": "2026-10-12",
+      "description": "Two ground shunts plus one non-ground bridge variable C; not series; Phase 2 comparison only."
+    }
+  },
   "historical": {
     "legacy_2026_10_10": {
       "policy_version": "2026-10-10",

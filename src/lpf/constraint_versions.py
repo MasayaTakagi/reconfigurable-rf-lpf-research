@@ -74,7 +74,21 @@ def validate_registry(*, root=ROOT):
                 if not isinstance(overrides, dict) or reserved.intersection(overrides):
                     raise ValueError("Trial may not override constraint identity, legacy policy or phase")
                 base_payload = _read(repository_file(root, registry["formal"][base]["file"]))
-                _merge(base_payload, overrides)
+                resolved = _merge(base_payload, overrides)
+                layout = payload.get("study_variable_c_layout")
+                expected = {"branch_count", "shunt_to_ground", "non_ground_bridge"}
+                if not isinstance(layout, dict) or set(layout) != expected or any(
+                    type(layout[key]) is not int or layout[key] < 0 for key in expected
+                ):
+                    raise ValueError(f"Invalid trial variable-C layout: {cid}")
+                if (layout["branch_count"] != layout["shunt_to_ground"] + layout["non_ground_bridge"]
+                    or layout["branch_count"] < 1
+                    or layout["branch_count"] > resolved["components"]["IC_VARIABLE_C"]["max_branches_principle"]
+                    or "shunt_to_ground" not in resolved["components"]["IC_VARIABLE_C"]["positions_allowed_by_default"]
+                    or (layout["non_ground_bridge"] > 0) !=
+                       ("non_ground_bridge" in resolved["components"]["IC_VARIABLE_C"]["positions_allowed_by_default"])
+                    or resolved["components"]["IC_VARIABLE_C"]["series_requires_separate_approval"] is not True):
+                    raise ValueError(f"Trial layout and allowed positions disagree: {cid}")
     if registry.get("active_formal_id") not in registry["formal"]:
         raise ValueError("Active constraint must be a registered approved formal version")
     return registry
@@ -142,6 +156,7 @@ def load_constraint(constraint_id=None, *, root=ROOT, allow_trial=False):
     result["active_constraint_id"] = cid
     result["active_constraint_status"] = "trial"
     result["trial_base_constraint_id"] = base_id
+    result["trial_variable_c_layout"] = copy.deepcopy(trial["study_variable_c_layout"])
     return result
 
 
@@ -150,3 +165,41 @@ def constraint_fingerprint(resolved_policy):
     encoded = json.dumps(resolved_policy, sort_keys=True, ensure_ascii=False,
                          separators=(",", ":"), allow_nan=False).encode("utf-8")
     return hashlib.sha256(encoded).hexdigest()
+
+
+def validate_variable_c_connections(branches, resolved_policy):
+    """Check specified C-branch endpoints against formal/trial *connection* scope.
+
+    Branches are dictionaries with integer 'a', 'b' node IDs (0 = ground).
+    A non-ground branch must be explicitly marked role='bridge'. This checks
+    connection metadata; independent graph analysis is still required to prove
+    a labelled bridge is not a series-only path.
+    """
+    if not isinstance(branches, (list, tuple)):
+        raise ValueError("Variable C branches must be a sequence")
+    spec = resolved_policy["components"]["IC_VARIABLE_C"]
+    if len(branches) > spec["max_branches_principle"]:
+        raise ValueError("Variable C count exceeds resolved constraints")
+    grounded = bridges = 0
+    for branch in branches:
+        if not isinstance(branch, dict):
+            raise ValueError("Variable C branch must be a mapping")
+        a, b = branch.get("a"), branch.get("b")
+        if (type(a) is not int or type(b) is not int or a < 0 or b < 0 or a == b):
+            raise ValueError("Invalid variable-C connection")
+        if a == 0 or b == 0:
+            if "shunt_to_ground" not in spec["positions_allowed_by_default"]:
+                raise ValueError("Ground-shunt variable C is not authorized")
+            grounded += 1
+        else:
+            if (branch.get("role") != "bridge"
+                or "non_ground_bridge" not in spec["positions_allowed_by_default"]):
+                raise ValueError("Non-ground variable C must be an authorized bridge")
+            bridges += 1
+    if resolved_policy.get("active_constraint_status") == "trial":
+        layout = resolved_policy["trial_variable_c_layout"]
+        if (len(branches) != layout["branch_count"]
+            or grounded != layout["shunt_to_ground"]
+            or bridges != layout["non_ground_bridge"]):
+            raise ValueError("Variable-C connections do not match the authorized trial layout")
+    return True

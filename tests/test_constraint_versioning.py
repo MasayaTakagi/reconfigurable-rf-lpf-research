@@ -38,6 +38,9 @@ class VersionedConstraintsTests(unittest.TestCase):
             trial = {
                 "constraint_id": "RF-T001", "status": "trial",
                 "base_constraint_id": "RF-F001", "study_authorized": True,
+                "study_variable_c_layout": {"branch_count": 3,
+                                            "shunt_to_ground": 3,
+                                            "non_ground_bridge": 0},
                 "overrides": {"components": {
                     "IC_VARIABLE_C": {"max_branches_principle": 3}}}
             }
@@ -89,7 +92,9 @@ class VersionedConstraintsTests(unittest.TestCase):
 
     def test_trials_are_not_automatically_adopted(self):
         with self.assertRaises(ValueError):
-            load_constraint("RF-T001", allow_trial=True)
+            load_constraint("RF-T001")
+        self.assertEqual(load_constraint("RF-T001", allow_trial=True)["active_constraint_status"], "trial")
+        self.assertEqual(load_constraint("RF-T002", allow_trial=True)["active_constraint_status"], "trial")
         with self.assertRaises(ValueError):
             load_constraint("RF-F000")
         self.assertEqual(load_constraint()["active_constraint_id"], "RF-F001")

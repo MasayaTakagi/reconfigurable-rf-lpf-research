@@ -63,6 +63,9 @@ class CandidateIndexGuardrails(unittest.TestCase):
             target = self.root / path
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / path, target)
+        # Registry verification requires every registered trial snapshot.
+        shutil.copytree(ROOT / "data/constraints", self.root / "data/constraints",
+                        dirs_exist_ok=True)
         shutil.copytree(ROOT / RUNS, self.root / RUNS, ignore=shutil.ignore_patterns("__pycache__"))
         # Mirror all registered candidates so additional active candidates can
         # be audited in the temporary root without hardcoded fixture IDs.

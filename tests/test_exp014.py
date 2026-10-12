@@ -1,11 +1,15 @@
 """EX-014 2-tunable Phase2 candidate full-band independent verification regression."""
-import unittest,sys,json,math
+import unittest,json,math,importlib.util
 from pathlib import Path
 import numpy as np
 _HERE=Path(__file__).resolve().parent
 HERE=_HERE if (_HERE/'EXP014-01.json').exists() else _HERE.parent/'experiments/chatgpt_topology_search/runs/EXP-014'
-sys.path.insert(0,str(HERE))
-import verify
+# Load this experiment's independent verifier under a unique module name.
+# Bare `import verify` may resolve to a different EXP-0xx module loaded by
+# unittest discover, silently invalidating the regression.
+_spec=importlib.util.spec_from_file_location('lpf_exp014_independent_verify',HERE/'verify.py')
+verify=importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(verify)
 
 class TestEXP014(unittest.TestCase):
  def test_all_saved_candidates_independent_mna_dense(self):

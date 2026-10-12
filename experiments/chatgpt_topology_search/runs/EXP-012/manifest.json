@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-012",
+  "phase": "Phase 2",
+  "purpose": "EXP-012 — EXP011のチップ面積最小化・IC可変C 3→2枝探索（Phase 2）",
+  "objective": "full_lpf",
+  "constraints": {
+    "class": "historical",
+    "constraint_id": null,
+    "base_constraint_id": null,
+    "effective_constraint_sha256": null,
+    "effective_constraints": null,
+    "legacy_policy_version": null
+  },
+  "code": {
+    "execution_sha": null,
+    "working_tree_dirty": null,
+    "archive_sha": "641a2792d65f754534f4828507024faab52fbc7b"
+  },
+  "random_seed": null,
+  "environment": null,
+  "search_scope": {
+    "max_search_area": 6,
+    "area_bound_role": "historical_experiment_search_scope_only_not_RF_F001_constraint",
+    "source_documents": [
+      "experiments/chatgpt_topology_search/runs/EXP-012/README.md",
+      "experiments/chatgpt_topology_search/runs/EXP-012/screening_summary.json"
+    ],
+    "conditions": "multiple_historical_comparison_conditions_see_sources"
+  },
+  "bands_sha256": null,
+  "execution": {
+    "status": "unknown",
+    "elapsed_seconds": null,
+    "evaluation_count": null
+  },
+  "validation": {
+    "numerical": "reported_in_sources",
+    "independent": "reported_in_sources",
+    "implementation": "not_run",
+    "analysis_grid": {
+      "source": "experiments/chatgpt_topology_search/runs/EXP-012/README.md",
+      "coverage": "selected_saved_results_only_see_source_for_each_grid"
+    },
+    "independent_grid": {
+      "source": "experiments/chatgpt_topology_search/runs/EXP-012/README.md",
+      "coverage": "selected_saved_results_only_not_every_search_trial"
+    }
+  },
+  "evidence": [
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-012/C3L-01.json",
+      "sha256": "4f9e7905e406d81077a1c18b9caf31011b6c82ed4a40f1d2bec0a315bd4ec9ef"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-012/C4-00.json",
+      "sha256": "61d5b40ac65ac43567cd03c18db684c8029720f90073b0ad5e09bc50b774dbe6"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-012/C4-PCB-01.json",
+      "sha256": "95645c1622268c1b875c45d4f992b90776d95e2d56fff14225bec8244d2d23b3"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-012/CV2-01.json",
+      "sha256": "c9a5c56cfdcbae2fa0f4034141cc9fa65ee38a91d4a04eb9f7a0e4666d7027e0"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-012/LQP01-01.json",
+      "sha256": "c65ab401180512dc6a6f4dd7de42661815b1dd76b8035f0dd85298af63c55ce1"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-012/README.md",
+      "sha256": "50cda18336d7c7f770e26b573a3d347c955b930a7884838610e3e2de084ce5cc"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-012/independent_shortlist.json",
+      "sha256": "fe414dd85775a726eadb54ab0116c1fb24c9371d5e4b5f68d841936bf3dfc536"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-012/screening_summary.json",
+      "sha256": "61e0a7e2a26935de44408364e260283d2ba95f04b53103261f1c06ad0b3417d6"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-012/search_cost.py",
+      "sha256": "66309c220c3cf1c2443e612a624996111339827de69d0f2958f3eb8df7dd9399"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-012/verify.py",
+      "sha256": "96c4934884dcc5211295d09cc9d66d6063d64822d4d23d9c9e999cdc1c408218"
+    }
+  ],
+  "limitations": [
+    "This is an inventory of historical evidence, not a new numerical run or an RF-F001 compliance certificate.",
+    "The original execution code SHA, complete resolved RF policy/hash, full seed provenance and runtime environment are unknown. Archive SHA is only the evidence snapshot.",
+    "Per-trial completion, convergence and validation differ; consult the source documents and saved result records. Unknown experiment status does not mean not executed.",
+    "Historical relaxed variable-C/Q/harmonic conditions are not retrospectively registered or approved as RF-Txxx.",
+    "Evidence SHA-256 hashes identify archived files, not the effective RF constraints. Continuous-frequency/global-optimality and physical implementation are unproven."
+  ]
+}

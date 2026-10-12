@@ -9,9 +9,12 @@ import csv
 import json
 import math
 import re
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from src.lpf.experiment_manifest import audit_provenance
 CASES = ("B71", "B12", "B28", "B13+B14", "B26", "B8")
 REQUIRED_BASELINES = {"LPF-007", "LPF-008"}
 
@@ -130,6 +133,8 @@ def audit(detail=False):
         except (KeyError, TypeError, ValueError, OverflowError) as exc:
             issues.append(f"Invalid candidate schema: {name}: {exc}")
 
+    issues.extend(audit_provenance(root=ROOT))
+
     if detail:
         print("Cases:", len(CASES), "band segments:", len(bands),
               "active candidates:", len(index))
@@ -140,4 +145,4 @@ if __name__ == "__main__":
     errors = audit(detail=True)
     if errors:
         raise SystemExit("FAILED:\n- " + "\n- ".join(errors))
-    print("PASS: active policy, band definitions, baseline presence and candidate metadata")
+    print("PASS: active policy, band definitions, baseline presence, candidate metadata and experiment provenance")

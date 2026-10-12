@@ -23,3 +23,20 @@
 ```
 
 実行する場合は`registry.json`の`trial`へ承認状態を登録する。実行時は基準正式版へ差分を適用した**実効制約全体**とSHA-256、目的`matching_only/full_lpf`、探索範囲、コードSHA、乱数seed、数値環境をmanifestに保存する。
+
+
+## 登録の整合性検証（R1）
+
+`validate_registry` は正式版の `state=approved`、ID/パス、実効JSONの
+`effective_constraint_sha256` を照合する。正式版の内容を変えて登録済みハッシュを
+維持した読み込みは拒否する。RF-F001には変更せず台帳へハッシュを追加した。
+新しい正式条件は新IDで登録し、既存版のハッシュを差し替えない。
+
+trial登録には台帳の `base_constraint_id` とファイルの同項目が一致すること、
+台帳の `state=study_authorized` とファイルの `study_authorized=true` が一致することが必要。
+未承認は `proposed`、不採用は `rejected`、取下げは `withdrawn` とし、ファイル側はfalse。
+いずれも実行時opt-inだけでは読み込めない。制約ID/状態、旧policy_version、Phase 3の
+状態をtrial差分で上書きすることはできない。正式昇格APIは存在しない。
+
+実験マニフェストの仕様・履歴の不明値・新規実験開始手順は
+[docs/experiment_manifests.md](../../docs/experiment_manifests.md)を参照。

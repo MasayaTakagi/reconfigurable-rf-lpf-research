@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-004",
+  "phase": "Phase 2",
+  "purpose": "EXP-004 — Phase 2：公称最大IL 0.40dB目標のトポロジー探索",
+  "objective": "full_lpf",
+  "constraints": {
+    "class": "historical",
+    "constraint_id": null,
+    "base_constraint_id": null,
+    "effective_constraint_sha256": null,
+    "effective_constraints": null,
+    "legacy_policy_version": null
+  },
+  "code": {
+    "execution_sha": null,
+    "working_tree_dirty": null,
+    "archive_sha": "641a2792d65f754534f4828507024faab52fbc7b"
+  },
+  "random_seed": null,
+  "environment": null,
+  "search_scope": {
+    "max_search_area": 7,
+    "area_bound_role": "historical_experiment_search_scope_only_not_RF_F001_constraint",
+    "source_documents": [
+      "experiments/chatgpt_topology_search/runs/EXP-004/README.md",
+      "experiments/chatgpt_topology_search/runs/EXP-004/screening_summary.json"
+    ],
+    "conditions": "historical_conditions_see_sources"
+  },
+  "bands_sha256": null,
+  "execution": {
+    "status": "unknown",
+    "elapsed_seconds": null,
+    "evaluation_count": null
+  },
+  "validation": {
+    "numerical": "reported_in_sources",
+    "independent": "unknown",
+    "implementation": "not_run",
+    "analysis_grid": {
+      "source": "experiments/chatgpt_topology_search/runs/EXP-004/README.md",
+      "coverage": "selected_saved_results_only_see_source_for_each_grid"
+    },
+    "independent_grid": null
+  },
+  "evidence": [
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-004/README.md",
+      "sha256": "4a37b78d8fc825234a944f83fe0ff73dd24b8214222ab1afa439a40664eb6663"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-004/screening_summary.json",
+      "sha256": "118a847e311e6a20b7f02346b811c57d1588e327490ddb778c87c10a971c1fe0"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-004/summarize.py",
+      "sha256": "cc7cff9120a8663474d2a0c700b3efc6fab0b28aaf829c458259c77fe8211fae"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-004/sweep_040.py",
+      "sha256": "817b8a98cf1d39c332da93d64e9f6694a377eed4fdb9d9c7ae70725b43469db4"
+    }
+  ],
+  "limitations": [
+    "This is an inventory of historical evidence, not a new numerical run or an RF-F001 compliance certificate.",
+    "The original execution code SHA, complete resolved RF policy/hash, full seed provenance and runtime environment are unknown. Archive SHA is only the evidence snapshot.",
+    "Per-trial completion, convergence and validation differ; consult the source documents and saved result records. Unknown experiment status does not mean not executed.",
+    "Historical relaxed variable-C/Q/harmonic conditions are not retrospectively registered or approved as RF-Txxx.",
+    "Evidence SHA-256 hashes identify archived files, not the effective RF constraints. Continuous-frequency/global-optimality and physical implementation are unproven."
+  ]
+}

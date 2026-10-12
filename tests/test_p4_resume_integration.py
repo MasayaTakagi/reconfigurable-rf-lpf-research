@@ -106,6 +106,14 @@ class P4ResumeIntegrationTests(unittest.TestCase):
                 p4_batch.canonical_config_hash(changed_config),
             )
 
+    def test_pre_provenance_algorithm_is_not_checkpoint_compatible(self):
+        with tempfile.TemporaryDirectory() as directory:
+            args = _args(Path(directory) / "unused.json", Path(directory) / "unused.out")
+            current = p4_batch.build_run_config(args, {"B71": [700.0, 710.0]}, ["a" * 64])
+            previous = dict(current, algorithm_version="p4-a-bounded-sharded-v3")
+            self.assertNotEqual(p4_batch.canonical_config_hash(previous),
+                                p4_batch.canonical_config_hash(current))
+
     def test_cli_rejects_validation_grid_smaller_than_two_points(self):
         with mock.patch("sys.argv", ["p4_batch.py", "--validation-points", "1"]):
             with self.assertRaises(SystemExit) as raised:

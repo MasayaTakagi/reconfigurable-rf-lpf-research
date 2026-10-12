@@ -8,6 +8,7 @@ from copy import deepcopy
 from pathlib import Path
 from unittest.mock import patch
 
+from src.lpf.experiment_manifest import RUNS, experiment_index, new_manifest, write_manifest
 from scripts import audit_results
 from scripts import verify_no_pcb_tunable_candidates as baseline
 
@@ -56,12 +57,13 @@ class CandidateIndexGuardrails(unittest.TestCase):
         self.root = Path(self.tmp.name)
         for path in ("data/design_constraints.json", "data/constraints/registry.json",
                      "data/constraints/formal/RF-F001.json", "data/bands.csv",
-                     "data/candidate_index.csv", "docs/specification.md",
+                     "data/candidate_index.csv", "data/experiment_index.csv", "docs/specification.md",
                      "docs/historical_results.md"):
 
             target = self.root / path
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / path, target)
+        shutil.copytree(ROOT / RUNS, self.root / RUNS, ignore=shutil.ignore_patterns("__pycache__"))
         # Mirror all registered candidates so additional active candidates can
         # be audited in the temporary root without hardcoded fixture IDs.
         with (ROOT / "data/candidate_index.csv").open(newline="", encoding="utf-8") as handle:
@@ -84,8 +86,19 @@ class CandidateIndexGuardrails(unittest.TestCase):
         index = self.root / "data/candidate_index.csv"
         with index.open(newline="", encoding="utf-8") as f:
             rows = list(csv.DictReader(f))
+        m = new_manifest("EXP-016", "Synthetic candidate metadata fixture", {},
+                         objective="full_lpf", seed=1)
+        directory = self.root / RUNS / "EXP-016"
+        directory.mkdir()
+        write_manifest(directory / "manifest.json", m, root=self.root)
+        manifests = [(p.relative_to(self.root).as_posix(), json.loads(p.read_text()))
+                     for p in (self.root / RUNS).glob("EXP-*/manifest.json")]
+        (self.root / "data/experiment_index.csv").write_text(experiment_index(manifests))
         rows.append(dict(rows[0], candidate_id=name, spec_id="RF-F001",
-                         evidence=f"candidates/{name}.json"))
+                         evidence=f"candidates/{name}.json", constraint_class="formal",
+                         constraint_id="RF-F001", historical_registry_key="",
+                         effective_constraint_sha256=m["constraints"]["effective_constraint_sha256"],
+                         manifest=f"{RUNS}/EXP-016/manifest.json"))
         with index.open("w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=rows[0].keys())
             writer.writeheader()
@@ -94,6 +107,33 @@ class CandidateIndexGuardrails(unittest.TestCase):
     def test_additional_current_policy_candidate_does_not_require_audit_edit(self):
         self._add_candidate("LPF-TEST-ADDED")
         self.assertEqual(self._audit(), [])
+
+    def test_historical_candidate_cannot_claim_formal_spec(self):
+        self._add_candidate("LPF-TEST-ADDED")
+        index = self.root / "data/candidate_index.csv"
+        with index.open(newline="", encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        rows[-1]["constraint_class"] = "historical"
+        rows[-1]["constraint_id"] = ""
+        rows[-1]["effective_constraint_sha256"] = ""
+        rows[-1]["manifest"] = ""
+        with index.open("w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=rows[0].keys())
+            writer.writeheader()
+            writer.writerows(rows)
+        self.assertTrue(any("Historical candidate relabelled" in msg for msg in self._audit()))
+
+    def test_candidate_hash_must_match_its_manifest(self):
+        self._add_candidate("LPF-TEST-ADDED")
+        index = self.root / "data/candidate_index.csv"
+        index.write_text(index.read_text().replace(
+            json.loads((self.root / "data/constraints/registry.json").read_text())["formal"]["RF-F001"]["effective_constraint_sha256"], "0" * 64))
+        self.assertTrue(any("Candidate constraint fingerprint" in msg for msg in self._audit()))
+
+    def test_manifest_index_drift_is_rejected(self):
+        path = self.root / "data/experiment_index.csv"
+        path.write_text(path.read_text().replace("reported_in_sources", "passed"))
+        self.assertTrue(any("Experiment index differs" in msg for msg in self._audit()))
 
     def test_duplicate_index_row_is_rejected(self):
         index = self.root / "data/candidate_index.csv"

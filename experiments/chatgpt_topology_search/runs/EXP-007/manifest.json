@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-007",
+  "phase": "Phase 2",
+  "purpose": "EXP-007 — 0.40dB目標の継続探索：固定C接続とPCB-L補助経路",
+  "objective": "full_lpf",
+  "constraints": {
+    "class": "historical",
+    "constraint_id": null,
+    "base_constraint_id": null,
+    "effective_constraint_sha256": null,
+    "effective_constraints": null,
+    "legacy_policy_version": null
+  },
+  "code": {
+    "execution_sha": null,
+    "working_tree_dirty": null,
+    "archive_sha": "641a2792d65f754534f4828507024faab52fbc7b"
+  },
+  "random_seed": null,
+  "environment": null,
+  "search_scope": {
+    "max_search_area": 7,
+    "area_bound_role": "historical_experiment_search_scope_only_not_RF_F001_constraint",
+    "source_documents": [
+      "experiments/chatgpt_topology_search/runs/EXP-007/README.md",
+      "experiments/chatgpt_topology_search/runs/EXP-007/screening_summary.json"
+    ],
+    "conditions": "historical_conditions_see_sources"
+  },
+  "bands_sha256": null,
+  "execution": {
+    "status": "unknown",
+    "elapsed_seconds": null,
+    "evaluation_count": null
+  },
+  "validation": {
+    "numerical": "reported_in_sources",
+    "independent": "reported_in_sources",
+    "implementation": "not_run",
+    "analysis_grid": {
+      "source": "experiments/chatgpt_topology_search/runs/EXP-007/README.md",
+      "coverage": "selected_saved_results_only_see_source_for_each_grid"
+    },
+    "independent_grid": {
+      "source": "experiments/chatgpt_topology_search/runs/EXP-007/README.md",
+      "coverage": "selected_saved_results_only_not_every_search_trial"
+    }
+  },
+  "evidence": [
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-007/A7-04_sensitivity.csv",
+      "sha256": "757904cc27581144d4bbd3bc72ec19c3c3f296573ac573476163650d5b0709dd"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-007/R7-01_dense_verified_comparator.json",
+      "sha256": "888380e2ac83b8e6c4807839112efff8b9664dcf7a320448c03f425898edb9b6"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-007/README.md",
+      "sha256": "24ac2ca729c228ebf32d7d785cff4ee02b94f34116bf7f49373713960795494c"
+    },
+    {
+      "path": "experiments/chatgpt_topology_search/runs/EXP-007/screening_summary.json",
+      "sha256": "e4e48787070ab0a0793da706da0fa3f8d6232b831ca94dd973bc6e3dd8b4e502"
+    }
+  ],
+  "limitations": [
+    "This is an inventory of historical evidence, not a new numerical run or an RF-F001 compliance certificate.",
+    "The original execution code SHA, complete resolved RF policy/hash, full seed provenance and runtime environment are unknown. Archive SHA is only the evidence snapshot.",
+    "Per-trial completion, convergence and validation differ; consult the source documents and saved result records. Unknown experiment status does not mean not executed.",
+    "Historical relaxed variable-C/Q/harmonic conditions are not retrospectively registered or approved as RF-Txxx.",
+    "Evidence SHA-256 hashes identify archived files, not the effective RF constraints. Continuous-frequency/global-optimality and physical implementation are unproven."
+  ]
+}

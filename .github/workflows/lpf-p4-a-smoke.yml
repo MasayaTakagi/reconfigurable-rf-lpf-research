@@ -2,11 +2,15 @@ name: P4-A bounded checkpoint and resume regression
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - 'r2/**'
 
 permissions:
   contents: read
 
-# Deliberately small and manually dispatched: 1 shard, 1 graph per run, 1 optimizer start/iteration.
+# Deliberately small and manually dispatched: RF-T002, explicit HV/HQ, 2 graphs,
+# at most 4 variable-C layouts per graph, 1 graph per run, and 1 SLSQP iteration.
 # Separate jobs force a real GitHub Artifact upload/download across runners.
 # Not a performance search, P4-A coverage test, or full LPF validation.
 jobs:
@@ -27,8 +31,8 @@ jobs:
           cache-dependency-path: requirements.txt
       - run: python -m pip install -r requirements.txt
       - run: mkdir -p results
-      - name: Persist one graph into a checkpoint
-        run: python experiments/matching_limit/p4_batch.py --attempts 1 --per-bin 1 --starts 1 --layouts 1 --iterations 1 --coarse-points 2 --validation-points 3 --seed 20261011 --shard-count 1 --shard-index 0 --checkpoint results/checkpoint.json --output results/result.json --max-graphs-per-batch 1 --max-batch-seconds 600
+      - name: Persist one explicit-series RF-T002 graph into a checkpoint
+        run: python experiments/matching_limit/p4_batch.py --constraint-id RF-T002 --series-mode both --require-lqp02 --require-both-series --max-topology-graphs 2 --max-variable-layouts 4 --attempts 1 --per-bin 1 --starts 1 --layouts 1 --iterations 1 --coarse-points 2 --validation-points 3 --seed 20261012 --shard-count 1 --shard-index 0 --checkpoint results/checkpoint.json --output results/result.json --max-graphs-per-batch 1 --max-batch-seconds 600
       - uses: actions/upload-artifact@v7
         with:
           name: first-checkpoint
@@ -53,17 +57,27 @@ jobs:
         with:
           name: first-checkpoint
           path: results
-      - name: Resume from downloaded artifact and persist one more graph
-        run: python experiments/matching_limit/p4_batch.py --attempts 1 --per-bin 1 --starts 1 --layouts 1 --iterations 1 --coarse-points 2 --validation-points 3 --seed 20261011 --shard-count 1 --shard-index 0 --checkpoint results/checkpoint.json --output results/result.json --max-graphs-per-batch 1 --max-batch-seconds 600 --resume
-      - name: Validate real resume accounting
+      - name: Resume the next graph from the downloaded artifact
+        run: python experiments/matching_limit/p4_batch.py --constraint-id RF-T002 --series-mode both --require-lqp02 --require-both-series --max-topology-graphs 2 --max-variable-layouts 4 --attempts 1 --per-bin 1 --starts 1 --layouts 1 --iterations 1 --coarse-points 2 --validation-points 3 --seed 20261012 --shard-count 1 --shard-index 0 --checkpoint results/checkpoint.json --output results/result.json --max-graphs-per-batch 1 --max-batch-seconds 600 --resume
+      - name: Validate checkpoint compatibility and resumed work
         run: |
           python - <<'PY'
           import json
           with open('results/checkpoint.json') as f: p=json.load(f)
           assert p['resume_count'] == 1, p['resume_count']
-          assert len(p['completed_graph_ids']) >= 2, p['completed_graph_ids']
-          print('PASS: GitHub Artifact restored; two graph units completed on compatible sources')
+          assert p['status'] == 'completed', p['status']
+          assert len(p['completed_graph_ids']) == 2, p['completed_graph_ids']
+          assert p['planned_optimizer_candidates'] == 8, p['planned_optimizer_candidates']
+          assert p['completed_optimizer_candidates'] == 8, p['completed_optimizer_candidates']
+          assert p['run_config']['p4_a_limits']['constraint_id'] == 'RF-T002'
+          assert p['run_config']['p4_a_limits']['effective_constraint_sha256']
+          series={edge[2] for row in p['results'] for edge in row['graph'][1]
+                  if edge[2] in {'LQP02HV','LQP02HQ'}}
+          assert {'LQP02HV','LQP02HQ'} <= series, series
+          print('PASS: GitHub Artifact restored; two explicit-series graph units completed')
           PY
+      - name: Record calculation and runtime provenance
+        run: python scripts/summarize_p4_smoke.py --checkpoint results/checkpoint.json --output results/smoke_summary.json --artifact-name first-checkpoint,second-checkpoint,completed-checkpoint
       - uses: actions/upload-artifact@v7
         with:
           name: second-checkpoint
@@ -88,19 +102,19 @@ jobs:
         with:
           name: second-checkpoint
           path: results
-      - name: Resume remaining sampled graph
-        run: python experiments/matching_limit/p4_batch.py --attempts 1 --per-bin 1 --starts 1 --layouts 1 --iterations 1 --coarse-points 2 --validation-points 3 --seed 20261011 --shard-count 1 --shard-index 0 --checkpoint results/checkpoint.json --output results/result.json --max-graphs-per-batch 1 --max-batch-seconds 600 --resume
-      - name: Verify no graph work remains
+      - name: Verify the restored completed checkpoint
         run: |
           python - <<'PY'
           import json
           with open('results/checkpoint.json') as f: p=json.load(f)
-          assert p['resume_count'] == 2, p['resume_count']
           assert p['status'] == 'completed', p['status']
           assert not p['remaining_graph_ids'], p['remaining_graph_ids']
-          assert len(p['completed_graph_ids']) == len(p['expected_graph_ids'])
+          assert p['resume_count'] == 1, p['resume_count']
+          assert len(p['completed_graph_ids']) == len(p['expected_graph_ids']) == 2
           print('PASS: artifact-backed continuation completed declared small sample')
           PY
+      - name: Finalize the reproducibility summary
+        run: python scripts/summarize_p4_smoke.py --checkpoint results/checkpoint.json --output results/smoke_summary.json --artifact-name first-checkpoint,second-checkpoint,completed-checkpoint
       - name: Aggregate the completed one-shard checkpoint
         run: |
           mkdir -p results/shards/shard-0
@@ -111,8 +125,15 @@ jobs:
           with open('results/aggregate.json') as f: result=json.load(f)
           assert result['status'] == 'completed', result
           assert result['overall_complete'] is True, result
-          assert result['optimized_graphs'] == 3, result
-          print('PASS: real checkpoint passed G1 shard aggregation')
+          assert result['optimized_graphs'] == 2, result
+          with open('results/smoke_summary.json') as f: summary=json.load(f)
+          assert summary['optimization']['planned_optimizer_candidates'] == 8
+          assert summary['optimization']['successful_optimizer_candidates'] == 8
+          assert summary['optimization']['failed_optimizer_candidates'] == 0
+          assert summary['optimization']['unrun_optimizer_candidates'] == 0
+          assert summary['constraint_id'] == 'RF-T002'
+          assert {'LQP02HV','LQP02HQ'} <= set(summary['inductor_series'])
+          print('PASS: artifact-backed RF-T002 smoke provenance and G1 aggregation')
           PY
       - uses: actions/upload-artifact@v7
         with:

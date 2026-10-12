@@ -11,6 +11,8 @@ class TestExp015Series(unittest.TestCase):
   for ident,m in d['new_candidates'].items():
    cand=json.loads((BASE/(ident+'.json')).read_text())
    self.assertLessEqual(cand['chip_area_cost_units'],6)
+   expected_area = 4 + (2 if m['variable_C_count']==2 else 1)*2/3
+   self.assertAlmostEqual(cand['chip_area_cost_units'],expected_area,places=10)
    self.assertGreaterEqual(cand['min_H2_db'],30-1e-7)
    self.assertGreaterEqual(cand['min_H3_db'],30-1e-7)
    for s,L,Q in zip(cand['chip_series'],cand['L_nH'],cand['Q_L']):

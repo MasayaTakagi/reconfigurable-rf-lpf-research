@@ -19,7 +19,7 @@ def chip_area(n_lqp02=0, n_lqp01=0, n_lqw04=0, n_gjm01=0,
 
 def check_counts(n_lqp02=0, n_lqp01=0, n_lqw04=0, n_gjm01=0,
                  n_pcb=0, n_var=0, n_pcb_pattern_c=0):
-    """Check component counts and chip area; not a layout/EM validation."""
+    """Check component counts; chip area is a Pareto metric, not a cap."""
     counts=(n_lqp02,n_lqp01,n_lqw04,n_gjm01,n_pcb,n_var,n_pcb_pattern_c)
     if any(not isinstance(x,int) or isinstance(x,bool) or x<0 for x in counts):
         return False

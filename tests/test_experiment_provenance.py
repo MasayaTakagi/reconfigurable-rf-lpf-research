@@ -24,6 +24,8 @@ class ConstraintRegistryTests(unittest.TestCase):
         self.trial = {
             "constraint_id": "RF-T001", "status": "trial", "base_constraint_id": "RF-F001",
             "study_authorized": True,
+            "study_variable_c_layout": {"branch_count": 3, "shunt_to_ground": 3,
+                                        "non_ground_bridge": 0},
             "overrides": {"components": {"IC_VARIABLE_C": {"max_branches_principle": 3}}},
         }
         self.registry["trial"]["RF-T001"] = {

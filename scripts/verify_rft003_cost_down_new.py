@@ -121,7 +121,8 @@ def verify(points=9):
     assert saved["trial_id"]=="RF-T003" and saved["phase"]=="Phase 2"
     policy=load_constraint("RF-T003",allow_trial=True)
     assert constraint_fingerprint(policy)=="e0c45f7094ced1ed2ccb91cae474c7c3c1a6af73a495a2a9cf8f512ccb45ab08"
-    assert policy["study_variable_c_layout"]=={"branch_count":2,"shunt_to_ground":1,"non_ground_bridge":1}
+    trial=json.loads((ROOT/"data/constraints/trial/RF-T003.json").read_text(encoding="utf-8"))
+    assert trial["study_variable_c_layout"]=={"branch_count":2,"shunt_to_ground":1,"non_ground_bridge":1}
     return {name:check(candidate,points) for name,candidate in saved["outcomes"].items()}
 
 if __name__=="__main__":

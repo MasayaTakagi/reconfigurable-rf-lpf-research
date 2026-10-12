@@ -95,3 +95,23 @@ P4-Aの計算ソース指紋は`src/lpf/*.py`と台帳を含むため、本変�
 互換性の境界を明示するためアルゴリズム版を `p4-a-bounded-sharded-v4-provenance` に更新した。
 旧Artifactは同条件とみなして復元せず、新規チェックポイントを作成する。
 既存の中断/再開回帰は新設定で行い、旧証拠・旧ワークフローを削除しない。
+
+
+## R1の実行証跡（2026-10-12）
+
+実装コミット `53e7cb2413a30ea480f62fca844da74d5350686f` で
+[PR回帰CI](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38246795296)は
+監査・153ユニットテスト・LPF-007/008基準数値照合すべてPASS。
+[限定スモーク](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38246853137)もPASS。
+1シャード・3サンプルグラフを3ジョブで処理し、Artifact復元を2回、残り0件、集計完了を確認した。
+
+[保存サマリー](../data/validation/r1_20261012/summary.json)に設定ハッシュ、元SHA、RFハッシュ、
+実際のPython/NumPy/SciPy/BLAS、seed、時間、評価回数を記録した。
+GitHub Artifactは2026-10-26期限のため、27KBの
+[最終ZIP](../data/validation/r1_20261012/completed-checkpoint.zip)を小さな回帰証拠として永続保存。
+APIのArtifact digestと取得ZIPのSHA-256一致、内容の再開回数・完了数・集計を確認済み。
+証跡追加だけのコミットは計算ソース指紋を変えないことも確認した。
+
+このスモークは各1初期値/1反復、最適化2点・検証3点/区間の `matching_only`。
+大規模探索、full_lpf成立、新回路のIL改善、実装可能性の確認ではない。
+R2～R5、専用実行器へのマニフェスト自動組み込み、数値依存の固定と新しい探索は未完了。

@@ -1,0 +1,151 @@
+{
+  "phase": "Phase 2",
+  "experiment": "EXP-008",
+  "objective": "full_lpf",
+  "source_ohms": 50,
+  "load_ohms": {
+    "real": 60,
+    "imag": -40,
+    "frequency_dependent": false
+  },
+  "chip_area_cost_units": 6,
+  "components": {
+    "LQP02": 4,
+    "GJM01": 3,
+    "IC_VARIABLE_C": 3,
+    "PCB_L": 0,
+    "PCB_PATTERN_C": 0
+  },
+  "physical_chip_row": [
+    "L1",
+    "L2",
+    "L3",
+    "L0"
+  ],
+  "edge_indexing": "1-based; 0=GND",
+  "inductor_edges": {
+    "L0": [
+      1,
+      2
+    ],
+    "L1": [
+      3,
+      4
+    ],
+    "L2": [
+      2,
+      5
+    ],
+    "L3": [
+      2,
+      3
+    ]
+  },
+  "fixed_capacitor_edges": {
+    "Cf1": [
+      1,
+      3
+    ],
+    "Cf2": [
+      5,
+      0
+    ],
+    "Cf3": [
+      1,
+      2
+    ]
+  },
+  "variable_capacitor_edges": {
+    "Cv0": [
+      4,
+      0
+    ],
+    "Cv1": [
+      5,
+      0
+    ],
+    "Cv2": [
+      2,
+      3
+    ]
+  },
+  "variable_capacitance_range_pf": [
+    0,
+    4
+  ],
+  "Q": {
+    "LQP02": 25,
+    "GJM01": 80,
+    "IC_VARIABLE_C": 80
+  },
+  "chip_placement": "single physical row, only neighbor couplings nonzero",
+  "qualifications": [
+    "Numerical finite-grid finding, not globally optimal",
+    "Coil coupling EM/physical implementation not checked",
+    "L and C Q assumed constant across 617-2745 MHz",
+    "Optimizer did not converge",
+    "No fabrication tolerance, SRF or Phase 3 implementation verified"
+  ],
+  "id": "C6-02",
+  "rejection_target_db": 30,
+  "L_nH": [
+    3.2239596929291188,
+    10.266082913294825,
+    8.176437261700771,
+    4.607406391912514
+  ],
+  "fixed_C_pf": [
+    0.14276144855737344,
+    0.1378151879369906,
+    0.9214964842618069
+  ],
+  "neighbor_k": [
+    -0.07153269236405871,
+    -0.3778099611229221,
+    0.4
+  ],
+  "variable_C_pf_by_setting": {
+    "B71": [
+      0.5172912991797535,
+      1.2928292745356755,
+      1.7881014031966873
+    ],
+    "B12": [
+      0.48473207909392485,
+      1.2250920081251102,
+      1.5128841567610303
+    ],
+    "B28": [
+      0.4559192550035386,
+      1.265316821920892,
+      1.2109740502008788
+    ],
+    "B13+B14": [
+      0.39551924597745963,
+      1.117164832061394,
+      0.5416797342910157
+    ],
+    "B26": [
+      0.3601846581736032,
+      1.0521821933714215,
+      0.3610613540449078
+    ],
+    "B8": [
+      0.3154082852251649,
+      0.9234513646753275,
+      5.348647019718908e-16
+    ]
+  },
+  "verification": {
+    "points_per_frequency_interval": 7001,
+    "worst_IL_db": 0.33909275629730945,
+    "min_H2_db": 30.030001046173776,
+    "min_H3_db": 30.029975654448986,
+    "worst_setting": "B8",
+    "K_min_eigenvalue": 0.44757395160924723,
+    "MNA_spots": 54,
+    "max_power_balance_residual_W": 6.938893903907228e-18,
+    "max_independent_MNA_IL_diff_dB": 3.197442310920451e-13
+  },
+  "derivation": "Local full-network SLSQP minimax refinement of C6-01 using 31 and 91 points per interval; subsequently independently spot-checked with 9x9 MNA; no convergence claim."
+}

@@ -29,7 +29,9 @@ def evaluate(d,bands):
   assert abs(k)<=.40000001
   a,b=order[i:i+2];K[a,b]=K[b,a]=k;M[a,b]=M[b,a]=k*np.sqrt(L[a]*L[b])
  minK=np.linalg.eigvalsh(K).min();assert minK>0
- base=np.diag(L/25)+1j*M
+ q_by_id=d.get('hypothetical_Q_by_inductor_id',{})
+ q=np.array([q_by_id.get(c['id'],25) for c in Ls])
+ base=np.diag(L/q)+1j*M
  reduced=indB@np.linalg.solve(base,indB.T)
  fixed=np.array([p['C_pF'] for p in Cf])*1e-12
  assert (fixed>0).all() and (fixed<=100e-12).all()
@@ -58,7 +60,7 @@ def evaluate(d,bands):
     v0=np.linalg.solve(Y,excite)
     max_delta=max(max_delta,abs(v0[2]-node[2]))
     load=abs(node[2])**2*60/5200
-    PL=np.real(np.vdot(curr,(omega*np.diag(L/25))@curr))
+    PL=np.real(np.vdot(curr,(omega*np.diag(L/q))@curr))
     PC=sum(abs(e@node)**2*np.real(omega*c/(1/80-1j)) for c,e in zip(allC,all_edges))
     reflect=abs(1-2*node[0])**2/200
     max_balance=max(max_balance,abs(.005-load-PL-PC-reflect))
@@ -74,7 +76,7 @@ def evaluate(d,bands):
 
 def main():
  bands=list(csv.DictReader((ROOT/'data'/'bands.csv').open(newline='')))
- for name in ('EXP009-01','EXP009-02','EXP009-L15','EXP009-L12'):
+ for name in ('EXP009-01','EXP009-02','EXP009-L15','EXP009-L12','EXP009-Q19'):
   d=json.loads((HERE/(name+'.json')).read_text())
   print(json.dumps(evaluate(d,bands),sort_keys=True),flush=True)
 if __name__=='__main__':main()

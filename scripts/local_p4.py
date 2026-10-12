@@ -371,6 +371,34 @@ def exclusive_run_lock(directory: Path):
             fcntl.flock(stream.fileno(), fcntl.LOCK_UN)
 
 
+def _shard_worker_lock_path(directory: Path, index: int) -> Path:
+    return directory / "shards" / f"shard-{index}" / "worker.lock"
+
+
+def assert_no_active_shard_workers(directory: Path, shard_count: int) -> None:
+    """Refuse a resume while an orphan/live child still owns a shard.
+
+    The worker inherits the flock file descriptor at exec. A manager crash
+    releases manager.lock but cannot release the worker's own file lock.
+    Never remove or replace worker.lock: a deleted, locked inode would allow
+    a second writer through a new inode at the same pathname.
+    """
+    for index in range(shard_count):
+        path = _shard_worker_lock_path(directory, index)
+        if not path.exists():
+            continue
+        with path.open("a+b") as stream:
+            try:
+                fcntl.flock(stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError as exc:
+                raise RunLockedError(
+                    f"Shard {index} worker is still active ({path}); "
+                    "wait for it to exit or stop it safely before resuming"
+                ) from exc
+            else:
+                fcntl.flock(stream.fileno(), fcntl.LOCK_UN)
+
+
 def _read_json(path: Path) -> dict:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
@@ -637,14 +665,25 @@ class LocalRunManager:
             "PYTHONUNBUFFERED": "1",
         })
         command = self._worker_command(index, resume=resume)
+        worker_lock = _shard_worker_lock_path(self.directory, index).open("a+b")
         try:
+            try:
+                fcntl.flock(worker_lock.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError as exc:
+                raise RunLockedError(
+                    f"Shard {index} still has an active worker; refusing duplicate writer"
+                ) from exc
+            # pass_fds explicitly survives exec, so the child keeps the lock
+            # even if this manager is killed without running cleanup.
             process = subprocess.Popen(
                 command, cwd=ROOT, env=env, stdout=log, stderr=subprocess.STDOUT,
-                start_new_session=True,
+                start_new_session=True, pass_fds=(worker_lock.fileno(),),
             )
         except Exception:
             log.close()
             raise
+        finally:
+            worker_lock.close()
         self._active[index] = {
             "process": process,
             "log": log,
@@ -1093,6 +1132,9 @@ def resume_run(root: Path, run_id: str, *, workers: int | None = None,
     with exclusive_run_lock(directory):
         manifest = _load_manifest(directory)
         snapshot = verify_resume_compatibility(directory, manifest)
+        # Check before updating manifests/checkpoints; manager.lock alone is
+        # insufficient after an uncatchable manager crash (SIGKILL).
+        assert_no_active_shard_workers(directory, manifest["plan"]["shard_count"])
         manifest["resume_environment_history"] = manifest.get("resume_environment_history", [])
         manifest["resume_environment_history"].append({
             "at_utc": utc_now(), "source_commit": snapshot["source_commit"],

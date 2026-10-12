@@ -1,0 +1,62 @@
+name: One-time orphan branch archive and cleanup
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-time-orphan-branch-cleanup.yml'
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  archive-and-prune:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Validate main archive and safely remove reviewed refs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const original = {
+                      "experiment/matching-midpoint-cap-screen": "6506e836ed3495614e1ffa447b4ad4cd01f188e7",
+                      "research/matching-limit-p0-p4": "d3c1287d3bdd00f363b44fcac1fc5c2a8dcb47d0",
+                      "maintenance/consolidate-orphan-screening-20261012": "7b524b3a12ed272bd4837e8825ab4bd273dae05d"
+            };
+            const { data: info } = await github.rest.repos.get({owner,repo});
+            if (info.default_branch !== "main") throw new Error("main is no longer the default branch");
+            const { data: merged } = await github.rest.pulls.get({owner,repo,pull_number:14});
+            if (!merged.merged) throw new Error("PR #14 was not merged");
+            const { data: doc } = await github.rest.repos.getContent({owner,repo,path:"docs/historical_results.md",ref:"main"});
+            const textDoc = Buffer.from(doc.content,"base64").toString("utf8");
+            if (!textDoc.includes("0.1319912168") || !textDoc.includes(original["experiment/matching-midpoint-cap-screen"])) throw new Error("Historical study missing from main");
+            const { data: openPRs } = await github.rest.pulls.list({owner,repo,state:"open",per_page:100});
+            const results={archived:[],deleted:[],skipped:[],failed:[]};
+            const tag="refs/tags/archive/matching-midpoint-cap-screen-20261010";
+            try {
+              await github.rest.git.createRef({owner,repo,ref:tag,sha:original["experiment/matching-midpoint-cap-screen"]});
+              results.archived.push(tag);
+            } catch(e) {
+              if (e.status === 422) {
+                const old=await github.rest.git.getRef({owner,repo,ref:tag.replace("refs/","")});
+                if (old.data.object.sha !== original["experiment/matching-midpoint-cap-screen"]) throw new Error("Archive tag unexpectedly points elsewhere");
+                results.archived.push(tag+" (pre-existing)");
+              } else throw e;
+            }
+            for (const [name,sha] of Object.entries(original)) {
+              try {
+                const { data: b }=await github.rest.repos.getBranch({owner,repo,branch:name});
+                if (b.commit.sha !== sha || b.protected || openPRs.some(p=>p.head.repo?.full_name===info.full_name && p.head.ref===name)) {
+                  results.skipped.push(name+" (head changed, protected, or referenced by open PR)"); continue;
+                }
+                if (name.startsWith("maintenance/")) {
+                  const { data: cmp }=await github.rest.repos.compareCommits({owner,repo,base:"main",head:name});
+                  if (cmp.ahead_by!==0) {results.skipped.push(name+" (not merged)"); continue;}
+                }
+                await github.rest.git.deleteRef({owner,repo,ref:"heads/"+name});
+                results.deleted.push(name);
+              } catch(e) {results.failed.push(name+": "+e.message);}
+            }
+            await core.summary.addHeading("Historical study archived and reviewed branches removed")
+              .addCodeBlock(JSON.stringify(results,null,2),"json").write();
+            if(results.failed.length||results.skipped.length) core.setFailed("Not all reviewed refs could be deleted; review log");

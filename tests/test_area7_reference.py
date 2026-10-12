@@ -1,4 +1,4 @@
-"""Cost-7 exploratory LPF benchmarks stay outside the approved cost-6 index."""
+"""Preserve historical cost-7 references; current formal cost has no hard cap."""
 import importlib.util
 import json
 import unittest
@@ -14,7 +14,8 @@ spec.loader.exec_module(module)
 class CostSevenReferenceTests(unittest.TestCase):
     def test_two_references_have_unchanged_approved_area_policy(self):
         canonical=json.loads((ROOT/"data/design_constraints.json").read_text(encoding="utf-8"))
-        self.assertEqual(canonical["area_budget"]["hard_cap"],6)
+        self.assertIsNone(canonical["area_budget"]["hard_cap"])
+        self.assertEqual(canonical["area_budget"]["historical_hard_cap"],6)
         for name in ("A7-01","A7-02","A7-03","A7-04"):
             obj=module.load_reference(name)
             self.assertEqual(obj["study_override"]["exploratory_cost_cap"],7)

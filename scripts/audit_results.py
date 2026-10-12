@@ -26,8 +26,19 @@ def audit(detail=False):
     policy = json.loads((ROOT / "data/design_constraints.json").read_text(encoding="utf-8"))
     if policy.get("phase3") != "paused_until_explicit_owner_approval":
         issues.append("Phase 3 unexpectedly enabled")
-    if policy["area_budget"]["hard_cap"] != 6:
-        issues.append("Chip area cap changed")
+    if policy["area_budget"]["hard_cap"] is not None:
+        issues.append("Formal RF policy unexpectedly imposes a chip-area cap")
+    registry_path = ROOT / "data/constraints/registry.json"
+    if not registry_path.is_file():
+        issues.append("Constraint version registry missing")
+    else:
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        active_id = registry["active_formal_id"]
+        record = registry["formal"].get(active_id)
+        if active_id != policy.get("active_constraint_id") or record is None:
+            issues.append("Active formal constraint version mismatch")
+        elif json.loads((ROOT / record["file"]).read_text(encoding="utf-8")) != policy:
+            issues.append("Active snapshot does not match compatibility constraints")
     if policy["components"]["IC_VARIABLE_C"]["max_branches_principle"] != 2:
         issues.append("Variable C branch limit changed")
     if policy.get("canonical_docs") != "docs/specification.md":
@@ -79,7 +90,9 @@ def audit(detail=False):
                 issues.append(f"Candidate identity or objective mismatch: {name}")
             if row["objective"] != "full_lpf":
                 issues.append(f"Active candidate is not full_lpf: {name}")
-            if item["spec_id"] != policy["policy_version"] or row["spec_id"] != policy["policy_version"]:
+            expected_spec = (policy["policy_version"] if name in {"LPF-007", "LPF-008", "LPF-009"}
+                             else policy["active_constraint_id"])
+            if item["spec_id"] != expected_spec or row["spec_id"] != expected_spec:
                 issues.append(f"Candidate spec mismatch: {name}")
             perf = item["performance"]
             for col, key in (("max_il_db", "worst_IL_db"),
@@ -89,7 +102,7 @@ def audit(detail=False):
                 if not math.isfinite(a) or not math.isfinite(b) or abs(a - b) > 1e-6:
                     issues.append(f"Candidate performance mismatch: {name} {key}")
             area = float(item["area_units"])
-            if not math.isfinite(area) or area < 0 or area > policy["area_budget"]["hard_cap"]:
+            if not math.isfinite(area) or area < 0:
                 issues.append(f"Candidate area cap exceeded: {name}")
             variable_caps = item["topology"]["variable_caps"]
             cpolicy = policy["components"]["IC_VARIABLE_C"]

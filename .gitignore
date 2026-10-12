@@ -12,3 +12,8 @@ venv/
 *.token
 *.key
 *.pem
+
+# Transient local/Actions computation outputs (curated evidence remains in experiments/)
+/results/
+/artifacts/
+/checkpoints/

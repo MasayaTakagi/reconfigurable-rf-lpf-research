@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Independent MNA cross-check for exploratory area-7 full LPF references.
 
-Baseline current-policy area cap=6 remains unchanged.  These experimental
-references use an opt-in area cap=7. Finite frequency grids do not prove global
+Historical baseline approved cap=6 was in force at experiment time. These
+old exploratory references used cost cap=7; current RF-F001 has no area cap. Finite frequency grids do not prove global
 optimality or continuous-band validity.
 """
 import argparse

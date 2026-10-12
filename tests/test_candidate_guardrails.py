@@ -54,7 +54,8 @@ class CandidateIndexGuardrails(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
-        for path in ("data/design_constraints.json", "data/bands.csv",
+        for path in ("data/design_constraints.json", "data/constraints/registry.json",
+                     "data/constraints/formal/RF-F001.json", "data/bands.csv",
                      "data/candidate_index.csv", "docs/specification.md",
                      "docs/historical_results.md"):
 
@@ -78,11 +79,13 @@ class CandidateIndexGuardrails(unittest.TestCase):
     def _add_candidate(self, name):
         item = json.loads((self.root / "candidates/LPF-007.json").read_text())
         item["candidate_id"] = name
+        item["spec_id"] = "RF-F001"
         (self.root / "candidates" / (name + ".json")).write_text(json.dumps(item))
         index = self.root / "data/candidate_index.csv"
         with index.open(newline="", encoding="utf-8") as f:
             rows = list(csv.DictReader(f))
-        rows.append(dict(rows[0], candidate_id=name, evidence=f"candidates/{name}.json"))
+        rows.append(dict(rows[0], candidate_id=name, spec_id="RF-F001",
+                         evidence=f"candidates/{name}.json"))
         with index.open("w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=rows[0].keys())
             writer.writeheader()

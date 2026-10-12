@@ -71,7 +71,8 @@ def layout_candidates(graph,max_layouts):
 def bounds_for(graph):
     b=[]
     for _,_,t in graph[1]:
-        b.append((.05,100.) if t=='GJM01' else (.3,5.) if t=='PCB_L' else (.3,12.))
+        b.append((.05,100.) if t=='GJM01' else (.3,3.) if t=='PCB_L'
+                 else (.4,12.) if t=='LQP02' else (.3,12.))
     return b+[(0.,4.)]*12
 
 def settings_for(graph,x,K):
@@ -111,7 +112,7 @@ def validate(graph,x,K,rows,points):
                 max_gain_mismatch=mismatch,max_power_residual=residual,
                 samples_per_segment=points)
 
-ALGORITHM_VERSION='p4-a-bounded-sharded-v2'
+ALGORITHM_VERSION='p4-a-bounded-sharded-v3'
 
 
 def handle_termination(signum, frame):
@@ -130,6 +131,8 @@ def _source_fingerprints():
         *sorted((ROOT/'src/lpf').glob('*.py')),
         ROOT/'data/design_constraints.json', ROOT/'data/bands.csv',
         ROOT/'docs/specification.md', ROOT/'requirements.txt',
+        ROOT/'data/constraints/registry.json',
+        ROOT/'data/constraints/formal/RF-F001.json',
     )
     missing=[str(path) for path in source_files if not path.is_file()]
     if missing:
@@ -184,7 +187,10 @@ def build_run_config(args, grid, all_graph_ids):
         'objective':'worst_passband_IL_over_six_settings_UL_DL',
         'full_lpf_harmonic_constraints_applied_during_optimization':False,
         'p4_a_limits':{
-            'max_internal_nodes':4,'max_branches':8,'max_chip_area':6,
+            'max_internal_nodes':4,'max_branches':8,
+            'max_chip_area_in_this_job_only':6,
+            'area_is_formal_RF_feasibility_constraint':False,
+            'chip_inductor_scope':'LQP02HV_Q25_from_0.4_to_12_nH_only',
             'max_pcb_inductors':3,'max_independent_variable_c_branches':2,
         },
         'rf_design_constraints':constraints,

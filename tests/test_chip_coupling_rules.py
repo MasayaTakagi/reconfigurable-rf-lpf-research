@@ -38,7 +38,8 @@ class ApprovedChipCouplingRules(unittest.TestCase):
     def test_policy(self):
         c=POLICY["coupling_limits"]
         l=POLICY["chip_inductor_placement"]
-        self.assertEqual(POLICY["area_budget"]["hard_cap"],6)
+        self.assertIsNone(POLICY["area_budget"]["hard_cap"])
+        self.assertEqual(POLICY["area_budget"]["historical_hard_cap"],6)
         self.assertEqual(c["chip_chip_strong_adjacent_abs_k_max"],0.4)
         self.assertEqual(c["chip_chip_nonstrong_abs_k_max"],0.1)
         self.assertEqual(c["chip_chip_nonstrong_nominal_k"],0)

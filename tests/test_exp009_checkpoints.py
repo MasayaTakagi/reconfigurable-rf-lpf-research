@@ -24,7 +24,7 @@ class TestExp009Phase2(unittest.TestCase):
 
     def test_six_setting_dense_and_independent_mna_checkpoints(self):
         text=self.command(HERE/"verify.py")
-        for name in ("EXP009-01","EXP009-02","EXP009-L15","EXP009-L12"):
+        for name in ("EXP009-01","EXP009-02","EXP009-L15","EXP009-L12","EXP009-Q19"):
             self.assertIn(name,text)
 
 if __name__ == "__main__":

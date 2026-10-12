@@ -141,5 +141,44 @@ class CouplingPhysicalAdjacencyTests(unittest.TestCase):
 
 
 
+class SearchIndependentValidationTests(unittest.TestCase):
+    def test_optimizer_validation_uses_all_three_formulations(self):
+        graph=(6,((1,3,'LQP02HV'),(3,2,'LQP02HQ'),
+                  (3,4,'LQP02HV'),(3,5,'GJM01')))
+        layout={'edges':((4,0),(5,0),(1,3)),
+                'roles':(None,None,'bridge')}
+        policy=load_constraint('RF-T002',allow_trial=True)
+        x=np.asarray([1.8,35.0,2.2,.7]+[.5]*18)
+        result=validate_search_result(
+            graph,x,np.eye(3),load_bands(),3,variable_layout=layout,
+            resolved_policy=policy,require_explicit_series=True)
+        self.assertEqual(result['formulations_compared'],[
+            'main_augmented_MNA','independent_nodal_admittance','branch_current_MNA'])
+        self.assertLess(result['max_gain_mismatch'],1e-10)
+        self.assertLess(result['max_power_residual'],1e-12)
+        self.assertGreater(result['min_inductance_eigenvalue'],0)
+
+    def test_optimizer_validation_compares_instantiated_edges_to_graph_source(self):
+        graph=(4,((1,3,'LQP02HV'),(3,2,'LQP02HQ')))
+        layout={'edges':((3,0),(1,0)), 'roles':(None,None)}
+        policy=load_constraint('RF-F001')
+        original=build_grounded_settings
+
+        def wrong_connections(*args,**kwargs):
+            settings=original(*args,**kwargs)
+            for params in settings.values():
+                parts=list(params['inductors'])
+                parts[0]=replace(parts[0],b=2)
+                params['inductors']=tuple(parts)
+            return settings
+
+        with patch('p4_batch.build_grounded_settings',side_effect=wrong_connections):
+            with self.assertRaisesRegex(ValueError,'Inductor connection map'):
+                validate_search_result(
+                    graph,np.asarray([1.8,2.4]+[.5]*12),np.eye(2),
+                    load_bands(),3,variable_layout=layout,
+                    resolved_policy=policy,require_explicit_series=True)
+
+
 if __name__=="__main__":
     unittest.main()

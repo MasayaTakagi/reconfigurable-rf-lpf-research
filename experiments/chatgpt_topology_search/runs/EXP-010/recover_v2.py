@@ -1,7 +1,7 @@
 import json,sys,time,csv,argparse
 import numpy as np
 from pathlib import Path
-P=Path('/mnt/data/exp010');R=Path('/mnt/data/_smoke_root/experiments/chatgpt_topology_search/runs/EXP-010');sys.path.insert(0,str(R))
+P=Path(__file__).resolve().parent;R=P;sys.path.insert(0,str(R))
 from mixed_study import Model,jobs,BANDS,local_optimize,reference_vector
 m=Model(jobs('baseline')[0],list(csv.DictReader(BANDS.open())))
 records=json.load(open(P/'multistart_test.json'))['records']

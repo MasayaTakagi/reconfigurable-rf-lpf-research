@@ -1,0 +1,182 @@
+{
+  "id": "EXP013-ROW-01",
+  "full_six_setting_loss_at_worst_pass_frequency": [
+    {
+      "setting": "B71",
+      "frequency_MHz": 698.0,
+      "IL_dB": 0.30479713803654374,
+      "reflection_dB": 0.05751452796379157,
+      "inductor_dB": 0.19473330812526424,
+      "IC_C_dB": 0.05239963832089825,
+      "PCB_C_dB": 0.00014966362658967074,
+      "by_component_dB": {
+        "L0": 0.08254010488566088,
+        "L1": 0.009386328785564722,
+        "L2": 0.02952602203347703,
+        "L3": 0.07328085242056159,
+        "Cpcb": 0.00014966362658967074,
+        "Cv0": 0.010283556590062233,
+        "Cv1": 0.03676630941658085,
+        "Cv2": 0.005349772314255171
+      },
+      "P_source_W": 0.005,
+      "P_load_W": 0.0046611200707731525,
+      "power_residual_W": -1.734723475976807e-18,
+      "sum_components_plus_reflection_dB": 0.30479713803654374,
+      "meaning": "Power-based accounting, NOT causal counterfactual sensitivity"
+    },
+    {
+      "setting": "B12",
+      "frequency_MHz": 746.0,
+      "IL_dB": 0.2896431672041474,
+      "reflection_dB": 0.03075158153256885,
+      "inductor_dB": 0.20476201866863133,
+      "IC_C_dB": 0.05396688642016178,
+      "PCB_C_dB": 0.00016268058278548568,
+      "by_component_dB": {
+        "L0": 0.0851320706936123,
+        "L1": 0.008868505604849034,
+        "L2": 0.0328097167289,
+        "L3": 0.07795172564127,
+        "Cpcb": 0.00016268058278548568,
+        "Cv0": 0.009654386195434288,
+        "Cv1": 0.03849482454993431,
+        "Cv2": 0.005817675674793178
+      },
+      "P_source_W": 0.005,
+      "P_load_W": 0.004677412668891089,
+      "power_residual_W": 0.0,
+      "sum_components_plus_reflection_dB": 0.28964316720414746,
+      "meaning": "Power-based accounting, NOT causal counterfactual sensitivity"
+    },
+    {
+      "setting": "B28",
+      "frequency_MHz": 803.0,
+      "IL_dB": 0.30481726655770425,
+      "reflection_dB": 0.013311069888035706,
+      "inductor_dB": 0.23050941196879884,
+      "IC_C_dB": 0.06072524339329622,
+      "PCB_C_dB": 0.000271541307573455,
+      "by_component_dB": {
+        "L0": 0.0914904775138789,
+        "L1": 0.013032610101065371,
+        "L2": 0.0385810466397079,
+        "L3": 0.08740527771414668,
+        "Cpcb": 0.000271541307573455,
+        "Cv0": 0.012048380184485386,
+        "Cv1": 0.041475949714917616,
+        "Cv2": 0.007200913493893217
+      },
+      "P_source_W": 0.005,
+      "P_load_W": 0.004661098467635082,
+      "power_residual_W": -2.6020852139652106e-18,
+      "sum_components_plus_reflection_dB": 0.30481726655770425,
+      "meaning": "Power-based accounting, NOT causal counterfactual sensitivity"
+    },
+    {
+      "setting": "B13+B14",
+      "frequency_MHz": 798.0,
+      "IL_dB": 0.24123954575941164,
+      "reflection_dB": 0.00020224675466294883,
+      "inductor_dB": 0.1951912783263027,
+      "IC_C_dB": 0.045682076844213236,
+      "PCB_C_dB": 0.00016394383423272064,
+      "by_component_dB": {
+        "L0": 0.08127079952781763,
+        "L1": 0.007790300830822223,
+        "L2": 0.024235845449869446,
+        "L3": 0.0818943325177934,
+        "Cpcb": 0.00016394383423272064,
+        "Cv0": 0.008640964982144924,
+        "Cv1": 0.031225512547346543,
+        "Cv2": 0.0058155993147217715
+      },
+      "P_source_W": 0.005,
+      "P_load_W": 0.004729835643584022,
+      "power_residual_W": -2.6020852139652106e-18,
+      "sum_components_plus_reflection_dB": 0.24123954575941162,
+      "meaning": "Power-based accounting, NOT causal counterfactual sensitivity"
+    },
+    {
+      "setting": "B26",
+      "frequency_MHz": 894.0,
+      "IL_dB": 0.28207144863464567,
+      "reflection_dB": 0.011919898209467665,
+      "inductor_dB": 0.21883078052796007,
+      "IC_C_dB": 0.051077394423285606,
+      "PCB_C_dB": 0.00024337547393230306,
+      "by_component_dB": {
+        "L0": 0.08644799090880713,
+        "L1": 0.009270222610581165,
+        "L2": 0.030543679676980667,
+        "L3": 0.09256888733159112,
+        "Cpcb": 0.00024337547393230306,
+        "Cv0": 0.009216246727929863,
+        "Cv1": 0.03504226943836385,
+        "Cv2": 0.006818878256991889
+      },
+      "P_source_W": 0.005,
+      "P_load_W": 0.004685574629241473,
+      "power_residual_W": 4.336808689942018e-18,
+      "sum_components_plus_reflection_dB": 0.2820714486346456,
+      "meaning": "Power-based accounting, NOT causal counterfactual sensitivity"
+    },
+    {
+      "setting": "B8",
+      "frequency_MHz": 960.0,
+      "IL_dB": 0.3048172665576665,
+      "reflection_dB": 0.01731117447621178,
+      "inductor_dB": 0.2302447180976717,
+      "IC_C_dB": 0.057164425782207595,
+      "PCB_C_dB": 9.694820157545013e-05,
+      "by_component_dB": {
+        "L0": 0.08751975351986403,
+        "L1": 0.0028389006418299916,
+        "L2": 0.04603208647482964,
+        "L3": 0.09385397746114803,
+        "Cpcb": 9.694820157545013e-05,
+        "Cv0": 0.0042547949058453416,
+        "Cv1": 0.045957451510837945,
+        "Cv2": 0.006952179365524311
+      },
+      "P_source_W": 0.005,
+      "P_load_W": 0.004661098467635123,
+      "power_residual_W": -2.6020852139652106e-18,
+      "sum_components_plus_reflection_dB": 0.3048172665576665,
+      "meaning": "Power-based accounting, NOT causal counterfactual sensitivity"
+    }
+  ],
+  "worst": {
+    "setting": "B28",
+    "frequency_MHz": 803.0,
+    "IL_dB": 0.30481726655770425,
+    "reflection_dB": 0.013311069888035706,
+    "inductor_dB": 0.23050941196879884,
+    "IC_C_dB": 0.06072524339329622,
+    "PCB_C_dB": 0.000271541307573455,
+    "by_component_dB": {
+      "L0": 0.0914904775138789,
+      "L1": 0.013032610101065371,
+      "L2": 0.0385810466397079,
+      "L3": 0.08740527771414668,
+      "Cpcb": 0.000271541307573455,
+      "Cv0": 0.012048380184485386,
+      "Cv1": 0.041475949714917616,
+      "Cv2": 0.007200913493893217
+    },
+    "P_source_W": 0.005,
+    "P_load_W": 0.004661098467635082,
+    "power_residual_W": -2.6020852139652106e-18,
+    "sum_components_plus_reflection_dB": 0.30481726655770425,
+    "meaning": "Power-based accounting, NOT causal counterfactual sensitivity"
+  },
+  "baseline_comparison": {
+    "id": "EXP012 C4-PCB-01",
+    "IL_db": 0.30482006827987995
+  },
+  "caveats": [
+    "Not causal sensitivity",
+    "Numerical Q and parasitic model only",
+    "Worst frequency can differ by setting"
+  ]
+}

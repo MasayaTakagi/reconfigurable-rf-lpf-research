@@ -125,7 +125,7 @@ class LocalP4PlanningTests(unittest.TestCase):
                     child.terminate()
                 try:
                     child.wait(timeout=5)
-                except TimeoutError:
+                except local_p4.subprocess.TimeoutExpired:
                     child.kill()
                     child.wait(timeout=5)
                 manager._active[0]["log"].close()

@@ -193,7 +193,8 @@ class P4ResumeIntegrationTests(unittest.TestCase):
                 summaries.append(summary)
                 payload = json.loads(checkpoint.read_text(encoding="utf-8"))
                 if batch_index < 2:
-                    self.assertEqual(summary["status"], "partial")
+                    self.assertEqual(summary["status"], "partial",
+                                 msg=payload.get("failures"))
                     self.assertTrue(payload["batch_limit_reached"])
                     self.assertEqual(len(payload["completed_graph_ids"]), batch_index + 1)
                 else:
@@ -221,7 +222,8 @@ class P4ResumeIntegrationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             baseline = p4_batch.run(_args(root / "baseline.checkpoint.json", root / "baseline.json"))
-            self.assertGreaterEqual(len(baseline["completed_graph_ids"]), 2)
+            self.assertGreaterEqual(len(baseline["completed_graph_ids"]), 2,
+                                    msg=baseline.get("failures"))
 
             interrupted_checkpoint = root / "interrupted.checkpoint.json"
             interrupted_output = root / "interrupted.json"

@@ -138,7 +138,7 @@ def validate(graph,x,K,rows,points,*,variable_layout=None,resolved_policy=None,
                           resolved_policy=resolved_policy,
                           require_explicit_series=require_explicit_series)
     report=evaluate_settings(lambda c:settings[c],samples_per_segment=points,bands=rows)
-    mismatch=0.;residual=0.;condition=0.;minimum_eigenvalue=None
+    mismatch=0.;residual=0.;condition=None;minimum_eigenvalue=None
     inductor_types=[t for _,_,t in graph[1] if t not in ('GJM01','PCB_PATTERN_C')]
     physical_order=[i for i,t in enumerate(inductor_types)
                     if t in ('LQP01','LQP02','LQP02HV','LQP02HQ','LQW04')]
@@ -161,7 +161,11 @@ def validate(graph,x,K,rows,points,*,variable_layout=None,resolved_policy=None,
             nodal=solve_gain(f_hz,**params)
             mismatch=max(mismatch,abs(mna['gain']-nodal))
             residual=max(residual,abs(mna['power_residual']))
-            condition=max(condition,mna['mna_condition_number'])
+            # Main MNA condition-number diagnostics arrive in R2-B3.
+            # Until then report unmeasured as None, not a fabricated zero.
+            observed=mna.get('mna_condition_number')
+            if observed is not None:
+                condition=max(0.0 if condition is None else condition,float(observed))
     return dict(worst_il_db=report['worst_il_db'][0],
                 worst_il_case=report['worst_il_db'][1],
                 worst_il_region=report['worst_il_db'][2],

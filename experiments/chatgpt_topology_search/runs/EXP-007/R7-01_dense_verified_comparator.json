@@ -1,0 +1,255 @@
+{
+  "benchmark_id": "R7-01",
+  "experiment": "EXP-007",
+  "objective": "full_lpf",
+  "study_phase": "Phase 2",
+  "current_policy_id": "2026-10-10",
+  "current_policy_revision": "2026-10-11_owner_approved_PCB_PATTERN_C_Q40_0p02_to_0p2pF_max3_zero_chip_area",
+  "study_override": {
+    "parameter": "chip_area_cost_cap",
+    "approved_base_cap": 6,
+    "exploratory_cost_cap": 7,
+    "owner_request": "Compare area costs 4-7; first explore 7",
+    "canonical_policy_hard_cap_modified": false
+  },
+  "status": "dense_grid_35dB_valid_independent_MNA_verified_worse_than_A7_04_not_promoted",
+  "description": "A7-04 single fixed-cap edge rewiring. Cf0 moved from n1-OUT to n1-GND. Finite local solution is inferior to A7-04.",
+  "source_ohms": 50,
+  "load_ohms": {
+    "real": 60,
+    "imag": -40,
+    "frequency_dependent": false
+  },
+  "chip_area_cost_units": 6.666666666666667,
+  "chip_cost_budget": 7,
+  "components": {
+    "LQP02": {
+      "count": 4,
+      "Q": 25
+    },
+    "GJM01": {
+      "count": 4,
+      "Q": 80
+    },
+    "IC_VARIABLE_C": {
+      "count": 2,
+      "Q": 80,
+      "connection": "to_ground_only",
+      "range_pf": [
+        0,
+        4
+      ]
+    },
+    "PCB_L": {
+      "count": 0
+    },
+    "PCB_PATTERN_C": {
+      "count": 0
+    }
+  },
+  "topology": {
+    "ground": 0,
+    "input_node": 1,
+    "output_node": 3,
+    "n_nodes": 5,
+    "inductors": [
+      {
+        "id": "L0",
+        "a": 1,
+        "b": 2,
+        "L_nH": 3.305334593342116,
+        "Q": 25
+      },
+      {
+        "id": "L1",
+        "a": 3,
+        "b": 4,
+        "L_nH": 7.6378591637894075,
+        "Q": 25
+      },
+      {
+        "id": "L2",
+        "a": 2,
+        "b": 5,
+        "L_nH": 5.888388332758946,
+        "Q": 25
+      },
+      {
+        "id": "L3",
+        "a": 2,
+        "b": 3,
+        "L_nH": 7.158760462230027,
+        "Q": 25
+      }
+    ],
+    "fixed_caps": [
+      {
+        "id": "Cf0",
+        "a": 2,
+        "b": 0,
+        "C_pF": 0.10000000000000002,
+        "Q": 80,
+        "type": "GJM01"
+      },
+      {
+        "id": "Cf1",
+        "a": 1,
+        "b": 3,
+        "C_pF": 0.10735170989514844,
+        "Q": 80,
+        "type": "GJM01"
+      },
+      {
+        "id": "Cf2",
+        "a": 5,
+        "b": 0,
+        "C_pF": 0.28839737880643945,
+        "Q": 80,
+        "type": "GJM01"
+      },
+      {
+        "id": "Cf3",
+        "a": 1,
+        "b": 2,
+        "C_pF": 0.6956428113892441,
+        "Q": 80,
+        "type": "GJM01"
+      }
+    ],
+    "variable_caps": [
+      {
+        "id": "Cv0",
+        "a": 4,
+        "b": 0,
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      },
+      {
+        "id": "Cv1",
+        "a": 5,
+        "b": 0,
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      }
+    ]
+  },
+  "physical_chip_row": [
+    "L1",
+    "L2",
+    "L3",
+    "L0"
+  ],
+  "nominal_adjacent_k": [
+    -0.0030291637884196317,
+    -0.3998453311833175,
+    0.39575766934392637
+  ],
+  "designated_strong_adjacent_pairs": [
+    [
+      "L1",
+      "L2"
+    ],
+    [
+      "L2",
+      "L3"
+    ],
+    [
+      "L3",
+      "L0"
+    ]
+  ],
+  "all_other_nominal_chip_k_zero": true,
+  "variable_C_pf_by_setting": {
+    "B71": [
+      1.1946098387573545,
+      2.1005640132783876
+    ],
+    "B12": [
+      1.1120752328247419,
+      1.9318696592048628
+    ],
+    "B28": [
+      1.0784650173344654,
+      1.8658641069118165
+    ],
+    "B13+B14": [
+      0.6678551255561936,
+      1.6175056700121069
+    ],
+    "B26": [
+      0.5447855688192769,
+      1.49051860086882
+    ],
+    "B8": [
+      0.44905873217901143,
+      1.322725173558404
+    ]
+  },
+  "verified_dense_metrics": {
+    "worst_IL_db": 0.5245807919987855,
+    "min_H2_db": 35.02926032874604,
+    "min_H3_db": 35.02943786508305,
+    "all_six_settings": true,
+    "points_per_segment": 7001,
+    "min_K_eigenvalue": 0.4374121785540867,
+    "max_spot_MNA_power_balance_residual_W": 7.724940478959219e-18,
+    "independent_MNA_spot_checks": 54,
+    "grid_only": true
+  },
+  "verification": {
+    "frequency_grid_not_interval_proof": true,
+    "independent_MNA_spot_checks": true,
+    "positive_definite_coupling": true,
+    "physical_k_EM_feasibility_verified": false,
+    "optimizer_slsqp_converged": false,
+    "full_global_optimality_proven": false,
+    "manufacturing_tolerance_checked": false,
+    "Phase3_authorized": false,
+    "finite_grid_not_interval_proof": true,
+    "quantities_all_6_settings_verified": true,
+    "global_optimum_proven": false
+  },
+  "engineering_caveats": [
+    "Single-graph local optimization, not a performance bound.",
+    "Worse than A7-04, so not promoted to official cost7 best.",
+    "Two strong neighboring chip K values near 0.4, physical EM layout unverified.",
+    "Fixed C near 0.1pF, actual availability/parasitics not validated.",
+    "Finite frequency grids and spot MNA do not prove full continuum.",
+    "Area7 is experimental; base canonical hard cap6 stays unchanged."
+  ],
+  "numerical_method": "SLSQP epigraph minimax, minimum nominal rejection target 35.002dB, numerical bounds retained; solver terminated positive directional derivative, success=False. Verified on 7001-point per segment grid and 54 9x9 independent MNA spots.",
+  "per_setting_dense": {
+    "B71": {
+      "IL": 0.5007033988959835,
+      "H2": 35.02926032874604,
+      "H3": 35.02943786508305
+    },
+    "B12": {
+      "IL": 0.4851738967631567,
+      "H2": 37.487571896554236,
+      "H3": 43.176946042241724
+    },
+    "B28": {
+      "IL": 0.5245807919987855,
+      "H2": 35.21118552386155,
+      "H3": 36.16453329369789
+    },
+    "B13+B14": {
+      "IL": 0.376711506466412,
+      "H2": 35.69878009340834,
+      "H3": 35.03151546995605
+    },
+    "B26": {
+      "IL": 0.4552114597262314,
+      "H2": 35.35960230574772,
+      "H3": 35.65388528885111
+    },
+    "B8": {
+      "IL": 0.5207581414171645,
+      "H2": 35.32161611798403,
+      "H3": 35.384349971260406
+    }
+  }
+}

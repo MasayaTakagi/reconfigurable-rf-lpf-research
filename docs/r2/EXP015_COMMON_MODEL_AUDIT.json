@@ -1,0 +1,651 @@
+{
+  "phase": "Phase 2",
+  "source_commit_sha": "bc093c30400525534928addc96d50f3adacfb6f6",
+  "active_formal_constraint_id": "RF-F001",
+  "effective_RF_F001_sha256": "df6b4cbd347aac06538527cd68963b785207582152e17117a683c10058af0c54",
+  "scope": "historical model replay plus independent RF policy classification",
+  "large_search_executed": false,
+  "candidate_audits": {
+    "EXP015-HV3C-01": {
+      "candidate_id": "EXP015-HV3C-01",
+      "source_candidate_file": "experiments/chatgpt_topology_search/runs/EXP-015/EXP015-HV3C-01.json",
+      "source_commit_sha": "bc093c30400525534928addc96d50f3adacfb6f6",
+      "source_candidate_sha256": "f7721303c468bd7a5777d0001be133ad92653ecb0b1312236316846131c05fb9",
+      "saved_candidate_values_unchanged": true,
+      "base_candidate": "EXP011-01",
+      "converted_common_model": {
+        "solver_nodes": 5,
+        "inductor_edges": [
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "fixed_capacitor_edges": [
+          [
+            1,
+            2
+          ]
+        ],
+        "variable_capacitor_edges": [
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "variable_C_count": 3,
+        "inductor_series": [
+          "LQP02HV",
+          "LQP02HV",
+          "LQP02HV",
+          "LQP02HV"
+        ],
+        "Q_by_series": [
+          25.0,
+          25.0,
+          25.0,
+          25.0
+        ],
+        "effective_RF_F001_sha256": "df6b4cbd347aac06538527cd68963b785207582152e17117a683c10058af0c54"
+      },
+      "old_model_numerical_replay": {
+        "grid_points_per_frequency_segment": 7001,
+        "worst_IL_db": 0.32140280187014103,
+        "min_H2_db": 30.007999999431703,
+        "min_H3_db": 30.00799999997975,
+        "per_setting_metrics": {
+          "B71": [
+            0.31739987688445515,
+            30.00799999997952,
+            30.00799999999692
+          ],
+          "B12": [
+            0.2935563955417542,
+            30.007999999431703,
+            35.10438311698931
+          ],
+          "B28": [
+            0.32140280187014103,
+            30.007999999995086,
+            30.007999999995473
+          ],
+          "B13+B14": [
+            0.3179226392489684,
+            30.115598912224925,
+            30.81755719693635
+          ],
+          "B26": [
+            0.32065563608749237,
+            30.301954826625277,
+            31.605972602434278
+          ],
+          "B8": [
+            0.3214028018701364,
+            30.008000000004174,
+            30.00799999997975
+          ]
+        },
+        "max_per_setting_metric_delta_db": 0.0,
+        "max_summary_metric_delta_db": 0.0,
+        "matches_saved_within_tolerance": true
+      },
+      "new_model_independent_spot_checks": {
+        "frequency_count": 72,
+        "max_gain_discrepancy": 1.4432899320127035e-15,
+        "max_power_residual_w": 1.0625181290357943e-17,
+        "max_condition_number": 1393622.0120521504,
+        "min_inductance_eigenvalue": 3.5703161960962085e-09,
+        "three_formulations": "main augmented MNA, independent nodal admittance, branch-current MNA",
+        "connection_map_crosscheck": "PASS",
+        "physical_adjacent_k_and_full_L_spd": "PASS"
+      },
+      "policy_fit": {
+        "RF-F001": {
+          "topology_compliant": false,
+          "reason": "Variable C count exceeds resolved constraints",
+          "h2_h3_minimum_30db_pass": true,
+          "h2_h3_nominal_35db_target_pass": false,
+          "saved_worst_il_0p30db_pass": false,
+          "topology_and_metrics_joint_30db_pass": false,
+          "topology_and_metrics_joint_35db_target_pass": false
+        },
+        "RF-T001": {
+          "topology_compliant": false,
+          "reason": "Non-ground variable C must be an authorized bridge",
+          "h2_h3_minimum_30db_pass": true,
+          "h2_h3_nominal_35db_target_pass": false,
+          "saved_worst_il_0p30db_pass": false,
+          "topology_and_metrics_joint_30db_pass": false,
+          "topology_and_metrics_joint_35db_target_pass": false
+        },
+        "RF-T002": {
+          "topology_compliant": true,
+          "reason": null,
+          "h2_h3_minimum_30db_pass": true,
+          "h2_h3_nominal_35db_target_pass": false,
+          "saved_worst_il_0p30db_pass": false,
+          "topology_and_metrics_joint_30db_pass": true,
+          "topology_and_metrics_joint_35db_target_pass": false
+        }
+      },
+      "physical_implementation": {
+        "series_and_inductance_range": "PASS",
+        "neighbor_coupling_and_full_L_matrix": "PASS",
+        "part_specific_SRF_Qf_parasitics_EM": "NOT_VERIFIED",
+        "layout_and_manufacturing": "NOT_VERIFIED",
+        "continuous_frequency_proof": "NOT_CLAIMED"
+      },
+      "performance_snapshot": {
+        "worst_IL_db": 0.32140280187014103,
+        "min_H2_db": 30.007999999431703,
+        "min_H3_db": 30.00799999997975,
+        "chip_area_cost_units": 4.666666666666667,
+        "saved_dense_grid_points_per_segment": 7001
+      }
+    },
+    "EXP015-HQ3C-01": {
+      "candidate_id": "EXP015-HQ3C-01",
+      "source_candidate_file": "experiments/chatgpt_topology_search/runs/EXP-015/EXP015-HQ3C-01.json",
+      "source_commit_sha": "bc093c30400525534928addc96d50f3adacfb6f6",
+      "source_candidate_sha256": "6a1a77b63fcd13ace8d8dcf40ebb4ce063f26ad182430d2beb13ec84b1ddab2c",
+      "saved_candidate_values_unchanged": true,
+      "base_candidate": "EXP011-01",
+      "converted_common_model": {
+        "solver_nodes": 5,
+        "inductor_edges": [
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "fixed_capacitor_edges": [
+          [
+            1,
+            2
+          ]
+        ],
+        "variable_capacitor_edges": [
+          [
+            4,
+            0
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "variable_C_count": 3,
+        "inductor_series": [
+          "LQP02HV",
+          "LQP02HQ",
+          "LQP02HV",
+          "LQP02HV"
+        ],
+        "Q_by_series": [
+          25.0,
+          20.0,
+          25.0,
+          25.0
+        ],
+        "effective_RF_F001_sha256": "df6b4cbd347aac06538527cd68963b785207582152e17117a683c10058af0c54"
+      },
+      "old_model_numerical_replay": {
+        "grid_points_per_frequency_segment": 7001,
+        "worst_IL_db": 0.3019453791082774,
+        "min_H2_db": 30.00009999999826,
+        "min_H3_db": 30.000099999999726,
+        "per_setting_metrics": {
+          "B71": [
+            0.2814389056978644,
+            30.395335706918214,
+            30.000100431103036
+          ],
+          "B12": [
+            0.30133946769915265,
+            32.40545324588179,
+            30.17456008563054
+          ],
+          "B28": [
+            0.30194537910826863,
+            30.00009999999826,
+            30.000099999999726
+          ],
+          "B13+B14": [
+            0.25963151617586605,
+            35.45891271768058,
+            31.698808955293334
+          ],
+          "B26": [
+            0.2949358728976224,
+            30.8734185342745,
+            32.49967003215208
+          ],
+          "B8": [
+            0.3019453791082774,
+            30.00009999999905,
+            30.000100000001705
+          ]
+        },
+        "max_per_setting_metric_delta_db": 0.0,
+        "max_summary_metric_delta_db": 0.0,
+        "matches_saved_within_tolerance": true
+      },
+      "new_model_independent_spot_checks": {
+        "frequency_count": 72,
+        "max_gain_discrepancy": 2.220446049250313e-15,
+        "max_power_residual_w": 1.2752928053860746e-17,
+        "max_condition_number": 5777058.255732183,
+        "min_inductance_eigenvalue": 2.011271668681513e-09,
+        "three_formulations": "main augmented MNA, independent nodal admittance, branch-current MNA",
+        "connection_map_crosscheck": "PASS",
+        "physical_adjacent_k_and_full_L_spd": "PASS"
+      },
+      "policy_fit": {
+        "RF-F001": {
+          "topology_compliant": false,
+          "reason": "Variable C count exceeds resolved constraints",
+          "h2_h3_minimum_30db_pass": true,
+          "h2_h3_nominal_35db_target_pass": false,
+          "saved_worst_il_0p30db_pass": false,
+          "topology_and_metrics_joint_30db_pass": false,
+          "topology_and_metrics_joint_35db_target_pass": false
+        },
+        "RF-T001": {
+          "topology_compliant": false,
+          "reason": "Non-ground variable C must be an authorized bridge",
+          "h2_h3_minimum_30db_pass": true,
+          "h2_h3_nominal_35db_target_pass": false,
+          "saved_worst_il_0p30db_pass": false,
+          "topology_and_metrics_joint_30db_pass": false,
+          "topology_and_metrics_joint_35db_target_pass": false
+        },
+        "RF-T002": {
+          "topology_compliant": true,
+          "reason": null,
+          "h2_h3_minimum_30db_pass": true,
+          "h2_h3_nominal_35db_target_pass": false,
+          "saved_worst_il_0p30db_pass": false,
+          "topology_and_metrics_joint_30db_pass": true,
+          "topology_and_metrics_joint_35db_target_pass": false
+        }
+      },
+      "physical_implementation": {
+        "series_and_inductance_range": "PASS",
+        "neighbor_coupling_and_full_L_matrix": "PASS",
+        "part_specific_SRF_Qf_parasitics_EM": "NOT_VERIFIED",
+        "layout_and_manufacturing": "NOT_VERIFIED",
+        "continuous_frequency_proof": "NOT_CLAIMED"
+      },
+      "performance_snapshot": {
+        "worst_IL_db": 0.3019453791082774,
+        "min_H2_db": 30.00009999999826,
+        "min_H3_db": 30.000099999999726,
+        "chip_area_cost_units": 4.666666666666667,
+        "saved_dense_grid_points_per_segment": 7001
+      }
+    },
+    "EXP015-HV2C-01": {
+      "candidate_id": "EXP015-HV2C-01",
+      "source_candidate_file": "experiments/chatgpt_topology_search/runs/EXP-015/EXP015-HV2C-01.json",
+      "source_commit_sha": "bc093c30400525534928addc96d50f3adacfb6f6",
+      "source_candidate_sha256": "722fa91a502209ee62efba7f92232423db93ca2578733fb9ee00397eb6b78e9b",
+      "saved_candidate_values_unchanged": true,
+      "base_candidate": "EXP014-02",
+      "converted_common_model": {
+        "solver_nodes": 5,
+        "inductor_edges": [
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "fixed_capacitor_edges": [
+          [
+            1,
+            2
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            3,
+            1
+          ]
+        ],
+        "variable_capacitor_edges": [
+          [
+            4,
+            0
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "variable_C_count": 2,
+        "inductor_series": [
+          "LQP02HV",
+          "LQP02HV",
+          "LQP02HV",
+          "LQP02HV"
+        ],
+        "Q_by_series": [
+          25.0,
+          25.0,
+          25.0,
+          25.0
+        ],
+        "effective_RF_F001_sha256": "df6b4cbd347aac06538527cd68963b785207582152e17117a683c10058af0c54"
+      },
+      "old_model_numerical_replay": {
+        "grid_points_per_frequency_segment": 7001,
+        "worst_IL_db": 0.34353903360718974,
+        "min_H2_db": 30.00999999997298,
+        "min_H3_db": 30.009999999970308,
+        "per_setting_metrics": {
+          "B71": [
+            0.3111641024795147,
+            30.00999999997465,
+            30.009999999995625
+          ],
+          "B12": [
+            0.3206168086404354,
+            30.044020609432117,
+            31.532805537182803
+          ],
+          "B28": [
+            0.3435390336070781,
+            30.00999999997298,
+            30.01000000000596
+          ],
+          "B13+B14": [
+            0.28415765616085953,
+            30.009999999993198,
+            30.010000000020355
+          ],
+          "B26": [
+            0.3157598685181132,
+            30.13380869919665,
+            30.693387182826363
+          ],
+          "B8": [
+            0.34353903360718974,
+            30.009999999999607,
+            30.009999999970308
+          ]
+        },
+        "max_per_setting_metric_delta_db": 0.0,
+        "max_summary_metric_delta_db": 0.0,
+        "matches_saved_within_tolerance": true
+      },
+      "new_model_independent_spot_checks": {
+        "frequency_count": 72,
+        "max_gain_discrepancy": 2.220446049250313e-15,
+        "max_power_residual_w": 3.355605723842636e-17,
+        "max_condition_number": 26156085.611978725,
+        "min_inductance_eigenvalue": 2.9651528533453028e-09,
+        "three_formulations": "main augmented MNA, independent nodal admittance, branch-current MNA",
+        "connection_map_crosscheck": "PASS",
+        "physical_adjacent_k_and_full_L_spd": "PASS"
+      },
+      "policy_fit": {
+        "RF-F001": {
+          "topology_compliant": false,
+          "reason": "Non-ground variable C must be an authorized bridge",
+          "h2_h3_minimum_30db_pass": true,
+          "h2_h3_nominal_35db_target_pass": false,
+          "saved_worst_il_0p30db_pass": false,
+          "topology_and_metrics_joint_30db_pass": false,
+          "topology_and_metrics_joint_35db_target_pass": false
+        },
+        "RF-T001": {
+          "topology_compliant": false,
+          "reason": "Non-ground variable C must be an authorized bridge",
+          "h2_h3_minimum_30db_pass": true,
+          "h2_h3_nominal_35db_target_pass": false,
+          "saved_worst_il_0p30db_pass": false,
+          "topology_and_metrics_joint_30db_pass": false,
+          "topology_and_metrics_joint_35db_target_pass": false
+        },
+        "RF-T002": {
+          "topology_compliant": false,
+          "reason": "Variable-C connections do not match the authorized trial layout",
+          "h2_h3_minimum_30db_pass": true,
+          "h2_h3_nominal_35db_target_pass": false,
+          "saved_worst_il_0p30db_pass": false,
+          "topology_and_metrics_joint_30db_pass": false,
+          "topology_and_metrics_joint_35db_target_pass": false
+        }
+      },
+      "physical_implementation": {
+        "series_and_inductance_range": "PASS",
+        "neighbor_coupling_and_full_L_matrix": "PASS",
+        "part_specific_SRF_Qf_parasitics_EM": "NOT_VERIFIED",
+        "layout_and_manufacturing": "NOT_VERIFIED",
+        "continuous_frequency_proof": "NOT_CLAIMED"
+      },
+      "performance_snapshot": {
+        "worst_IL_db": 0.34353903360718974,
+        "min_H2_db": 30.00999999997298,
+        "min_H3_db": 30.009999999970308,
+        "chip_area_cost_units": 5.333333333333333,
+        "saved_dense_grid_points_per_segment": 7001
+      }
+    },
+    "EXP015-HQ2C-01": {
+      "candidate_id": "EXP015-HQ2C-01",
+      "source_candidate_file": "experiments/chatgpt_topology_search/runs/EXP-015/EXP015-HQ2C-01.json",
+      "source_commit_sha": "bc093c30400525534928addc96d50f3adacfb6f6",
+      "source_candidate_sha256": "968333c648ed81c51ce714aa707683a7c2fea5052dd7e256357c5a8fa409ac91",
+      "saved_candidate_values_unchanged": true,
+      "base_candidate": "EXP014-02",
+      "converted_common_model": {
+        "solver_nodes": 5,
+        "inductor_edges": [
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "fixed_capacitor_edges": [
+          [
+            1,
+            2
+          ],
+          [
+            5,
+            0
+          ],
+          [
+            3,
+            1
+          ]
+        ],
+        "variable_capacitor_edges": [
+          [
+            4,
+            0
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "variable_C_count": 2,
+        "inductor_series": [
+          "LQP02HV",
+          "LQP02HQ",
+          "LQP02HV",
+          "LQP02HV"
+        ],
+        "Q_by_series": [
+          25.0,
+          20.0,
+          25.0,
+          25.0
+        ],
+        "effective_RF_F001_sha256": "df6b4cbd347aac06538527cd68963b785207582152e17117a683c10058af0c54"
+      },
+      "old_model_numerical_replay": {
+        "grid_points_per_frequency_segment": 7001,
+        "worst_IL_db": 0.3502242047350975,
+        "min_H2_db": 30.00999999997831,
+        "min_H3_db": 30.009999999915536,
+        "per_setting_metrics": {
+          "B71": [
+            0.3167312318274774,
+            30.00999999999092,
+            30.009999999991322
+          ],
+          "B12": [
+            0.31638114157866914,
+            30.012149682046775,
+            30.012565811139588
+          ],
+          "B28": [
+            0.35022420473492977,
+            30.00999999997831,
+            30.009999999972532
+          ],
+          "B13+B14": [
+            0.2890541938695872,
+            30.010000000026057,
+            30.009999999999366
+          ],
+          "B26": [
+            0.32237071709616427,
+            30.02407896639175,
+            30.199295393785974
+          ],
+          "B8": [
+            0.3502242047350975,
+            30.009999999999827,
+            30.009999999915536
+          ]
+        },
+        "max_per_setting_metric_delta_db": 0.0,
+        "max_summary_metric_delta_db": 0.0,
+        "matches_saved_within_tolerance": true
+      },
+      "new_model_independent_spot_checks": {
+        "frequency_count": 72,
+        "max_gain_discrepancy": 3.164135620181696e-15,
+        "max_power_residual_w": 3.111660235033398e-17,
+        "max_condition_number": 24906095.51320497,
+        "min_inductance_eigenvalue": 2.9104731240951483e-09,
+        "three_formulations": "main augmented MNA, independent nodal admittance, branch-current MNA",
+        "connection_map_crosscheck": "PASS",
+        "physical_adjacent_k_and_full_L_spd": "PASS"
+      },
+      "policy_fit": {
+        "RF-F001": {
+          "topology_compliant": false,
+          "reason": "Non-ground variable C must be an authorized bridge",
+          "h2_h3_minimum_30db_pass": true,
+          "h2_h3_nominal_35db_target_pass": false,
+          "saved_worst_il_0p30db_pass": false,
+          "topology_and_metrics_joint_30db_pass": false,
+          "topology_and_metrics_joint_35db_target_pass": false
+        },
+        "RF-T001": {
+          "topology_compliant": false,
+          "reason": "Non-ground variable C must be an authorized bridge",
+          "h2_h3_minimum_30db_pass": true,
+          "h2_h3_nominal_35db_target_pass": false,
+          "saved_worst_il_0p30db_pass": false,
+          "topology_and_metrics_joint_30db_pass": false,
+          "topology_and_metrics_joint_35db_target_pass": false
+        },
+        "RF-T002": {
+          "topology_compliant": false,
+          "reason": "Variable-C connections do not match the authorized trial layout",
+          "h2_h3_minimum_30db_pass": true,
+          "h2_h3_nominal_35db_target_pass": false,
+          "saved_worst_il_0p30db_pass": false,
+          "topology_and_metrics_joint_30db_pass": false,
+          "topology_and_metrics_joint_35db_target_pass": false
+        }
+      },
+      "physical_implementation": {
+        "series_and_inductance_range": "PASS",
+        "neighbor_coupling_and_full_L_matrix": "PASS",
+        "part_specific_SRF_Qf_parasitics_EM": "NOT_VERIFIED",
+        "layout_and_manufacturing": "NOT_VERIFIED",
+        "continuous_frequency_proof": "NOT_CLAIMED"
+      },
+      "performance_snapshot": {
+        "worst_IL_db": 0.3502242047350975,
+        "min_H2_db": 30.00999999997831,
+        "min_H3_db": 30.009999999915536,
+        "chip_area_cost_units": 5.333333333333333,
+        "saved_dense_grid_points_per_segment": 7001
+      }
+    }
+  },
+  "limitations": [
+    "Historical saved metrics remain unchanged.",
+    "Three-formulation checks use independent topology metadata and selected frequency spots.",
+    "Grid checks are not continuous-frequency proofs or physical implementation evidence."
+  ]
+}

@@ -1,6 +1,7 @@
 """Deterministic cost-balanced topology selection; not an RF limit proof."""
 from collections import defaultdict
-COST={'LQP01':2,'LQP02':3,'PCB_L':0,'GJM01':2}
+COST={'LQP01':2,'LQP02':3,'LQP02HV':3,'LQP02HQ':3,
+      'PCB_L':0,'GJM01':2}
 def area_thirds(graph):
     return sum(COST[t] for _,_,t in graph[1])
 def has_signal_path(graph):

@@ -1,0 +1,116 @@
+import sys
+import unittest
+from dataclasses import replace
+from pathlib import Path
+
+import numpy as np
+from unittest.mock import patch
+
+ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/'src'))
+sys.path.insert(0,str(ROOT/'experiments'/'matching_limit'))
+
+from coverage_sampler import sample_graphs
+from enumerate_grounded import enumerate_grounded
+from instantiate_graph import build_grounded_settings,check_graph
+from lpf.constraint_versions import load_constraint
+from lpf.evaluate import CASES
+from search_space import enumerate_variable_c_layouts
+from coupling_layout import (admissible_matrix,adjacent_patterns,
+                             validate_coupling_matrix)
+from p4_batch import bounds_for,settings_for,validate as validate_search_result
+from lpf.evaluate import load_bands
+
+
+class ExplicitSeriesSearchTests(unittest.TestCase):
+    def test_legacy_sampler_keeps_alias_and_new_samplers_label_series(self):
+        old,_=sample_graphs(max_internal=1,attempts_per_cell=80,seed=44)
+        self.assertTrue(all(t!='LQP02HQ' for g in old for _,_,t in g[1]))
+        for mode,expected in (('HV','LQP02HV'),('HQ','LQP02HQ'),
+                              ('both',None)):
+            graphs,_=sample_graphs(max_internal=1,attempts_per_cell=300,
+                                   seed=44,series_mode=mode)
+            types={t for g in graphs for _,_,t in g[1]}
+            self.assertNotIn('LQP02',types)
+            if expected:
+                self.assertIn(expected,types)
+        counts,graphs=enumerate_grounded(0,2,500,series_mode='both')
+        self.assertTrue(graphs)
+        self.assertTrue(all(t!='LQP02' for _,edges in graphs for _,_,t in edges))
+        with self.assertRaises(ValueError):
+            check_graph((3,((1,2,'LQP02'),)),require_explicit_series=True)
+
+    def test_series_bounds_and_three_variable_dimensions(self):
+        graph=(4,((1,3,'LQP02HV'),(3,2,'LQP02HQ')))
+        np.testing.assert_allclose(bounds_for(graph,variable_count=3),
+                                   [(0.4,27),(0.2,56)]+[(0,4)]*18)
+        policy=load_constraint('RF-T001',allow_trial=True)
+        layout={'edges':((3,0),(1,0),(2,0)),
+                'roles':(None,None,None)}
+        x=np.array([2.0,27.0]+[0.5]*18)
+        settings=settings_for(graph,x,np.eye(2),variable_layout=layout,
+                              resolved_policy=policy,require_explicit_series=True)
+        self.assertEqual(set(settings),set(CASES))
+        self.assertEqual(len(settings['B71']['capacitors']),3)
+        self.assertEqual([l.q for l in settings['B71']['inductors']],[25,20])
+        self.assertEqual([c.value for c in settings['B71']['capacitors']],
+                         [0.5e-12]*3)
+
+
+class PolicyLayoutEnumerationTests(unittest.TestCase):
+    def setUp(self):
+        # Ground=0, input=1, output=2, internal nodes=3,4.
+        self.graph=(5,((1,3,'LQP02HV'),(3,2,'LQP02HQ'),
+                       (3,4,'LQP02HV')))
+
+    def test_formal_two_shunts_include_internal_nodes_only(self):
+        policy=load_constraint('RF-F001')
+        layouts=enumerate_variable_c_layouts(self.graph,policy)
+        self.assertTrue(layouts)
+        self.assertTrue(all(len(row['edges'])==2 for row in layouts))
+        self.assertTrue(all(all(b==0 for _,b in row['edges']) for row in layouts))
+        self.assertTrue(any((3,0) in row['edges'] or (4,0) in row['edges']
+                            for row in layouts))
+
+    def test_trial_t001_and_t002_layout_shapes_and_bridge_bypass(self):
+        t1=load_constraint('RF-T001',allow_trial=True)
+        t2=load_constraint('RF-T002',allow_trial=True)
+        layouts1=enumerate_variable_c_layouts(self.graph,t1)
+        layouts2=enumerate_variable_c_layouts(self.graph,t2)
+        self.assertTrue(layouts1)
+        self.assertTrue(layouts2)
+        self.assertTrue(all(len(x['edges'])==3 and x['roles']==(None,None,None)
+                            for x in layouts1))
+        self.assertTrue(all(sum(role=='bridge' for role in x['roles'])==1
+                            and sum(0 in edge for edge in x['edges'])==2
+                            for x in layouts2))
+        self.assertTrue(any(any(a>=3 or b>=3 for a,b in x['edges'][:2])
+                            for x in layouts2))
+
+    def test_bridge_cannot_be_the_only_fixed_signal_path(self):
+        policy=load_constraint('RF-T002',allow_trial=True)
+        broken=(5,((1,3,'LQP02HV'),(3,4,'LQP02HQ'),(4,0,'GJM01')))
+        # This graph itself lacks a fixed input-to-output connection and cannot
+        # provide a bridge layout that bypasses a series-only variable C.
+        self.assertEqual(enumerate_variable_c_layouts(broken,policy),[])
+
+
+class CouplingPhysicalAdjacencyTests(unittest.TestCase):
+    def test_explicit_series_are_chip_inductors_and_nonneighbors_cannot_be_strong(self):
+        types=['LQP02HV','LQP02HQ','LQP02HV']
+        with self.assertRaisesRegex(ValueError,'Invalid coupling'):
+            admissible_matrix(types,[2e-9]*3,
+                              chip_edges={frozenset((0,2)):.2})
+        k=np.eye(3);k[0,2]=k[2,0]=.2
+        with self.assertRaisesRegex(ValueError,'physical neighbors'):
+            validate_coupling_matrix(types,[2e-9]*3,k)
+        good=admissible_matrix(types,[2e-9]*3,
+                               chip_edges={frozenset((0,1)):.25})
+        self.assertAlmostEqual(good[0,1],.25)
+        self.assertTrue(any(pattern.get(frozenset((0,1)))==.4
+                            for pattern in adjacent_patterns(types)))
+
+
+
+if __name__=="__main__":
+    unittest.main()

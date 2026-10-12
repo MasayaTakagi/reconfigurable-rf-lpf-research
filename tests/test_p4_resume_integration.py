@@ -114,6 +114,32 @@ class P4ResumeIntegrationTests(unittest.TestCase):
             self.assertNotEqual(p4_batch.canonical_config_hash(previous),
                                 p4_batch.canonical_config_hash(current))
 
+    def test_policy_series_and_layout_changes_reject_checkpoint_reuse(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base=_args(Path(directory)/'unused.json',Path(directory)/'unused.out')
+            legacy=p4_batch.build_run_config(base,{'B71':[700.0,710.0]},['a'*64])
+            explicit=_args(Path(directory)/'unused.json',Path(directory)/'unused.out')
+            explicit.constraint_id='RF-F001';explicit.series_mode='both'
+            explicit.max_variable_layouts=4
+            explicit.max_topology_graphs=2;explicit.require_lqp02=True
+            formal=p4_batch.build_run_config(explicit,{'B71':[700.0,710.0]},['a'*64])
+            trial=_args(Path(directory)/'unused.json',Path(directory)/'unused.out')
+            trial.constraint_id='RF-T002';trial.series_mode='both'
+            trial.max_variable_layouts=4
+            trial_config=p4_batch.build_run_config(trial,{'B71':[700.0,710.0]},['a'*64])
+            hashes={p4_batch.canonical_config_hash(x) for x in
+                    (legacy,formal,trial_config)}
+            self.assertEqual(len(hashes),3)
+            self.assertEqual(formal['p4_a_limits']['constraint_id'],'RF-F001')
+            self.assertEqual(trial_config['p4_a_limits']['constraint_id'],'RF-T002')
+
+    def test_new_constraint_search_rejects_legacy_series_alias(self):
+        with mock.patch('sys.argv',['p4_batch.py','--constraint-id','RF-F001',
+                                   '--series-mode','legacy']):
+            with self.assertRaises(SystemExit) as raised:
+                p4_batch._parse_args()
+        self.assertEqual(raised.exception.code,2)
+
     def test_cli_rejects_validation_grid_smaller_than_two_points(self):
         with mock.patch("sys.argv", ["p4_batch.py", "--validation-points", "1"]):
             with self.assertRaises(SystemExit) as raised:

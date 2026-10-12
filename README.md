@@ -14,6 +14,8 @@
 
 **Phase 2追加探索（EXP-006、2026-10-12）:** コスト7以内の最良数値チェックポイントを [A7-04](experiments/chatgpt_topology_search/runs/EXP-006/A7-04.json) の**最大IL 0.506951dB、最小H2/H3約35.002dB**へ更新。ただし公称35dBへの余裕が約0.002dBしかないため、[A7-03](experiments/chatgpt_topology_search/runs/EXP-005/A7-03.json) を減衰余裕比較用に保持。追加した**PCBパターンC×2/×3と5L構成の合計98局所探索**は[EXP-006レポート](experiments/chatgpt_topology_search/runs/EXP-006/README.md)に記録。大域最適性は未証明、0.40dB未達、hard cap6とPhase 3停止を維持。
 
+**Phase 2・EXP-007追加探索（2026-10-12）:** [固定C再配置・チップL再配置・PCB-L追加の103件の局所探索と2可変C感度解析](experiments/chatgpt_topology_search/runs/EXP-007/README.md)。各群から35dB条件を満たす粗い数値解は合計44件。最良の追加候補は0.524581dBで、**保存済みA7-04（0.506951dB）は未更新**。B71のH2/H3最小減衰に対する2制御変数の局所感度行列は条件数約9.36で、制御感度の偏りが見られた。0.40dB目標未達、正式hard cap6とPhase 3停止は維持。
+
 **2方式を並行**：ChatGPTはRF理論から回路を発案して専用高速最適化、自動探索は有限のグラフ・素子・配置クラスを生成して比較。良好な構造と初期値を相互に利用し、共通MNAと同一の6設定評価で検証する。現在のP4-Aは可変CがIN/OUT接続に固定されており、LPF-007/008の内部トラップCを探索できないため、一般化が最優先。
 
 ## フォルダ構成と作業先

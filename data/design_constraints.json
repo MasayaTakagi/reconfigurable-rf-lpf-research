@@ -17,9 +17,11 @@
   "chip_area_unit": "one_LQP02_package_footprint",
   "area_formula": "N_LQP02+(2/3)*N_LQP01+3*N_LQW04+(2/3)*N_GJM01+0*N_PCB_PATTERN_C",
   "area_budget": {
-    "hard_cap": 6,
-    "policy": "sweep_0_to_6_in_1_over_3_units",
-    "previous_hard_cap": 4
+    "hard_cap": null,
+    "policy": "unconstrained_chip_area_pareto_objective",
+    "historical_hard_cap": 6,
+    "legacy_area_sweep": "0_to_6_in_1_over_3_units",
+    "search_upper_bounds": "experiment_specific_computational_scope_only"
   },
   "components": {
     "LQP02": {
@@ -173,7 +175,7 @@
     "chip_chip_weak_abs_k_above_0_1",
     "more_than_3_PCB_pattern_capacitors"
   ],
-  "policy_revision": "2026-10-12_owner_approved_LQP02HV_Q25_le_27nH_LQP02HQ_Q20_le_56nH_HV_preference_SRF_caution",
+  "policy_revision": "2026-10-12_owner_approved_area_unconstrained_cost_IL_pareto_and_series_HV_HQ",
   "chip_inductor_placement": {
     "approved_layout": "single_linear_row",
     "strength_grouping": "selected subset of consecutive physical neighbor edges",
@@ -191,7 +193,7 @@
     "model_notes": "Upper bounds do not imply simultaneous physical realizability; variable coupling coefficients require physical justification"
   },
   "latest_owner_approved_extension_date": "2026-10-12",
-  "policy_version_semantics": "Policy version remains 2026-10-10 for historical LPF-007/008 replay; active rules must read policy_revision, LQP02.series, and active_rule_since. Legacy Q25 results with L>27 nH require reoptimization before claiming conformance.",
+  "policy_version_semantics": "Legacy policy_version 2026-10-10 is retained solely for immutable saved historical baseline replay. Use active_constraint_id RF-F001 and immutable snapshot/hash for all new formal runs. Area hard_cap is null; experiment search ranges never constitute RF area constraints.",
   "inductor_series_optimization_policy": {
     "phase": "Phase 2",
     "primary_Rf_constraints_unchanged": true,
@@ -217,5 +219,17 @@
     "frequency_dependence": "use_fixed_approved_Q_per_series_for_Phase2_optimization; real_Qf_and_SRF_check_separately",
     "maximum_approved_HQ_nH": 56,
     "srf_gate": "do_not_claim_measured_feasibility_without_selected_part_srf_and_parasitic_evidence"
+  },
+  "active_constraint_id": "RF-F001",
+  "active_constraint_status": "formal",
+  "cost_performance_policy": {
+    "objectives": [
+      "minimize_chip_area_cost",
+      "minimize_worst_six_setting_UL_DL_IL_db"
+    ],
+    "full_lpf_harmonics": "minimum_30dB_required_nominal_35dB_target",
+    "comparison": "best_found_non_dominated_candidates_under_identical_RF_conditions",
+    "recommendation": "final_tradeoff_selection_after_pareto_analysis",
+    "physical_implementation": "PCB_and_IC_resources_separately_reported"
   }
 }

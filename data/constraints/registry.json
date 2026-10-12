@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "active_formal_id": "RF-F001",
+  "formal": {
+    "RF-F001": {
+      "file": "data/constraints/formal/RF-F001.json",
+      "state": "approved",
+      "approved_at": "2026-10-12",
+      "description": "Formal Phase 2 RF conditions: chip area is Pareto objective without hard cap; HV/HQ series and physical constraints retained."
+    }
+  },
+  "trial": {},
+  "historical": {
+    "legacy_2026_10_10": {
+      "policy_version": "2026-10-10",
+      "source_commit": "35642be3e89f46b6ba135391cc857d76de433b92",
+      "notes": "Historical model and candidate checkpoints; not revalidated by RF-F001; recover by git show."
+    }
+  },
+  "rules": {
+    "formal_snapshots": "immutable",
+    "trial_snapshots": "not_formal_and_never_auto_promoted",
+    "promotion": "explicit_owner_approval_creates_new_formal_id",
+    "run_reproducibility": "record_resolved_constraint_sha256_and_git_commit"
+  }
+}

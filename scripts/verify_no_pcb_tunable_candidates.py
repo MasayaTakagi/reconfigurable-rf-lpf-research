@@ -120,7 +120,7 @@ def check_baseline_metadata(item, policy):
     area = len(ls) * float(policy["components"]["LQP02"]["area_units"]) + (
         len(fs) * (2 / 3))
     require(abs(float(item["area_units"]) - area) < 1e-9 and
-            area <= policy["area_budget"]["hard_cap"], f"{name}: area is inconsistent")
+            area <= policy["area_budget"]["historical_hard_cap"], f"{name}: area is inconsistent")
     for actual, expected in zip(
             (item["performance"]["worst_IL_db"], item["performance"]["min_H2_db"],
              item["performance"]["min_H3_db"]), BASELINE_PERFORMANCE[name]):

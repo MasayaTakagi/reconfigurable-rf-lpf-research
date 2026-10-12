@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from src.lpf.constraint_versions import load_constraint, constraint_fingerprint
+from src.lpf.constraint_versions import load_constraint, constraint_fingerprint, _merge
 from src.lpf.constraints import check_counts, chip_area
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -63,6 +63,28 @@ class VersionedConstraintsTests(unittest.TestCase):
             self.assertEqual(resolved["active_constraint_status"], "trial")
             self.assertNotEqual(constraint_fingerprint(formal),
                                 constraint_fingerprint(resolved))
+
+    def test_trial_overrides_reject_bad_types_and_unknown_fields(self):
+        baseline = load_constraint()
+        valid = {"components": {"IC_VARIABLE_C": {
+            "max_branches_principle": 3}}}
+        self.assertEqual(_merge(baseline, valid)["components"]
+                         ["IC_VARIABLE_C"]["max_branches_principle"], 3)
+        bad_overrides = (
+            {"components": {"IC_VARIABLE_C": {
+                "max_branches_principle": "3"}}},
+            {"components": {"IC_VARIABLE_C": {
+                "max_branches_principle": True}}},
+            {"components": {"IC_VARIABLE_C": {
+                "positions_allowed_by_default": [3]}}},
+            {"components": {"IC_VARIABLE_C": 3}},
+            {"components": {"UNRECOGNIZED_PART": {"q": 20}}},
+            {"phase3": False},
+            {"components": []},
+        )
+        for bad in bad_overrides:
+            with self.subTest(override=bad), self.assertRaises(ValueError):
+                _merge(baseline, bad)
 
     def test_trials_are_not_automatically_adopted(self):
         with self.assertRaises(ValueError):

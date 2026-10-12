@@ -1,0 +1,58 @@
+name: One-time safe merged-branch cleanup
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-time-merged-branch-cleanup.yml'
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  prune:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Delete only reviewed, unchanged, fully merged refs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const expected = {
+                      "codex/g1-p4-shards": "780195e851ea2e435ebb6830f68a38f4744e05c5",
+                      "docs/phase2-research-reorganization-20261011": "51e5c5664fef8453d195a540e331a5f37de9eeda",
+                      "experiment/matching-only-reproduction": "cd2f1116706c8f728d28a9e294442f04d351ff93",
+                      "feature/phase2-band-evaluation": "c9bdbb1c9ba7d3c6e0879ceb2c496fb6f427cd78",
+                      "feature/phase2-configuration-invariants": "9bb3b7b8f49df0176f539fa055727f9619e67510",
+                      "phase2/exp-008-third-variable-c-30db": "9b8906ac0f6e73d78ebfdafda40ccc2fd6a5a016",
+                      "phase2/exp-009-topology-relaxation": "14ce9f5f05b49602fa747e6858fb8c8546a7aa75",
+                      "phase2/exp-010-q25-topology-and-l-range": "fc296dec63f8d78190671705c4d45987a0caa90e",
+                      "refactor/phase2-repository-structure": "0a0db16e433e379cf8326edbe39847d24097544e"
+            };
+            const { owner, repo } = context.repo;
+            const { data: info } = await github.rest.repos.get({ owner, repo });
+            if (info.default_branch !== "main") throw new Error("Unexpected default branch");
+            const { data: openPRs } = await github.rest.pulls.list({ owner, repo, state: "open", per_page: 100 });
+            const summary = { deleted: [], skipped: [], failed: [] };
+            for (const [name, sha] of Object.entries(expected)) {
+              try {
+                const { data: branch } = await github.rest.repos.getBranch({ owner, repo, branch: name });
+                if (branch.protected || branch.commit.sha !== sha || openPRs.some(p => p.head.repo?.full_name === info.full_name && p.head.ref === name)) {
+                  summary.skipped.push(name + " (changed/protected/active PR)");
+                  continue;
+                }
+                const { data: cmp } = await github.rest.repos.compareCommits({ owner, repo, base: "main", head: name });
+                if (cmp.ahead_by !== 0) {
+                  summary.skipped.push(name + " (unmerged commits: " + cmp.ahead_by + ")");
+                  continue;
+                }
+                await github.rest.git.deleteRef({ owner, repo, ref: "heads/" + name });
+                summary.deleted.push(name);
+                core.info("Deleted fully merged branch: " + name);
+              } catch (e) {
+                summary.failed.push(name + " (" + e.message + ")");
+                core.error("Failed: " + name + ": " + e.message);
+              }
+            }
+            await core.summary.addHeading("Merged branch cleanup").addCodeBlock(JSON.stringify(summary, null, 2), "json").write();
+            if (summary.failed.length) core.setFailed("Some safe-branch deletions failed");

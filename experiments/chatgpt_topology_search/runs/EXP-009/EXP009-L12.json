@@ -1,0 +1,260 @@
+{
+  "id": "EXP009-L12",
+  "experiment": "EXP-009",
+  "phase": "Phase 2",
+  "objective": "full_lpf",
+  "approved_for_study_only": {
+    "three_variable_C_branches": true,
+    "non_ground_variable_C": true,
+    "min_rejection_db": 30
+  },
+  "base_canonical_two_grounded_variable_C_policy_modified": false,
+  "source_ohms": 50,
+  "load_ohms": {
+    "real": 60,
+    "imag": -40,
+    "frequency_dependent": false
+  },
+  "chip_area_cost_units": 6.0,
+  "components": {
+    "LQP02": {
+      "count": 4,
+      "Q": 25
+    },
+    "GJM01": {
+      "count": 3,
+      "Q": 80
+    },
+    "IC_VARIABLE_C": {
+      "count": 3,
+      "Q": 80,
+      "range_pf": [
+        0,
+        4
+      ]
+    }
+  },
+  "topology": {
+    "input_node": 1,
+    "output_node": 3,
+    "ground_node": 0,
+    "inductors": [
+      {
+        "id": "L0",
+        "nodes": [
+          1,
+          2
+        ],
+        "L_nH": 3.0727706445655305,
+        "Q": 25
+      },
+      {
+        "id": "L1",
+        "nodes": [
+          3,
+          4
+        ],
+        "L_nH": 11.999999999999979,
+        "Q": 25
+      },
+      {
+        "id": "L2",
+        "nodes": [
+          2,
+          5
+        ],
+        "L_nH": 7.134342952671735,
+        "Q": 25
+      },
+      {
+        "id": "L3",
+        "nodes": [
+          2,
+          3
+        ],
+        "L_nH": 5.189109668965104,
+        "Q": 25
+      }
+    ],
+    "fixed_capacitors": [
+      {
+        "id": "Cf1",
+        "nodes": [
+          1,
+          3
+        ],
+        "C_pF": 0.2316212049352968,
+        "Q": 80
+      },
+      {
+        "id": "Cf2",
+        "nodes": [
+          5,
+          0
+        ],
+        "C_pF": 0.23699459706352188,
+        "Q": 80
+      },
+      {
+        "id": "Cf3",
+        "nodes": [
+          3,
+          4
+        ],
+        "C_pF": 0.6148495839203816,
+        "Q": 80
+      }
+    ],
+    "variable_capacitors": [
+      {
+        "id": "Cv0",
+        "nodes": [
+          4,
+          0
+        ],
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      },
+      {
+        "id": "Cv1",
+        "nodes": [
+          5,
+          0
+        ],
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      },
+      {
+        "id": "Cv2",
+        "nodes": [
+          2,
+          3
+        ],
+        "min_pF": 0,
+        "max_pF": 4,
+        "Q": 80
+      }
+    ],
+    "physical_chip_row": [
+      "L1",
+      "L2",
+      "L3",
+      "L0"
+    ],
+    "signed_adjacent_k": [
+      0.020518251685036345,
+      -0.3999999847340465,
+      0.39999999999997854
+    ],
+    "nominal_nonadjacent_k_zero": true
+  },
+  "variable_C_pf_by_setting": {
+    "B71": [
+      0.6863118140715097,
+      1.2560976023389414,
+      0.7193267236504192
+    ],
+    "B12": [
+      0.5469281410661567,
+      1.1964990857193105,
+      0.6082376829749708
+    ],
+    "B28": [
+      0.5285489767200371,
+      1.1687278143235096,
+      0.497049757748342
+    ],
+    "B13+B14": [
+      0.17104506509568138,
+      1.209404089600686,
+      0.3172026756893574
+    ],
+    "B26": [
+      0.24395017898384128,
+      0.9392057754573565,
+      0.11974970152601322
+    ],
+    "B8": [
+      0.10563491717397315,
+      0.835242454731291,
+      1.1863538580872556e-09
+    ]
+  },
+  "verified_dense_metrics": {
+    "worst_IL_db": 0.32316903757678384,
+    "min_H2_db": 30.04493915702981,
+    "min_H3_db": 30.044996561430025,
+    "worst_setting": "B28",
+    "H2_limiting_setting": "B71",
+    "H3_limiting_setting": "B71",
+    "metrics_by_setting": {
+      "B71": [
+        0.3140878342410879,
+        30.04493915702981,
+        30.044996561430025
+      ],
+      "B12": [
+        0.2941635541151933,
+        32.49622103670714,
+        31.278134056270005
+      ],
+      "B28": [
+        0.32316903757678384,
+        30.045000000316247,
+        30.045000047002883
+      ],
+      "B13+B14": [
+        0.29004434249953276,
+        33.61987157536947,
+        30.136774884977182
+      ],
+      "B26": [
+        0.29032439214034483,
+        30.69246984209975,
+        33.537385328913196
+      ],
+      "B8": [
+        0.3231690375693823,
+        30.044999996061392,
+        30.045000000194484
+      ]
+    },
+    "points_per_each_frequency_segment": 7001,
+    "MNA_independent_spots": 54,
+    "max_MNA_attenuation_delta_dB": 1.4779288903810084e-12,
+    "max_MNA_power_residual_W": 1.1275702593849246e-17,
+    "K_min_eigenvalue": 0.43412843721045513,
+    "chip_area_cost_units": 6,
+    "attenuation_30_pass": true
+  },
+  "optimization": {
+    "method": "SLSQP epigraph minimax",
+    "success": false,
+    "message": "Positive directional derivative for linesearch",
+    "iterations": 381,
+    "evaluations": 11893,
+    "target_db": 30.045,
+    "local_only": true
+  },
+  "verification": {
+    "7k_point_subband_grid": true,
+    "54_independent_MNA_spots": true,
+    "power_balance_checked": true,
+    "inductor_K_SPD": true,
+    "actual_LQP02_Q_frequency_verified": false,
+    "LQP02_SRF_footprint_verified": false,
+    "EM_and_layout_verified": false,
+    "tolerances_verified": false,
+    "continuous_band_proof": false,
+    "global_optimimum_proven": false,
+    "Phase3_authorized": false
+  },
+  "engineering_warnings": [
+    "L1 is at the experimental bound 12 nH; package availability, Q(f), and SRF must be verified.",
+    "Two nominally strong chip couplings are nearly |k|=0.4; physical coupling feasibility is unverified.",
+    "Only ~0.05 dB nominal H2/H3 headroom; not tolerance robust.",
+    "Numerical local search, all solver outputs nonconverged; do not interpret as theoretical performance bound."
+  ]
+}

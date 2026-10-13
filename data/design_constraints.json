@@ -70,9 +70,10 @@
     },
     "LQW04": {
       "category": "chip_inductor",
-      "q": null,
+      "q": 33,
       "area_units": 3,
-      "common_across_settings": true
+      "common_across_settings": true,
+      "q_is_assumption": true
     },
     "GJM01": {
       "category": "fixed_chip_capacitor",
@@ -90,15 +91,17 @@
     },
     "IC_VARIABLE_C": {
       "category": "IC_switched_capacitor_abstract_continuous",
-      "q": 80,
+      "q": 50,
       "area_units": 0,
       "max_branches_principle": 2,
-      "max_total_variable_pf_per_branch": 4,
+      "max_total_variable_pf_per_branch": 1.5,
       "min_total_variable_pf_per_branch": 0,
       "positions_allowed_by_default": [
-        "shunt_to_ground"
+        "shunt_to_ground",
+        "non_ground_bridge",
+        "series"
       ],
-      "series_requires_separate_approval": true,
+      "series_requires_separate_approval": false,
       "parallel_with_fixed_GJM01_allowed": true,
       "setting_dependent": true,
       "physical_switch_design_phase3_paused": true,
@@ -109,9 +112,10 @@
       "q": 12,
       "area_units": 0,
       "max_count_principle": 3,
-      "max_inductance_nh_approx": 3,
+      "max_inductance_nh_approx": 2,
       "common_across_settings": true,
-      "pcb_footprint_unmodeled": true
+      "pcb_footprint_unmodeled": true,
+      "max_inductance_nh": 2
     },
     "PCB_PATTERN_C": {
       "category": "fixed_pcb_pattern_capacitor",
@@ -134,18 +138,18 @@
     }
   },
   "coupling_limits": {
-    "chip_pcb_abs_k_max": 0.03,
-    "pcb_pcb_theoretical_model": "full_inductance_matrix_positive_definite_required_in_addition_to_abs_k_le_0_6_default",
+    "chip_pcb_abs_k_max": 0,
+    "pcb_pcb_theoretical_model": "full_inductance_matrix_positive_definite_required_and_abs_k_le_0_15",
     "pcb_pcb_0_98_physical_feasibility": "historical_theoretical_only_out_of_new_default_policy",
     "mixed_chip_package_mutual_feasibility": "unverified",
-    "pcb_pcb_abs_k_max_default": 0.6,
+    "pcb_pcb_abs_k_max_default": 0.15,
     "legacy_chip_chip_major_two_pairs_abs_k_max": 0.25,
     "legacy_chip_chip_other_pairs_abs_k_max": 0.16,
     "chip_chip_all_pair_0_4_physical_feasibility": "unverified",
     "full_L_inductance_matrix_positive_definite_required": true,
     "legacy_chip_chip_all_pairs_abs_k_max_default": 0.4,
-    "chip_chip_strong_adjacent_abs_k_max": 0.4,
-    "chip_chip_nonstrong_abs_k_max": 0.1,
+    "chip_chip_strong_adjacent_abs_k_max": 0.15,
+    "chip_chip_nonstrong_abs_k_max": 0.03,
     "chip_chip_nonstrong_nominal_k": 0,
     "chip_chip_strong_allowed_only_for_physical_neighbors": true,
     "chip_chip_allow_2d_layout": false
@@ -165,17 +169,19 @@
   },
   "phase3": "paused_until_explicit_owner_approval",
   "overrides_require_owner_approval": [
-    "IC_variable_C_in_series",
     "more_than_2_independent_variable_C_branches",
     "more_than_3_PCB_inductors",
-    "PCB_PCB_abs_k_above_0_6",
-    "chip_chip_abs_k_above_0_4",
+    "PCB_PCB_abs_k_above_0_15",
+    "chip_chip_abs_k_above_0_15",
     "chip_chip_strong_nonneighbor",
     "chip_chip_2d_layout",
-    "chip_chip_weak_abs_k_above_0_1",
-    "more_than_3_PCB_pattern_capacitors"
+    "chip_chip_weak_abs_k_above_0_03",
+    "more_than_3_PCB_pattern_capacitors",
+    "nonzero_chip_PCB_coupling",
+    "PCB_L_above_2_nH",
+    "IC_variable_C_per_branch_above_1p5_pF"
   ],
-  "policy_revision": "2026-10-12_owner_approved_area_unconstrained_cost_IL_pareto_and_series_HV_HQ",
+  "policy_revision": "2026-10-13_owner_approved_realistic_coupling_PCB_L_2nH_IC_C_1p5pF_Q50_any_connections_LQW04_Q33",
   "chip_inductor_placement": {
     "approved_layout": "single_linear_row",
     "strength_grouping": "selected subset of consecutive physical neighbor edges",
@@ -183,8 +189,8 @@
     "strong_neighbor_degree_max": 2,
     "nonstrong_includes": "all physically nonadjacent pairs and any adjacent pair not designated strongly coupled",
     "nominal_k_for_nonstrong": 0,
-    "nonstrong_abs_k_max_weak_coupling_sensitivity": 0.1,
-    "strong_abs_k_max": 0.4,
+    "nonstrong_abs_k_max_weak_coupling_sensitivity": 0.03,
+    "strong_abs_k_max": 0.15,
     "chip_orientation": "same magnetic-axis orientation for aiding strong coupling, signed coupling determined by electrical current reference and dot convention",
     "placement_and_fixed_coupling_common_across_all_six_band_settings": true,
     "all_pair_k_equal_0_4": "historical_idealized_outside_current_layout_constraints",
@@ -192,8 +198,8 @@
     "inductance_matrix_requirement": "positive_definite_full_chip_plus_PCB_mutual_inductance_matrix",
     "model_notes": "Upper bounds do not imply simultaneous physical realizability; variable coupling coefficients require physical justification"
   },
-  "latest_owner_approved_extension_date": "2026-10-12",
-  "policy_version_semantics": "Legacy policy_version 2026-10-10 is retained solely for immutable saved historical baseline replay. Use active_constraint_id RF-F001 and immutable snapshot/hash for all new formal runs. Area hard_cap is null; experiment search ranges never constitute RF area constraints.",
+  "latest_owner_approved_extension_date": "2026-10-13",
+  "policy_version_semantics": "Active formal RF-F002 since 2026-10-13, old RF-F001 immutable. Legacy policy_version 2026-10-10 retained for historical baseline replay; new formal runs pin RF-F002 fingerprint.",
   "inductor_series_optimization_policy": {
     "phase": "Phase 2",
     "primary_Rf_constraints_unchanged": true,
@@ -220,7 +226,7 @@
     "maximum_approved_HQ_nH": 56,
     "srf_gate": "do_not_claim_measured_feasibility_without_selected_part_srf_and_parasitic_evidence"
   },
-  "active_constraint_id": "RF-F001",
+  "active_constraint_id": "RF-F002",
   "active_constraint_status": "formal",
   "cost_performance_policy": {
     "objectives": [

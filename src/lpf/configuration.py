@@ -19,8 +19,8 @@ def validate_six_settings(settings, variable_cap_indices, *, resolved_policy=Non
     """Only declared variable-C values may change across the six RF settings.
 
     variable_roles is parallel to variable_cap_indices. A non-ground variable
-    must be explicitly labelled 'bridge' and close a fixed-element signal loop.
-    Default behavior remains the active RF-F001 formal two-shunt policy.
+    must be explicitly labelled 'bridge' (fixed-path bypass) or 'series'.
+    Default behavior follows the active formal version.
     """
     policy = formal_policy() if resolved_policy is None else resolved_policy
     if set(settings) != set(CASES):
@@ -46,7 +46,7 @@ def validate_six_settings(settings, variable_cap_indices, *, resolved_policy=Non
         if any(type(node) is not int or node < 0 or node > reference["n_nodes"]
                for node in (c.a, c.b)):
             raise ValueError("Variable C node outside circuit")
-        if role not in (None, "bridge"):
+        if role not in (None, "bridge", "series"):
             raise ValueError("Unknown variable capacitor role")
         metadata.append({"a": c.a, "b": c.b, "role": role})
     validate_variable_c_connections(metadata, policy)
@@ -83,7 +83,7 @@ def validate_six_settings(settings, variable_cap_indices, *, resolved_policy=Non
                     or not (spec["min_total_variable_pf_per_branch"] * 1e-12
                             <= c.value <=
                             spec["max_total_variable_pf_per_branch"] * 1e-12)):
-                    raise ValueError("Variable C connection, Q or 0-4pF range invalid")
+                    raise ValueError("Variable C connection, Q or capacitance range invalid")
             elif c != original:
                 raise ValueError("Fixed C changed")
     return True

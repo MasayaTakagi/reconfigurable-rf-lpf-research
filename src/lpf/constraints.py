@@ -18,13 +18,14 @@ def chip_area(n_lqp02=0, n_lqp01=0, n_lqw04=0, n_gjm01=0,
 
 
 def check_counts(n_lqp02=0, n_lqp01=0, n_lqw04=0, n_gjm01=0,
-                 n_pcb=0, n_var=0, n_pcb_pattern_c=0):
+                 n_pcb=0, n_var=0, n_pcb_pattern_c=0, *, resolved_policy=None):
     """Check component counts; chip area is a Pareto metric, not a cap."""
     counts=(n_lqp02,n_lqp01,n_lqw04,n_gjm01,n_pcb,n_var,n_pcb_pattern_c)
     if any(not isinstance(x,int) or isinstance(x,bool) or x<0 for x in counts):
         return False
-    p=load_policy()
+    p=load_policy() if resolved_policy is None else resolved_policy
     # Chip area is a Pareto objective, NOT a formal feasibility cap.
+    # Trial counts must be checked against that explicit resolved policy.
     return (n_pcb<=p['components']['PCB_L']['max_count_principle']
             and n_var<=p['components']['IC_VARIABLE_C']['max_branches_principle']
             and n_pcb_pattern_c<=p['components']['PCB_PATTERN_C']['max_count'])

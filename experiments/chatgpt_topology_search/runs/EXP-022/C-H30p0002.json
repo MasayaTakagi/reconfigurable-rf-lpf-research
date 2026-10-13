@@ -3,7 +3,7 @@
   "constraint_id": "RF-T004",
   "formal_base": "RF-F002",
   "trial_resolved_sha256": "c66302a281a1fdb88da355fc44dac1ef3b1c4e18e8ff297db9e842b219b5b0c4",
-  "status": "archive_requires_reoptimization_due_to_canonical_solver_discrepancy",
+  "status": "nominal_grid_and_independent_mna_reverified_IL_target_failed",
   "phase": "Phase 2",
   "source_ohms": 50,
   "load_ohms": {
@@ -179,14 +179,17 @@
   },
   "original_draft_experiment_id": "EXP-021",
   "historical_reported_status": "finite_local_grid_independent_MNA_verified_but_IL_target_failed",
-  "review_2026_10_14": {
-    "reference_solver": "src/lpf/circuit.py; series ESR capacitor Z=(1/Q-j)/(omega*C), coupled 9x9 branch-current MNA",
-    "checked_frequency_points_per_band_interval": 7001,
-    "nominal_recomputed_worst_IL_db": 0.3053157380042951,
-    "nominal_recomputed_min_H2_db": 29.98775259631664,
-    "nominal_recomputed_min_H3_db": 29.984924991575845,
-    "meets_30dB": false,
-    "previous_recorded_metrics_are_historical_and_not_verified_under_canonical_solver": true,
-    "need_reoptimization_before_promotion": true
+  "reverification_2026_10_14": {
+    "reference_solver": "src/lpf/circuit.py canonical series ESR; separately authored nodal and 84-point branch-current MNA",
+    "samples_per_each_individual_band_interval": 7001,
+    "independent_mna_points": 84,
+    "recomputed_worst_IL_db": 0.3054812436663839,
+    "recomputed_min_H2_db": 30.000199999999914,
+    "recomputed_min_H3_db": 30.000199999999936,
+    "saved_metrics_match": true,
+    "meets_30dB": true,
+    "meets_IL_0p30dB": false,
+    "prior_audit_discrepancy_claim_withdrawn": true,
+    "physical_Qf_SRF_EM_verified": false
   }
 }

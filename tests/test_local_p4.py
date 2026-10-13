@@ -36,7 +36,9 @@ class LocalP4PlanningTests(unittest.TestCase):
     def test_plan_is_deterministic_and_disjoint_with_trial_provenance(self):
         formal_a = local_p4.build_plan(self.search("RF-F001"), 4)
         formal_b = local_p4.build_plan(self.search("RF-F001"), 4)
+        current = local_p4.build_plan(self.search("RF-F002"), 4)
         trial = local_p4.build_plan(self.search("RF-T002"), 4)
+        current_trial = local_p4.build_plan(self.search("RF-T004"), 4)
         self.assertEqual(formal_a["graph_ids"], formal_b["graph_ids"])
         self.assertEqual(formal_a["shard_assignments"], formal_b["shard_assignments"])
         self.assertEqual(formal_a["p4_config_hash"], formal_b["p4_config_hash"])
@@ -46,10 +48,32 @@ class LocalP4PlanningTests(unittest.TestCase):
         self.assertEqual(sorted(assigned), sorted(formal_a["graph_ids"]))
         self.assertEqual(formal_a["analysis_mode"], "matching_only")
         self.assertEqual(formal_a["constraint_id"], "RF-F001")
+        self.assertEqual(current["constraint_id"], "RF-F002")
         self.assertEqual(trial["constraint_id"], "RF-T002")
+        self.assertEqual(current_trial["constraint_id"], "RF-T004")
         self.assertNotEqual(formal_a["effective_constraint_sha256"],
-                            trial["effective_constraint_sha256"])
-        self.assertNotEqual(formal_a["p4_config_hash"], trial["p4_config_hash"])
+                            current["effective_constraint_sha256"])
+        self.assertNotEqual(current["effective_constraint_sha256"],
+                            current_trial["effective_constraint_sha256"])
+        self.assertNotEqual(formal_a["p4_config_hash"], current["p4_config_hash"])
+        self.assertNotEqual(current["p4_config_hash"], current_trial["p4_config_hash"])
+
+    def test_new_cli_jobs_require_an_explicit_policy_id(self):
+        with self.assertRaises(SystemExit):
+            local_p4.main(["plan"])
+
+    def test_source_fingerprints_cover_historical_and_current_policy_snapshots(self):
+        fingerprints = local_p4.tracked_source_fingerprints()
+        for relative in (
+            "data/constraints/formal/RF-F001.json",
+            "data/constraints/formal/RF-F002.json",
+            "data/constraints/trial/RF-T001.json",
+            "data/constraints/trial/RF-T002.json",
+            "data/constraints/trial/RF-T003.json",
+            "data/constraints/trial/RF-T004.json",
+        ):
+            with self.subTest(path=relative):
+                self.assertIn(relative, fingerprints)
 
     def test_memory_gate_pauses_below_threshold(self):
         threshold = 1536 * 1024 * 1024
@@ -132,6 +156,20 @@ class LocalP4PlanningTests(unittest.TestCase):
             # The lock file persists, but its advisory lock was released.
             self.assertTrue((directory / "shards/shard-0/worker.lock").exists())
             local_p4.assert_no_active_shard_workers(directory, 1)
+
+    def test_old_f001_checkpoint_cannot_be_reinterpreted_as_f002(self):
+        old_plan = local_p4.build_plan(self.search("RF-F001"), 1)
+        snapshot = local_p4.environment_snapshot()
+        manifest = {
+            "compatibility": local_p4.compatibility_view(snapshot),
+            "plan": json.loads(json.dumps(old_plan)),
+        }
+        manifest["plan"]["search"]["constraint_id"] = "RF-F002"
+        with mock.patch.object(local_p4, "environment_snapshot", return_value=snapshot):
+            with self.assertRaisesRegex(local_p4.RunnerCompatibilityError,
+                                        "RF policy.*source hash changed"):
+                local_p4.verify_resume_compatibility(Path("unused"), manifest)
+        self.assertEqual(old_plan["constraint_id"], "RF-F001")
 
     def test_source_mismatch_rejects_resume_before_checkpoint_access(self):
         saved = {"compatibility": {"uv_lock_sha256": "old-lock"}}

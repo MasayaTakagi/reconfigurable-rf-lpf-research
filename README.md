@@ -1,16 +1,16 @@
 **2026-10-13 最新正式制約はRF-F002。** チップ隣接|k|≤0.15、非強結合公称0・感度≤0.03、PCB間≤0.15、chip–PCB k=0、PCB-L≤2nH、IC可変C最大2枝・各0–1.5pF/Q50・配置自由、LQW04 Q33。[RF-T004](data/constraints/trial/RF-T004.json)は可変C最大3枝の試験条件。[RF-F002](data/constraints/formal/RF-F002.json)と[台帳](data/constraints/registry.json)を現行正本とする。以下のRF-F001「現行」表現は当時の履歴。旧数値結果はRF-F002の性能実証ではない。Phase 2継続、Phase 3停止。
 
-**Phase 2検証（2026-10-13）：** [RF-F002/T004の探索・数値制約対応に対する回帰CI](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38410571500) PASS。P4-Aは明示`--constraint-id RF-F002`または`RF-T004`指定で新条件を選ぶ。引数省略は旧RF-F001の再現用。新仕様の回路最適化結果・IL達成値は未登録。
+**Stage 2 / RF-F002対応：** 新規P4-A `plan`/`run`は`--constraint-id`を必須とし、現行正式条件には`RF-F002`を指定します。`RF-T004`はRF-F002ベースの試験条件で、正式条件とは別ジョブです。RF-F001/RF-T001/T002/T003も履歴条件として選択できます。ID省略による自動変換は行いません。新仕様下のスモーク・CI結果はPR #35の最新チェックと[ローカル実行手順](docs/local_execution.md)を参照。RF-F002でのRF性能達成は未確認です。
 
 # Reconfigurable RF LPF Research — Phase 2
 
-**2026-10-12 承認済み新方針（RF-F001）：** [制約版管理](data/constraints/README.md) を導入。**チップ面積はハード制約ではなく、6設定全帯域最悪ILと並ぶパレート評価軸**。P4-Aの面積最大6などは計算上の有限探索範囲に限定する。過去の「hard cap6」等の記載は当時の実験条件であり、現行正式RF制約ではない。実験ごとのRF制約ID、実効制約ハッシュ、数値モデル、検証状態を追跡する。Phase 2継続、Phase 3停止。
+**2026-10-12（当時の正式条件RF-F001に関する履歴）：** [制約版管理](data/constraints/README.md)を導入。以下のRF-F001に関する実験方針は当時の記録であり、**現行正式条件はRF-F002**。チップ面積はハード制約ではなく、6設定全帯域最悪ILと並ぶパレート評価軸。P4-Aの面積最大6などは計算上の有限探索範囲に限定。Phase 2継続、Phase 3停止。
 
 **ChatGPTプロジェクトの運用指示の正本：** [docs/chatgpt_project_instructions.md](docs/chatgpt_project_instructions.md)。ChatGPTアプリの指示欄はこの正本への短い参照とし、**現行RF制約の変更不可の正式版は [RF-F002](data/constraints/formal/RF-F002.json)、[data/design_constraints.json](data/design_constraints.json) は互換コピー**とする。研究結果は実験記録と検証状態を参照する。
 
 **2026-10-12 LQP02シリーズ別新ルール（Phase 2）:** インダクタは **LQP02HV：Q25・0.4～27nH（優先）**、**LQP02HQ：Q20・0.2～56nH（必要時のみ、可能な限り低いL）**。旧「56nHでQ25」を含むEXP011等の結果は履歴値であり、新ルール下の性能実証値ではない。新Q条件で再最適化・独立MNA検証した[EXP-015](experiments/chatgpt_topology_search/runs/EXP-015/README.md)と[仕様更新](docs/inductor_series_policy.md)を参照。実際のSRF/Q(f)/寄生は未検証、Phase 3は停止継続。
 
-**目標**：現行RF制約の範囲で、ChatGPT主導探索の最良候補 **LPF-007** を超える `full_lpf` を発見する。先行候補は6設定UL/DL最大IL **0.513168414 dB**、UL H2/H3最小 **35.070 / 35.070 dB**（有限グリッド・最適化未収束）。当面はH2/H3≥35 dBを維持してIL改善、最終公称目標はIL≤0.30 dB。必須減衰は30 dB。有限探索結果を理論限界や実装証明と呼ばない。
+**Phase 2研究目標**：現行RF-F002の範囲で`full_lpf`候補を探索し、性能・実装性を独立検証する。比較基準LPF-007（最大IL 0.513168414 dB、UL H2/H3最小35.070/35.070 dB）は旧RF-F001条件の有限グリッド値で、RF-F002適合の実証ではない。最終公称目標はIL≤0.30 dB、H2/H3≥35 dB、必須減衰30 dB。有限探索結果を理論限界や実装証明と呼ばない。
 
 **2026-10-11制約更新:** [設計仕様](docs/specification.md)にPCBパターン固定容量を追加（**0.02～0.2pF**、Q40、チップ面積コスト0、最大3個）。GJM01やIC可変Cとは別種別。容量の上限は0.2pFで、実基板の面積と寄生は未評価。従来LPF-007/008の定数や公称性能を自動的に変更したものではない。
 
@@ -42,7 +42,7 @@
 | [`experiments/matching_limit/`](experiments/matching_limit/) | 自動グラフ探索、P4-A最適化、シャード・再開処理 |
 | [`src/lpf/`](src/lpf/) | 両探索で共用するMNA、独立解析、評価、制約検証 |
 | [`candidates/`](candidates/) | 現行比較候補LPF-007/008の正式な記録 |
-| [`data/`](data/) | **現行RF制約の互換コピー**`design_constraints.json`（正本は`constraints/formal/RF-F001.json`）、帯域`bands.csv`、候補索引 |
+| [`data/`](data/) | **現行RF-F002の互換コピー**`design_constraints.json`（正本は`constraints/formal/RF-F002.json`）、制約台帳・履歴条件、帯域`bands.csv`、候補索引 |
 | [`docs/`](docs/) | [設計仕様](docs/specification.md)、[Phase 2ロードマップ](docs/roadmap.md)、[ローカル実行](docs/local_execution.md)、[歴史的結果の出典索引](docs/historical_results.md) |
 | [`scripts/`](scripts/)・[`tests/`](tests/) | 監査、候補検証、Artifacts、ローカル実行マネージャー、回帰テスト |
 | [`.github/workflows/`](.github/workflows/) | 短いCIと手動のP4-A計算 |

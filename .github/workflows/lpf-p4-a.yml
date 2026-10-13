@@ -3,6 +3,12 @@ name: LPF P4-A resumable shards
 on:
   workflow_dispatch:
     inputs:
+      constraint_id:
+        description: Explicit formal/trial policy identity (RF-F002 is current formal)
+        required: true
+        default: RF-F002
+        type: choice
+        options: ["RF-F002", "RF-T004", "RF-F001", "RF-T001", "RF-T002", "RF-T003"]
       shard_count:
         description: Number of deterministic shards
         required: true
@@ -172,6 +178,7 @@ jobs:
             fi
           fi
           python experiments/matching_limit/p4_batch.py \
+            --constraint-id "${{ inputs.constraint_id }}" \
             --attempts "${{ inputs.attempts }}" \
             --per-bin "${{ inputs.per_bin }}" \
             --starts "${{ inputs.starts }}" \

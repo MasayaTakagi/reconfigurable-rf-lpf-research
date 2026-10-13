@@ -4,8 +4,8 @@ import json
 import unittest
 from unittest.mock import patch
 
-from lpf.constraint_versions import load_constraint
-from lpf.validate import validate_couplings
+from src.lpf.constraint_versions import load_constraint
+from src.lpf.validate import validate_couplings
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]

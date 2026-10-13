@@ -13,9 +13,9 @@ from verify_rft003_30db import verify
 class RFT003Tests(unittest.TestCase):
     def test_registration_and_formal_non_regression(self):
         registry=validate_registry()
-        self.assertEqual(registry["active_formal_id"],"RF-F001")
+        self.assertEqual(registry["active_formal_id"],"RF-F002")
         self.assertEqual(registry["trial"]["RF-T003"]["state"],"study_authorized")
-        f=load_constraint()
+        f=load_constraint("RF-F001")
         self.assertEqual(f["evaluation"]["full_phase2"]["nominal_h2_h3_target_db"],35)
         self.assertEqual(f["components"]["IC_VARIABLE_C"]["positions_allowed_by_default"],["shunt_to_ground"])
         with self.assertRaises(ValueError):
@@ -42,7 +42,7 @@ class RFT003Tests(unittest.TestCase):
             with self.subTest(invalid=invalid),self.assertRaises(ValueError):
                 validate_variable_c_connections(invalid,p)
         with self.assertRaises(ValueError):
-            validate_variable_c_connections(correct,load_constraint())
+            validate_variable_c_connections(correct,load_constraint("RF-F001"))
     def test_saved_result_finite_grid_and_independent_mna(self):
         result=verify(5)
         self.assertEqual(result["independent_MNA_points"],84)

@@ -190,7 +190,8 @@ class HistoricalBaselineAdapterTests(unittest.TestCase):
                     inductors=tuple(inductors), capacitors=tuple(fixed + variable),
                     coupling=K)
             self.assertTrue(validate_six_settings(
-                all_settings, range(len(fixed), len(fixed) + 2)))
+                all_settings, range(len(fixed), len(fixed) + 2),
+                resolved_policy=load_constraint('RF-F001')))
             for case in CASES:
                 for f in (700e6, 900e6, 1500e6, 2500e6):
                     v = solve(f, **all_settings[case])

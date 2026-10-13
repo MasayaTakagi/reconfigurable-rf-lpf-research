@@ -1,8 +1,12 @@
+**2026-10-13 最新正式制約はRF-F002。** チップ隣接|k|≤0.15、非強結合公称0・感度≤0.03、PCB間≤0.15、chip–PCB k=0、PCB-L≤2nH、IC可変C最大2枝・各0–1.5pF/Q50・配置自由、LQW04 Q33。[RF-T004](data/constraints/trial/RF-T004.json)は可変C最大3枝の試験条件。[RF-F002](data/constraints/formal/RF-F002.json)と[台帳](data/constraints/registry.json)を現行正本とする。以下のRF-F001「現行」表現は当時の履歴。旧数値結果はRF-F002の性能実証ではない。Phase 2継続、Phase 3停止。
+
+**Phase 2検証（2026-10-13）：** [RF-F002/T004の探索・数値制約対応に対する回帰CI](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38410571500) PASS。P4-Aは明示`--constraint-id RF-F002`または`RF-T004`指定で新条件を選ぶ。引数省略は旧RF-F001の再現用。新仕様の回路最適化結果・IL達成値は未登録。
+
 # Reconfigurable RF LPF Research — Phase 2
 
 **2026-10-12 承認済み新方針（RF-F001）：** [制約版管理](data/constraints/README.md) を導入。**チップ面積はハード制約ではなく、6設定全帯域最悪ILと並ぶパレート評価軸**。P4-Aの面積最大6などは計算上の有限探索範囲に限定する。過去の「hard cap6」等の記載は当時の実験条件であり、現行正式RF制約ではない。実験ごとのRF制約ID、実効制約ハッシュ、数値モデル、検証状態を追跡する。Phase 2継続、Phase 3停止。
 
-**ChatGPTプロジェクトの運用指示の正本：** [docs/chatgpt_project_instructions.md](docs/chatgpt_project_instructions.md)。ChatGPTアプリの指示欄はこの正本への短い参照とし、**現行RF制約の変更不可の正式版は [RF-F001](data/constraints/formal/RF-F001.json)、[data/design_constraints.json](data/design_constraints.json) は互換コピー**とする。研究結果は実験記録と検証状態を参照する。
+**ChatGPTプロジェクトの運用指示の正本：** [docs/chatgpt_project_instructions.md](docs/chatgpt_project_instructions.md)。ChatGPTアプリの指示欄はこの正本への短い参照とし、**現行RF制約の変更不可の正式版は [RF-F002](data/constraints/formal/RF-F002.json)、[data/design_constraints.json](data/design_constraints.json) は互換コピー**とする。研究結果は実験記録と検証状態を参照する。
 
 **2026-10-12 LQP02シリーズ別新ルール（Phase 2）:** インダクタは **LQP02HV：Q25・0.4～27nH（優先）**、**LQP02HQ：Q20・0.2～56nH（必要時のみ、可能な限り低いL）**。旧「56nHでQ25」を含むEXP011等の結果は履歴値であり、新ルール下の性能実証値ではない。新Q条件で再最適化・独立MNA検証した[EXP-015](experiments/chatgpt_topology_search/runs/EXP-015/README.md)と[仕様更新](docs/inductor_series_policy.md)を参照。実際のSRF/Q(f)/寄生は未検証、Phase 3は停止継続。
 

@@ -2,6 +2,10 @@
 import importlib.util
 import json
 import unittest
+from unittest.mock import patch
+
+from src.lpf.constraint_versions import load_constraint
+from src.lpf.validate import validate_couplings
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -12,6 +16,20 @@ spec.loader.exec_module(module)
 
 
 class CostSevenReferenceTests(unittest.TestCase):
+    def setUp(self):
+        # Replay the archived EXP-002 script without editing its hashed evidence.
+        legacy = load_constraint("RF-F001")
+        a = patch("lpf.configuration.formal_policy", return_value=legacy)
+        b = patch.object(
+            module, "validate_couplings",
+            side_effect=lambda *args, **kwargs: validate_couplings(
+                *args, resolved_policy=legacy, **kwargs),
+        )
+        a.start()
+        b.start()
+        self.addCleanup(b.stop)
+        self.addCleanup(a.stop)
+
     def test_two_references_have_unchanged_approved_area_policy(self):
         canonical=json.loads((ROOT/"data/design_constraints.json").read_text(encoding="utf-8"))
         self.assertIsNone(canonical["area_budget"]["hard_cap"])

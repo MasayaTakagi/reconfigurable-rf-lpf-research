@@ -145,7 +145,32 @@ def solve_branch_current(f_hz,n_nodes,source_node,load_node,inductors=(),
     for j,impedance in enumerate(cap_impedances,nl):z[j,j]=impedance
     a=np.block([[y,bmat],[-bmat.T,z]])
     rhs=np.zeros(n_nodes+nb,complex);rhs[source_node-1]=source_voltage/source_ohms
-    solution,condition=_checked_solve(a,rhs,"Branch-current MNA")
+    if not np.all(np.isfinite(a)) or not np.all(np.isfinite(rhs)):
+        raise ValueError("Branch-current MNA assembled a non-finite system")
+    raw_condition=float(np.linalg.cond(a))
+
+    # The raw system mixes KCL rows (A), KVL rows (V), node-voltage unknowns
+    # (V), and branch-current unknowns (A). A nearly open capacitor therefore
+    # contributes a huge impedance in one diagonal entry and makes cond(A)
+    # depend overwhelmingly on units, even though its current is negligible.
+    # Apply the exact variable/equation transform A_s = R A D, b_s = R b:
+    # node voltages scale by V0, branch currents by V0/|Z_jj|, KCL rows by
+    # 1/I0, and KVL rows by 1/V0. This is algebraically equivalent, not a
+    # change to the circuit or the ill-conditioning acceptance threshold.
+    voltage_scale=abs(source_voltage)
+    current_scale=voltage_scale/source_ohms
+    branch_impedance_scale=np.abs(np.diag(z))
+    if (not np.all(np.isfinite(branch_impedance_scale))
+            or np.any(branch_impedance_scale<=0)):
+        raise ValueError("Branch-current MNA has an invalid impedance scaling")
+    column_scale=np.concatenate((
+        np.full(n_nodes,voltage_scale),voltage_scale/branch_impedance_scale))
+    row_scale=np.concatenate((
+        np.full(n_nodes,1/current_scale),np.full(nb,1/voltage_scale)))
+    scaled_a=(row_scale[:,None]*a)*column_scale[None,:]
+    scaled_rhs=row_scale*rhs
+    scaled_solution,condition=_checked_solve(scaled_a,scaled_rhs,"Branch-current MNA")
+    solution=column_scale*scaled_solution
     voltage=solution[:n_nodes];currents=solution[n_nodes:]
     i_l=currents[:nl];i_c=np.zeros(len(capacitors),complex)
     for offset,index in enumerate(cap_indices):i_c[index]=currents[nl+offset]
@@ -162,6 +187,7 @@ def solve_branch_current(f_hz,n_nodes,source_node,load_node,inductors=(),
             "gain":p_load/p_available,"p_available":p_available,"p_load":p_load,
             "p_reflected":p_reflected,"p_inductor":p_inductor,"p_capacitor":p_cap,
             "power_residual":residual,"condition_number":condition,
+            "raw_condition_number":raw_condition if np.isfinite(raw_condition) else None,
             "min_inductance_eigenvalue":float(np.linalg.eigvalsh(mutual).min()) if nl else None}
 
 
@@ -181,7 +207,7 @@ def validate_circuit(params,frequencies_hz,*,expected_inductor_edges=None,
     if inductor_types:
         eigen=validate_inductor_coupling(inductor_types,lv,lmat,physical_order,
                                          nominal=nominal,resolved_policy=resolved_policy)
-    discrepancies=[];residuals=[];condition_numbers=[]
+    discrepancies=[];residuals=[];condition_numbers=[];raw_branch_condition_numbers=[]
     for f_hz in frequencies_hz:
         primary=solve(f_hz,**params)
         nodal=solve_state(f_hz,**params)
@@ -194,9 +220,12 @@ def validate_circuit(params,frequencies_hz,*,expected_inductor_edges=None,
         residuals.extend(abs(result["power_residual"]) for result in (primary,nodal,branch))
         condition_numbers.append(primary.get("mna_condition_number",0))
         condition_numbers.extend((nodal["nodal_condition_number"],branch["condition_number"]))
+        if branch["raw_condition_number"] is not None:
+            raw_branch_condition_numbers.append(branch["raw_condition_number"])
     return {"frequencies_hz":list(map(float,frequencies_hz)),
             "frequency_count":len(discrepancies),
             "max_gain_discrepancy":max(discrepancies,default=0.0),
             "max_power_residual_w":max(residuals,default=0.0),
             "max_condition_number":max(condition_numbers,default=0.0),
+            "max_raw_branch_condition_number":max(raw_branch_condition_numbers,default=0.0),
             **eigen}

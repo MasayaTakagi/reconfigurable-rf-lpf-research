@@ -146,7 +146,7 @@ def validate(graph,x,K,rows,points,*,variable_layout=None,resolved_policy=None,
                           resolved_policy=resolved_policy,
                           require_explicit_series=require_explicit_series)
     report=evaluate_settings(lambda c:settings[c],samples_per_segment=points,bands=rows)
-    mismatch=0.;residual=0.;condition=0.;minimum_eigenvalue=None
+    mismatch=0.;residual=0.;condition=0.;raw_branch_condition=0.;minimum_eigenvalue=None
     inductor_types=[t for _,_,t in graph[1] if t not in ('GJM01','PCB_PATTERN_C')]
     physical_order=[i for i,t in enumerate(inductor_types)
                     if t in ('LQP01','LQP02','LQP02HV','LQP02HQ','LQW04')]
@@ -169,6 +169,8 @@ def validate(graph,x,K,rows,points,*,variable_layout=None,resolved_policy=None,
         mismatch=max(mismatch,cross['max_gain_discrepancy'])
         residual=max(residual,cross['max_power_residual_w'])
         condition=max(condition,cross['max_condition_number'])
+        raw_branch_condition=max(raw_branch_condition,
+                                 cross['max_raw_branch_condition_number'])
         value=cross['min_inductance_eigenvalue']
         if value is not None:
             minimum_eigenvalue=value if minimum_eigenvalue is None else min(minimum_eigenvalue,value)
@@ -179,6 +181,7 @@ def validate(graph,x,K,rows,points,*,variable_layout=None,resolved_policy=None,
                 min_h3_db=report['min_h3_db'][0],
                 max_gain_mismatch=mismatch,max_power_residual=residual,
                 max_condition_number=condition,
+                max_raw_branch_condition_number=raw_branch_condition,
                 min_inductance_eigenvalue=minimum_eigenvalue,
                 formulations_compared=['main_augmented_MNA','independent_nodal_admittance',
                                        'branch_current_MNA'],

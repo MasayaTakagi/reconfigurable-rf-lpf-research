@@ -1,0 +1,148 @@
+{
+  "candidate_id": "EXP017-LQW2-H35",
+  "constraint_id": "RF-F002",
+  "constraint_sha256": "f20d27e93451dcec2f823e6f7c3731c06d843050c4d2ace8b0b46ded605542e2",
+  "phase": "Phase 2",
+  "objective": "full_lpf",
+  "base_main_commit": "cf990d3eba625affb8e65da95b7c4f5ac4ec4be4",
+  "source_ohm": 50,
+  "load_ohm": {
+    "real": 60,
+    "imag": -40
+  },
+  "chip_area_units": 9.333333333333332,
+  "topology": {
+    "inductor_edges": [
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "physical_row": [
+      "L0",
+      "L1",
+      "L2",
+      "L3"
+    ],
+    "fixed_GJM_edges": [
+      [
+        1,
+        2
+      ],
+      [
+        5,
+        0
+      ]
+    ],
+    "PCB_PATTERN_C_edge": [
+      3,
+      1
+    ],
+    "IC_VARIABLE_C_edges": [
+      [
+        4,
+        0
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "input_node": 1,
+    "output_node": 3,
+    "ground_node": 0
+  },
+  "components": {
+    "series": [
+      "LQW04",
+      "LQP02HV",
+      "LQP02HV",
+      "LQW04"
+    ],
+    "L_nH": [
+      3.1232375601730804,
+      23.66134731395667,
+      5.59757235238185,
+      7.072768071609984
+    ],
+    "Q_L": [
+      33,
+      25,
+      25,
+      33
+    ],
+    "GJM01_pF": [
+      1.8281120809758422,
+      1.3320640700359794
+    ],
+    "Q_GJM01": 80,
+    "PCB_PATTERN_C_pF": 0.03789015680855933,
+    "Q_PCB_C": 40,
+    "chip_adjacent_k": [
+      0.02337315568821199,
+      -0.030294694391211432,
+      -0.14999999999999977
+    ],
+    "nominal_nonstrong_k": 0,
+    "chip_PCB_k": 0,
+    "IC_VARIABLE_C_Q": 50,
+    "IC_VARIABLE_C_by_setting_pF": {
+      "B71": [
+        0.5711365278552901,
+        1.5
+      ],
+      "B12": [
+        0.4614194932299913,
+        1.367623321283653
+      ],
+      "B28": [
+        0.45329960873284714,
+        1.3370253489815482
+      ],
+      "B13+B14": [
+        0.3230035889100638,
+        0.8971706149479901
+      ],
+      "B26": [
+        0.2414018185089259,
+        0.677257685343926
+      ],
+      "B8": [
+        0.19380197150134995,
+        0.5579640584752749
+      ]
+    }
+  },
+  "evaluation": {
+    "worst_IL_db": 0.37879791410736224,
+    "min_H2_db": 35.02999999961018,
+    "min_H3_db": 35.029999998751066,
+    "points_per_frequency_segment": 7001,
+    "independent_MNA_points": 84,
+    "max_il_discrepancy_db": 4.689582056016661e-13,
+    "max_power_balance_residual_W": 6.071532165918825e-18,
+    "min_K_eigenvalue": 0.8468998065975589
+  },
+  "validity": {
+    "solver_converged": true,
+    "nominal_H2_H3_35db_met": true,
+    "IL_0p30_met": false,
+    "SRF_Qf_part_number_verified": false,
+    "inductor_range_for_LQW04_verified": false,
+    "physical_chip_coupling_verified": false,
+    "tolerance_robust": false,
+    "global_optimum_proven": false
+  }
+}

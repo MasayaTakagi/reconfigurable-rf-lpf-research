@@ -96,9 +96,14 @@ class CandidateIndexGuardrails(unittest.TestCase):
         index = self.root / "data/candidate_index.csv"
         with index.open(newline="", encoding="utf-8") as f:
             rows = list(csv.DictReader(f))
-        m = new_manifest("EXP-016", "Synthetic candidate metadata fixture", {},
+        # Choose a free synthetic ID rather than assuming later EXP IDs are unused.
+        fixture_id = next(
+            f"EXP-{n:03d}" for n in range(999, 0, -1)
+            if not (self.root / RUNS / f"EXP-{n:03d}").exists()
+        )
+        m = new_manifest(fixture_id, "Synthetic candidate metadata fixture", {},
                          objective="full_lpf", seed=1)
-        directory = self.root / RUNS / "EXP-016"
+        directory = self.root / RUNS / fixture_id
         directory.mkdir()
         write_manifest(directory / "manifest.json", m, root=self.root)
         manifests = [(p.relative_to(self.root).as_posix(), json.loads(p.read_text()))
@@ -108,7 +113,7 @@ class CandidateIndexGuardrails(unittest.TestCase):
                          evidence=f"candidates/{name}.json", constraint_class="formal",
                          constraint_id="RF-F002", historical_registry_key="",
                          effective_constraint_sha256=m["constraints"]["effective_constraint_sha256"],
-                         manifest=f"{RUNS}/EXP-016/manifest.json"))
+                         manifest=f"{RUNS}/{fixture_id}/manifest.json"))
         with index.open("w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=rows[0].keys())
             writer.writeheader()

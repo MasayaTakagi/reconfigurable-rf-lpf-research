@@ -1,5 +1,6 @@
 import sys
 import unittest
+from functools import partial
 from pathlib import Path
 
 import numpy as np
@@ -11,6 +12,11 @@ from lpf.circuit import Branch,solve
 from lpf.independent import solve_state
 from lpf.validation import (solve_branch_current,validate_circuit,
                            validate_connection_map,validate_inductor_coupling)
+from lpf.constraint_versions import load_constraint
+# Frozen RF-F001 MNA test vectors use k=.22 and weak coupling up to .10.
+legacy=load_constraint('RF-F001')
+validate_circuit=partial(validate_circuit,resolved_policy=legacy)
+validate_inductor_coupling=partial(validate_inductor_coupling,resolved_policy=legacy)
 
 
 def multi_inductor_bridge():

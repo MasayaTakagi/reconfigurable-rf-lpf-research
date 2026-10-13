@@ -13,12 +13,12 @@ from lpf.lqp02_series import select_series
 from lpf.constraints import validate_pcb_pattern_caps
 
 Q = {"LQP01": 15, "LQP02": 25, "LQP02HV": 25,
-     "LQP02HQ": 20, "PCB_L": 12, "GJM01": 80, "PCB_PATTERN_C": 40}
+     "LQP02HQ": 20, "LQW04": 33, "PCB_L": 12, "GJM01": 80, "PCB_PATTERN_C": 40}
 DEFAULT = {"LQP01": 2e-9, "LQP02": 2e-9, "LQP02HV": 2e-9,
-           "LQP02HQ": 2e-9, "PCB_L": 2e-9,
+           "LQP02HQ": 2e-9, "LQW04": 2e-9, "PCB_L": 2e-9,
            "GJM01": 2e-12, "PCB_PATTERN_C": .1e-12}
 AREA_THIRDS = {"LQP01": 2, "LQP02": 3, "LQP02HV": 3,
-               "LQP02HQ": 3, "PCB_L": 0, "GJM01": 2, "PCB_PATTERN_C": 0}
+               "LQP02HQ": 3, "LQW04": 9, "PCB_L": 0, "GJM01": 2, "PCB_PATTERN_C": 0}
 CAP_TYPES = ("GJM01", "PCB_PATTERN_C")
 
 
@@ -48,8 +48,9 @@ def check_graph(graph, *, require_explicit_series=False):
     return sum(AREA_THIRDS[t] for _, _, t in edges) / 3
 
 
-def _fixed_parts(graph, values, shift=0):
+def _fixed_parts(graph, values, shift=0, resolved_policy=None):
     n, edges = graph
+    policy = formal_policy() if resolved_policy is None else resolved_policy
     if values is None:
         values = [DEFAULT[t] for _, _, t in edges]
     if len(values) != len(edges):
@@ -59,6 +60,8 @@ def _fixed_parts(graph, values, shift=0):
     inductors, capacitors = [], []
     for (a, b, t), value in zip(edges, values):
         v = float(value)
+        if t == 'PCB_L' and v > policy['components']['PCB_L'].get('max_inductance_nh', policy['components']['PCB_L']['max_inductance_nh_approx'])*1e-9+1e-21:
+            raise ValueError('PCB-L inductance exceeds policy limit')
         if not np.isfinite(v) or v <= 0:
             raise ValueError("Fixed component value must be finite and positive")
         branch = Branch(a + shift, b + shift, v, branch_q(t, v))
@@ -68,8 +71,8 @@ def _fixed_parts(graph, values, shift=0):
 
 def _build_settings(graph, values, caps, coupling, variable_cap_edges,
                     variable_roles, resolved_policy, shift, node_count):
-    inductors, fixed = _fixed_parts(graph, values, shift=shift)
     policy = formal_policy() if resolved_policy is None else resolved_policy
+    inductors, fixed = _fixed_parts(graph, values, shift=shift, resolved_policy=policy)
     edges = ([(1, 0), (2, 0)] if variable_cap_edges is None
              else list(variable_cap_edges))
     if caps is None:

@@ -4,7 +4,7 @@
 
 `scripts/local_p4.py` は既存の `experiments/matching_limit/p4_batch.py` をシャード別の独立プロセスとして起動・監視する実行マネージャーです。回路解析、最適化、グラフ生成の数値実装は複製せず、既存の決定的シャード割当て、原子的チェックポイント、再開検査、`aggregate_p4_a_shards.py` の集計を利用します。
 
-**P4-Aは `matching_only` 探索です。H2/H3制約は最適化目的に含まず、`full_lpf` の合格やRF性能達成を意味しません。** 正式条件RF-F001と試験条件RF-T001/T002は、別々の制約ID・実効SHA-256を持つ別ジョブです。RF-T001/T002を使う場合はCLIでIDを明示してください。既存P4-AはRF-T003を受け付けません。Phase 2を維持し、Phase 3は停止します。
+**P4-Aは `matching_only` 探索です。H2/H3制約は最適化目的に含まず、`full_lpf` の合格やRF性能達成を意味しません。** 現行正式条件はRF-F002、RF-T004はRF-F002ベースの明示opt-in試験条件です。RF-F001とRF-T001/T002/T003は、それぞれの旧条件・ベース正式版を保持した履歴IDとして引き続き選べます。新規`plan`/`run`では`--constraint-id`を必須とし、RF-F002か意図した履歴/trial IDを明示してください。過去のRF-F001チェックポイントをRF-F002へ自動変換しません。Phase 2を維持し、Phase 3は停止します。
 
 ## uv環境
 
@@ -35,14 +35,22 @@ uv run --frozen python -m unittest discover -s tests -v
 ```bash
 uv run --frozen python scripts/local_p4.py plan \
   --root results/local-runs \
-  --constraint-id RF-F001 --series-mode HV \
+  --constraint-id RF-F002 --series-mode HV \
   --attempts 1 --per-bin 1 --starts 1 --layouts 1 --iterations 1 \
   --coarse-points 2 --validation-points 3 \
   --max-variable-layouts 2 --max-topology-graphs 4 \
   --seed 20261013 --shard-count 4 --workers 2
 ```
 
-デフォルトも最大4トポロジーグラフ・1反復の短いスモーク設定です。大きな探索へ拡張する前に、計画に表示されるグラフ数・候補数・制約IDを確認してください。`plan` は実行を開始しません。
+デフォルトも最大4トポロジーグラフ・1反復の短いスモーク設定です。大きな探索へ拡張する前に、計画に表示されるグラフ数・候補数・制約IDを確認してください。`plan` は実行を開始しません。RF-T004の3枝比較を計画する場合は、同じコマンドでIDだけを明示的に替えます（正式RF-F002とは別条件・別hashです）：
+
+```bash
+uv run --frozen python scripts/local_p4.py plan \
+  --root results/local-runs --constraint-id RF-T004 --series-mode HV \
+  --attempts 1 --per-bin 1 --starts 1 --layouts 1 --iterations 1 \
+  --coarse-points 2 --validation-points 3 --max-variable-layouts 2 \
+  --max-topology-graphs 1 --seed 20261013 --shard-count 1 --workers 1
+```
 
 ## 新規実行
 
@@ -52,7 +60,7 @@ uv run --frozen python scripts/local_p4.py plan \
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 \
 uv run --frozen python scripts/local_p4.py run \
   --root results/local-runs \
-  --constraint-id RF-F001 --series-mode HV \
+  --constraint-id RF-F002 --series-mode HV \
   --attempts 1 --per-bin 1 --starts 1 --layouts 1 --iterations 1 \
   --coarse-points 2 --validation-points 3 \
   --max-variable-layouts 2 --max-topology-graphs 4 \
@@ -64,7 +72,7 @@ uv run --frozen python scripts/local_p4.py run \
 
 各workerプロセスの `OPENBLAS_NUM_THREADS` / `OMP_NUM_THREADS` / `MKL_NUM_THREADS` はマネージャーが `1` に固定します。初期同時実行数は2、許容最大は4です。`workers` は `shard-count` 以下にしてください。シャード数とseedを維持したままworker数だけ変えても、グラフ→シャード割当ては変わりません。
 
-P4-Aで指定できる探索設定は制約ID、系列モード、試行サンプル数、ノード／面積ビンごとの候補数、開始値数、結合レイアウト数、可変Cレイアウト上限、SLSQP反復数、粗・検証周波数点数、seed、最大グラフ数、シャード数です。最大グラフバッチ数・バッチ時間はチェックポイントを確定する実行単位です。チェックポイントは既存実装により候補・グラフ単位で原子的に更新されます。
+P4-Aで指定できる探索設定は明示的な制約ID、系列モード、試行サンプル数、ノード／面積ビンごとの候補数、開始値数、結合レイアウト数、可変Cレイアウト上限、SLSQP反復数、粗・検証周波数点数、seed、最大グラフ数、シャード数です。`experiments/matching_limit/p4_batch.py`を直接起動する新規ジョブでも`--constraint-id`が必須です。RF-T001/T002/T003はRF-F001をbaseとした過去trial、RF-T004はRF-F002をbaseとした現行trialです。最大グラフバッチ数・バッチ時間はチェックポイントを確定する実行単位です。チェックポイントは既存実装により候補・グラフ単位で原子的に更新されます。
 
 `--max-runtime` は1回のmanager起動あたりの秒数で、`0` は無制限です。利用可能RAMが `--memory-min-free-mib` 未満なら新しいworkerの起動を止め、稼働中workerの終了後に再評価します。低メモリ状態が `--memory-stall-timeout` 続いた場合は新規起動をやめ、稼働中workerへSIGTERMを送り安全停止します。既定の強制終了はSIGTERM後120秒まで待ってからの最終手段です。`--force-kill-after 0` で強制終了を無効化できます。swapを前提にworker数を増やす運用はしないでください。
 
@@ -101,7 +109,7 @@ uv run --frozen python scripts/local_p4.py resume <run-id> \
   --root results/local-runs --workers 2
 ```
 
-互換性が確認できる限り、再開時にworker数を変えられます。`uv.lock`、Python/NumPy/SciPy/BLAS構成、CPUモデル、RF制約、周波数帯域、ソースファイル指紋、P4設定・シャード割当てを照合します。不一致、壊れたJSON、設定違いの場合は初期化せずエラー終了します。完了シャードはスキップし、部分・中断チェックポイントは既存 `--resume` 経路で復元します。1 runへの複数manager同時書込みはOSファイルロックで拒否します。
+互換性が確認できる限り、再開時にworker数を変えられます。`uv.lock`、Python/NumPy/SciPy/BLAS構成、CPUモデル、選択RF制約ID・実効SHA、formal snapshotとtrialファイルを含むソース指紋、周波数帯域、P4設定・シャード割当てを照合します。不一致、壊れたJSON、設定違いの場合は初期化せずエラー終了します。完了シャードはスキップし、部分・中断チェックポイントは既存`resume`経路で復元します。制約IDやソース指紋の異なる旧チェックポイントを別条件へ変換・再利用しません。RF-F001の候補・runを当時のコードで完全再現する場合はmanifestのsource commitへcheckoutし、現行ツールでのRF-F001候補再解析とは区別してください。1 runへの複数manager同時書込みはOSファイルロックで拒否します。
 
 ### 管理プロセスの異常終了（SIGKILL／クラッシュ）
 

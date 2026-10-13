@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independent finite-grid baseline regression for current-policy LPF-007/008.
+"""Independent finite-grid baseline regression for historical RF-F001 LPF-007/008.
 
 Recomputes coupled-inductor MNA and checks immutable reference metrics and
 current component policy. This is NOT interval, optimizer-convergence, or EM
@@ -34,7 +34,7 @@ def read_candidate(name):
 
 
 def read_policy():
-    return json.loads((ROOT / "data" / "design_constraints.json").read_text(encoding="utf-8"))
+    return json.loads((ROOT / "data" / "constraints" / "formal" / "RF-F001.json").read_text(encoding="utf-8"))
 
 
 def require(condition, message):
@@ -147,7 +147,8 @@ def six_circuits(item, policy=None):
             value, "k", lower=-policy["coupling_limits"]["chip_chip_strong_adjacent_abs_k_max"],
             upper=policy["coupling_limits"]["chip_chip_strong_adjacent_abs_k_max"])
     strong = [tuple(x) for x in item["strong_neighbor_pairs"]]
-    errors = validate_couplings(k, ["chip"] * n, order, strong_pairs=strong, nominal=True)
+    errors = validate_couplings(k, ["chip"] * n, order, strong_pairs=strong, nominal=True,
+                                 resolved_policy=policy)
     require(not errors, f"{item['candidate_id']}: invalid coupling: {errors}")
     require(float(np.linalg.eigvalsh(k).min()) > 0, "Coupling not positive definite")
 
@@ -167,7 +168,8 @@ def six_circuits(item, policy=None):
     require(policy["source_ohms"]["imag"] == 0 and
             policy["load_ohms"]["frequency_dependent"] is False,
             "Reference port convention changed")
-    validate_six_settings(configs, variable_cap_indices=(len(fixed_caps), len(fixed_caps) + 1))
+    validate_six_settings(configs, variable_cap_indices=(len(fixed_caps), len(fixed_caps) + 1),
+                          resolved_policy=policy)
     return configs
 
 

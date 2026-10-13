@@ -166,12 +166,14 @@ def tracked_source_fingerprints() -> dict[str, str]:
         ROOT / "requirements.txt", ROOT / "pyproject.toml", ROOT / "uv.lock",
         ROOT / "data" / "bands.csv", ROOT / "data" / "design_constraints.json",
         ROOT / "data" / "constraints" / "registry.json",
-        ROOT / "data" / "constraints" / "formal" / "RF-F001.json",
         ROOT / "docs" / "specification.md",
     ]
-    policy_dir = ROOT / "data" / "constraints" / "trial"
-    if policy_dir.exists():
-        paths += sorted(policy_dir.glob("RF-T*.json"))
+    formal_dir = ROOT / "data" / "constraints" / "formal"
+    trial_dir = ROOT / "data" / "constraints" / "trial"
+    if formal_dir.exists():
+        paths += sorted(formal_dir.glob("RF-F*.json"))
+    if trial_dir.exists():
+        paths += sorted(trial_dir.glob("RF-T*.json"))
     unique = sorted(set(paths))
     missing = [str(path) for path in unique if not path.is_file()]
     if missing:
@@ -278,7 +280,9 @@ def build_plan(search: dict, shard_count: int) -> dict:
         variable_layouts = enumerate_variable_c_layouts(
             graph, profile["policy"], max_layouts=profile["max_variable_layouts"]
         )
-        coupling_layouts = p4_batch.layout_candidates(graph, args.layouts)
+        coupling_layouts = p4_batch.layout_candidates(
+            graph, args.layouts, resolved_policy=profile["policy"]
+        )
         if not variable_layouts or not coupling_layouts:
             raise RunnerError(f"No admissible optimizer candidates for graph {graph_id}")
         candidates = len(variable_layouts) * len(coupling_layouts) * args.starts
@@ -1283,7 +1287,12 @@ def aggregate_run(root: Path, run_id: str) -> dict:
 
 
 def _add_search_arguments(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument("--constraint-id", choices=("RF-F001", "RF-T001", "RF-T002"), default="RF-F001")
+    parser.add_argument(
+        "--constraint-id",
+        choices=("RF-F001", "RF-F002", "RF-T001", "RF-T002", "RF-T003", "RF-T004"),
+        default=None,
+        help="Required for new CLI jobs: use RF-F002 for current formal jobs or an explicit historical/trial ID",
+    )
     parser.add_argument("--series-mode", choices=("HV", "HQ", "both"), default="HV")
     parser.add_argument("--attempts", type=int, default=1)
     parser.add_argument("--per-bin", type=int, default=1)
@@ -1360,6 +1369,8 @@ def make_parser() -> argparse.ArgumentParser:
 def main(argv=None) -> int:
     parser = make_parser()
     args = parser.parse_args(argv)
+    if args.operation in {"plan", "run"} and args.constraint_id is None:
+        parser.error("New jobs require explicit --constraint-id (current formal: RF-F002)")
     try:
         if args.operation == "plan":
             _positive_options(args, parser)

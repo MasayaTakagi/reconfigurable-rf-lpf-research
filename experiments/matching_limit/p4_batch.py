@@ -62,13 +62,17 @@ def frequency_grid(rows,points):
     return {c:sorted(set(float(f) for r in rows if r['case']==c and r['region'] in ('UL','DL')
                  for f in np.linspace(float(r['low_mhz']),float(r['high_mhz']),points))) for c in CASES}
 
-def layout_candidates(graph,max_layouts):
-    """Deterministic nominal + spread chip and PCB coupling patterns.
+def layout_candidates(graph,max_layouts,*,resolved_policy=None):
+    """Deterministic admissible coupling candidates under a pinned policy.
 
-    Chip-to-PCB remains nominal zero in this stage. Every candidate must be SPD.
+    Chip-to-PCB nominal coupling is zero in this stage; each K must be SPD.
     """
+    policy=load_constraint() if resolved_policy is None else resolved_policy
+    couplings=policy["coupling_limits"]
+    strong=float(couplings["chip_chip_strong_adjacent_abs_k_max"])
+    pcb=float(couplings["pcb_pcb_abs_k_max_default"])
     import itertools
-    types=[t for _,_,t in graph[1] if t!='GJM01']
+    types=[t for _,_,t in graph[1] if t not in ('GJM01','PCB_PATTERN_C')]
     chips=[i for i,t in enumerate(types)
            if t in ('LQP01','LQP02','LQP02HV','LQP02HQ')]
     pcbs=[i for i,t in enumerate(types) if t=='PCB_L']
@@ -76,31 +80,36 @@ def layout_candidates(graph,max_layouts):
     pcb_pairs=list(itertools.combinations(pcbs,2))
     candidates=[({}, {})]
     for a,b in chip_pairs:
-        for k in (-.4,.4):candidates.append(({frozenset((a,b)):k},{}))
+        for k in (-strong,strong):candidates.append(({frozenset((a,b)):k},{}))
     for a,b in pcb_pairs:
-        for k in (-.6,.6):candidates.append(({}, {frozenset((a,b)):k}))
-    if chip_pairs:candidates.append(({frozenset(pair):.4 for pair in chip_pairs},{}))
-    if pcb_pairs:candidates.append(({}, {frozenset(pair):.6 for pair in pcb_pairs}))
+        for k in (-pcb,pcb):candidates.append(({}, {frozenset((a,b)):k}))
+    if chip_pairs:candidates.append(({frozenset(pair):strong for pair in chip_pairs},{}))
+    if pcb_pairs:candidates.append(({}, {frozenset(pair):pcb for pair in pcb_pairs}))
     unique=[];seen=set()
     for ce,pe in candidates:
         signature=(tuple(sorted((tuple(sorted(pair)),k) for pair,k in ce.items())),
                    tuple(sorted((tuple(sorted(pair)),k) for pair,k in pe.items())))
         if signature in seen:continue
         seen.add(signature)
-        try:K=admissible_matrix(types,[1.]*len(types),chip_edges=ce,pcb_pairs=pe)
+        try:K=admissible_matrix(types,[1e-9]*len(types),chip_edges=ce,pcb_pairs=pe,
+                                resolved_policy=policy)
         except ValueError:continue
         unique.append(K)
         if len(unique)>=max_layouts:break
     return unique
 
-def bounds_for(graph, *, variable_count=2):
+def bounds_for(graph, *, variable_count=2,resolved_policy=None):
+    policy=load_constraint() if resolved_policy is None else resolved_policy
+    pcb_max=float(policy['components']['PCB_L'].get('max_inductance_nh',
+                  policy['components']['PCB_L']['max_inductance_nh_approx']))
+    cap_max=float(policy['components']['IC_VARIABLE_C']['max_total_variable_pf_per_branch'])
     b=[]
     for _,_,t in graph[1]:
-        b.append((.05,100.) if t=='GJM01' else (.3,3.) if t=='PCB_L'
+        b.append((.05,100.) if t=='GJM01' else (.3,pcb_max) if t=='PCB_L'
                  else (.4,12.) if t=='LQP02' else
                  (.4,27.) if t=='LQP02HV' else
                  (.2,56.) if t=='LQP02HQ' else (.3,12.))
-    return b+[(0.,4.)]*(6*variable_count)
+    return b+[(0.,cap_max)]*(6*variable_count)
 
 def settings_for(graph,x,K,*,variable_layout=None,resolved_policy=None,
                  require_explicit_series=False):
@@ -155,7 +164,8 @@ def validate(graph,x,K,rows,points,*,variable_layout=None,resolved_policy=None,
         cross=validate_circuit(settings[c],frequencies,
             expected_inductor_edges=expected_inductor_edges,
             expected_capacitor_edges=expected_capacitor_edges,
-            inductor_types=inductor_types,physical_order=physical_order)
+            inductor_types=inductor_types,physical_order=physical_order,
+            resolved_policy=resolved_policy)
         mismatch=max(mismatch,cross['max_gain_discrepancy'])
         residual=max(residual,cross['max_power_residual_w'])
         condition=max(condition,cross['max_condition_number'])
@@ -199,9 +209,8 @@ def _source_fingerprints():
         ROOT/'data/design_constraints.json', ROOT/'data/bands.csv',
         ROOT/'docs/specification.md', ROOT/'requirements.txt',
         ROOT/'data/constraints/registry.json',
-        ROOT/'data/constraints/formal/RF-F001.json',
-        ROOT/'data/constraints/trial/RF-T001.json',
-        ROOT/'data/constraints/trial/RF-T002.json',
+        *sorted((ROOT/'data/constraints/formal').glob('RF-F*.json')),
+        *sorted((ROOT/'data/constraints/trial').glob('RF-T*.json')),
     )
     missing=[str(path) for path in source_files if not path.is_file()]
     if missing:
@@ -386,7 +395,7 @@ def run(args, progress_callback=None, candidate_progress_callback=None):
     for graph_id,_,_,graph in entries:
         c_layouts=enumerate_variable_c_layouts(
             graph,profile['policy'],max_layouts=profile['max_variable_layouts'])
-        k_layouts=layout_candidates(graph,args.layouts)
+        k_layouts=layout_candidates(graph,args.layouts,resolved_policy=profile['policy'])
         if not c_layouts or not k_layouts:
             raise ValueError(f'No admissible optimizer candidates for graph {graph_id}')
         candidate_plan[graph_id]=len(c_layouts)*len(k_layouts)*args.starts
@@ -516,12 +525,15 @@ def run(args, progress_callback=None, candidate_progress_callback=None):
             graph_seed=int.from_bytes(hashlib.sha256(graph_seed_material).digest()[:8],'big')
             candidate_records=list(partial_runs.get(graph_id,[]))
             saved_candidate_keys={record['candidate_key'] for record in candidate_records}
-            coupling_layouts=layout_candidates(graph,args.layouts)
+            coupling_layouts=layout_candidates(graph,args.layouts,resolved_policy=profile['policy'])
             candidate_layouts=[(variable_index,variable_layout,layout_index,K)
                 for variable_index,variable_layout in enumerate(variable_layouts)
                 for layout_index,K in enumerate(coupling_layouts)]
-            bounds=bounds_for(graph,variable_count=len(variable_layouts[0]['edges']))
             for variable_index,variable_layout,layout_index,K in candidate_layouts:
+                # RF-F002 and RF-T004 allow a variable branch count (1..N).
+                # Each topology needs its own optimizer vector dimension.
+                bounds=bounds_for(graph,variable_count=len(variable_layout['edges']),
+                                  resolved_policy=profile['policy'])
                 for start_index in range(args.starts):
                     candidate_key=(f'{graph_id}:{layout_index}:{start_index}'
                         if profile['legacy'] else
@@ -699,8 +711,9 @@ def _parse_args():
     p.add_argument('--iterations',type=int,default=25)
     p.add_argument('--coarse-points',type=int,default=2)
     p.add_argument('--validation-points',type=int,default=21)
-    p.add_argument('--constraint-id',choices=('RF-F001','RF-T001','RF-T002'),default=None,
-                   help='New policy-scoped search; omitted preserves the historical P4-A profile')
+    p.add_argument('--constraint-id',choices=(
+        'RF-F001','RF-F002','RF-T001','RF-T002','RF-T003','RF-T004'),default=None,
+        help='Required for new jobs; RF-F002 is current formal, RF-T004 is its explicit trial; omission is only for historical-profile resume')
     p.add_argument('--series-mode',choices=('legacy','HV','HQ','both'),default=None,
                    help='Explicit LQP02 series alphabet for new runs')
     p.add_argument('--max-variable-layouts',type=int,default=None,
@@ -734,6 +747,8 @@ def _parse_args():
         p.error('--shard-count must be between 1 and 64')
     if not 0<=args.shard_index<args.shard_count:
         p.error('--shard-index must be in [0, shard-count)')
+    if args.constraint_id is None and not args.resume:
+        p.error('New jobs require explicit --constraint-id (current formal: RF-F002)')
     if args.resume and not args.checkpoint:
         p.error('--resume requires --checkpoint')
     if args.max_graphs_per_batch is not None and args.max_graphs_per_batch<1:

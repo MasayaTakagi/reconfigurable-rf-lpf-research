@@ -2,6 +2,7 @@
 from collections import Counter
 
 import numpy as np
+from .constraint_versions import load_constraint
 
 
 def _checked_solve(matrix,rhs,label):
@@ -32,12 +33,15 @@ def validate_connection_map(params, *, expected_inductor_edges=None,
     return True
 
 
-def validate_inductor_coupling(types,values,coupling,physical_order=None,*,nominal=True):
+def validate_inductor_coupling(types,values,coupling,physical_order=None,*,
+                               nominal=True,resolved_policy=None):
     """Enforce RF-F001 nominal or explicit weak-coupling sensitivity rules.
 
     Nonadjacent chip pairs have nominal k=0. Only nominal=False permits
     |k|<=0.1 for a separate weak-coupling sensitivity calculation.
     """
+    policy = load_constraint() if resolved_policy is None else resolved_policy
+    limits = policy["coupling_limits"]
     k=np.asarray(coupling,float);l=np.asarray(values,float);n=len(types)
     if type(nominal) is not bool:raise ValueError('nominal must be a boolean')
     if (l.shape!=(n,) or np.any(~np.isfinite(l)) or np.any(l<=0)
@@ -52,7 +56,12 @@ def validate_inductor_coupling(types,values,coupling,physical_order=None,*,nomin
     chips=[i for i,t in enumerate(types)
            if t in ("LQP01","LQP02","LQP02HV","LQP02HQ","LQW04")]
     pcbs=[i for i,t in enumerate(types) if t=="PCB_L"]
-    if len(pcbs)>3:raise ValueError("PCB count exceeds three")
+    if len(pcbs)>policy["components"]["PCB_L"]["max_count_principle"]:
+        raise ValueError("PCB count exceeds three")
+    pcb_max=policy["components"]["PCB_L"].get("max_inductance_nh",
+                                            policy["components"]["PCB_L"]["max_inductance_nh_approx"])
+    if any(l[i]>pcb_max*1e-9+1e-21 for i in pcbs):
+        raise ValueError("PCB inductance limit exceeded")
     order=chips if physical_order is None else list(physical_order)
     if sorted(order)!=sorted(chips):raise ValueError("Physical chip order is invalid")
     adjacent={frozenset((a,b)) for a,b in zip(order,order[1:])}
@@ -60,11 +69,12 @@ def validate_inductor_coupling(types,values,coupling,physical_order=None,*,nomin
         for j in range(i+1,n):
             pair=frozenset((i,j));value=abs(k[i,j])
             if i in chips and j in chips:
-                limit=.4 if pair in adjacent else (0.0 if nominal else .1)
+                limit=(limits["chip_chip_strong_adjacent_abs_k_max"] if pair in adjacent
+                       else (0.0 if nominal else limits["chip_chip_nonstrong_abs_k_max"]))
             elif (i in chips and j in pcbs) or (j in chips and i in pcbs):
-                limit=.03
+                limit=limits["chip_pcb_abs_k_max"]
             elif i in pcbs and j in pcbs:
-                limit=.6
+                limit=limits["pcb_pcb_abs_k_max_default"]
             else:
                 limit=0.0
             if value>limit+1e-12:
@@ -183,7 +193,8 @@ def solve_branch_current(f_hz,n_nodes,source_node,load_node,inductors=(),
 
 def validate_circuit(params,frequencies_hz,*,expected_inductor_edges=None,
                      expected_capacitor_edges=None,inductor_types=None,
-                     physical_order=None,gain_atol=1e-10,nominal=True):
+                     physical_order=None,gain_atol=1e-10,nominal=True,
+                     resolved_policy=None):
     """Compare main MNA, nodal elimination, and all-branch-current MNA per Hz."""
     from .circuit import solve
     from .independent import solve_state
@@ -195,7 +206,7 @@ def validate_circuit(params,frequencies_hz,*,expected_inductor_edges=None,
     eigen={"min_inductance_eigenvalue":None}
     if inductor_types:
         eigen=validate_inductor_coupling(inductor_types,lv,lmat,physical_order,
-                                         nominal=nominal)
+                                         nominal=nominal,resolved_policy=resolved_policy)
     discrepancies=[];residuals=[];condition_numbers=[];raw_branch_condition_numbers=[]
     for f_hz in frequencies_hz:
         primary=solve(f_hz,**params)

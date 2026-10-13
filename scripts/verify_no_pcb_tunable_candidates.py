@@ -168,7 +168,8 @@ def six_circuits(item, policy=None):
     require(policy["source_ohms"]["imag"] == 0 and
             policy["load_ohms"]["frequency_dependent"] is False,
             "Reference port convention changed")
-    validate_six_settings(configs, variable_cap_indices=(len(fixed_caps), len(fixed_caps) + 1))
+    validate_six_settings(configs, variable_cap_indices=(len(fixed_caps), len(fixed_caps) + 1),
+                          resolved_policy=policy)
     return configs
 
 

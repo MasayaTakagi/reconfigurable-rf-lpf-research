@@ -147,7 +147,8 @@ def six_circuits(item, policy=None):
             value, "k", lower=-policy["coupling_limits"]["chip_chip_strong_adjacent_abs_k_max"],
             upper=policy["coupling_limits"]["chip_chip_strong_adjacent_abs_k_max"])
     strong = [tuple(x) for x in item["strong_neighbor_pairs"]]
-    errors = validate_couplings(k, ["chip"] * n, order, strong_pairs=strong, nominal=True)
+    errors = validate_couplings(k, ["chip"] * n, order, strong_pairs=strong, nominal=True,
+                                 resolved_policy=policy)
     require(not errors, f"{item['candidate_id']}: invalid coupling: {errors}")
     require(float(np.linalg.eigvalsh(k).min()) > 0, "Coupling not positive definite")
 

@@ -66,7 +66,8 @@ def build_settings(d):
     for i,val in enumerate(d["nominal_adjacent_k"]):
         a,b=order[i:i+2]
         K[a,b]=K[b,a]=float(val)
-    violations=validate_couplings(K,["chip"]*len(chips),order,strong_pairs=pairs,nominal=True)
+    violations=validate_couplings(K,["chip"]*len(chips),order,strong_pairs=pairs,nominal=True,
+                                  resolved_policy=load_constraint('RF-F001'))
     if violations: raise ValueError(f"Coupling policy violation: {violations}")
     L=tuple(Branch(c["a"],c["b"],c["L_nH"]*1e-9,c["Q"]) for c in chips)
     Cf=tuple(Branch(c["a"],c["b"],c["C_pF"]*1e-12,c["Q"]) for c in caps)

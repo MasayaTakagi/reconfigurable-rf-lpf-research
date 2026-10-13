@@ -67,7 +67,8 @@ def verify(samples=51):
     coil = B @ np.linalg.inv(np.diag(L/Q) + 1j*M) @ B.T
     port = np.diag(np.array([1/50, 0, 1/Z_LOAD, 0, 0], complex))
     src = np.array([1/50,0,0,0,0], complex)
-    bands = list(csv.DictReader(BANDS.open(newline="", encoding="utf-8")))
+    with BANDS.open(newline="", encoding="utf-8") as band_file:
+        bands = list(csv.DictReader(band_file))
     assert len(bands) == 28
     worst = -float("inf")
     h2, h3 = float("inf"), float("inf")

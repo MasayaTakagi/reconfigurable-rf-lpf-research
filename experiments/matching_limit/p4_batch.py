@@ -206,9 +206,8 @@ def _source_fingerprints():
         ROOT/'data/design_constraints.json', ROOT/'data/bands.csv',
         ROOT/'docs/specification.md', ROOT/'requirements.txt',
         ROOT/'data/constraints/registry.json',
-        ROOT/'data/constraints/formal/RF-F001.json',
-        ROOT/'data/constraints/trial/RF-T001.json',
-        ROOT/'data/constraints/trial/RF-T002.json',
+        *sorted((ROOT/'data/constraints/formal').glob('RF-F*.json')),
+        *sorted((ROOT/'data/constraints/trial').glob('RF-T*.json')),
     )
     missing=[str(path) for path in source_files if not path.is_file()]
     if missing:
@@ -709,8 +708,9 @@ def _parse_args():
     p.add_argument('--iterations',type=int,default=25)
     p.add_argument('--coarse-points',type=int,default=2)
     p.add_argument('--validation-points',type=int,default=21)
-    p.add_argument('--constraint-id',choices=('RF-F001','RF-T001','RF-T002'),default=None,
-                   help='New policy-scoped search; omitted preserves the historical P4-A profile')
+    p.add_argument('--constraint-id',choices=(
+        'RF-F001','RF-F002','RF-T001','RF-T002','RF-T003','RF-T004'),default=None,
+        help='Required for new jobs; RF-F002 is current formal, RF-T004 is its explicit trial; omission is only for historical-profile resume')
     p.add_argument('--series-mode',choices=('legacy','HV','HQ','both'),default=None,
                    help='Explicit LQP02 series alphabet for new runs')
     p.add_argument('--max-variable-layouts',type=int,default=None,
@@ -744,6 +744,8 @@ def _parse_args():
         p.error('--shard-count must be between 1 and 64')
     if not 0<=args.shard_index<args.shard_count:
         p.error('--shard-index must be in [0, shard-count)')
+    if args.constraint_id is None and not args.resume:
+        p.error('New jobs require explicit --constraint-id (current formal: RF-F002)')
     if args.resume and not args.checkpoint:
         p.error('--resume requires --checkpoint')
     if args.max_graphs_per_batch is not None and args.max_graphs_per_batch<1:

@@ -3,6 +3,12 @@ name: LPF P4-A resumable shards
 on:
   workflow_dispatch:
     inputs:
+      constraint_id:
+        description: Explicit formal/trial policy identity (RF-F002 is current formal)
+        required: true
+        default: RF-F002
+        type: choice
+        options: ["RF-F002", "RF-T004", "RF-F001", "RF-T001", "RF-T002", "RF-T003"]
       shard_count:
         description: Number of deterministic shards
         required: true
@@ -85,10 +91,14 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-          cache: pip
-          cache-dependency-path: requirements.txt
-      - name: Install scientific dependencies
-        run: python -m pip install -r requirements.txt
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.12.23"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - name: Install locked scientific dependencies
+        run: uv sync --frozen
+      - run: echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
       - name: Audit saved research data
         run: python scripts/audit_results.py
       - name: Run regression tests
@@ -118,11 +128,17 @@ jobs:
         if: ${{ matrix.shard_index < fromJSON(inputs.shard_count) }}
         with:
           python-version: "3.12"
-          cache: pip
-          cache-dependency-path: requirements.txt
-      - name: Install scientific dependencies
+      - uses: astral-sh/setup-uv@v6
         if: ${{ matrix.shard_index < fromJSON(inputs.shard_count) }}
-        run: python -m pip install -r requirements.txt
+        with:
+          version: "0.12.23"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - name: Install locked scientific dependencies
+        if: ${{ matrix.shard_index < fromJSON(inputs.shard_count) }}
+        run: uv sync --frozen
+      - if: ${{ matrix.shard_index < fromJSON(inputs.shard_count) }}
+        run: echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
       - name: Create shard output directory
         if: ${{ matrix.shard_index < fromJSON(inputs.shard_count) }}
         run: mkdir -p "results/shard-${{ matrix.shard_index }}"
@@ -162,6 +178,7 @@ jobs:
             fi
           fi
           python experiments/matching_limit/p4_batch.py \
+            --constraint-id "${{ inputs.constraint_id }}" \
             --attempts "${{ inputs.attempts }}" \
             --per-bin "${{ inputs.per_bin }}" \
             --starts "${{ inputs.starts }}" \

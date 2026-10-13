@@ -127,11 +127,24 @@ class P4ResumeIntegrationTests(unittest.TestCase):
             trial.constraint_id='RF-T002';trial.series_mode='both'
             trial.max_variable_layouts=4
             trial_config=p4_batch.build_run_config(trial,{'B71':[700.0,710.0]},['a'*64])
+            current=_args(Path(directory)/'unused.json',Path(directory)/'unused.out')
+            current.constraint_id='RF-F002';current.series_mode='HV'
+            current_config=p4_batch.build_run_config(current,{'B71':[700.0,710.0]},['a'*64])
+            current_trial=_args(Path(directory)/'unused.json',Path(directory)/'unused.out')
+            current_trial.constraint_id='RF-T004';current_trial.series_mode='HV'
+            current_trial_config=p4_batch.build_run_config(
+                current_trial,{'B71':[700.0,710.0]},['a'*64])
             hashes={p4_batch.canonical_config_hash(x) for x in
-                    (legacy,formal,trial_config)}
-            self.assertEqual(len(hashes),3)
+                    (legacy,formal,trial_config,current_config,current_trial_config)}
+            self.assertEqual(len(hashes),5)
             self.assertEqual(formal['p4_a_limits']['constraint_id'],'RF-F001')
             self.assertEqual(trial_config['p4_a_limits']['constraint_id'],'RF-T002')
+            self.assertEqual(current_config['p4_a_limits']['constraint_id'],'RF-F002')
+            self.assertEqual(current_trial_config['p4_a_limits']['constraint_id'],'RF-T004')
+            self.assertIn('data/constraints/formal/RF-F002.json',
+                          current_config['source_fingerprints'])
+            self.assertIn('data/constraints/trial/RF-T004.json',
+                          current_trial_config['source_fingerprints'])
 
     def test_new_constraint_search_rejects_legacy_series_alias(self):
         with mock.patch('sys.argv',['p4_batch.py','--constraint-id','RF-F001',
@@ -140,8 +153,15 @@ class P4ResumeIntegrationTests(unittest.TestCase):
                 p4_batch._parse_args()
         self.assertEqual(raised.exception.code,2)
 
+    def test_cli_rejects_new_search_without_explicit_policy_id(self):
+        with mock.patch("sys.argv", ["p4_batch.py"]):
+            with self.assertRaises(SystemExit) as raised:
+                p4_batch._parse_args()
+        self.assertEqual(raised.exception.code, 2)
+
     def test_cli_rejects_validation_grid_smaller_than_two_points(self):
-        with mock.patch("sys.argv", ["p4_batch.py", "--validation-points", "1"]):
+        with mock.patch("sys.argv", ["p4_batch.py", "--constraint-id", "RF-F002",
+                                     "--validation-points", "1"]):
             with self.assertRaises(SystemExit) as raised:
                 p4_batch._parse_args()
         self.assertEqual(raised.exception.code, 2)

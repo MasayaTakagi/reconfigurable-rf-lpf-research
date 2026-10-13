@@ -1,5 +1,11 @@
 # EXP-021 — RF-T004 area ≤6 Phase-2 topology search (2026-10-14)
 
+## 再利用のための発見経緯・探索指針
+
+- [topology_discovery_lessons.md](topology_discovery_lessons.md) — EXP-016 V→PCB-C追加→L1(3,4)から(2,4)への再接続→PCB-C(1,4)への橋絡変更という発見系列、成功/失敗した探索手法、回路グラフと精密候補、今後のP1–P6仮説と検証ゲートを記録。**検証済みと未実行仮説は区別**。
+- 今後の最優先シード：`C-H30p02.json`と`C-H30p0002.json`。面積6でIL0.30548dBは30dB/0.30dB同時達成ではなく、引き続きPhase 2のbest-found。
+
+
 **Status: branch-only exploratory research, NOT promoted to formal RF-F002 or main candidate index. Phase 3 remains paused.**
 
 ## Goal and constraints

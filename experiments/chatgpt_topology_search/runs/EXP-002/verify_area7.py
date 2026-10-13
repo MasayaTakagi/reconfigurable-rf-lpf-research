@@ -17,6 +17,7 @@ sys.path.insert(0,str(ROOT/"src"))
 
 from lpf.circuit import Branch,solve
 from lpf.configuration import validate_six_settings
+from lpf.constraint_versions import load_constraint
 from lpf.evaluate import CASES,evaluate_settings,load_bands
 from lpf.independent import solve_gain
 from lpf.validate import validate_couplings
@@ -79,7 +80,8 @@ def build_settings(d):
                        load_node=topo["output_node"],inductors=L,capacitors=Cf+Cv,
                        coupling=K.copy(),source_voltage=1.0,source_ohms=50.0,
                        load_ohms=60.-40.j)
-    validate_six_settings(cfg,variable_cap_indices=(4,5))
+    validate_six_settings(cfg,variable_cap_indices=(4,5),
+                          resolved_policy=load_constraint('RF-F001'))
     return cfg,K
 
 

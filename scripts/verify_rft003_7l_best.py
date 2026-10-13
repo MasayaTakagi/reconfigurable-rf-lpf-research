@@ -98,7 +98,8 @@ def verify(points=9):
     CQ=np.asarray([z["Q"] for z in fixed]+[80,80])
     port=np.diag(np.array([1/50,0,1/ZL,0,0],complex))
     rhs=np.array([1/50,0,0,0,0],complex)
-    bands=list(csv.DictReader(BANDS.open(encoding="utf-8",newline="")))
+    with BANDS.open(encoding="utf-8", newline="") as band_file:
+        bands = list(csv.DictReader(band_file))
     assert len(bands)==28
     per_case={}
     max_delta=max_residual=0.

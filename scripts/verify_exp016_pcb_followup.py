@@ -14,6 +14,7 @@ import numpy as np
 from lpf.circuit import Branch, solve
 from lpf.evaluate import CASES, load_bands
 from lpf.validate import validate_couplings
+from lpf.constraint_versions import load_constraint
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data" / "validation" / "exp016_20261012" / "pcb_followup_shortlist.json"
@@ -33,7 +34,8 @@ def circuit(common, candidate, case):
     for (a,b),k in zip(zip(row,row[1:]),candidate["adjacent_signed_k"]):
         K[a,b]=K[b,a]=float(k)
     errs=validate_couplings(K,["chip"]*len(ind),row,
-                             list(zip(row,row[1:])),nominal=True)
+                             list(zip(row,row[1:])),nominal=True,
+                             resolved_policy=load_constraint('RF-F001'))
     if errs:raise ValueError(str(errs))
     assert all(.4<=float(v)<=27 for v in candidate["L_nH"])
     assert all(0<=float(v)<=4 for v in candidate["variable_C_pf_by_setting"][case])

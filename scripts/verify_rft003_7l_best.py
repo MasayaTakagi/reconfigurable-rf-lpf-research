@@ -63,7 +63,11 @@ def verify(points=9):
     registry=json.loads((ROOT/"data/constraints/registry.json").read_text(encoding="utf-8"))
     c=saved["circuit"]
     assert saved["constraint_id"]=="RF-T003" and saved["phase"]=="Phase 2"
-    assert registry["active_formal_id"]=="RF-F001"
+    # RF-T003 is immutable and based on RF-F001 even after the active
+    # formal default was updated to RF-F002. Do not pin the registry default.
+    assert registry["formal"]["RF-F001"]["state"]=="approved"
+    assert registry["trial"]["RF-T003"]["base_constraint_id"]=="RF-F001"
+    assert trial["base_constraint_id"]=="RF-F001"
     assert registry["trial"]["RF-T003"]["state"]=="study_authorized"
     assert trial["study_variable_c_layout"]==dict(branch_count=2,shunt_to_ground=1,non_ground_bridge=1)
     assert trial["overrides"]["evaluation"]["full_phase2"]["nominal_h2_h3_target_db"]==30

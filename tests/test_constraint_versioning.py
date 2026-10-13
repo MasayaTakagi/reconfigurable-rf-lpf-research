@@ -15,7 +15,7 @@ class VersionedConstraintsTests(unittest.TestCase):
         active = load_constraint()
         legacy_access = json.loads((ROOT / "data/design_constraints.json").read_text())
         self.assertEqual(active, legacy_access)
-        self.assertEqual(active["active_constraint_id"], "RF-F001")
+        self.assertEqual(active["active_constraint_id"], "RF-F002")
         self.assertEqual(active["active_constraint_status"], "formal")
         self.assertIsNone(active["area_budget"]["hard_cap"])
         self.assertEqual(len(constraint_fingerprint(active)), 64)
@@ -49,7 +49,7 @@ class VersionedConstraintsTests(unittest.TestCase):
                 "schema_version": 1, "active_formal_id": "RF-F001",
                 "formal": {"RF-F001": {
                     "file": "data/constraints/formal/RF-F001.json", "state": "approved",
-                    "effective_constraint_sha256": constraint_fingerprint(load_constraint())}},
+                    "effective_constraint_sha256": constraint_fingerprint(load_constraint("RF-F001"))}},
                 "trial": {"RF-T001": {
                     "file": "data/constraints/trial/RF-T001.json",
                     "state": "study_authorized", "base_constraint_id": "RF-F001"}}
@@ -97,7 +97,7 @@ class VersionedConstraintsTests(unittest.TestCase):
         self.assertEqual(load_constraint("RF-T002", allow_trial=True)["active_constraint_status"], "trial")
         with self.assertRaises(ValueError):
             load_constraint("RF-F000")
-        self.assertEqual(load_constraint()["active_constraint_id"], "RF-F001")
+        self.assertEqual(load_constraint()["active_constraint_id"], "RF-F002")
 
 
 if __name__ == "__main__":

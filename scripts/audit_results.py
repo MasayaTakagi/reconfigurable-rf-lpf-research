@@ -108,7 +108,8 @@ def audit(detail=False):
             if not math.isfinite(area) or area < 0:
                 issues.append(f"Candidate area cap exceeded: {name}")
             variable_caps = item["topology"]["variable_caps"]
-            cpolicy = policy["components"]["IC_VARIABLE_C"]
+            cpolicy = (json.loads((ROOT / "data/constraints/formal/RF-F001.json").read_text(encoding="utf-8"))
+                       if row.get("constraint_class") == "historical" else policy)["components"]["IC_VARIABLE_C"]
             if len(variable_caps) > cpolicy["max_branches_principle"]:
                 issues.append(f"Candidate variable C count exceeded: {name}")
             for cap in variable_caps:

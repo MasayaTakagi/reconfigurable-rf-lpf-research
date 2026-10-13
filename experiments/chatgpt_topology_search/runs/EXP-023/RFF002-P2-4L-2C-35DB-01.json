@@ -1,0 +1,147 @@
+{
+  "constraint_id": "RF-F002",
+  "effective_constraint_sha256": "f20d27e93451dcec2f823e6f7c3731c06d843050c4d2ace8b0b46ded605542e2",
+  "base_commit": "cf990d3eba625affb8e65da95b7c4f5ac4ec4be4",
+  "phase": "Phase 2",
+  "objective": "full_lpf",
+  "status": "converged_nominal_grid_verified_IL_target_fail_physical_unverified",
+  "source_ohms": 50,
+  "load_ohms": {
+    "real": 60,
+    "imag": -40
+  },
+  "topology": {
+    "inductor_edges": [
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "chip_physical_order": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "fixed_gjm_edges": [
+      [
+        1,
+        2
+      ],
+      [
+        5,
+        0
+      ]
+    ],
+    "pcb_pattern_capacitor_edge": [
+      3,
+      1
+    ],
+    "variable_capacitor_edges": [
+      [
+        4,
+        0
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "input_node": 1,
+    "output_node": 3,
+    "ground_node": 0
+  },
+  "q_values": {
+    "LQP02HV": 25,
+    "GJM01": 80,
+    "PCB_PATTERN_C": 40,
+    "IC_VARIABLE_C": 50
+  },
+  "area_units": 5.333333333333333,
+  "verification": {
+    "per_segment_points": 7001,
+    "independent_MNA_points": 84,
+    "optimizer_success": true,
+    "global_optimum_proven": false,
+    "physical_SRF_EM_verified": false,
+    "tolerance_verified": false
+  },
+  "setting_order": [
+    "B71",
+    "B12",
+    "B28",
+    "B13+B14",
+    "B26",
+    "B8"
+  ],
+  "candidate_id": "RFF002-P2-4L-2C-35DB-01",
+  "components": {
+    "LQP02HV_nH": [
+      3.2203238370328604,
+      24.010691429416124,
+      5.585397773664286,
+      7.1328663383099435
+    ],
+    "GJM01_pF": [
+      1.7733422027210015,
+      1.3606254144085914
+    ],
+    "PCB_PATTERN_C_pF": 0.03696880631048088,
+    "chip_neighbor_k": [
+      0.02512903479684459,
+      -0.033086056490368304,
+      -0.14668793524683704
+    ],
+    "variable_C_by_setting_pF": {
+      "B71": [
+        0.5541127319394618,
+        1.4999999999999996
+      ],
+      "B12": [
+        0.47070563942583893,
+        1.3672997458157643
+      ],
+      "B28": [
+        0.4665930475736052,
+        1.2643939251304377
+      ],
+      "B13+B14": [
+        0.3176118357514547,
+        0.8644029066229582
+      ],
+      "B26": [
+        0.24196142503246698,
+        0.6813203436536652
+      ],
+      "B8": [
+        0.1918980166823864,
+        0.5347728011089401
+      ]
+    }
+  },
+  "metrics": {
+    "worst_IL_db": 0.4601802953937625,
+    "min_H2_db": 35.01999999986092,
+    "min_H3_db": 35.01999999973582,
+    "max_independent_MNA_IL_error_db": 8.739675649849232e-13,
+    "max_power_balance_residual_W": 5.44811591673966e-18,
+    "min_dimensionless_K_eigenvalue": 0.8495226219191955
+  },
+  "goals_met": {
+    "h2_h3_30db": true,
+    "h2_h3_35db": true,
+    "IL_0p3": false
+  }
+}

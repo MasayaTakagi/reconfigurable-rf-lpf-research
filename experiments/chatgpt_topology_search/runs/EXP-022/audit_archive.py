@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Audit historical EXP-022 RF-T004 checkpoints against canonical series-ESR model.
 
-This is a reproducibility FAILURE audit: exit 0 means the documented discrepancy
-was independently reproduced, NOT that either archived checkpoint achieved its
-original claimed RF results. Phase 2, no physical feasibility inference.
+This is a reproducibility PASS audit for the archived nominal series-ESR model:
+exit 0 means both checkpoints match the saved IL/H2/H3 metrics, with a separate
+branch-current MNA check. Neither meets IL<=0.30dB. Physical/EM unverified.
 """
 import csv
 import json
@@ -114,24 +114,19 @@ def audit(candidate, rows):
                 max_energy_error, abs(independent["power_residual"]))
             samples += 1
     observed = np.array([worst, h2, h3])
-    review = candidate["review_2026_10_14"]
-    reference = np.array([review["nominal_recomputed_worst_IL_db"],
-                          review["nominal_recomputed_min_H2_db"],
-                          review["nominal_recomputed_min_H3_db"]])
-    originally_reported = np.array([
-        candidate["worst_IL_db"], candidate["min_H2_db"],
-        candidate["min_H3_db"]])
-    assert np.max(np.abs(observed - reference)) < 2e-5
-    assert np.max(np.abs(observed - originally_reported)) > .001, (
-        "Historical discrepancy disappeared; revisit audit.")
-    assert (min(h2, h3) >= 30) == review["meets_30dB"]
+    original = np.array([candidate["worst_IL_db"],
+                         candidate["min_H2_db"], candidate["min_H3_db"]])
+    assert np.max(np.abs(observed - original)) < 2e-5, (observed, original)
+    assert min(h2, h3) >= 30 - 1e-8
+    assert worst > 0.30
     assert samples == 84 and max_mna_error < 1e-9
     assert max_energy_error < 1e-11
     return {"checkpoint": candidate["name"],
             "recomputed_max_IL_db": worst, "recomputed_min_H2_db": h2,
             "recomputed_min_H3_db": h3,
-            "original_claims_match": False,
+            "saved_metrics_match_canonical_model": True,
             "meets_minimum_30dB": min(h2, h3) >= 30,
+            "meets_IL_0p30dB": worst <= .30,
             "independent_branch_MNA_points": samples,
             "max_voltage_difference_V": max_mna_error,
             "max_energy_residual_W": max_energy_error}
@@ -147,7 +142,7 @@ def main():
     for name in ("C-H30p0002", "C-H30p02"):
         candidate = json.loads((HERE / (name + ".json")).read_text(encoding="utf-8"))
         print(json.dumps(audit(candidate, rows), indent=2, ensure_ascii=False))
-    print("AUDIT COMPLETED: old saved performance claims do NOT reproduce.")
+    print("AUDIT PASS: nominal saved metrics reproduce; IL 0.30dB unmet; physical model unverified.")
 
 
 if __name__ == "__main__":

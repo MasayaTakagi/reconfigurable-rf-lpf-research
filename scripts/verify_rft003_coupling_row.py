@@ -71,7 +71,8 @@ def verify(samples=51):
     qC = np.asarray([c["Q"] for c in z["fixed_C"]]+[z["variable_C_Q"]]*2)
     port = np.diag([1/50,0,1/ZLOAD,0,0]).astype(complex)
     source = np.array([1/50,0,0,0,0], complex)
-    rows = list(csv.DictReader(BANDS.open(encoding="utf-8", newline="")))
+    with BANDS.open(encoding="utf-8", newline="") as band_file:
+        rows = list(csv.DictReader(band_file))
     assert len(rows) == 28
     results={}
     checked=0

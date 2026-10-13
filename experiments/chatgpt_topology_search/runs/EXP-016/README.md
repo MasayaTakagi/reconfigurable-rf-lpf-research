@@ -85,3 +85,7 @@ OPENBLAS_NUM_THREADS=1 uv run python experiments/chatgpt_topology_search/runs/EX
 5. 本フォルダのコードを`src/lpf/`制約版ローダ・共通解析器へ統合し、RF-T004 resolved fingerprint・uv.lock・source SHAを記録してWSL2で再実行する。
 
 **Phase 2のまま継続する。Phase 3は明示承認を受けるまで開始しない。**
+
+## 2026-10-14 追加探索（別記）
+
+本READMEで記録した22構造・217初期値の結果は履歴として維持する。その後の**54可変C配置・追加16構造・Q33パレート**の新たな有限探索、最大IL **0.4509005 dB（30dB条件）**、**0.5394394 dB（35dB条件）**の公称HV-only候補、および独立MNA・7001点照合は[追補](ADDENDUM_2026-10-14.md)と[保存チェックポイント](checkpoints.json)を参照。Phase2継続・Phase3未承認。

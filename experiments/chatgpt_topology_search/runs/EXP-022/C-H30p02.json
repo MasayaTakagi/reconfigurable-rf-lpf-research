@@ -1,0 +1,195 @@
+{
+  "id": "EXP-022",
+  "constraint_id": "RF-T004",
+  "formal_base": "RF-F002",
+  "trial_resolved_sha256": "c66302a281a1fdb88da355fc44dac1ef3b1c4e18e8ff297db9e842b219b5b0c4",
+  "status": "nominal_grid_and_independent_mna_reverified_IL_target_failed",
+  "phase": "Phase 2",
+  "source_ohms": 50,
+  "load_ohms": {
+    "real": 60,
+    "imag": -40
+  },
+  "objective": "full_lpf",
+  "chip_area_units": 6,
+  "L_series": [
+    "LQP02HV",
+    "LQP02HV",
+    "LQP02HV",
+    "LQP02HV"
+  ],
+  "L_Q": 25,
+  "L_edges": [
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      2,
+      5
+    ],
+    [
+      2,
+      3
+    ]
+  ],
+  "physical_row": [
+    "L0",
+    "L1",
+    "L3",
+    "L2"
+  ],
+  "nonneighbor_nominal_k": 0,
+  "fixed_C_edges": [
+    [
+      1,
+      2
+    ],
+    [
+      5,
+      0
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      1,
+      4
+    ]
+  ],
+  "fixed_C_types": [
+    "GJM01",
+    "GJM01",
+    "GJM01",
+    "PCB_PATTERN_C"
+  ],
+  "fixed_C_Q": [
+    80,
+    80,
+    80,
+    40
+  ],
+  "variable_C_edges": [
+    [
+      4,
+      0
+    ],
+    [
+      5,
+      0
+    ],
+    [
+      2,
+      3
+    ]
+  ],
+  "variable_C_Q": 50,
+  "variable_C_bounds_pf": [
+    0,
+    1.5
+  ],
+  "verification": {
+    "samples_per_each_individual_band_interval": 7001,
+    "independent_MNA_dim": 9,
+    "EM_SRF_Qf_verified": false,
+    "global_optimality_proven": false
+  },
+  "name": "C-H30p02",
+  "harmonic_target_dB": 30.02,
+  "L_nH": [
+    3.1966263130972044,
+    20.24741780397865,
+    14.65374952462619,
+    5.082272618443027
+  ],
+  "neighbor_k": [
+    0.14999999999999986,
+    0.007852624217870734,
+    -0.11761143056463047
+  ],
+  "fixed_C_pf": [
+    2.088682158837372,
+    0.3853462085900239,
+    0.7312125161824184,
+    0.02557766881223929
+  ],
+  "variable_C_pf_by_setting": {
+    "B71": [
+      0.6090791498847947,
+      0.139006489803391,
+      1.5
+    ],
+    "B12": [
+      0.5697372255248242,
+      0.08857153983235316,
+      1.3433819200593538
+    ],
+    "B28": [
+      0.5218985650554887,
+      0,
+      1.3361429686275919
+    ],
+    "B13+B14": [
+      0.37080472278664417,
+      0.23740901387542263,
+      0.24715855634286446
+    ],
+    "B26": [
+      0.2700550701771105,
+      0.191914337360854,
+      0.1398617730010167
+    ],
+    "B8": [
+      0.1925842605279245,
+      0.07337021841135326,
+      0
+    ]
+  },
+  "worst_IL_db": 0.3057201115558825,
+  "min_H2_db": 30.01999999999287,
+  "min_H3_db": 30.019999999985956,
+  "critical": {
+    "IL": [
+      "B28",
+      "DL",
+      803
+    ],
+    "H2": [
+      "B28",
+      1406
+    ],
+    "H3": [
+      "B8",
+      2640
+    ]
+  },
+  "independent": {
+    "max_voltage_error_V": 2.220446049250313e-15,
+    "max_power_residual_W": 4.7704895589362195e-18,
+    "min_K_eigenvalue": 0.849473234922996
+  },
+  "sensitivity": {
+    "fixed_tune_single_parameter_scenarios": 22,
+    "H30_failures": 21
+  },
+  "original_draft_experiment_id": "EXP-021",
+  "historical_reported_status": "finite_local_grid_independent_MNA_verified_but_IL_target_failed",
+  "reverification_2026_10_14": {
+    "reference_solver": "src/lpf/circuit.py canonical series ESR; separately authored nodal and 84-point branch-current MNA",
+    "samples_per_each_individual_band_interval": 7001,
+    "independent_mna_points": 84,
+    "recomputed_worst_IL_db": 0.3057201115558825,
+    "recomputed_min_H2_db": 30.01999999999287,
+    "recomputed_min_H3_db": 30.019999999985956,
+    "saved_metrics_match": true,
+    "meets_30dB": true,
+    "meets_IL_0p30dB": false,
+    "prior_audit_discrepancy_claim_withdrawn": true,
+    "physical_Qf_SRF_EM_verified": false
+  }
+}

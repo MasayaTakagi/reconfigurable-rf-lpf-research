@@ -52,7 +52,7 @@ jobs:
           assert seven["meets_trial_IL_0p30"]
           assert abs(seven["worst_IL_db"]-0.29984526946634216)<1e-7
           assert not miss["IL_goal_pass"]
-          assert miss["worst_IL_db"]>0.30
+          assert miss["IL_db"]>0.30
           print("PASS: independent finite-grid replay under *historical* RF-T003")
           PY
       - name: Save complete finite-grid numerical replay evidence

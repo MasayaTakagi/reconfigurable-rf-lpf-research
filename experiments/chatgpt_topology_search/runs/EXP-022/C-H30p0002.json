@@ -1,0 +1,192 @@
+{
+  "id": "EXP-022",
+  "constraint_id": "RF-T004",
+  "formal_base": "RF-F002",
+  "trial_resolved_sha256": "c66302a281a1fdb88da355fc44dac1ef3b1c4e18e8ff297db9e842b219b5b0c4",
+  "status": "archive_requires_reoptimization_due_to_canonical_solver_discrepancy",
+  "phase": "Phase 2",
+  "source_ohms": 50,
+  "load_ohms": {
+    "real": 60,
+    "imag": -40
+  },
+  "objective": "full_lpf",
+  "chip_area_units": 6,
+  "L_series": [
+    "LQP02HV",
+    "LQP02HV",
+    "LQP02HV",
+    "LQP02HV"
+  ],
+  "L_Q": 25,
+  "L_edges": [
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      2,
+      5
+    ],
+    [
+      2,
+      3
+    ]
+  ],
+  "physical_row": [
+    "L0",
+    "L1",
+    "L3",
+    "L2"
+  ],
+  "nonneighbor_nominal_k": 0,
+  "fixed_C_edges": [
+    [
+      1,
+      2
+    ],
+    [
+      5,
+      0
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      1,
+      4
+    ]
+  ],
+  "fixed_C_types": [
+    "GJM01",
+    "GJM01",
+    "GJM01",
+    "PCB_PATTERN_C"
+  ],
+  "fixed_C_Q": [
+    80,
+    80,
+    80,
+    40
+  ],
+  "variable_C_edges": [
+    [
+      4,
+      0
+    ],
+    [
+      5,
+      0
+    ],
+    [
+      2,
+      3
+    ]
+  ],
+  "variable_C_Q": 50,
+  "variable_C_bounds_pf": [
+    0,
+    1.5
+  ],
+  "verification": {
+    "samples_per_each_individual_band_interval": 7001,
+    "independent_MNA_dim": 9,
+    "EM_SRF_Qf_verified": false,
+    "global_optimality_proven": false
+  },
+  "name": "C-H30p0002",
+  "harmonic_target_dB": 30.0002,
+  "L_nH": [
+    3.1943411215989737,
+    20.285589813864483,
+    14.689226593570845,
+    5.080084372367607
+  ],
+  "neighbor_k": [
+    0.15,
+    0.008001632082023438,
+    -0.11764476478031165
+  ],
+  "fixed_C_pf": [
+    2.0899528166298156,
+    0.3843430271650009,
+    0.7311417728501948,
+    0.025570949643370963
+  ],
+  "variable_C_pf_by_setting": {
+    "B71": [
+      0.6083217003456199,
+      0.1388677592153481,
+      1.5
+    ],
+    "B12": [
+      0.5499045752924013,
+      0.0583394242571538,
+      1.3061677352902215
+    ],
+    "B28": [
+      0.5212802860679612,
+      0,
+      1.3362997434040285
+    ],
+    "B13+B14": [
+      0.3698920389318129,
+      0.24201913125561578,
+      0.265721088729382
+    ],
+    "B26": [
+      0.26962088030037074,
+      0.1917093345876697,
+      0.1398965726273918
+    ],
+    "B8": [
+      0.1922737155912914,
+      0.07347068519285227,
+      0
+    ]
+  },
+  "worst_IL_db": 0.3054812436663839,
+  "min_H2_db": 30.000199999999914,
+  "min_H3_db": 30.000199999999936,
+  "critical": {
+    "IL": [
+      "B28",
+      "DL",
+      803
+    ],
+    "H2": [
+      "B28",
+      1496
+    ],
+    "H3": [
+      "B28",
+      2244
+    ]
+  },
+  "independent": {
+    "max_voltage_error_V": 2.2315206618374916e-15,
+    "max_power_residual_W": 5.204170427930421e-18,
+    "min_K_eigenvalue": 0.8494528373763137
+  },
+  "sensitivity": {
+    "fixed_tune_single_parameter_scenarios": 22,
+    "H30_failures": 21
+  },
+  "original_draft_experiment_id": "EXP-021",
+  "historical_reported_status": "finite_local_grid_independent_MNA_verified_but_IL_target_failed",
+  "review_2026_10_14": {
+    "reference_solver": "src/lpf/circuit.py; series ESR capacitor Z=(1/Q-j)/(omega*C), coupled 9x9 branch-current MNA",
+    "checked_frequency_points_per_band_interval": 7001,
+    "nominal_recomputed_worst_IL_db": 0.3053157380042951,
+    "nominal_recomputed_min_H2_db": 29.98775259631664,
+    "nominal_recomputed_min_H3_db": 29.984924991575845,
+    "meets_30dB": false,
+    "previous_recorded_metrics_are_historical_and_not_verified_under_canonical_solver": true,
+    "need_reoptimization_before_promotion": true
+  }
+}

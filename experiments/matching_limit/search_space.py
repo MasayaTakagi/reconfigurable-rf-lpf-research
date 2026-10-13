@@ -24,11 +24,14 @@ def inductor_types(series_mode=None):
 
 
 def enumerate_variable_c_layouts(graph, resolved_policy, *, max_layouts=None):
-    """Enumerate policy-authorized shunts/bridges on terminals and internal nodes.
+    """Enumerate bounded policy-authorized variable-C edge assignments.
 
-    A non-ground bridge is retained only when the fixed, ground-excluded graph
-    already connects input to output and both bridge endpoints belong to that
-    fixed signal component. A cap that supplies the only signal path is rejected.
+    RF-F002/RF-T004 permit 1..N branches: grounded shunts, fixed-path
+    bridges and explicitly marked series branches. A series element may
+    close a previously open input-to-output path. Legacy RF-F001 trial
+    layouts remain exact-count/exact-role. The enumerator excludes multiple
+    independently controlled capacitors on the same physical edge.
+    This is not an exhaustive physical-layout feasibility check.
     """
     n_nodes, fixed_edges = graph
     if type(n_nodes) is not int or n_nodes < 3:

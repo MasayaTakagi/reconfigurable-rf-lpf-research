@@ -63,14 +63,14 @@ def frequency_grid(rows,points):
                  for f in np.linspace(float(r['low_mhz']),float(r['high_mhz']),points))) for c in CASES}
 
 def layout_candidates(graph,max_layouts,*,resolved_policy=None):
+    """Deterministic admissible coupling candidates under a pinned policy.
+
+    Chip-to-PCB nominal coupling is zero in this stage; each K must be SPD.
+    """
     policy=load_constraint() if resolved_policy is None else resolved_policy
     couplings=policy["coupling_limits"]
     strong=float(couplings["chip_chip_strong_adjacent_abs_k_max"])
     pcb=float(couplings["pcb_pcb_abs_k_max_default"])
-    """Deterministic nominal + spread chip and PCB coupling patterns.
-
-    Chip-to-PCB remains nominal zero in this stage. Every candidate must be SPD.
-    """
     import itertools
     types=[t for _,_,t in graph[1] if t not in ('GJM01','PCB_PATTERN_C')]
     chips=[i for i,t in enumerate(types)

@@ -182,9 +182,10 @@ def validate_variable_c_connections(branches, resolved_policy):
     """Check specified C-branch endpoints against formal/trial *connection* scope.
 
     Branches are dictionaries with integer 'a', 'b' node IDs (0 = ground).
-    A non-ground branch must be explicitly marked role='bridge'. This checks
-    connection metadata; independent graph analysis is still required to prove
-    a labelled bridge is not a series-only path.
+    Non-ground branches must explicitly identify role='bridge' or
+    role='series'. This checks connection metadata; graph analysis is
+    separately needed to establish the physical relationship of each
+    connection to the fixed signal path.
     """
     if not isinstance(branches, (list, tuple)):
         raise ValueError("Variable C branches must be a sequence")

@@ -527,9 +527,11 @@ def run(args, progress_callback=None, candidate_progress_callback=None):
             candidate_layouts=[(variable_index,variable_layout,layout_index,K)
                 for variable_index,variable_layout in enumerate(variable_layouts)
                 for layout_index,K in enumerate(coupling_layouts)]
-            bounds=bounds_for(graph,variable_count=len(variable_layouts[0]['edges']),
-                              resolved_policy=profile['policy'])
             for variable_index,variable_layout,layout_index,K in candidate_layouts:
+                # RF-F002 and RF-T004 allow a variable branch count (1..N).
+                # Each topology needs its own optimizer vector dimension.
+                bounds=bounds_for(graph,variable_count=len(variable_layout['edges']),
+                                  resolved_policy=profile['policy'])
                 for start_index in range(args.starts):
                     candidate_key=(f'{graph_id}:{layout_index}:{start_index}'
                         if profile['legacy'] else

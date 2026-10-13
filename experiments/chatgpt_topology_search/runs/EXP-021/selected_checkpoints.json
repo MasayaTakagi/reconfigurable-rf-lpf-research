@@ -528,5 +528,8 @@
       "min_H3_db": 35.19999999990474,
       "part_specific_SRF_and_Qf_verified": false
     }
-  ]
+  ],
+  "resolved_constraint_sha256": "c66302a281a1fdb88da355fc44dac1ef3b1c4e18e8ff297db9e842b219b5b0c4",
+  "phase2_status": "nominal_dense_grid_and_independent_MNA_checked;_no_EM_Qf_SRF_layout_verification",
+  "opt_code_reproducibility": "local scratch optimizers archived separately; complete uv.lock replay not run"
 }

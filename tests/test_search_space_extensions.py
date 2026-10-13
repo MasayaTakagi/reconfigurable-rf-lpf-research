@@ -48,7 +48,8 @@ class ExplicitSeriesSearchTests(unittest.TestCase):
 
     def test_series_bounds_and_three_variable_dimensions(self):
         graph=(4,((1,3,'LQP02HV'),(3,2,'LQP02HQ')))
-        np.testing.assert_allclose(bounds_for(graph,variable_count=3),
+        np.testing.assert_allclose(bounds_for(graph,variable_count=3,
+                                                      resolved_policy=load_constraint('RF-F001')),
                                    [(0.4,27),(0.2,56)]+[(0,4)]*18)
         policy=load_constraint('RF-T001',allow_trial=True)
         layout={'edges':((3,0),(1,0),(2,0)),

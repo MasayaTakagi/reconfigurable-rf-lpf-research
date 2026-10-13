@@ -48,7 +48,7 @@ jobs:
           assert load_constraint()["active_constraint_id"]=="RF-F002"
           assert constraint_fingerprint(trial)=="e0c45f7094ced1ed2ccb91cae474c7c3c1a6af73a495a2a9cf8f512ccb45ab08"
           assert five["LOW_IL_30p01"]["IL_goal_pass"]
-          assert abs(five["LOW_IL_30p01"]["worst_IL_db"]-0.295989813713)<1e-7
+          assert abs(five["LOW_IL_30p01"]["IL_db"]-0.295989813713)<1e-7
           assert seven["meets_trial_IL_0p30"]
           assert abs(seven["worst_IL_db"]-0.29984526946634216)<1e-7
           assert not miss["IL_goal_pass"]

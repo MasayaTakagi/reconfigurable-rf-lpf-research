@@ -27,7 +27,7 @@
   "implemented_Qf_SRF_EM": false,
   "candidates": [
     {
-      "id": "EXP017-HV30-6C",
+      "id": "EXP021-HV30",
       "topology": {
         "n": 5,
         "L": [
@@ -149,10 +149,11 @@
       "area": 8,
       "worst_IL_db": 0.39332743887361354,
       "min_H2_db": 30.199999999997836,
-      "min_H3_db": 30.199999999999537
+      "min_H3_db": 30.199999999999537,
+      "original_local_id": "EXP017-HV30-6C"
     },
     {
-      "id": "EXP017-HV35-6C",
+      "id": "EXP021-HV35",
       "topology": {
         "n": 5,
         "L": [
@@ -274,10 +275,11 @@
       "area": 8,
       "worst_IL_db": 0.44794368380996297,
       "min_H2_db": 35.19957732589947,
-      "min_H3_db": 35.199999999999854
+      "min_H3_db": 35.199999999999854,
+      "original_local_id": "EXP017-HV35-6C"
     },
     {
-      "id": "EXP017-Q33x4-30-6C",
+      "id": "EXP021-Q33x4-30",
       "topology": {
         "n": 5,
         "L": [
@@ -400,10 +402,11 @@
       "worst_IL_db": 0.31062126931092016,
       "min_H2_db": 30.199998502071253,
       "min_H3_db": 30.199999999999555,
-      "part_specific_SRF_and_Qf_verified": false
+      "part_specific_SRF_and_Qf_verified": false,
+      "original_local_id": "EXP017-Q33x4-30-6C"
     },
     {
-      "id": "EXP017-Q33x4-35-6C",
+      "id": "EXP021-Q33x4-35",
       "topology": {
         "n": 5,
         "L": [
@@ -526,7 +529,8 @@
       "worst_IL_db": 0.34860449258570825,
       "min_H2_db": 35.1980252141537,
       "min_H3_db": 35.19999999990474,
-      "part_specific_SRF_and_Qf_verified": false
+      "part_specific_SRF_and_Qf_verified": false,
+      "original_local_id": "EXP017-Q33x4-35-6C"
     }
   ],
   "resolved_constraint_sha256": "c66302a281a1fdb88da355fc44dac1ef3b1c4e18e8ff297db9e842b219b5b0c4",

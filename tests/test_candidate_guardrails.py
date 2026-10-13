@@ -67,6 +67,18 @@ class CandidateIndexGuardrails(unittest.TestCase):
         shutil.copytree(ROOT / "data/constraints", self.root / "data/constraints",
                         dirs_exist_ok=True)
         shutil.copytree(ROOT / RUNS, self.root / RUNS, ignore=shutil.ignore_patterns("__pycache__"))
+        shutil.copytree(ROOT / "data/validation/rf_f002_phase2_20261013",
+                        self.root / "data/validation/rf_f002_phase2_20261013")
+        for relative in (
+            "data/validation/rft003_20261013/five_L_cost6p33_candidates.json",
+            "experiments/matching_limit/full_lpf.py",
+            "scripts/reopt_lpf007_rf_f002.py",
+            "scripts/reopt_rft003_5l_rf_f002.py",
+            "scripts/reopt_rft004_seed_rf_f002.py",
+        ):
+            target = self.root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / relative, target)
         # Mirror all registered candidates so additional active candidates can
         # be audited in the temporary root without hardcoded fixture IDs.
         with (ROOT / "data/candidate_index.csv").open(newline="", encoding="utf-8") as handle:

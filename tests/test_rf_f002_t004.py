@@ -56,6 +56,10 @@ class RevisedRFConstraintsTests(unittest.TestCase):
                          {"branch_count":3,"count_policy":"up_to","connection_policy":"any_allowed"})
         self.assertEqual(trial["components"]["IC_VARIABLE_C"]["max_branches_principle"], 3)
         self.assertEqual(trial["components"]["IC_VARIABLE_C"]["q"], 50)
+        # Default count validation remains formal; trial opt-in allows 3.
+        self.assertFalse(check_counts(n_var=3))
+        self.assertTrue(check_counts(n_var=3, resolved_policy=trial))
+        self.assertFalse(check_counts(n_var=4, resolved_policy=trial))
         shunt = {"a":1,"b":0}
         bridge = {"a":1,"b":2,"role":"bridge"}
         series = {"a":2,"b":3,"role":"series"}

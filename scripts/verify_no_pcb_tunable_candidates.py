@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independent finite-grid baseline regression for current-policy LPF-007/008.
+"""Independent finite-grid baseline regression for historical RF-F001 LPF-007/008.
 
 Recomputes coupled-inductor MNA and checks immutable reference metrics and
 current component policy. This is NOT interval, optimizer-convergence, or EM
@@ -34,7 +34,7 @@ def read_candidate(name):
 
 
 def read_policy():
-    return json.loads((ROOT / "data" / "design_constraints.json").read_text(encoding="utf-8"))
+    return json.loads((ROOT / "data" / "constraints" / "formal" / "RF-F001.json").read_text(encoding="utf-8"))
 
 
 def require(condition, message):

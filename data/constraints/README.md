@@ -1,6 +1,6 @@
 # Versioned RF constraints (Phase 2)
 
-- **正式条件:** `formal/RF-Fxxx.json`。承認後は変更不可。現行は`RF-F001`、`registry.json`の`active_formal_id`で参照。
+- **正式条件:** `formal/RF-Fxxx.json`。承認後は変更不可。現行は`RF-F002`、`registry.json`の`active_formal_id`で参照。
 - **検討用仮条件:** `trial/RF-Txxx.json`。特定の正式版IDを`base_constraint_id`で固定し、変更点だけを`overrides`へ保存。仮条件は正式条件ではなく、正式採用にはユーザーの明示承認と**新たな正式ID**が必要。
 - **既存互換:** `../design_constraints.json`は現行正式スナップショットと完全一致する互換ファイル。正本は`formal/`内の変更不可スナップショット。更新するときは必ず両者とregistryを同時更新し、監査テストで一致を確認。
 - **旧条件:** `registry.json`の`historical`で元コミットを記録。旧候補の`spec_id`、性能、スクリプトを遡及変更しない。旧LPF-007/008等の再現・回帰と新条件への適合は別問題。
@@ -61,3 +61,9 @@ trial登録には台帳の `base_constraint_id` とファイルの同項目が�
 
 実験マニフェストの仕様・履歴の不明値・新規実験開始手順は
 [docs/experiment_manifests.md](../../docs/experiment_manifests.md)を参照。
+
+## 2026-10-13 RF-F002とRF-T004
+
+現行正式制約は[RF-F002](formal/RF-F002.json)、従来RF-F001は不変の履歴。新正式条件はチップ隣接|k|≤0.15、非強結合公称k=0・感度|k|≤0.03、PCB間|k|≤0.15、chip–PCB k=0、PCB-L≤2nH、可変C最大2枝・各0–1.5pF・Q50・配置自由、LQW04 Q33。旧セクションの「現行正式RF-F001」は2026-10-12時点の記述。
+
+[RF-T004](trial/RF-T004.json)はRF-F002を固定基準とする明示opt-in試験条件。可変Cのみ最大3枝まで拡張し、0〜3枝、位置自由。RF-T001/T002/T003はRF-F001基準の履歴試験のままとする。Phase 3停止。

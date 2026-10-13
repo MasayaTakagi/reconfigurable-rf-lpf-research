@@ -5,6 +5,10 @@
 - **本ファイルの役割:** プロジェクトの**運用指示の正本**。ChatGPTの「プロジェクトの指示」欄は、このファイルへの短い参照文のみとする。
 - **最重要:** **研究全体はPhase 2**。**Phase 3はユーザーが明示承認するまで開始しない。**
 
+## 2026-10-13 制約改訂
+
+正式現行版はRF-F002（`data/constraints/formal/RF-F002.json`）、3可変C緩和の試験版はRF-T004（RF-F002固定ベース）。旧RF-F001および旧RF-T001〜T003は変更せず履歴として保持。以下の2026-10-12時点の条件概要は旧版の記録であり最新数値正本ではない。Phase 2継続、Phase 3停止。
+
 ## 0. 正本の階層と更新方法
 
 本ファイルはChatGPTの研究・実行上の行動原則の正本だが、**数値RF制約の正本は本ファイルではない**。次の責務を区別する。
@@ -12,7 +16,7 @@
 | 情報 | 正本・確認先 |
 |---|---|
 | ChatGPTの役割、開発方針、作業ルール | **本ファイル** `docs/chatgpt_project_instructions.md` |
-| 承認済み数値制約・部品モデル・例外承認の状態 | **`data/constraints/formal/RF-F001.json`**（承認済み正式版の固定スナップショット）と`data/constraints/registry.json`（台帳）。`data/design_constraints.json`は互換用コピー |
+| 承認済み数値制約・部品モデル・例外承認の状態 | **`data/constraints/formal/RF-F002.json`**（現行の承認済み正式スナップショット）と`data/constraints/registry.json`（台帳）。`data/design_constraints.json`は互換用コピー |
 | 周波数帯域と不連続区間 | **`data/bands.csv`** |
 | 数値仕様の説明、部品採用理由 | `docs/specification.md`、`docs/inductor_series_policy.md` |
 | 現在の開発ゲート・未完了課題 | `docs/roadmap.md` |

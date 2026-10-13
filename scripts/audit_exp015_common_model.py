@@ -166,7 +166,8 @@ def audit_candidate(candidate_id,*,replay_points=7001):
             expected_inductor_edges=INDUCTOR_EDGES,
             expected_capacitor_edges=tuple(map(tuple,saved['fixed_C_edges']))+
                                        variable_edges,
-            inductor_types=series,physical_order=list(map(int,saved['physical_row']))))
+            inductor_types=series,physical_order=list(map(int,saved['physical_row'])),
+            resolved_policy=formal))
     combined={
         'frequency_count':sum(item['frequency_count'] for item in checks),
         'max_gain_discrepancy':max(item['max_gain_discrepancy'] for item in checks),

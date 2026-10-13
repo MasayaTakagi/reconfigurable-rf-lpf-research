@@ -18,6 +18,12 @@ from lpf.evaluate import CASES
 from search_space import enumerate_variable_c_layouts
 from coupling_layout import (admissible_matrix,adjacent_patterns,
                              validate_coupling_matrix)
+from functools import partial
+# CouplingPhysicalAdjacencyTests replay the archived RF-F001 model.
+historical=load_constraint('RF-F001')
+admissible_matrix=partial(admissible_matrix,resolved_policy=historical)
+adjacent_patterns=partial(adjacent_patterns,resolved_policy=historical)
+validate_coupling_matrix=partial(validate_coupling_matrix,resolved_policy=historical)
 from p4_batch import bounds_for,settings_for,validate as validate_search_result
 from lpf.evaluate import load_bands
 

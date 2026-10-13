@@ -3,6 +3,7 @@ from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'src'))
 from lpf.circuit import Branch,solve
 from lpf.validate import validate_couplings
+from lpf.constraint_versions import load_constraint
 
 class CircuitTests(unittest.TestCase):
     def test_direct(self):
@@ -19,6 +20,7 @@ class CircuitTests(unittest.TestCase):
             capacitors=[Branch(2,0,1e-12,80)],coupling=[[1,.4],[.4,1]])
         self.assertLess(abs(r['power_residual']),1e-12)
     def test_policy(self):
-        self.assertEqual(validate_couplings([[1,.4],[.4,1]],['chip','chip'],[0,1],[(0,1)]),[])
+        self.assertEqual(validate_couplings([[1,.4],[.4,1]],['chip','chip'],[0,1],[(0,1)],
+                                            resolved_policy=load_constraint('RF-F001')),[])
         self.assertTrue(validate_couplings([[1,.4],[.4,1]],['chip','chip'],[0,1],[]))
         self.assertTrue(validate_couplings([[1,.7],[.7,1]],['pcb','pcb'],[]))

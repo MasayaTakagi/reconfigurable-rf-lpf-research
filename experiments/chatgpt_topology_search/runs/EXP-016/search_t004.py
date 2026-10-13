@@ -38,6 +38,10 @@ TOPOLOGIES={
  'C-dual-path-B':dict(n=4,L=[(0,1),(1,3),(0,2),(2,3)],F=[(1,-1),(2,-1),(1,2)],V=[(0,1),(2,3),(1,2)]),
  'C-dual-trap':dict(n=6,L=[(0,1),(1,2),(2,3),(1,4),(2,5)],F=[(1,-1),(4,-1),(5,-1)],V=[(0,1),(4,-1),(5,-1)]),
  'C-4series-trap':dict(n=6,L=[(0,1),(1,2),(2,4),(4,3),(2,5)],F=[(1,-1),(4,-1),(5,-1)],V=[(0,1),(4,3),(5,-1)]),
+ 'D-PCBpattern-trap':dict(n=5,L=[(0,1),(1,2),(2,3),(2,4)],F=[(1,-1),(2,-1),(4,-1)],Ftypes=['PCB','PCB','GJM'],V=[(0,1),(2,3),(4,-1)]),
+ 'D-trap-only':dict(n=5,L=[(0,1),(1,2),(2,3),(2,4)],F=[(4,-1)],V=[(0,1),(2,3),(4,-1)]),
+ 'D-3L-trap':dict(n=4,L=[(0,1),(1,3),(1,2)],F=[(2,-1)],V=[(0,1),(1,3),(2,-1)]),
+ 'D-2L-elliptic':dict(n=4,L=[(0,1),(1,2),(2,3)],F=[(1,-1)],V=[(0,1),(2,3),(1,-1)]),
 }
 R_SOURCE=50.; Z_LOAD=60-40j
 LOAD_Y=1/Z_LOAD
@@ -62,15 +66,15 @@ class Network:
   self.fmhz=np.array(self.fmhz);self.casi=np.array(self.casi);self.which=np.array(self.which)
   self.passmask=(self.which=='pass');self.stopmask=~self.passmask;self.ws=self.fmhz*2*np.pi*1e6
   self.source=np.zeros(self.n,dtype=complex);self.source[0]=1/R_SOURCE
-  self.bounds=[(0.4,27.)]*self.nl+[(0.12,25.)]*self.nf+[(0.,1.5)]*(6*self.nv)
+  self.Ftypes=t.get('Ftypes',['GJM']*self.nf);self.bounds=[(0.4,27.)]*self.nl+[(0.02,0.2) if typ=='PCB' else (0.12,25.) for typ in self.Ftypes]+[(0.,1.5)]*(6*self.nv)
   self._cached_x=None
  def init(self,rng):
   # Basic cutoff pi-type shunts and series stubs; randomized across band settings.
   z=[]
   z+=list(rng.uniform(4,16,size=self.nl))
   if self.n==5: z[-1]=rng.uniform(4,15)
-  z+=list(rng.uniform(0.8,6.,size=self.nf))
-  if self.n==5: z[-1]=rng.uniform(0.25,2.0)
+  z+=[float(rng.uniform(.03,.19) if typ=='PCB' else rng.uniform(0.8,6.)) for typ in self.Ftypes]
+  if self.n==5 and self.Ftypes and self.Ftypes[-1]=='GJM': z[-1]=rng.uniform(0.25,2.0)
   for ci,case in enumerate(CASES):
    f2=np.mean(BANDS[case]['H2'][0]);f3=np.mean(BANDS[case]['H3'][0]);
    for j in range(self.nv):
@@ -84,7 +88,7 @@ class Network:
   x=np.asarray(x); N=len(self.ws)
   # 1 nH => 1e-9H, 1 pF=>1e-12F
   L=x[:self.nl];F=x[self.nl:self.nl+self.nf];V=x[self.nl+self.nf:].reshape(6,self.nv)[self.casi,:]
-  q=np.array([25.]*self.nl+[80.]*self.nf+[50.]*self.nv)
+  q=np.array([25.]*self.nl+[40. if typ=='PCB' else 80. for typ in self.Ftypes]+[50.]*self.nv)
   vals=np.column_stack([np.broadcast_to(L,(N,self.nl)),np.broadcast_to(F,(N,self.nf)),V]);factors=np.r_[np.full(self.nl,1e-9),np.full(self.nf+self.nv,1e-12)]
   zz=self.ws[:,None]*vals*factors[None,:]
   y=np.empty_like(zz,dtype=complex)
@@ -151,7 +155,7 @@ class Network:
    max_balance=max(max_balance,float(bal))
    # Available source power 1/(4*R_SOURCE)
    max_power_excess=max(max_power_excess,max(0,load_power-1/(4*R_SOURCE)))
-  return dict(probe_count=len(probes),mna_voltage_max_abs_diff=max_diff,power_balance_max_abs_w=max_balance,passivity_max_excess_w=max_power_excess,nominal_coupling_all_zero=True,spd_eigenmin_nH=float(np.min(x[:self.nl])),chip_area_units=self.nl+2*self.nf/3)
+  return dict(probe_count=len(probes),mna_voltage_max_abs_diff=max_diff,power_balance_max_abs_w=max_balance,passivity_max_excess_w=max_power_excess,nominal_coupling_all_zero=True,spd_eigenmin_nH=float(np.min(x[:self.nl])),chip_area_units=self.nl+2*sum(typ=='GJM' for typ in self.Ftypes)/3)
 
 def main():
  pa=argparse.ArgumentParser();pa.add_argument('--names',nargs='+',default=list(TOPOLOGIES));pa.add_argument('--starts',type=int,default=3);pa.add_argument('--iter',type=int,default=85);pa.add_argument('--points',type=int,default=5);pa.add_argument('--dense',type=int,default=101);pa.add_argument('--seed',type=int,default=20261014);pa.add_argument('--out',default='/mnt/data/rft004_screen_results.json');opt=pa.parse_args()
@@ -171,7 +175,7 @@ def main():
    runs.append(dict(start=start,x=x.tolist(),screen_metrics=fine,converged_last=tracks[-1]['success'],history=tracks,rank=fine['worst_il_db']+6*maxV**2))
    print(' RESULT',start,'IL',round(fine['worst_il_db'],4),'H2',round(fine['min_h2_db'],3),'H3',round(fine['min_h3_db'],3),'success',tracks[-1]['success'],flush=True)
   best=min(runs,key=lambda r:r['rank']);x=np.asarray(best['x']);best['validation']=net.validate(x);best['component_values']={'LQP02HV_nH':x[:net.nl].tolist(),'GJM01_pF':x[net.nl:net.nl+net.nf].tolist(),'IC_C_pF_by_setting':{c:x[net.nl+net.nf+i*net.nv:net.nl+net.nf+(i+1)*net.nv].tolist() for i,c in enumerate(CASES)}}
-  allres[name]=dict(topology=net.top,area_units=net.nl+2*net.nf/3,starts=opt.starts,best=best,all_trial_summaries=[dict(start=r['start'],x=r['x'],metrics=r['screen_metrics'],converged_last=r['converged_last']) for r in runs])
+  allres[name]=dict(topology=net.top,area_units=net.nl+2*sum(typ=='GJM' for typ in net.Ftypes)/3,starts=opt.starts,best=best,all_trial_summaries=[dict(start=r['start'],x=r['x'],metrics=r['screen_metrics'],converged_last=r['converged_last']) for r in runs])
   print(' BEST',name,best['screen_metrics']['worst_il_db'],best['screen_metrics']['min_h2_db'],best['screen_metrics']['min_h3_db'],'valid',best['validation'],flush=True)
  header=dict(study='RF-T004 Phase 2 topology screening only',formal_base='RF-F002',seed=opt.seed,starts_per_topology=opt.starts,iteration_budget_per_penalty_stage=opt.iter,grid_points_per_interval_optimization=opt.points,grid_points_per_interval_postcheck=opt.dense,source_ohms=50,load_ohms=[60,-40],Q=dict(LQP02HV=25,GJM01=80,IC_C=50),couplings='all zero (nominal; legal RF-F002 subset)',data_bands='data/bands.csv exact discrete segments copied',elapsed_sec=time.time()-t,results=allres)
  with open(opt.out,'w') as f:json.dump(header,f,indent=2,ensure_ascii=False)

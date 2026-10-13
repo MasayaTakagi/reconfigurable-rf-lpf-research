@@ -124,6 +124,7 @@ def verify(points=9):
     out={}
     for item in saved["selected_candidates"]:
         c=item["circuit"].copy()
+        c["candidate_id"]=item["name"]
         fixed=c["fixed_capacitors"]
         assert len({tuple(z["edge"]) for z in fixed if z["kind"]=="PCB_PATTERN_C"})==3
         assert {tuple(z["edge"]) for z in fixed if z["kind"]=="PCB_PATTERN_C"}=={(3,4),(1,3),(1,5)}

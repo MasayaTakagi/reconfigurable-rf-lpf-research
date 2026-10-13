@@ -1,5 +1,7 @@
 # EXP-021 — RF-T004 area ≤6 Phase-2 topology search (2026-10-14)
 
+**回路発見経緯・探索方法・次期トポロジー仮説：** [DISCOVERY_PLAYBOOK.md](DISCOVERY_PLAYBOOK.md)（EXP-021の主要ベクトル、失敗試行、未実行仮説を区別した引継ぎ記録）。
+
 ## 再利用のための発見経緯・探索指針
 
 - [topology_discovery_lessons.md](topology_discovery_lessons.md) — EXP-016 V→PCB-C追加→L1(3,4)から(2,4)への再接続→PCB-C(1,4)への橋絡変更という発見系列、成功/失敗した探索手法、回路グラフと精密候補、今後のP1–P6仮説と検証ゲートを記録。**検証済みと未実行仮説は区別**。

@@ -8,7 +8,7 @@
 ## 再利用のための発見経緯・探索指針
 
 - [topology_discovery_lessons.md](topology_discovery_lessons.md) — EXP-016 V→PCB-C追加→L1(3,4)から(2,4)への再接続→PCB-C(1,4)への橋絡変更という発見系列、成功/失敗した探索手法、回路グラフと精密候補、今後のP1–P6仮説と検証ゲートを記録。**検証済みと未実行仮説は区別**。
-- 今後の最優先シード：`C-H30p02.json`と`C-H30p0002.json`。面積6でIL0.30548dBは30dB/0.30dB同時達成ではなく、引き続きPhase 2のbest-found。
+- 今後の構造仮説のシード：`C-H30p02.json`と`C-H30p0002.json`。元報告の0.30548dBは現行直列ESRモデルで再現せず、現行条件のbest-foundには認定しない。
 
 
 **Status: branch-only exploratory research, NOT promoted to formal RF-F002 or main candidate index. Phase 3 remains paused.**
@@ -18,27 +18,27 @@ User requested preservation of the EXP-017 W3-F4 performance (6-setting maximum 
 
 RF-T004 is a **trial** over formal RF-F002. Registry trial effective SHA256 `c66302a281a1fdb88da355fc44dac1ef3b1c4e18e8ff297db9e842b219b5b0c4`, as recorded on current main in [EXP-020](../EXP-020/README.md). Formal RF-F002 effective SHA256 `f20d27e93451dcec2f823e6f7c3731c06d843050c4d2ace8b0b46ded605542e2`. Main examined at `ff4fe89ef8b1040fe8051e8cbb7a4396ce72a5a7`. Three IC variable Cs, Q50, each 0..1.5pF; GJM Q80; PCB pattern C Q40, each 0.02..0.2pF and count≤3. Chip L linear physical row, only adjacent strong k≤0.15, other k=0 nominal, SPD required. Chip area is a Pareto axis, NOT a formal hard cap.
 
-## Observed local-search results
+## Historical reported local-search results — NOT verified under current canonical solver
 
 | Numeric checkpoint | Chip area | Worst IL dB | Min H2 dB | Min H3 dB | Status |
 |---|---:|---:|---:|---:|---|
 | EXP016 V, previous 4HV+3GJM baseline | 6 | 0.352300316 | ≈30.01 | ≈30.01 | prior experimental result |
-| L1 parallel PCB-C `hv_v0_r0_p1` | 6 | 0.337988468 | 30.020000 | 30.020000 | independently verified |
-| L1 reposition to node2–4 | 6 | 0.318916571 | 30.020000 | 30.020000 | independently verified |
-| **Input bridge PCB (C-H30p02)** | **6** | **0.305720112** | **30.020000** | **30.020000** | independently verified; some rejection margin |
-| **Input bridge PCB (C-H30p0002)** | **6** | **0.305481244** | **30.000200** | **30.000200** | **lowest observed IL**, very fragile |
+| L1 parallel PCB-C `hv_v0_r0_p1` | 6 | 0.337988468 | 30.020000 | 30.020000 | original archive claimed independent verification; not repeated here |
+| L1 reposition to node2–4 | 6 | 0.318916571 | 30.020000 | 30.020000 | original archive claimed independent verification; not repeated here |
+| **Input bridge PCB (C-H30p02)** | **6** | **0.305720112** | **30.020000** | **30.020000** | historical claim; 30.02 dB not reproduced by canonical solver |
+| **Input bridge PCB (C-H30p0002)** | **6** | **0.305481244** | **30.000200** | **30.000200** | historical claim; current solver fails minimum 30 dB |
 | Input bridge PCB at 35.02dB | 6 | 0.376677758 | 35.020000 | 35.020000 | nominal35 attenuation, IL target failed |
-| EXP017 W3-F4, higher-area comparison | 8⅔ | 0.298355657 | ≥30.02 | ≥30.02 | numerical target passes with higher cost |
+| EXP017 W3-F4, higher-area comparison | 8⅔ | 0.298355657 | ≥30.02 | ≥30.02 | historical reported result; not revalidated within this PR |
 
 **Conclusion: no discovered area≤6 circuit meets both IL≤0.30dB and H2/H3≥30dB** in the finite searched families. This is NOT proof of impossibility or a global performance limit. Best observed deficit to IL threshold is 0.005481244dB, and to EXP017 W3-F4 is 0.007125587dB (at different harmonic headrooms).
 
-## New best cost-6 graph
+## Historical proposed cost-6 graph (requires reoptimization and validation)
 All four chip inductors are **LQP02HV, Q25**, common physical row L0–L1–L3–L2. Inductor edges: L0(1,2), **L1(2,4)**, L2(2,5), L3(2,3). Fixed Q80 GJM edges: (1,2), (5,0), (2,3), three components. One fixed Q40 PCB-pattern capacitor bridges **(1,4)**, near 0.02557pF. Three Q50 IC tunables: (4,0), (5,0), (2,3), each 0..1.5pF; only these values vary between six settings. 4×1 + 3×(2/3) = **6 chip area units**; actual PCB/IC resource area not measured.
 
 The C-H30p02 parameters (L nH): [3.1966263131,20.2474178040,14.6537495246,5.0822726184], physical neighboring signed k=[0.150000,0.0078526242,−0.1176114306], fixed Q80 GJM pF=[2.0886821588,0.3853462086,0.7312125162] and PCB pF=0.02557766881. C-H30p0002 is separately optimized and has different exact values; **do not reuse C-H30p02 values for the lower-IL claim**. Checkpoint files contain per-band 3×6 C vectors.
 
 ## Verification and caveats
-Both best candidates independently evaluated using **7,001 points per independent UL/DL/H2/H3 frequency interval**, and 9×9 branch-current MNA checked against 5×5 reduced-nodal admittance, passivity/power budget and full K SPD. For C-H30p02: maximum voltage difference 2.22e−15 V, max power residual 4.77e−18 W, K minimum eigenvalue 0.84947; for C-H30p0002: 2.23e−15 V, 5.20e−18 W, K min 0.84945. Worst IL is at B28 DL 803MHz. Full by-setting critical frequencies available in separate conversation's `selected_verified.json`.
+The original experimental archive **reported** evaluation using **7,001 points per independent UL/DL/H2/H3 frequency interval**, and a 9×9 branch-current MNA comparison with 5×5 reduced-nodal admittance. The current canonical series-ESR audit, however, **does not reproduce the original IL/H2/H3 metrics**; the following voltage, power and SPD numbers are historical archival claims, not certification of these historical passband/stopband results. For C-H30p02: maximum voltage difference 2.22e−15 V, max power residual 4.77e−18 W, K minimum eigenvalue 0.84947; for C-H30p0002: 2.23e−15 V, 5.20e−18 W, K min 0.84945. Worst IL is at B28 DL 803MHz. Full by-setting critical frequencies available in separate conversation's `selected_verified.json`.
 
 **Sensitivity:** at fixed tunable C, individual ±1% L or fixed-C and ±0.005 neighboring-k variations led to **21/22 violations** of H2/H3≥30dB for *both* finalists. This is a diagnostic sensitivity test, not a manufacturer-approved tolerance model; no retuning attempted. Tiny ~0.0256pF PCB C, near-limit k=0.15, finite 30dB rejection margin, and constant-Q assumptions make physical feasibility and yield unverified. SRF, Q(f), EM, layout, PCB physical area, IC routing, mathematically certified continuous-band extrema, and global optimality are NOT verified.
 

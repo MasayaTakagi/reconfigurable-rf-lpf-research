@@ -220,7 +220,15 @@
       "cost": 6,
       "best_301pt_IL_db": 0.30518628257547525,
       "inductance_range_of_LQP01_confirmed": false,
-      "independent_dense_verified": false
+      "independent_dense_verified": false,
+      "best_screen_LQP01_L_nH": 27,
+      "vendor_series_reported_range_nH": [
+        0.3,
+        16
+      ],
+      "vendor_range_url": "https://www.murata.com/en-us/products/inductor/chip/overview/lineup/rf1",
+      "outside_vendor_catalog_range": true,
+      "qualification": "INVALID as a catalog LQP01HV component: 27nH exceeds published 16nH; trial retained only as hypothetical numerical sensitivity. Formal RF-F001 LQP01 range field remains unconfirmed and unchanged."
     },
     {
       "type": "5 chip L+1 PCB_L Q12 (<=3nH)+1GJM+3PCB_C",

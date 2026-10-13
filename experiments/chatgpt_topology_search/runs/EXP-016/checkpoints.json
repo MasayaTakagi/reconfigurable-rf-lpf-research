@@ -1,0 +1,385 @@
+{
+  "experiment_id": "EXP-016",
+  "date": "2026-10-14",
+  "phase": 2,
+  "trial_constraint_id": "RF-T004",
+  "base_constraint_id": "RF-F002",
+  "formal_base_effective_sha256": "f20d27e93451dcec2f823e6f7c3731c06d843050c4d2ace8b0b46ded605542e2",
+  "formal_base_git_blob_sha": "0417b0bbc0f44bf58db102da6d65107c71af77a5",
+  "trial_git_blob_sha": "765d0dd14d88bb7c91d1303ed896ae69132997f6",
+  "trial_resolved_effective_sha256": "calculate_with_src_lpf_constraint_versions.py",
+  "all_Q_are_fixed_nominal_Phase2_assumptions": true,
+  "chip_inductors_strong_coupling": false,
+  "magnetic_coupling_all_zero": true,
+  "source_ohms": 50,
+  "load_ohms": [
+    60,
+    -40
+  ],
+  "q_fixed_capacitor": 80,
+  "q_variable_capacitor": 50,
+  "main_circuit_edges": {
+    "L": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "fixed_C_edges": [
+      [
+        1,
+        -1
+      ],
+      [
+        2,
+        -1
+      ],
+      [
+        4,
+        -1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "source_node": 0,
+    "load_node": 3,
+    "ground_node": -1,
+    "nominal_mutual_couplings": "all_zero"
+  },
+  "band_csv": "data/bands.csv",
+  "status": "Finite-grid 7001 samples/interval, branch-current MNA representative checks; local search only; non-global; no Q(f) SRF/EM",
+  "candidates": [
+    {
+      "id": "EXP016-HV30-V053",
+      "goal_harmonics_db": 30.2,
+      "Q_L": [
+        25,
+        25,
+        25,
+        25
+      ],
+      "variable_C_edges": [
+        [
+          0,
+          3
+        ],
+        [
+          4,
+          -1
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "L_nH": [
+        3.7522350112,
+        0.4,
+        8.4499457771,
+        10.1205120058
+      ],
+      "fixed_C_pF": [
+        0.12,
+        0.6390465868,
+        0.9892107812,
+        0.4794069163
+      ],
+      "variable_C_pF_by_case": {
+        "B71": [
+          0.8553254575,
+          0.0356966973,
+          0.7360801454
+        ],
+        "B12": [
+          0.6243511802,
+          0.2025408057,
+          0.4154847047
+        ],
+        "B28": [
+          0.6334924427,
+          0.1798780401,
+          0.4207012465
+        ],
+        "B13+B14": [
+          0.3881041492,
+          0.2098097936,
+          0.101986613
+        ],
+        "B26": [
+          0.3500746636,
+          0.1067351142,
+          0.0847919952
+        ],
+        "B8": [
+          0.2550555661,
+          0,
+          0
+        ]
+      },
+      "area_units": 6.666666666666667,
+      "reference_metrics": {
+        "worst_IL_db": 0.4509005130213586,
+        "min_H2_db": 30.199999999999395,
+        "min_H3_db": 30.199999999999516
+      },
+      "checks": {
+        "independent_branch_current_MNA_points": 84,
+        "verification_grid_points_per_interval": 7001,
+        "voltage_mna_max_difference": 8.360097326576708e-15,
+        "power_balance_max_W": 1.2889300358368688e-17
+      }
+    },
+    {
+      "id": "EXP016-HV35-V009",
+      "goal_harmonics_db": 35.2,
+      "Q_L": [
+        25,
+        25,
+        25,
+        25
+      ],
+      "variable_C_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          1,
+          4
+        ]
+      ],
+      "L_nH": [
+        2.4208999808,
+        2.4449057415,
+        8.366996282,
+        6.5863470005
+      ],
+      "fixed_C_pF": [
+        1.9873645753,
+        0.12,
+        0.8410487607,
+        2.3512775781
+      ],
+      "variable_C_pF_by_case": {
+        "B71": [
+          1.5,
+          1.5,
+          0.6662201919
+        ],
+        "B12": [
+          1.5,
+          1.5,
+          0
+        ],
+        "B28": [
+          1.5,
+          1.2311785186,
+          0.4390149625
+        ],
+        "B13+B14": [
+          0.7541826192,
+          1.0934979093,
+          0.0570057944
+        ],
+        "B26": [
+          0.689009193,
+          0.6329775525,
+          0.0569641613
+        ],
+        "B8": [
+          0.0414707862,
+          0.2069235332,
+          0
+        ]
+      },
+      "area_units": 6.666666666666667,
+      "reference_metrics": {
+        "worst_IL_db": 0.539439377610971,
+        "min_H2_db": 35.19999999984752,
+        "min_H3_db": 35.199999999984335
+      },
+      "checks": {
+        "independent_branch_current_MNA_points": 84,
+        "verification_grid_points_per_interval": 7001,
+        "voltage_mna_max_difference": 2.609024107869118e-15,
+        "power_balance_max_W": 1.214306433183765e-17
+      }
+    },
+    {
+      "id": "EXP016-LQW2-30-V053",
+      "goal_harmonics_db": 30.2,
+      "Q_L": [
+        25,
+        25,
+        33,
+        33
+      ],
+      "variable_C_edges": [
+        [
+          0,
+          3
+        ],
+        [
+          4,
+          -1
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "L_nH": [
+        3.5248874455,
+        0.4,
+        8.4270763288,
+        10.6172068096
+      ],
+      "fixed_C_pF": [
+        0.12,
+        0.6533965727,
+        0.9307843508,
+        0.618616132
+      ],
+      "variable_C_pF_by_case": {
+        "B71": [
+          0.8343160135,
+          0.0522324288,
+          0.6566085439
+        ],
+        "B12": [
+          0.6377206523,
+          0.1921038761,
+          0.3992732153
+        ],
+        "B28": [
+          0.6223615819,
+          0.1784240775,
+          0.3733067656
+        ],
+        "B13+B14": [
+          0.3866128085,
+          0.2013053231,
+          0.100617902
+        ],
+        "B26": [
+          0.3351997836,
+          0.0811772864,
+          0.0766311392
+        ],
+        "B8": [
+          0.2472849654,
+          0,
+          0
+        ]
+      },
+      "area_units": 10.666666666666668,
+      "reference_metrics": {
+        "worst_IL_db": 0.3775201526641626,
+        "min_H2_db": 30.199999999992897,
+        "min_H3_db": 30.199999999941642
+      },
+      "checks": {
+        "independent_branch_current_MNA_points": 84,
+        "verification_grid_points_per_interval": 7001,
+        "inductor_part_values_and_SRF_verified": false
+      }
+    },
+    {
+      "id": "EXP016-LQW3-35-V009",
+      "goal_harmonics_db": 35.2,
+      "Q_L": [
+        33,
+        33,
+        33,
+        25
+      ],
+      "variable_C_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          1,
+          4
+        ]
+      ],
+      "L_nH": [
+        2.549556314,
+        2.3399723939,
+        8.3855630446,
+        6.7229315262
+      ],
+      "fixed_C_pF": [
+        1.9884428806,
+        0.12,
+        0.8231337533,
+        2.334959842
+      ],
+      "variable_C_pF_by_case": {
+        "B71": [
+          1.4061256013,
+          1.4798871053,
+          0.6620097426
+        ],
+        "B12": [
+          1.214149054,
+          1.5,
+          0
+        ],
+        "B28": [
+          1.5,
+          1.1883953489,
+          0.4277852244
+        ],
+        "B13+B14": [
+          0.7541826192,
+          1.0934979093,
+          0.0570057944
+        ],
+        "B26": [
+          0.6852973993,
+          0.6078691438,
+          0.050672151
+        ],
+        "B8": [
+          0,
+          0.1439494078,
+          0.0056558688
+        ]
+      },
+      "area_units": 12.666666666666668,
+      "reference_metrics": {
+        "worst_IL_db": 0.43322120970223926,
+        "min_H2_db": 35.199946602394064,
+        "min_H3_db": 35.19999999974357
+      },
+      "checks": {
+        "independent_branch_current_MNA_points": 84,
+        "verification_grid_points_per_interval": 7001,
+        "inductor_part_values_and_SRF_verified": false
+      }
+    }
+  ]
+}

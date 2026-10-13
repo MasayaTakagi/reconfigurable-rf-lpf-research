@@ -25,6 +25,13 @@ def main():
     data = json.loads(options.candidate.read_text(encoding="utf-8"))
     if data.get("constraint_id") != "RF-F002":
         raise ValueError("RF-F002 candidate required")
+    if data.get("constraint_sha256") != "f20d27e93451dcec2f823e6f7c3731c06d843050c4d2ace8b0b46ded605542e2":
+        raise ValueError("RF-F002 fingerprint mismatch")
+    if data.get("objective") != "full_lpf" or data.get("phase") != "Phase 2":
+        raise ValueError("Invalid objective or phase")
+    if data.get("source_ohm") != 50 or data.get("load_ohm") != {"real": 60, "imag": -40}:
+        raise ValueError("Port impedances do not match RF-F002")
+
     comp, topo = data["components"], data["topology"]
     if len(comp["L_nH"]) != 4 or len(comp["series"]) != 4:
         raise ValueError("Expected 4-inductor checkpoint")
@@ -48,6 +55,19 @@ def main():
         K[a, b] = K[b, a] = k
     if np.linalg.eigvalsh(K).min() <= 0:
         raise ValueError("Non-positive-definite inductance matrix")
+    if len(topo["inductor_edges"]) != 4 or len(topo["IC_VARIABLE_C_edges"]) != 2:
+        raise ValueError("Incorrect branch count")
+    if len(comp["chip_adjacent_k"]) != 3 or len(order) != 4 or len(set(order)) != 4:
+        raise ValueError("Incorrect physical row/coupling count")
+    if comp.get("nominal_nonstrong_k") != 0 or comp.get("chip_PCB_k") != 0:
+        raise ValueError("Unapproved coupling")
+    if comp.get("Q_GJM01") != 80 or comp.get("Q_PCB_C") != 40 or comp.get("IC_VARIABLE_C_Q") != 50:
+        raise ValueError("Capacitor Q does not match RF-F002")
+    n_lqw = comp["series"].count("LQW04")
+    n_hv = comp["series"].count("LQP02HV")
+    area = 3*n_lqw + n_hv + 2*(2/3)
+    if abs(area - float(data["chip_area_units"])) > 1e-9:
+        raise ValueError("Chip area incorrect")
     G = comp["GJM01_pF"]
     P = comp["PCB_PATTERN_C_pF"]
     if len(G) != 2 or any(x <= 0 or x > 100 for x in G) or not .02 <= P <= .2:
@@ -90,6 +110,12 @@ def main():
     il = max(by_setting[c][r][0] for c in CASES for r in ("UL", "DL"))
     h2 = min(by_setting[c]["H2"][0] for c in CASES)
     h3 = min(by_setting[c]["H3"][0] for c in CASES)
+    expected = data.get("evaluation")
+    if expected:
+        tolerance = 1e-3 if options.points < 7001 else 1e-6
+        for key, observed in (("worst_IL_db", il), ("min_H2_db", h2), ("min_H3_db", h3)):
+            if abs(observed - float(expected[key])) > tolerance:
+                raise ValueError(f"Saved {key} does not reproduce: observed {observed}, expected {expected[key]}")
     print(json.dumps({"candidate_id":data["candidate_id"],"points_per_segment":options.points,
                       "worst_IL_db":il,"min_H2_db":h2,"min_H3_db":h3,
                       "max_power_balance_residual_W":max_residual,

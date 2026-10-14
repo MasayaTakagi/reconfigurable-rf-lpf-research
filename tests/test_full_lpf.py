@@ -41,6 +41,8 @@ class FullLPFObjectiveTests(unittest.TestCase):
         np.testing.assert_allclose(first["component_values_internal_units"],
                                    second["component_values_internal_units"], atol=0, rtol=0)
         self.assertEqual(first["analysis_mode"], "full_lpf")
+        self.assertEqual(first["solver_parameterization"],
+                         "normalized_design_variables_minus1_to_plus1_epigraph_db")
         self.assertEqual([stage["harmonic_target_db"] for stage in first["continuation_stages"]],
                          [30.0, 35.0])
         self.assertIn(first["best_found_category"],

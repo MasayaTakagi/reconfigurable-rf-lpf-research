@@ -25,7 +25,7 @@ from p4_batch import bounds_for, settings_for
 ROOT = Path(__file__).resolve().parents[2]
 CAP_TYPES = {"GJM01", "PCB_PATTERN_C"}
 CHIP_L_TYPES = {"LQP01", "LQP02", "LQP02HV", "LQP02HQ", "LQW04"}
-ALGORITHM_VERSION = "rf-f002-full-lpf-epigraph-v1"
+ALGORITHM_VERSION = "rf-f002-full-lpf-epigraph-v2-scaled"
 
 
 def _frequency_records(rows, region, points):
@@ -249,7 +249,22 @@ class FullLPFProblem:
         expected = self.base_dimension + len(self.slots) + 1
         if vector.shape != (expected,):
             raise ValueError("Initial full-LPF optimization vector dimension mismatch")
-        bounds = self.base_bounds + self.coupling_bounds + [(0.0, 100.0)]
+        design_bounds = self.base_bounds + self.coupling_bounds
+        lower = np.asarray([item[0] for item in design_bounds], dtype=float)
+        upper = np.asarray([item[1] for item in design_bounds], dtype=float)
+        widths = upper - lower
+        if np.any(widths <= 0):
+            raise ValueError("Full-LPF design bounds must have positive width")
+
+        def to_solver_coordinates(physical):
+            return np.concatenate((2.0 * (physical[:-1] - lower) / widths - 1.0,
+                                   [physical[-1]]))
+
+        def from_solver_coordinates(scaled):
+            return np.concatenate((lower + 0.5 * (scaled[:-1] + 1.0) * widths,
+                                   [scaled[-1]]))
+
+        bounds = [(-1.0, 1.0)] * len(design_bounds) + [(0.0, 100.0)]
         stages = []
         stage_vectors = []
         started = time.monotonic()
@@ -266,12 +281,13 @@ class FullLPFProblem:
                 return gradient
 
             result = minimize(
-                objective, vector, jac=objective_jacobian, method="SLSQP", bounds=bounds,
+                objective, to_solver_coordinates(vector), jac=objective_jacobian,
+                method="SLSQP", bounds=bounds,
                 constraints=[{"type": "ineq", "fun": lambda z, h=target:
-                              self.inequality_residuals(z, h)}],
+                              self.inequality_residuals(from_solver_coordinates(z), h)}],
                 options={"maxiter": int(maxiter), "ftol": float(ftol)},
             )
-            vector = np.asarray(result.x, dtype=float)
+            vector = from_solver_coordinates(np.asarray(result.x, dtype=float))
             stage_vectors.append(vector.copy())
             residuals = self.inequality_residuals(vector, target)
             coarse_metrics = self.metrics(vector)
@@ -281,6 +297,7 @@ class FullLPFProblem:
                 "message": str(result.message),
                 "iterations": int(getattr(result, "nit", 0)),
                 "function_evaluations": int(getattr(result, "nfev", 0)),
+                "finite_difference_policy": "SciPy SLSQP default eps",
                 "max_constraint_violation": float(max(0.0, -np.min(residuals))),
                 "feasible_on_optimization_grid": bool(np.min(residuals) >= -feasibility_tolerance),
                 "epigraph_il_db": float(vector[-1]),
@@ -343,6 +360,8 @@ class FullLPFProblem:
         variable_values = base[len(edges):].reshape(6, len(self.variable_layout["edges"]))
         return {
             "algorithm_version": ALGORITHM_VERSION,
+            "solver_parameterization": "normalized_design_variables_minus1_to_plus1_epigraph_db",
+            "finite_difference_policy": "SciPy SLSQP default eps",
             "analysis_mode": "full_lpf",
             "constraint_id": self.constraint_id,
             "effective_constraint_sha256": self.constraint_sha256,

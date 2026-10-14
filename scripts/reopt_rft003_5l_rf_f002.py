@@ -196,7 +196,7 @@ def run(args):
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(output, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps({
-        "output": str(output_path.relative_to(ROOT)),
+        "output": str(output_path.relative_to(ROOT) if output_path.is_relative_to(ROOT) else output_path),
         "source_trial_candidate": args.candidate_name,
         "constraint_id": "RF-F002",
         "status": optimized["best_found_category"],

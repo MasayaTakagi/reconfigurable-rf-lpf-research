@@ -56,9 +56,7 @@ def evaluate_at_frequency(fs_mhz, checkpoint, variable_c):
     Y[:, COM["load_node"], COM["load_node"]] += Y_LOAD
     rhs = np.zeros((len(fs), N), complex)
     rhs[:, COM["source_node"]] = 1 / R_SOURCE
-    # RHS shape (Nfreq, Nnode, 1) explicitly denotes stacked column vectors
-    # in NumPy >=2; (Nfreq, Nnode) is ambiguous for batched solve.
-    V = np.linalg.solve(Y, rhs[..., None])[..., 0]
+    V = np.linalg.solve(Y, rhs)
     gt = np.maximum(4 * R_SOURCE * Y_LOAD.real * abs(V[:, 3])**2, 1e-300)
     return -10 * np.log10(gt), V, y, B
 

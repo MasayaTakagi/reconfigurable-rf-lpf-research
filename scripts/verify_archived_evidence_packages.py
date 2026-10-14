@@ -4,6 +4,7 @@
 This checks bytes, archive paths and ZIP CRC only. It is not numerical RF
 verification, and preserves original archive files byte-for-byte.
 """
+import argparse
 import hashlib
 import json
 import posixpath
@@ -102,6 +103,9 @@ def check_checkpoint_zip(root=ROOT):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--summary", type=Path, help="Save integrity-only JSON result")
+    args = parser.parse_args()
     report = {
         "phase": "Phase 2",
         "integrity_scope": "saved_archive_checksums_and_zip_crc_only",
@@ -109,6 +113,10 @@ def main():
         "r1_checkpoint": check_checkpoint_zip(),
         "no_deletion_or_migration": True,
     }
+    if args.summary:
+        args.summary.parent.mkdir(parents=True, exist_ok=True)
+        args.summary.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+                                encoding="utf-8")
     print("PASS archived provenance integrity:", json.dumps(report,
                                                        ensure_ascii=False))
 

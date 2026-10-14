@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 
 from scripts.triage_unlinked_evidence import (
-    EXCLUDE_TEXT_SOURCES, _ref_hits, build_triage,
+    EXCLUDE_TEXT_SOURCES, _ref_hits, build_triage, check_snapshot,
     resolved_markdown_references, to_csv,
 )
 
@@ -22,6 +22,15 @@ class TriageEvidenceTests(unittest.TestCase):
         refs = resolved_markdown_references(texts, tracked)
         self.assertEqual({"docs/source.md"}, refs["data/validation/a.json"])
         self.assertEqual(1, len(refs))
+
+    def test_checked_in_all_46_paths_match_current_github_tracked_bytes(self):
+        summary = check_snapshot()
+        self.assertEqual(46, summary["input_review_file_count"])
+        self.assertEqual(32, summary["review_classes"]["text_linked_requires_semantic_review"])
+        self.assertEqual(9, summary["review_classes"]["content_equal_requires_run_role_review"])
+        self.assertEqual(5, summary["review_classes"]["experiment_source_not_indexed"])
+        self.assertEqual(26, summary["resolved_markdown_link_hits"])
+        self.assertEqual(0, summary["deletions_or_moves_executed"])
 
     def test_review_does_not_confer_disposition_to_delete(self):
         rows, summary = build_triage()

@@ -41,6 +41,8 @@ def check_threshold(classification, requirement, h2, h3, policy_class):
         return [] if policy_class == "historical" else ["Historical label on versioned result"]
     if policy_class == "historical":
         return ["Historical result must not be promoted into a current ranking"]
+    if classification == "reported_finite_grid":
+        return [] if min(h2, h3) >= requirement else ["Reported finite-grid extrema below requirement"]
     if classification == "strict_finite_grid":
         return [] if min(h2, h3) >= requirement else ["Strict classification contradicts raw harmonic value"]
     if classification == "tolerance_only":
@@ -53,6 +55,20 @@ def check_threshold(classification, requirement, h2, h3, policy_class):
 
 def _source_metrics(row, checkpoint, validation):
     stage = row["checkpoint_stage_index"]
+    if stage and isinstance(checkpoint.get("candidates"), list):
+        if validation is not None:
+            raise ValueError("EXP-016 reported results must not be labeled as new independent verification")
+        idx = int(stage)
+        candidates = checkpoint["candidates"]
+        if idx < 0 or idx >= len(candidates):
+            raise ValueError("Candidate index missing in archived checkpoint")
+        item = candidates[idx]
+        if item["id"] != row["catalog_id"]:
+            raise ValueError("Archived candidate identity mismatch")
+        if float(item["goal_harmonics_db"]) < float(row["requirement_db"]):
+            raise ValueError("Reported harmonic goal below catalog requirement")
+        m = item["reference_metrics"]
+        return item["area_units"], m["worst_IL_db"], m["min_H2_db"], m["min_H3_db"]
     if stage:
         if not isinstance(validation, list):
             raise ValueError("Stage validation evidence must be an array")
@@ -153,7 +169,8 @@ def audit_catalog(root=ROOT):
             if (not row["checkpoint_stage_index"] and "candidate_id" in checkpoint and
                     row["catalog_id"] != checkpoint["candidate_id"]):
                 raise ValueError("Checkpoint identity mismatch")
-            if policy_class != "historical" and checkpoint.get("constraint_id") != policy_id:
+            recorded_constraint = checkpoint.get("constraint_id", checkpoint.get("trial_constraint_id"))
+            if policy_class != "historical" and recorded_constraint != policy_id:
                 raise ValueError("Checkpoint constraint mismatch")
             source_hash = checkpoint.get("effective_constraint_sha256", checkpoint.get("constraint_sha256"))
             if source_hash and policy_class != "historical" and source_hash != row["effective_constraint_sha256"]:

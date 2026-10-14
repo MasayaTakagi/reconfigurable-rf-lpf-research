@@ -30,5 +30,9 @@ jobs:
       - run: echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
       - run: python scripts/audit_results.py
       - run: python scripts/audit_research_catalog.py
+      - run: python scripts/verify_exp016_numpy2_replay.py
+      - run: python scripts/audit_experiment_inventory.py
+      - run: python scripts/audit_supplemental_evidence.py
+      - run: python scripts/audit_validation_overlays.py
       - run: python -m unittest discover -s tests -v
       - run: python scripts/verify_no_pcb_tunable_candidates.py

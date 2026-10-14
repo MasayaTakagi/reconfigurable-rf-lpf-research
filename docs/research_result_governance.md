@@ -62,3 +62,25 @@ GitHubの運用方針の正本は `docs/chatgpt_project_instructions.md`。こ�
 **G-C4（その後）**：同一RF条件ごとのPareto算出・条件別best-found表を再生成し、新条件での再最適化・独立検証が必要な候補は「未実施」として残す。
 
 **所有者の承認が必要な判断**：mainへのPR統合、保存根拠に使われる生証拠の削除／外部移設、旧成果の代表候補の採否、RF条件や研究Phaseの変更。レビュー可能な台帳・監査追加まではこれらの判断なしに進められる。
+
+## G-C2棚卸し中間記録（2026-10-14、PR #49以降）
+
+- **全39実験のmanifest投影**を[実験証拠棚卸し台帳](../data/experiment_evidence_inventory.csv)へ保存。正式19、試験5、履歴15。execution状態は`completed`17、`partial`6、`unknown`16。**unknownを未実行と解釈しない。**
+- 現行manifestの`evidence`登録0件はEXP-016/017/021/022/023/024の6実験。これらは「実験の結果ファイルがゼロ件」を意味しない。READMEや別のJSONに証拠がある場合でも、manifestに紐付けられていない状態である。
+- manifest上のseed未記録25実験、execution SHA未記録15実験。全39件を同等の再現性と扱わず、後続監査で個別の原資料を参照する。
+- EXP-025～041の17件には個別READMEがなく、manifestおよび集約報告を参照する状態。READMEの機械的作成や同一フォーマット化は次の保守ゲートで検討する。
+- **統合候補台帳は9件→13件**に追加。EXP-016の4候補は`reported_finite_grid`（元文書報告のみ）で、正式RF-F002や独立CI検証済み候補には昇格していない。
+- [出典照合・訂正記録](result_record_corrections_20261014.md)に、EXP-016の源時点の差と、EXP-017のIL=0.301248245dB点が**35dBではなく30dB要求の記録**であることを記載。元ログやJSONを上書きしない。
+- `scripts/audit_experiment_inventory.py`と`tests/test_experiment_evidence_inventory.py`を追加し、39行の保全と出典の変化をCIで監視する。
+
+以上は**source inventoryと証拠の分類作業**であり、RF-F002候補のIL≤0.30dB達成・大規模探索の完了・連続帯域保証や物理妥当性の実証ではない。未確認箇所は新しい検証証拠を取得してからステータス変更する。
+
+### Manifestがsource-onlyの実験の補助証拠索引
+
+`EXP-016/017/021/022/023/024`の6実験ではmanifestの`evidence=[]`を元のまま残し、[補助証拠リンク36件](../data/supplemental_experiment_evidence_index.csv)を新設した。各pathにはGit blob SHA-1・サイズ・役割を保存。これは**現物ファイルへの出典ポインタ**であり、manifestにSHA-256検証が登録された扱いにも、独立MNA再検証の証拠にもならない。Git blobのSHA-1はmanifestで使用するSHA-256と取り違えない。
+
+`scripts/audit_supplemental_evidence.py`は全36件のファイル存在・Git blob内容ハッシュ・6実験のファイル集合・source-onlyラベルをCIで検査する。後日manifest側に正式な証拠を追加するなら補助索引との二重正本化を避けるため同時にレビューする。
+
+### 保存元を変更しない独立追試の追加
+
+[EXP-016の独立追試summary](../data/validation/exp016_rf_t004_numpy2_replay_20261014/summary.json)を、元のsource-only manifestとは別の**新規実行済み証拠**として登録した。成功したGitHub Actionsは[run 38587242196](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38587242196)。選別4候補について、各7,001点/区間と84点の独立枝電流MNAが保存数値に一致。結果の追跡は[検証オーバーレイ](../data/research_validation_overlays.csv)、整合性検査は`scripts/audit_validation_overlays.py`。分類上、旧レポートであることと、今回の再現実行が成功したことを併記し、元の`execution=unknown`を無断で上書きしない。これらはRF-T004試験条件の数値結果であり、物理性・連続周波数極値保証ではない。

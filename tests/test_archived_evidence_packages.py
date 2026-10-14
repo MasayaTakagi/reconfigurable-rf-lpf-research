@@ -9,7 +9,10 @@ from scripts.verify_archived_evidence_packages import (
 class ArchivedEvidenceIntegrityTests(unittest.TestCase):
     def test_saved_source_pr38_checksums(self):
         summary = check_source_archive()
-        self.assertEqual(18, summary["sha256_entries_verified"])
+        self.assertEqual(17, summary["sha256_entries_verified"])
+        self.assertEqual(18, summary["archive_source_files_tracked_excluding_checksum"])
+        self.assertEqual(["README.md"], summary["unlisted_in_source_sha256sums"])
+        self.assertEqual(64, len(summary["unlisted_readme_independent_sha256"]))
         self.assertTrue(summary["files_unchanged"])
 
     def test_r1_zip_structure_and_crc(self):

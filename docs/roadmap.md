@@ -1,4 +1,4 @@
-**2026-10-14 現行作業状態（RF-F002 Full-LPF統合・runner実測）。** 最新`origin/main` `5dbd83217f7c8bb9acd0c9fefd9f4f1ea07d4f89`基点の`feat/rf-f002-full-lpf-integration-20261014`でレビュー作業中。mainへのmerge・Phase 3移行・制約変更はしていない。詳細は[Phase 2 Full-LPF統合報告](rf_f002_full_lpf_phase2_20261013.md)。専用`full_lpf` manager/workerを追加し、事前登録EXP-032の4-start短時間smokeで1→2 workerのwall 136.633→73.734 s（1.853×）、peak RSS 82.1→164.2 MB、数値結果は時間/RSS除外後一致。smokeはmaxiter 5/ stageで、4件すべて30dB未達・非収束のため設計成果ではない。scaled solverのEXP-033追試は35dB stageが収束・IL 0.639754dBで、0.30dB目標未達。更新予算はS1 100 startsで1 worker 4.39–13.36h、S2 1,000で1.83–5.57日、S3 10,000で18.29–55.66日。2-worker予算は短時間smoke倍率を仮置きした参考値のみ（長時間run未測定）。監査可能なraw JSON・status・hashは報告先に保存。すべて有限gridのPhase 2 evidenceであり連続band/physical validationではない。
+**2026-10-14 現行作業状態（RF-F002 Full-LPF runner recovery/refinement）。** PR #47は最新`origin/main` `eb1de13841c1b4a74f18f4f9320e0316fbdd478f`に含まれる。追試branch `test/rf-f002-full-lpf-recovery-20261014` はレビュー用で、mainへ未merge。EXP-034～041でlive manager/worker停止・再開、1/2 worker、正規checkpoint warm-start、scaled/unscaled/FTOL、9→17 gridを記録。正しくremapしたEXP-041 30dB stageはIL 0.318693189dB（生H2/H3は30dBを約3e-9dB下回り、1e-5 tolerance内）、35dB stageは0.378349100dB。どちらもIL≤0.30dB未達、30dB点は実質余裕なし。**S1 100 graph searchを開始せず、Phase 2継続、Phase 3停止、RF-F002不変。** bounded evidenceとS1/S2/S3予算は[Phase 2追試報告](rf_f002_full_lpf_phase2_20261013.md)を参照。有限grid/MNAのみで連続band・物理性能証明ではない。
 
 **2026-10-14：RF-T004・EXP-021（既存EXP-020との対比）。** [実験記録](../experiments/chatgpt_topology_search/runs/EXP-021/README.md) に文献着想の4L固定橋絡＋最大3可変Cの再合成、合法範囲の隣接磁気結合|k|≤0.15、LQW04 Q33置換、GJM固定C増設の有限探索を記録。7001点／各CSV周波数区間と84点独立枝電流MNAで、公称30dB条件4HV・面積8のIL=**0.393327dB**、公称35dB条件4HV・面積8のIL=**0.447944dB**を確認。4×LQW04（Q33仮定・SRF未確認・面積16）は30dBで0.310621dB／35dBで0.348604dB。いずれも0.30dB未達であり**EXP-021限定**の結果。重要：既存[EXP-020](../experiments/chatgpt_topology_search/runs/EXP-020/README.md)にはRF-T004・35dB・IL=**0.297114dB**／面積13⅔の独立再検証済み公称数値解があるため、これをプロジェクトの先行基準として保つ。今回の結合上限0.15は複数ペア同時実装未証明、全Q33候補はSRF/Q(f)/物理寄生未検証。比較条件の混同を避け、Phase 2継続／Phase 3停止。
 
@@ -7,6 +7,12 @@
 # Phase 2 ロードマップ（現行版）
 
 **2026-10-12 RF-F001の正式方針更新：** チップ面積コストのハード上限を廃止し、6設定UL/DL最悪ILとのパレート評価軸とする。以下にある「hard cap6」「面積最大6」は過去の探索条件・旧実験予算の記録であり現行正式RF制約を表さない。P4-Aでは当面の計算範囲として面積6までを維持し、探索範囲の拡張は別管理する。旧候補の実測/数値記録は不変更。詳細は[制約版管理](../data/constraints/README.md)。
+
+## 2026-10-14 Phase 2 / Full-LPF 追試状況
+
+PR #47（Full-LPF runner統合）は`origin/main`の`eb1de13841c1b4a74f18f4f9320e0316fbdd478f`に含まれる。追試branch `test/rf-f002-full-lpf-recovery-20261014` ではEXP-034～041を事前登録・記録し、live SIGINT/SIGTERM/lock/resume/hash拒否、4-task 1/2-worker比較、checkpoint terminal remapping、warm/multi-start、9→17 grid refinement、scaled/unscaled/FTOL比較を実行した。詳細は[Phase 2 Full-LPF追試報告](rf_f002_full_lpf_phase2_20261013.md)と各manifestを参照。
+
+正規importされたEXP-017 warm-startの30dB stageはIL 0.318693189 dB（H2/H3生値29.999999997/29.999999999 dB、1e-5 tolerance内）、35dB stageはIL 0.378349100 dB。1001点/segment有限確認で数値一致したが、IL≤0.30dB未達、30dB点のraw marginは実質ゼロ。scaled条件は35dBで収束し、unscaledは低IL/低marginのtradeoff。よってPhase 2継続、S1（100 start）未開始、Phase 3停止、正式RF-F002不変。最新実測start時間96.7–145.0 worker秒を単純外挿したS1は1 worker 2.7–4.0h。2-workerの1.6–2.3hは短いEXP-035倍率を仮置きしただけで、長時間correctly-mapped throughputは未確認。
 
 ## 2026-10-12 Stage 2：WSL2ローカル実行基盤
 
@@ -28,7 +34,7 @@
 
 ## 当面の目標
 
-**LPF-007を上回る現行仕様の`full_lpf`回路を発見する。** LPF-007の保存済み有限グリッド値は6設定UL/DL最悪IL=0.513168414 dB、H2/H3最小約35.07 dB、面積6。最適化未収束・EM未検証。新候補は**同じ制約・同じ周波数グリッド**でLPF-007と再評価し、35dB公称減衰を維持してIL改善を示す。IL≤0.30dBが最終公称目標、減衰30dBが必須条件。
+**LPF-007を上回る現行仕様の`full_lpf`回路を発見する。** LPF-007の保存済み有限グリッド値は6設定UL/DL最悪IL=0.513168414 dB、H2/H3最小約35.07 dB、面積6。最適化未収束・EM未検証。EXP-038/039のcorrectly mapped warm-startは35dB within 1e-5 toleranceでIL 0.378349100 dBまで改善。EXP-041の30dB boundary stageはIL 0.318693189 dBだが、raw H2/H3は30dBを約3e-9 dB下回り、35dB nominalを満たさない。**どちらもIL≤0.30dB未達**であり、現時点で受け入れ済み目標候補ではない。新候補は同じ制約・同じ帯域で再評価し、35dB公称性能または明示した30dB tradeoffとresidualを個別に報告する。
 
 ## 開発順序
 
@@ -36,10 +42,10 @@
 |---|---|---|
 | **G1** | GitHub Actionsの決定的分割・Artifact保存／別run復元・再開・集計。1/2シャードの実機smoke。 | **完了**（main `35642be3`、[2シャード最終run](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38128871403)）。 |
 | **R0/R1** | LPF-007/008を汎用MNAで同値再現する回帰テスト。任意内部ノードへの対GND可変C配置を許す共通回路表現。既存G1との互換性テスト。 | **一部完了**：LPF-007/008の基準値固定回帰とG1再開スモークPASS。内部可変C位置の一般化は未完了。 |
-| **G2** | MNAの実測profiling・高速化、SLSQP／epigraph minimax／多初期値・継続法。時間、収束率、評価回数、ILを同条件で比較。 | 未完了 |
-| **E1** | P4-A（内部ノード≤4、固定枝≤8、面積≤6）を宣言した探索範囲で実行し、生成・未探索・失敗数、面積別best-found IL、計算資源を記録。 | 未完了 |
-| **E2** | ChatGPT発案の専用ソルバと汎用グラフ探索の両トラックで`full_lpf`最適化。LPF-007を上回る有望解の独立検証。 | 未完了 |
-| **V1** | 6設定UL/DL・UL H2/H3の高密度周波数評価、独立式、SPD、電力収支、物理配置、部品・公差の確認。未解決項目を列記。 | 未完了 |
+| **G2** | MNAの実測profiling・高速化、SLSQP／epigraph minimax／多初期値・継続法。時間、収束率、評価回数、ILを同条件で比較。 | **部分完了**：bounded Full-LPF runnerの実process recovery、scaled/unscaled、FTOL、warm/multistart、9→17 gridをEXP-034～041で実測。IL≤0.30dB候補は未発見。 |
+| **E1** | P4-A（内部ノード≤4、固定枝≤8、面積≤6）を宣言した探索範囲で実行し、生成・未探索・失敗数、面積別best-found IL、計算資源を記録。 | **未開始**：S1 100 graph/start探索は明示的に未起動。topology coverage/長時間worker throughputを先にreview。 |
+| **E2** | ChatGPT発案の専用ソルバと汎用グラフ探索の両トラックで`full_lpf`最適化。LPF-007を上回る有望解の独立検証。 | **部分完了**：既存4L/2C warm-startの有限局所最適化は実施。目標IL≤0.30dB達成なし、全合法graph探索でもない。 |
+| **V1** | 6設定UL/DL・UL H2/H3の高密度周波数評価、独立式、SPD、電力収支、物理配置、部品・公差の確認。未解決項目を列記。 | **数値のみ部分完了**：EXP-041を1001点/segment・独立MNAで確認。連続band proof、SRF/Q(f)/parasitic/EM/tolerance/physical implementationは未実施。 |
 
 ## PR #10再編成後の検証記録（2026-10-11）
 

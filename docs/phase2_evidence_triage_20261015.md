@@ -1,0 +1,45 @@
+# Phase 2：46ファイルの出典・内容レビュー（2026-10-15）
+
+PR #49～#51のmain統合後の非破壊的な再点検。基準main：dacf0dcbefe5ed191528ace190f0578ff56330fd。研究はPhase 2のまま。正式制約RF-F002、試験条件RF-T004、旧制約RF-F001等を区別し、Phase 3には移行しない。
+
+## 調査範囲
+
+前段の scripts/build_reference_inventory.py が review_only_no_deletion とした46追跡ファイルを対象とする。scripts/triage_unlinked_evidence.py はファイル単位にGit blob SHA-1・サイズ・内容形式/JSONキー・Git相対パスの文字列一致・Markdown相対リンクの解決・別パスにある同一blobを照合する。
+
+- 個別の出典・保全記録：data/research_storage_triage.csv（ST-001～ST-046）
+- 再生成：python scripts/triage_unlinked_evidence.py --csv artifacts/phase2_reports/storage_triage.csv --summary artifacts/phase2_reports/storage_triage_summary.json --check
+- 回帰検査：tests/test_triage_unlinked_evidence.py とGitHub Actions。
+
+**46ファイルすべての暫定処置は retain_pending_source_context_review。削除・移動は実施0件。** 文字列一致やリンクはファイルの意味の証明ではなく、過去の数値計算や物理検証の実行を追加で主張しない。Git全履歴、元チャットの外部ZIP、未追跡のローカルrunは機械的検索の対象外。同一Git blobはバイト一致を示すだけで、異なる出所とrunの役割が重複不要という意味ではない。
+
+## 主な保全対象と個別の読み取り
+
+### 歴史的RF条件の検証ソース
+
+data/validation/exp016_20261012/ と exp017_20261012/ は旧RF-F001モデル等の証拠が含まれ、現行RF-F002候補の達成値として昇格させない。特に前者のpcb_followup_shortlist.jsonは内部constraint ID=RF-F001を持つ。data/validation/rft003_20261012/ と rft003_20261013/ は試験条件の探索・検証記録であり、複数のscripts/verify_rft003_*.pyから参照される。今後の回帰参照を失わないよう保全する。
+
+### 復旧・再計算の証拠
+
+data/validation/r1_20261012/completed-checkpoint.zip は同ディレクトリsummary.jsonから言及される復旧チェックポイント。ZIP内部と元のrun環境は今回検査していない。rf_f002_checkpoint_reproduction_20261014/の候補別JSONは集計summary.jsonが参照する検証データ。exp016_ci_replay_20261014.jsonは旧EXP-016の事後CIレポートを別形式で転記した証拠であり、別のreplay summaryとの相互代用は自動判断しない。
+
+rf_f002_checkpoint_warmstarts_20261014、rf_f002_grid_refinement_20261014、rf_f002_unscaled_followup_20261014等のconfigはrun原位置と現在の参照文脈を保持する。たとえ複数パスが同一Git blobでも自動移動・削除はできない。
+
+### EXP-020の元PR資料
+
+experiments/chatgpt_topology_search/runs/EXP-020/source_pr38/ は別ブランチの候補JSON、README、検証コード、pareto CSV、SHA256SUMSを保持する履歴スナップショット。一部はEXP-020直下の保存物とGit blobが一致するが、元PRの出典構造と相対パスを保全する。
+
+特にsource_pr38/EXP-019/EXP019-1W7L-C11.667.jsonは同一blobの別パスが見つからなかった数値候補。RF-T004試験3可変Cであり、RF-F002正式達成ではない。元資料として保管する。
+
+### 旧候補資料
+
+candidates/LOSS_BREAKDOWN.jsonとLOSS_REVIEW.mdは旧候補の損失解析。最新の制約別Pareto表に直接昇格させないが、技術検討の出典として保持する。
+
+## 最終整理に必要な確認ゲート
+
+1. README・元PR・元runのSHAと数値実行環境を人手で照合する。パス文字列だけから採否を決めない。
+2. ZIP・SHA256SUMS・同一内容ソースコピーの役割と参照元を確認し、復元性を損なわないか評価する。
+3. 異なる原コミット・検証環境・run目的・相対パスを持つ複製は、内容が一致しても根拠保存の必要がある。
+4. 将来の移設・削除・保管期間変更は、独立のPRとユーザーの明示的承認を必要とする。
+5. 今回は新規最適化・独立MNA・連続帯域保証・実装検証を行っていない。
+
+本記録は保全のためのレビューであり、削除可能なファイルを認定したものではない。

@@ -5,6 +5,7 @@
     1,
     1
   ],
+  "checkpoint_import_mapping_note": "Lifecycle-only tests; input task nodes were not remapped from saved checkpoint output=3 to manager canonical output=2. Do not interpret optimizer metrics as checkpoint re-evaluation.",
   "completed_results": [
     "9d95d5aa72c1eceb5b3518b880bd0e006cd218f7d6cb607dbc81a1779d7d269a",
     "9cc66c1095f0c48f385008a167e71e70ca0af3f5b49d12b03da14ae3a866a01f"

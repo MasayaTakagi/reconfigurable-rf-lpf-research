@@ -991,7 +991,7 @@
     },
     {
       "path": "data/validation/rf_f002_parallel_benchmark_20261014/summary.json",
-      "sha256": "9dde02c6700332d333e38184368336f0f0949598b931104e4b5ed8e445973f5a"
+      "sha256": "3b1a9529cac10478f3bf469106d2d242c951bf54abd384e30a38a778cc9eecd3"
     }
   ],
   "limitations": [
@@ -1000,6 +1000,7 @@
     "One/two-worker measured manager time was 347.126/201.347 s (1.724x); two-worker aggregate worker peak RSS was 163979264 bytes.",
     "This was a 20-iteration-per-stage throughput and warm/multistart screen, not a converged quality optimization. All four starts hit the iteration limit on both 30 and 35 dB stages and none met IL<=0.30 dB. EXP-037 is planned for longer bounded warm-start refinement.",
     "The optimization grid used 9 points per CSV segment and the independent finite validation grid used 21 points per segment; neither establishes continuous-band or physical performance.",
-    "All solves used normalized (scaled) design variables. No unscaled ablation was performed in EXP-035."
+    "All solves used normalized (scaled) design variables. No unscaled ablation was performed in EXP-035.",
+    "Post-run seed import audit: source checkpoint ports were not remapped to the FullLPFProblem canonical terminals. Therefore EXP-035 is retained only as a bounded 1/2-worker manager benchmark and exact task reproducibility check, not as warm-start or candidate-quality evidence. Correct port mapping is tested separately."
   ]
 }

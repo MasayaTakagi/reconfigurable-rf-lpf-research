@@ -1,5 +1,8 @@
 {
   "algorithm_version": "rf-f002-full-lpf-epigraph-v2-scaled",
+  "benchmark_validity": "Worker-count scaling, memory, task completion, and numerical reproducibility remain valid for the exact four task configs. Do not use the outputs as optimizations/re-evaluations of EXP-017/023 saved candidates.",
+  "checkpoint_import_mapping_issue": "Source checkpoints have input=1/output=3/ground=0; the manager graph API assumes input=1/output=2/ground=0. The config passed source node IDs without remapping.",
+  "checkpoint_import_mapping_valid": false,
   "config": "data/validation/rf_f002_parallel_benchmark_20261014/config.json",
   "config_sha256": "6fe80532abc1abe489d2a1133735f697f50fa9a7c131a7a36f57db3b360f5c27",
   "constraint_id": "RF-F002",
@@ -311,7 +314,7 @@
     }
   },
   "same_config_and_initial_vectors": true,
-  "screening_conclusion": "All 4 starts exhausted their 20-iteration limits in both continuation stages; all were nonconverged. One saved EXP-023 start did not meet mandatory 30 dB on the dense finite grid; the other 3 did, but none met nominal 35 dB or IL<=0.30 dB. Best reported IL was 7.5259 dB; this is not an RF-F002 design success.",
+  "screening_conclusion": "All outputs are nonconverged and are not candidate-quality evidence because of the terminal mapping mismatch. The manager-only timing comparison remains 347.126 s (1 worker) vs 201.347 s (2 workers), 1.724x; numerical outputs match excluding runtime fields.",
   "speedup_definition": "one-worker elapsed / two-worker elapsed for identical four starts",
   "speedup_one_over_two_workers": 1.7240187338276705
 }

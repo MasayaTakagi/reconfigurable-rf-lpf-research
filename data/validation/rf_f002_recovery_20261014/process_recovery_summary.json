@@ -1,4 +1,5 @@
 {
+  "checkpoint_import_mapping_note": "Lifecycle-only tests; input task nodes were not remapped from saved checkpoint output=3 to manager canonical output=2. Do not interpret optimizer metrics as checkpoint re-evaluation.",
   "config_path": "data/validation/rf_f002_recovery_20261014/config.json",
   "config_sha256": "84c79d9d336bb11a3ed0b6a1f8915f67d51b5419e412f8cadf7c8f5d7c8e335e",
   "experiment_id": "EXP-034",

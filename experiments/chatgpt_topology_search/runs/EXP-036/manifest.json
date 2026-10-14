@@ -604,7 +604,7 @@
     },
     {
       "path": "data/validation/rf_f002_recovery_20261014/exp036-sigint-resume/process_recovery_summary.json",
-      "sha256": "e8a55c4ea0205e18fbba928a18f6e8cddd15a55c929d8c86bc973cc762d52dd7"
+      "sha256": "12ba2b00b558f819c177006a6e8fb2de4c168249406fbe3d6fea780d2938461e"
     },
     {
       "path": "data/validation/rf_f002_recovery_20261014/exp036-sigint-resume/results/09ab69f7b2ee7f64dac856db.json",
@@ -632,6 +632,7 @@
     "Real SIGINT was delivered to the manager only after both target worker PIDs were observed computing; manager exited on SIGINT, stopped both workers, and preserved pending attempts.",
     "After explicit --resume, both task starts were re-run from their immutable initial vectors (attempts=2) and completed; this is not continuation from an interrupted SLSQP iteration.",
     "The two five-iteration smoke outputs are nonconverged and are not RF-F002 performance candidates.",
-    "Finite frequency grids are screening evidence only; no physical validation was performed."
+    "Finite frequency grids are screening evidence only; no physical validation was performed.",
+    "The task inputs were generated from saved-checkpoint components before canonical terminal remapping was recognized. The lifecycle/recovery assertions remain valid for bounded legal Full-LPF tasks, but these outputs are not checkpoint re-evaluation or candidate-quality evidence."
   ]
 }

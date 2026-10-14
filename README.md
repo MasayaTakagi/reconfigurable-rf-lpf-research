@@ -1,3 +1,5 @@
+**成果整理の進捗（2026-10-14、Phase 2）：** [全39実験の証拠台帳](data/experiment_evidence_inventory.csv)（正式19／trial5／履歴15）、[統合候補台帳](data/research_candidate_register.csv)（選別13記録、全候補網羅ではない）、[EXP-016/017の記録訂正](docs/result_record_corrections_20261014.md)、[ストレージ監査](docs/repository_storage_audit_20261014.md)。旧数値・元チェックポイントは保全し、数値最適化やPhase 3への移行は実施していない。
+
 **研究結果の横断台帳（2026-10-14初版）：** [Phase 2成果管理と保全規則](docs/research_result_governance.md)、[選別候補の統合台帳](data/research_candidate_register.csv)、[未解決事項](data/research_review_issues.csv)。現行RF-F002と試験RF-T004を区別し、旧結果・strict／tolerance-onlyを混在させない。初版は9記録であり全成果の網羅を意味しない。
 
 **2026-10-13 最新正式制約はRF-F002。** チップ隣接|k|≤0.15、非強結合公称0・感度≤0.03、PCB間≤0.15、chip–PCB k=0、PCB-L≤2nH、IC可変C最大2枝・各0–1.5pF/Q50・配置自由、LQW04 Q33。[RF-T004](data/constraints/trial/RF-T004.json)は可変C最大3枝の試験条件。[RF-F002](data/constraints/formal/RF-F002.json)と[台帳](data/constraints/registry.json)を現行正本とする。以下のRF-F001「現行」表現は当時の履歴。旧数値結果はRF-F002の性能実証ではない。Phase 2継続、Phase 3停止。

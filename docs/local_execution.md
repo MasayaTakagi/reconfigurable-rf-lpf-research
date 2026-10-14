@@ -135,6 +135,10 @@ uv run --frozen python scripts/local_p4.py aggregate <run-id> --root results/loc
 
 `status.json` は原子的な更新で状態とシャード進捗を表示します。`manager.lock` はrunの排他ロック用です。異常・設定不一致のときは元チェックポイントを保持し、削除・別条件への転用をしません。
 
+## Full-LPF専用runner
+
+P4-A `matching_only` を変更せずにRF-F002 `full_lpf`を実行する専用runnerは、[Full-LPFローカル実行手順](full_lpf_execution.md)の`scripts/local_full_lpf.py`を使用します。P4-Aのチェックポイントやoptimizerをfull-LPF managerとして流用しません。
+
 ## 結果の保管・GitHubへの登録方針
 
 `results/` は `.gitignore` 対象です。大きな一時チェックポイント、ログ、未レビュー探索出力をそのままコミットしないでください。候補を研究記録へ昇格する場合は、制約IDと実効ハッシュ、コードSHA、探索範囲、seed、最適化収束状態、独立MNA・高密度グリッド検証、未検証の物理項目を整理し、選別した証拠を専用実験ディレクトリへキュレーションします。raw結果・チェックポイントの長期保存が必要な場合は、ローカルバックアップまたは承認済みArtifact保管先を用い、Git履歴を無用に肥大化させないでください。

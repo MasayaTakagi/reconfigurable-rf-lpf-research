@@ -105,15 +105,17 @@ def bounds_for(graph, *, variable_count=2,resolved_policy=None):
     cap_max=float(policy['components']['IC_VARIABLE_C']['max_total_variable_pf_per_branch'])
     b=[]
     for _,_,t in graph[1]:
-        b.append((.05,100.) if t=='GJM01' else (.3,pcb_max) if t=='PCB_L'
-                 else (.4,12.) if t=='LQP02' else
+        b.append((.05,100.) if t=='GJM01' else (.02,.2) if t=='PCB_PATTERN_C'
+                 else (.3,pcb_max) if t=='PCB_L' else
+                 (.4,12.) if t=='LQP02' else
                  (.4,27.) if t=='LQP02HV' else
                  (.2,56.) if t=='LQP02HQ' else (.3,12.))
     return b+[(0.,cap_max)]*(6*variable_count)
 
 def settings_for(graph,x,K,*,variable_layout=None,resolved_policy=None,
                  require_explicit_series=False):
-    values=[float(v)*(1e-12 if t=='GJM01' else 1e-9) for v,(_,_,t) in zip(x,graph[1])]
+    values=[float(v)*(1e-12 if t in ('GJM01','PCB_PATTERN_C') else 1e-9)
+            for v,(_,_,t) in zip(x,graph[1])]
     if variable_layout is None:
         variable_edges=[(1,0),(2,0)];roles=None
     else:

@@ -114,4 +114,8 @@ APIのArtifact digestと取得ZIPのSHA-256一致、内容の再開回数・完�
 
 このスモークは各1初期値/1反復、最適化2点・検証3点/区間の `matching_only`。
 大規模探索、full_lpf成立、新回路のIL改善、実装可能性の確認ではない。
-R2～R5、専用実行器へのマニフェスト自動組み込み、数値依存の固定と新しい探索は未完了。
+R2～R5、数値依存の固定と新しい探索は未完了。
+
+## 最新main統合後のFull-LPF記録（2026-10-14）
+
+main `5dbd832...` の既存EXP-020～024を保存し、以前のローカルEXP-020～026はEXP-025～031へ再採番した。Full-LPF専用runnerの4-start/1対2 worker bounded smokeは事前登録EXP-032、scaled SLSQPのMARGIN_30p100再追試はEXP-033として索引化した。EXP-033は出力にclean execution SHAとsource snapshotが残る一方、実行後登録だったことをlimitationsに明記する。両記録はRF-F002専用で、RF-T003は初期値のみ。結果・runner manifest/status・hash・有限grid/物理検証限界は[Phase 2統合報告](rf_f002_full_lpf_phase2_20261013.md)と[data/validation](../data/validation/)にある。どちらもIL≤0.30dB候補を示さず、Phase 3へ進まない。

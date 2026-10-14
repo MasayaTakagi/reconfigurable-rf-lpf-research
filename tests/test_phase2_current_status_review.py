@@ -40,6 +40,19 @@ class Phase2CurrentStatusTests(unittest.TestCase):
         self.assertEqual("RF-F001", older["candidate"]["formal_constraint_reference"])
         self.assertEqual("NONCANONICAL_UNAPPROVED", older["candidate"]["constraint_status"])
 
+    def test_trial_zip_not_misidentified_as_missing_formal_exp017(self):
+        notes = (ROOT / "docs/phase2_exp017_checkpoint_provenance_review_20261015.md").read_text(encoding="utf-8")
+        self.assertIn("RF-T004-EXP017-bundle.zip", notes)
+        self.assertIn("48175d3579d3814e5d3740858ee3959b88e9731b835cb2cd306ce6b0093ae640", notes)
+        self.assertIn("0.2999624819232782", notes)
+        self.assertIn("0.301248245", notes)
+        self.assertIn("RF-F002", notes)
+        self.assertIn("RF-T004", notes)
+        self.assertIn("14,001", notes)
+        issues = {x["issue_id"]: x for x in read_csv("data/research_review_issues.csv")}
+        self.assertTrue(issues["RG-001"]["status"].startswith("open_"))
+        self.assertIn("RF-T004", issues["RG-001"]["problem"])
+
     def test_review_gates_are_traceable_without_fabricating_missing_metadata(self):
         issues = {x["issue_id"]: x for x in read_csv("data/research_review_issues.csv")}
         self.assertEqual(10, len(issues))

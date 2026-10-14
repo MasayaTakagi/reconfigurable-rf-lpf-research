@@ -1,0 +1,160 @@
+{
+  "constraint_id": "RF-T004",
+  "base_constraint_id": "RF-F002",
+  "phase": "Phase 2",
+  "status": "local_screening_verified_conditionally_held_for_component_physics",
+  "model": "ideal_constantQ_series_RL_and_cap_ESR_admittance",
+  "source_ohm": 50,
+  "load_ohm": {
+    "re": 60,
+    "im": -40
+  },
+  "L_edges": [
+    [
+      1,
+      2
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      2,
+      5
+    ],
+    [
+      2,
+      3
+    ]
+  ],
+  "L_series": [
+    "LQP02HV",
+    "LQP02HV",
+    "LQP02HV",
+    "LQW04"
+  ],
+  "physical_row_L_indices": [
+    0,
+    1,
+    3,
+    2
+  ],
+  "fixed_C_edges": [
+    [
+      1,
+      2
+    ],
+    [
+      5,
+      0
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      3,
+      4
+    ]
+  ],
+  "fixed_C_Q": 80,
+  "variable_C_edges": [
+    [
+      4,
+      0
+    ],
+    [
+      5,
+      0
+    ],
+    [
+      2,
+      3
+    ]
+  ],
+  "variable_C_Q": 50,
+  "variable_C_bounds_pf": [
+    0,
+    1.5
+  ],
+  "chip_area": 8.666666666666666,
+  "nonneighbor_k": 0,
+  "nominal_harmonic_requirement_db": 30,
+  "all_subband_intervals_grid_points": 7001,
+  "independent_current_augmented_MNA": true,
+  "Q_f_SRF_EM_measured": false,
+  "trial_effective_hash_status": "not_computed",
+  "id": "W3-F4",
+  "L_nH": [
+    3.801670059268847,
+    27,
+    7.9659094668471715,
+    5.60426279108686
+  ],
+  "signed_neighbor_k": [
+    0.04962307509722566,
+    0.14885765480794713,
+    -0.10366168136395433
+  ],
+  "fixed_C_pF": [
+    1.2483709426556568,
+    0.8938841160420841,
+    0.7227799515480414,
+    0.2535312698468983
+  ],
+  "variable_C_by_setting_pF": {
+    "B71": [
+      0.19799491347917755,
+      0.3130437794754693,
+      1.1627335780462316
+    ],
+    "B12": [
+      0.17916293476111095,
+      0.23708286370760387,
+      0.8789945669268934
+    ],
+    "B28": [
+      0.11762503399661116,
+      0.238623382634824,
+      1.0142839108330577
+    ],
+    "B13+B14": [
+      0.03485408467708594,
+      0.2506740315519301,
+      0.32156733238660223
+    ],
+    "B26": [
+      0.020074168527780392,
+      0.1776881672215171,
+      0.15839220665860024
+    ],
+    "B8": [
+      1.2611783188123273e-12,
+      0,
+      4.607304316617462e-12
+    ]
+  },
+  "worst_IL_db": 0.2983556572545196,
+  "min_H2_db": 30.019999999946812,
+  "min_H3_db": 30.019999999833708,
+  "critical": {
+    "IL": [
+      "B28",
+      "DL",
+      803
+    ],
+    "H2": [
+      "B28",
+      1496
+    ],
+    "H3": [
+      "B8",
+      2640
+    ]
+  },
+  "independent": {
+    "max_v_delta": 3.0369216844827582e-15,
+    "max_power_budget_residual": 3.686287386450715e-18,
+    "min_K_eigenvalue": 0.813983666015243
+  }
+}

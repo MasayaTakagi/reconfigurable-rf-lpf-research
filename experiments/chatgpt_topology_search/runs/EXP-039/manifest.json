@@ -253,7 +253,7 @@
     "legacy_policy_version": "2026-10-10"
   },
   "code": {
-    "execution_sha": "4c2c6378a251f9ef4bb122365d08144db7d38955",
+    "execution_sha": "50c020d731be11026784a5a21fdc63b1500a4521",
     "working_tree_dirty": false,
     "archive_sha": null
   },
@@ -577,17 +577,94 @@
   },
   "bands_sha256": "1b1182e4c947059cb263c1af52ddf64236bd1fd9e83770cc844126576c7865fe",
   "execution": {
-    "status": "planned",
-    "elapsed_seconds": null,
-    "evaluation_count": null
+    "status": "completed",
+    "elapsed_seconds": 313.202,
+    "evaluation_count": 264
   },
   "validation": {
-    "numerical": "not_run",
-    "independent": "not_run",
+    "numerical": "screened",
+    "independent": "screened",
     "implementation": "not_run",
-    "analysis_grid": null,
-    "independent_grid": null
+    "analysis_grid": {
+      "optimization_points_per_csv_segment": 17,
+      "maxiter_per_stage": 60,
+      "ftol": 1e-08,
+      "harmonic_targets_db": [
+        30.0,
+        35.0
+      ],
+      "prior_grid_points_per_csv_segment": 9
+    },
+    "independent_grid": {
+      "points_per_csv_segment": 21
+    }
   },
-  "evidence": [],
-  "limitations": []
+  "evidence": [
+    {
+      "path": "data/validation/rf_f002_grid_refinement_20261014/run/.manager.lock",
+      "sha256": "b0e10ee6db111724349ce8d7586a66eedb8c299354416d44379fdd588ab8e66c"
+    },
+    {
+      "path": "data/validation/rf_f002_grid_refinement_20261014/run/aggregate.json",
+      "sha256": "45b6259fdb38b35be9605422cca594622599a4a3b7c2d699f85ae52c6c8cb677"
+    },
+    {
+      "path": "data/validation/rf_f002_grid_refinement_20261014/run/config.json",
+      "sha256": "45247cc1cb2e3ed61a24456e7fc55c238e58d23536d1525d46fa055721c95acd"
+    },
+    {
+      "path": "data/validation/rf_f002_grid_refinement_20261014/run/locks/1ce6ef51b2f68a6217c6ca22.lock",
+      "sha256": "eb2e96526112f6e0cd6404e438e8c221d220c34bdff042a23de18a280b471c3b"
+    },
+    {
+      "path": "data/validation/rf_f002_grid_refinement_20261014/run/locks/a043d21081f096ef944ff246.lock",
+      "sha256": "fc3eab91107cc006a3f0f2048a0c2353e66313f723c928a7766a7929cebd124b"
+    },
+    {
+      "path": "data/validation/rf_f002_grid_refinement_20261014/run/logs/1ce6ef51b2f68a6217c6ca22.attempt-1.log",
+      "sha256": "f418392051e8f7683481572aa1411c196fb15be00f8bf0f33259cc5d3c280a41"
+    },
+    {
+      "path": "data/validation/rf_f002_grid_refinement_20261014/run/logs/a043d21081f096ef944ff246.attempt-1.log",
+      "sha256": "08280eb7ec8d7bcd871f971b990a316237359c91547c40e8d0b3f6ddb84c3e23"
+    },
+    {
+      "path": "data/validation/rf_f002_grid_refinement_20261014/run/manager.log",
+      "sha256": "9b4144e08570b5e7a7a83707d8e3f4526a0f5ca38cbceade038ea75a8c08cdc4"
+    },
+    {
+      "path": "data/validation/rf_f002_grid_refinement_20261014/run/manifest.json",
+      "sha256": "310e2759258971f3f919f3badc397f4453375b989f108327aca7736bbb5988a5"
+    },
+    {
+      "path": "data/validation/rf_f002_grid_refinement_20261014/run/results/1ce6ef51b2f68a6217c6ca22.json",
+      "sha256": "8624dd7519848c67b31f64a2280f304d5a92ee95ba2ed1571fa5072090581bd1"
+    },
+    {
+      "path": "data/validation/rf_f002_grid_refinement_20261014/run/results/a043d21081f096ef944ff246.json",
+      "sha256": "e5afca4c1abdc863f3d8c17d9eb1778ea95066a30e4232f216eb8f28cb6f98b3"
+    },
+    {
+      "path": "data/validation/rf_f002_grid_refinement_20261014/run/status.json",
+      "sha256": "07ce50788ea5551300839cfe3e2455f0c745d1989d25b3838919c7baffa94f09"
+    },
+    {
+      "path": "data/validation/rf_f002_grid_refinement_20261014/run/summary.json",
+      "sha256": "6a9b12c040cd697c67e90005bea5f7e3692bffb4c53a008a13b9d3b13884dd13"
+    },
+    {
+      "path": "data/validation/rf_f002_grid_refinement_20261014/run/tasks/1ce6ef51b2f68a6217c6ca22.json",
+      "sha256": "9f951f3d57bfdb8f1da74cb9edaf75f2769d1fcf2dae3a686d0f6273af0464a0"
+    },
+    {
+      "path": "data/validation/rf_f002_grid_refinement_20261014/run/tasks/a043d21081f096ef944ff246.json",
+      "sha256": "727c78a41debecbb8b6002679ed91ed5d8dffcb8951365c9735e62ba94550ab4"
+    }
+  ],
+  "limitations": [
+    "The 17-point starts are the selected 9-point EXP-038 optimizer outputs, with component and coupling values preserved and source result hashes recorded.",
+    "This was a staged uniform grid increase, not locally adaptive frequency refinement. Outputs were independently screened at 21 points/segment; no continuous-band proof is made.",
+    "IL changed by less than 1e-11 dB between the 9-point and 17-point stages; both candidates remain above the 0.30 dB objective (about 0.459808 dB and 0.378349 dB).",
+    "Both harmonic requirements remained feasible within the configured residual tolerance. No physical validation was performed."
+  ]
 }

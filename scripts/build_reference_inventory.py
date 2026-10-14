@@ -22,6 +22,7 @@ GOVERNANCE_RECORDS = {
     "data/research_candidate_register.csv", "data/research_review_issues.csv",
     "data/research_validation_overlays.csv", "data/experiment_evidence_inventory.csv",
     "data/supplemental_experiment_evidence_index.csv",
+    "data/research_storage_triage.csv",
 }
 FIELDS = (
     "path", "bytes", "git_blob_sha1", "location", "source_refs",

@@ -19,7 +19,8 @@ class StorageReferenceTests(unittest.TestCase):
 
     def test_governance_registers_are_preserved(self):
         for p in ("data/candidate_index.csv", "data/experiment_index.csv",
-                  "data/research_candidate_register.csv"):
+                  "data/research_candidate_register.csv",
+                  "data/branch_retention_review_20261015.csv"):
             self.assertEqual(("research_governance_register", "preserve_immutable"),
                              _classify(p, set()))
 

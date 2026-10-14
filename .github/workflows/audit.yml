@@ -42,6 +42,7 @@ jobs:
       - name: Build condition-separated Pareto reports
         run: |
           python scripts/report_research_pareto.py --csv artifacts/phase2_reports/pareto_candidates.csv --summary artifacts/phase2_reports/pareto_summary.json --markdown artifacts/phase2_reports/pareto.md
+      - run: python scripts/verify_archived_evidence_packages.py
       - name: Triage non-indexed research evidence (no deletion)
         run: |
           python scripts/triage_unlinked_evidence.py --csv artifacts/phase2_reports/storage_triage.csv --summary artifacts/phase2_reports/storage_triage_summary.json --bootstrap-b64

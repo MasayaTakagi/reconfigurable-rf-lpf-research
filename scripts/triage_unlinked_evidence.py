@@ -12,9 +12,11 @@ import csv
 import io
 import json
 import re
+import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.build_reference_inventory import ROOT, _blob_sha1, _tracked_paths, create_inventory
 
 SNAPSHOT = "data/research_storage_triage.csv"

@@ -49,3 +49,9 @@ GitHub ActionsのPhase 2 regressionが下記の成果物を生成し、phase2-st
 - PR #50がmainへ未統合の間は、この作業もstacked PRとして保留する。main統合、既存研究証拠削除、RF制約変更、研究Phase 3移行はいずれも別承認を必要とする。
 
 本表は2026-10-15時点の13件限定スナップショット。新規候補追加後の最新表はCIの生成物を参照する。
+
+## GitHub Actionsでの実測分類
+
+[Phase 2 regression run 38589457941](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38589457941) は成功した。追跡データ領域535ファイルを分類し、manifestから直接参照されるファイルは391件。保全区分別には preserve_immutable 53件、preserve_referenced 429件、review_only_no_deletion 53件となった。**最後の53件は削除可能53件ではない**。機械可読な参照先がないものの保存根拠を追査するためのレビュー対象である。Git追跡ファイルの削除・移動は0件。
+
+同CIで13候補・8グループのPareto生成と全回帰テストが成功。生成CSVとJSONはCIのartifact「phase2-storage-and-pareto-reports」から参照できる。この数値は当該ブランチの対象スナップショットに限る。

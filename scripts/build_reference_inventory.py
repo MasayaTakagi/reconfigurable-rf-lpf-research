@@ -23,6 +23,7 @@ GOVERNANCE_RECORDS = {
     "data/research_validation_overlays.csv", "data/experiment_evidence_inventory.csv",
     "data/supplemental_experiment_evidence_index.csv",
     "data/research_storage_triage.csv",
+    "data/branch_retention_review_20261015.csv",
 }
 FIELDS = (
     "path", "bytes", "git_blob_sha1", "location", "source_refs",

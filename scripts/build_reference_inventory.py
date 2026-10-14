@@ -17,6 +17,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNS = "experiments/chatgpt_topology_search/runs/"
+GOVERNANCE_RECORDS = {
+    "data/experiment_index.csv", "data/candidate_index.csv",
+    "data/research_candidate_register.csv", "data/research_review_issues.csv",
+    "data/research_validation_overlays.csv", "data/experiment_evidence_inventory.csv",
+    "data/supplemental_experiment_evidence_index.csv",
+}
 FIELDS = (
     "path", "bytes", "git_blob_sha1", "location", "source_refs",
     "manifest_experiments", "catalog_candidates", "supplemental_experiments",
@@ -74,6 +80,8 @@ def _runtime_diagnostic(path):
 
 def _classify(path, sources):
     location = _location(path)
+    if path in GOVERNANCE_RECORDS:
+        return "research_governance_register", "preserve_immutable"
     if location == "rf_policy":
         return "approved_or_historical_policy", "preserve_immutable"
     if path.endswith("/manifest.json") and path.startswith(RUNS):

@@ -1,3 +1,5 @@
+**Phase 2研究証拠の個別保全レビュー：** [46ファイルの根拠・保管判断](docs/phase2_evidence_triage_20261015.md)、[Git blob SHA付き個別台帳](data/research_storage_triage.csv)。元PRソースのSHA-256と復旧ZIP整合をCIで検査。実験データの削除・移動なし。
+
 **保存証拠の参照逆引きと条件別Pareto（Phase 2）：** [保全判定・比較方法とCI実績](docs/phase2_storage_pareto_review_20261015.md)。GitHub Actionsから保管分類CSV/JSONと候補別Pareto表を取得可能。既存ファイルの自動削除・移動なし。
 
 **成果整理の進捗（2026-10-14、Phase 2）：** [全39実験の証拠台帳](data/experiment_evidence_inventory.csv)（正式19／trial5／履歴15）、[統合候補台帳](data/research_candidate_register.csv)（選別13記録、全候補網羅ではない）、[EXP-016/017の記録訂正](docs/result_record_corrections_20261014.md)、[補助証拠リンク36件](data/supplemental_experiment_evidence_index.csv)、[ストレージ監査](docs/repository_storage_audit_20261014.md)。旧数値・元チェックポイントは保全し、数値最適化やPhase 3への移行は実施していない。

@@ -61,3 +61,20 @@
 | EXP016-LQW3-35-V009 | 35dB | 0.433221210dB | 35.199946605dB | 35.199999997dB |
 
 **解決できた範囲：** 保存した4回路ベクトルの現在の数値解析コードでの再現性。**未解決：** 初回217探索・追補探索の元実行環境／完全ログ／事前登録の確証、実部品Q(f)／SRF／寄生／EM／製造公差。元manifestの`unknown`/`not_run`は作成時点の履歴として維持し、今回の事後検証を別証拠として保存した。
+
+## 2026-10-14追試追補：EXP-016の数値をGitHub CIで再現
+
+source-only manifest作成後に追加されたEXP-016の4保存候補を、別実装 [NumPy 2対応再計算器](../scripts/verify_exp016_numpy2_replay.py)で**実行済み**。元の`EXP-016/verify.py`を変更すると当時のソースSHAが変わるため、元版は保全した。既存verify.pyのバッチRHS形状`(Nfreq,Nnode)`はNumPy 2環境で`np.linalg.solve`に渡すと次元不一致となり、別再計算器では`[...,None]`で明示的に列ベクトル化した。
+
+**成功した実測CI：** [Phase 2 regression run 38587242196](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38587242196)、commit `90c87551c4720441ba7120f1457ea318c752dc34`。RF-T004実効制約SHA256は`c66302a281a1fdb88da355fc44dac1ef3b1c4e18e8ff297db9e842b219b5b0c4`。
+
+| 保存候補 | H要求 | 最悪IL dB | min H2 dB | min H3 dB |
+|---|---:|---:|---:|---:|
+| EXP016-HV30-V053 | 30 | 0.450900513021 | 30.199999994 | 30.199999998 |
+| EXP016-HV35-V009 | 35 | 0.539439377625 | 35.199999999 | 35.199999999 |
+| EXP016-LQW2-30-V053 | 30 | 0.377520152664 | 30.199999984 | 30.199999983 |
+| EXP016-LQW3-35-V009 | 35 | 0.433221209696 | 35.199946605 | 35.199999997 |
+
+各CSV周波数区間7001点、各候補84点の枝電流独立MNA、電力収支、名目受動性、名目ゼロ結合のL行列SPDを確認。**再最適化は実行していない。** 実行した数値と代表点証拠は[独立追試summary](../data/validation/exp016_rf_t004_numpy2_replay_20261014/summary.json)に固定し、[validation overlay](../data/research_validation_overlays.csv)から元候補へ参照する。
+
+この成功によって**元のsource-only manifestをretroactiveに`passed`へ変更しない**。別実行の検証が新たに増えたことをレイヤー分離して記録する。RF-T004は3可変Cの試験条件であり正式RF-F002のIL目標達成ではない。部品品番・SRF・Q(f)・実レイアウト・EM・公差・連続帯域の厳密極値は今回も未検証。

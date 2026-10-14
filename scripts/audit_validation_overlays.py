@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """Validate posthoc replay overlays without mutating source-only manifests."""
 import csv
+import hashlib
 import json
 from pathlib import Path
 
-from scripts.audit_supplemental_evidence import git_blob_sha1
+
+def git_blob_sha1(data):
+    return hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\0" + data).hexdigest()
 
 ROOT = Path(__file__).resolve().parents[1]
 

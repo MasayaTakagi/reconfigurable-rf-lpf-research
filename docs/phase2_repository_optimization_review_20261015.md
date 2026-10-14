@@ -29,6 +29,20 @@
 
 **削除・ref変更実績：0本。** 将来の整理で不要なブランチを減らす場合にも、(1) ownerの明示承認、(2) 元head ref/SHA、元PR、全履歴・本体ファイルに対する確認、(3) 復旧可能な検証済みGit bundleを保管、(4) ブランチheadが変化していないことの再照合を必須とする。既存 `docs/maintenance/branch_cleanup_20261014.md` にある当時のbundleは**現行6ブランチの完全バックアップであるとは未確認**なので、そのまま流用しない。
 
+## 39実験のメタデータ不足（出典のみ・再実行なし）
+
+`scripts/report_experiment_metadata_gaps.py` が `data/experiment_evidence_inventory.csv` の39行から、実験ごとにrecorded/unrecordedを機械的に区分する。正式19／trial5／historical15を分離し、ソルバ実行や新しい数値達成を主張しない。
+
+| 元manifestからの不足 | 実験数 |
+|---|---:|
+| execution unknown | 16 |
+| random seed 未記録 | 25 |
+| execution commit SHA 未記録 | 15 |
+| environment 未記録 | 16 |
+| manifest evidence 0件 | 6 |
+
+実行状態のunknownとメタデータの欠落は重複計上され得る。属性の値が存在しても、元実験の再現成功を示さない。生成ファイル `artifacts/phase2_reports/experiment_metadata_gaps.csv` と `experiment_metadata_summary.json` をCIで保存する。元manifestは書き換えない。回収不能な値を推測で埋めたり、履歴のunknownを無根拠でcompletedに変えたりしない。**RG-009は一覧化が進むだけで、実験の再現性未達は残る。**
+
 ## 別チャットから回収したRF-T004試験ZIP
 
 チャット添付 `RF-T004-EXP017-bundle.zip` は**原本 SHA-256 `48175d3579d3814e5d3740858ee3959b88e9731b835cb2cd306ce6b0093ae640`**。35エントリ、CRC PASS、バイト数118,646。既存mainと完全同一のGit blobは `data/bands.csv` のみ。候補 `EXP017-35P008` の回路値は既存PR #38から保存された拡張表現と一致し、重複保存する前に出所を照合する。生試行ログ・コードにはmainに無いバイト列が存在する。

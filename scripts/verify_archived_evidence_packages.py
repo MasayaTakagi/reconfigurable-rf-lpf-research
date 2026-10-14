@@ -55,9 +55,21 @@ def check_source_archive(root=ROOT):
         (root / p).relative_to(archive_dir).as_posix()
         for p in tracked if p and p != SHA_FILE
     }
-    if archived != set(hashes):
-        raise ValueError("SHA256SUMS omits archive files or lists absent files")
+    unlisted = sorted(archived - set(hashes))
+    if set(hashes) - archived:
+        raise ValueError("SHA256SUMS references missing tracked source files")
+    # This original source_pr38 archive has a root README outside the checksum
+    # manifest. Record it explicitly rather than rewriting historical SHA256SUMS
+    # or claiming full archive coverage.
+    if unlisted != ["README.md"]:
+        raise ValueError("Unexpected unlisted archive content: " + repr(unlisted))
+    root_readme = archive_dir / "README.md"
     return {"sha256_entries_verified": len(hashes),
+            "archive_source_files_tracked_excluding_checksum": len(archived),
+            "unlisted_in_source_sha256sums": unlisted,
+            "unlisted_readme_independent_sha256":
+                hashlib.sha256(root_readme.read_bytes()).hexdigest(),
+            "checksum_scope": "EXP-016..019 files; root README not covered",
             "checksum_file_git_relative_path": SHA_FILE,
             "files_unchanged": True}
 

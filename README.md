@@ -1,3 +1,5 @@
+**保存証拠の参照逆引きと条件別Pareto（Phase 2）：** [保全判定・比較方法とCI実績](docs/phase2_storage_pareto_review_20261015.md)。GitHub Actionsから保管分類CSV/JSONと候補別Pareto表を取得可能。既存ファイルの自動削除・移動なし。
+
 **成果整理の進捗（2026-10-14、Phase 2）：** [全39実験の証拠台帳](data/experiment_evidence_inventory.csv)（正式19／trial5／履歴15）、[統合候補台帳](data/research_candidate_register.csv)（選別13記録、全候補網羅ではない）、[EXP-016/017の記録訂正](docs/result_record_corrections_20261014.md)、[補助証拠リンク36件](data/supplemental_experiment_evidence_index.csv)、[ストレージ監査](docs/repository_storage_audit_20261014.md)。旧数値・元チェックポイントは保全し、数値最適化やPhase 3への移行は実施していない。
 
 **研究結果の横断台帳（2026-10-14初版）：** [Phase 2成果管理と保全規則](docs/research_result_governance.md)、[選別候補の統合台帳](data/research_candidate_register.csv)、[未解決事項](data/research_review_issues.csv)。現行RF-F002と試験RF-T004を区別し、旧結果・strict／tolerance-onlyを混在させない。初版は9記録であり全成果の網羅を意味しない。

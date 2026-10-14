@@ -52,6 +52,6 @@ GitHub ActionsのPhase 2 regressionが下記の成果物を生成し、phase2-st
 
 ## GitHub Actionsでの実測分類
 
-[Phase 2 regression run 38589457941](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38589457941) は成功した。追跡データ領域535ファイルを分類し、manifestから直接参照されるファイルは391件。保全区分別には preserve_immutable 53件、preserve_referenced 429件、review_only_no_deletion 53件となった。**最後の53件は削除可能53件ではない**。機械可読な参照先がないものの保存根拠を追査するためのレビュー対象である。Git追跡ファイルの削除・移動は0件。
+[Phase 2 regression run 38590510799](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38590510799) は成功した。追跡データ領域535ファイルを分類し、manifestから直接参照されるファイルは391件。保全区分別には preserve_immutable **60件**、preserve_referenced **429件**、review_only_no_deletion **46件**となった。最後の46件は削除可能と判断したファイルではない（内訳：実験ディレクトリ18、旧候補2、validation領域26）。別パスで内容が一致するGit blobは33グループ、追加の同一blob参照37件。これらも重複だけで削除しない。機械可読な参照先がないものの保存根拠を追査するためのレビュー対象である。Git追跡ファイルの削除・移動は0件。
 
 同CIで13候補・8グループのPareto生成と全回帰テストが成功。生成CSVとJSONはCIのartifact「phase2-storage-and-pareto-reports」から参照できる。この数値は当該ブランチの対象スナップショットに限る。

@@ -65,7 +65,12 @@ class BranchRetentionTests(unittest.TestCase):
             report["branch_records"][0]["research_head_blobs_absent_in_current_main"])
 
     def test_changed_head_ref_is_rejected(self):
-        self.git("update-ref", "refs/remotes/origin/review/test-branch", "a" * 40)
+        p = self.root / "notes.txt"
+        p.write_text("new HEAD\n", encoding="utf-8")
+        self.git("add", ".")
+        self.git("commit", "-m", "change branch head")
+        self.git("update-ref", "refs/remotes/origin/review/test-branch",
+                 self.git("rev-parse", "HEAD"))
         with self.assertRaises(ValueError):
             audit_branches(self.root)
 

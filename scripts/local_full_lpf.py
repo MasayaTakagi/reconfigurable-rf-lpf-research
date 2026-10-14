@@ -74,6 +74,13 @@ def _sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _result_integrity_sha256(result: dict) -> str:
+    """Detect accidental result changes independently of timing/formatting."""
+    body = {key: value for key, value in result.items()
+            if key != "result_integrity_sha256"}
+    return _sha256_bytes(_canonical_bytes(body))
+
+
 def _atomic_json(path: Path, value: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent,
@@ -461,6 +468,21 @@ def _load_and_verify_run(run_dir: Path):
                 raise ValueError(f"Resume refused: checkpoint {key} mismatch for {planned['task_id']}")
         if checkpoint.get("result_path") != f"results/{planned['task_id']}.json":
             raise ValueError(f"Resume refused: result path mismatch for {planned['task_id']}")
+        # The files read by workers must exactly represent the immutable plan.
+        task_path = run_dir / "tasks" / f"{planned['task_id']}.json"
+        try:
+            on_disk = json.loads(task_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as error:
+            raise ValueError(f"Resume refused: missing or corrupt task file {task_path}") from error
+        expected = {**planned, "optimization": config["optimization"]}
+        if _canonical_bytes(on_disk) != _canonical_bytes(expected):
+            raise ValueError(f"Resume refused: task payload mismatch for {planned['task_id']}")
+        if checkpoint["state"] == "completed":
+            result_path = run_dir / checkpoint["result_path"]
+            recorded_digest = checkpoint.get("last_result_sha256")
+            if not result_path.is_file() or not recorded_digest or (
+                    _sha256_file(result_path) != recorded_digest):
+                raise ValueError(f"Resume refused: completed result checksum mismatch for {planned['task_id']}")
     return manifest, status, config, tasks
 
 
@@ -473,8 +495,12 @@ def _valid_result(path: Path, task_record: dict) -> dict | None:
         return None
     if (result.get("task_id") != task_record["task_id"] or
             result.get("task_config_sha256") != task_record["task_config_sha256"] or
+            result.get("topology_sha256") != task_record["topology_sha256"] or
             result.get("start_sha256") != task_record["start_sha256"] or
             result.get("worker_status") != "completed"):
+        return None
+    digest = result.get("result_integrity_sha256")
+    if not isinstance(digest, str) or digest != _result_integrity_sha256(result):
         return None
     return result
 

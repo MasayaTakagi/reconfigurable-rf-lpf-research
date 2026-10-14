@@ -253,7 +253,7 @@
     "legacy_policy_version": "2026-10-10"
   },
   "code": {
-    "execution_sha": "eb1f1c5ea378c2fd67ed396276bf17b4e23ecaf7",
+    "execution_sha": "75bd8a09d4db055cc36956f3061e44084cf4f421",
     "working_tree_dirty": false,
     "archive_sha": null
   },
@@ -548,17 +548,89 @@
   },
   "bands_sha256": "1b1182e4c947059cb263c1af52ddf64236bd1fd9e83770cc844126576c7865fe",
   "execution": {
-    "status": "planned",
-    "elapsed_seconds": null,
-    "evaluation_count": null
+    "status": "completed",
+    "elapsed_seconds": 324.083,
+    "evaluation_count": 642
   },
   "validation": {
-    "numerical": "not_run",
-    "independent": "not_run",
+    "numerical": "screened",
+    "independent": "screened",
     "implementation": "not_run",
-    "analysis_grid": null,
-    "independent_grid": null
+    "analysis_grid": {
+      "optimization_points_per_csv_segment": 9,
+      "maxiter_per_stage": 120,
+      "ftol": 1e-08
+    },
+    "independent_grid": {
+      "points_per_csv_segment": 21
+    }
   },
-  "evidence": [],
-  "limitations": []
+  "evidence": [
+    {
+      "path": "data/validation/rf_f002_warm_start_refinement_20261014/unremapped-import-diagnostic/.manager.lock",
+      "sha256": "d40b07ea887af5fa26ee68cb7b0e2bd0a88f048219f82979ab02ce3f86b395b6"
+    },
+    {
+      "path": "data/validation/rf_f002_warm_start_refinement_20261014/unremapped-import-diagnostic/aggregate.json",
+      "sha256": "56d0f19693129b38c701eb43b5851b8c5581a6c303d7059fc727f7a19285d098"
+    },
+    {
+      "path": "data/validation/rf_f002_warm_start_refinement_20261014/unremapped-import-diagnostic/config.json",
+      "sha256": "101eaad0f6dc3e1540a3f4eaf76d86be6845304334ad28bc8218d152580475d1"
+    },
+    {
+      "path": "data/validation/rf_f002_warm_start_refinement_20261014/unremapped-import-diagnostic/locks/09ab69f7b2ee7f64dac856db.lock",
+      "sha256": "8adea63356cf4334175d387a1d48aae45c950d89cbf2bbb2b1c531eb662d7b85"
+    },
+    {
+      "path": "data/validation/rf_f002_warm_start_refinement_20261014/unremapped-import-diagnostic/locks/cf20ce56409e4b0461f87053.lock",
+      "sha256": "c7c510522bfe8144b5ce912a1128a91e360a880fec6164ad34eefb9a12b7a822"
+    },
+    {
+      "path": "data/validation/rf_f002_warm_start_refinement_20261014/unremapped-import-diagnostic/logs/09ab69f7b2ee7f64dac856db.attempt-1.log",
+      "sha256": "a5374191d35ea18c224228b5e353b55cacde3afa80bb32aafcf14de8e06e0020"
+    },
+    {
+      "path": "data/validation/rf_f002_warm_start_refinement_20261014/unremapped-import-diagnostic/logs/cf20ce56409e4b0461f87053.attempt-1.log",
+      "sha256": "3b6e2a15acb52822785b3f6b9646a4f653b695a76a37737f77f12cda50d512ab"
+    },
+    {
+      "path": "data/validation/rf_f002_warm_start_refinement_20261014/unremapped-import-diagnostic/manager.log",
+      "sha256": "28c4b82f096a5d9f4657c8aca309cc6447883204f854ddb3befdb7657eceb8a3"
+    },
+    {
+      "path": "data/validation/rf_f002_warm_start_refinement_20261014/unremapped-import-diagnostic/manifest.json",
+      "sha256": "186449c95ffe7e438d87bed2431bffc85ed563a2bbcf9e51cf9a490c8158f427"
+    },
+    {
+      "path": "data/validation/rf_f002_warm_start_refinement_20261014/unremapped-import-diagnostic/results/09ab69f7b2ee7f64dac856db.json",
+      "sha256": "d65fa16c75903d6e89c27f198df3652136b4c66b7e41d50af20611e59e23b8cd"
+    },
+    {
+      "path": "data/validation/rf_f002_warm_start_refinement_20261014/unremapped-import-diagnostic/results/cf20ce56409e4b0461f87053.json",
+      "sha256": "2c63f5144edd99a8813e1f4880f224832ff4153a8e4ccf6f441a276b733f2ff4"
+    },
+    {
+      "path": "data/validation/rf_f002_warm_start_refinement_20261014/unremapped-import-diagnostic/status.json",
+      "sha256": "d64ca09da82c2cc23855bea158ec5554eb61af1f58bdda2b03f058d9675a435d"
+    },
+    {
+      "path": "data/validation/rf_f002_warm_start_refinement_20261014/unremapped-import-diagnostic/summary.json",
+      "sha256": "f4613d632e4f2168c3896523f389c16acf8e92b2def0fbbca333870a8acef691"
+    },
+    {
+      "path": "data/validation/rf_f002_warm_start_refinement_20261014/unremapped-import-diagnostic/tasks/09ab69f7b2ee7f64dac856db.json",
+      "sha256": "e176ee4ad80fadd2431fee7466655d624e30b5470444c5a2c21bea7b9bf4fe2a"
+    },
+    {
+      "path": "data/validation/rf_f002_warm_start_refinement_20261014/unremapped-import-diagnostic/tasks/cf20ce56409e4b0461f87053.json",
+      "sha256": "fe5b1450e4b2919f05c7bca23dfd80633d781a92f41356d334b6788322cb999e"
+    }
+  ],
+  "limitations": [
+    "Post-run audit found that saved EXP-017/023 topology node IDs were not mapped to the manager canonical terminal convention. Saved candidates use ground=0,input=1,output=3, while FullLPFProblem assumes ground=0,input=1,output=2. The unremapped input was not the intended checkpoint graph; exclude these numerical outputs from all warm-start or candidate-quality claims.",
+    "The resulting worker executions are retained only as bounded task/resource evidence for a valid six-node RF-F002 full-LPF graph; the source checkpoint vector metrics were rechecked separately after canonical port remapping.",
+    "The corrected initial MNA at 21 points reproduces EXP-023 IL/H2/H3 = 0.4601803/35.0200/35.0200 dB and EXP-017 = 0.3787979/35.0300/35.0300 dB. A corrected optimizer run is separately registered.",
+    "All reported analysis remains finite-grid only; no physical implementation validation was performed."
+  ]
 }

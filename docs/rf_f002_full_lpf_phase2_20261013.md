@@ -158,7 +158,7 @@ Full-LPF単一startの実測時間158–481s（初期の3 seedとscaled 120-iter
 
 ### 維持する境界・統合状態
 
-EXP-032/033を含めRF-F002でIL≤0.30dBを満たす候補はない。数値結果は有限grid/MNAのみで、continuous-band proof/global optimum/physical validationではない。RF-F002、`matching_only`/`full_lpf`/trial区分、Phase 2を維持し、main mergeとPhase 3移行はしていない。レビューPRは未作成（別途作成予定）。
+EXP-032/033を含めRF-F002でIL≤0.30dBを満たす候補はない。数値結果は有限grid/MNAのみで、continuous-band proof/global optimum/physical validationではない。RF-F002、`matching_only`/`full_lpf`/trial区分、Phase 2を維持し、main mergeとPhase 3移行はしていない。レビュー用[PR #47](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/47)を作成した（open、未merge）。
 
 ## 7. 最新main統合・保存チェックポイントの数値再現（2026-10-14）
 

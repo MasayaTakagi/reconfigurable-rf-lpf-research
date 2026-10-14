@@ -12,6 +12,23 @@ PR #49～#51のmain統合後の非破壊的な再点検。基準main：dacf0dcbe
 
 **46ファイルすべての暫定処置は retain_pending_source_context_review。削除・移動は実施0件。** 文字列一致やリンクはファイルの意味の証明ではなく、過去の数値計算や物理検証の実行を追加で主張しない。Git全履歴、元チャットの外部ZIP、未追跡のローカルrunは機械的検索の対象外。同一Git blobはバイト一致を示すだけで、異なる出所とrunの役割が重複不要という意味ではない。
 
+## 46件の実測分類とCI検証
+
+[GitHub Actions 38594722099](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38594722099)にて、対象46件のスキャンと保存された原資料の整合検査がPASS。
+
+| 一次調査の保管要因 | ファイル数 | 処置 |
+|---|---:|---|
+| 追跡文書・コードからの直接パス記載またはMarkdown相対リンク | 32 | 文脈確認まで保持 |
+| 別パスにバイト同一のGit blobがある（かつ上記優先区分外） | 9 | run出所を照合するまで保持 |
+| 参照・同一blobが未検出の元PR README | 5 | 原資料の説明文として保持 |
+| **計** | **46** | **削除承認なし** |
+
+直接パス文字列は26件の記載（該当20ファイル）、Markdown相対リンクは26件（該当26ファイル）で、両者の重複を除くと32ファイルがリンクあり。別パスとGit blob一致するものは全部で15ファイルだが、6件は文書リンクありと重複するため、表では残り9件を独立区分に記載する。
+
+元source_pr38/SHA256SUMSの17ファイルをSHA-256で照合して一致。ハッシュ一覧に載らない最上位README.mdは別途SHA-256 b1b844ed35724373ba971e7b8806a58cfb1681c5e839b8c6edb358d201f0e1ce で確認した。旧R1の completed-checkpoint.zip は27,357バイト・4メンバーで、CRC検査がPASS。ZIPのSHA-256は 15f610edad60818319703747d25826ce76d84b7482bd7be1b377d7e900c775d8。**CRCとハッシュの成立は内部回路の数値正しさや実装性を証明しない。**
+
+今後のCIでは検証内容をarchive_integrity_summary.json、個別分類をstorage_triage.csv、集計をstorage_triage_summary.jsonとして既存のPhase 2 artifactに同梱する。元記録は不変であり、新しい検証はCI履歴から別証拠として追跡する。
+
 ## 主な保全対象と個別の読み取り
 
 ### 歴史的RF条件の検証ソース

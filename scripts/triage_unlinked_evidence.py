@@ -11,8 +11,10 @@ import base64
 import csv
 import io
 import json
+import posixpath
 import re
 import sys
+from urllib.parse import unquote
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -28,6 +30,7 @@ TEXT_EXTENSIONS = {".md", ".rst", ".txt", ".py", ".json", ".jsonl",
 FIELDS = ("review_id", "path", "git_blob_sha1", "bytes", "location",
           "original_storage_class", "source_content_kind", "sample_schema",
           "exact_path_text_ref_count", "exact_path_text_refs",
+          "markdown_resolved_ref_count", "markdown_resolved_refs",
           "same_blob_other_paths", "same_blob_other_count",
           "review_class", "disposition", "followup_action")
 
@@ -83,6 +86,33 @@ def _ref_hits(text, needle):
                           + r"(?![\w./-])", text))
 
 
+MARKDOWN_LINK = re.compile(r"\]\(\s*<?([^)\s>]+)>?(?:\s+[^)]*)?\)")
+
+
+def resolved_markdown_references(texts, tracked):
+    """Resolve relative link destinations, not arbitrary markdown code spans.
+
+    Link discovery is still only a hint: an old narrative link may be stale.
+    Absolute URLs and link fragments are excluded; paths outside Git are ignored.
+    """
+    refs = defaultdict(set)
+    for source, body in texts.items():
+        if Path(source).suffix.lower() != ".md":
+            continue
+        for m in MARKDOWN_LINK.finditer(body):
+            link = unquote(m.group(1))
+            if ("://" in link or link.startswith(("/", "#", "mailto:", "data:"))):
+                continue
+            link = link.split("?", 1)[0].split("#", 1)[0]
+            if not link:
+                continue
+            resolved = posixpath.normpath(posixpath.join(
+                posixpath.dirname(source), link))
+            if resolved in tracked and resolved != source:
+                refs[resolved].add(source)
+    return refs
+
+
 def build_triage(root=ROOT, tracked=None):
     root = Path(root)
     if tracked is None:
@@ -102,6 +132,8 @@ def build_triage(root=ROOT, tracked=None):
         if body is not None:
             texts[rel] = body
 
+    markdown_refs = resolved_markdown_references(texts, tracked)
+
     blobs = defaultdict(list)
     for rel in sorted(tracked):
         blobs[_blob_sha1((root / rel).read_bytes())].append(rel)
@@ -114,9 +146,10 @@ def build_triage(root=ROOT, tracked=None):
             source for source, body in texts.items()
             if source != rel and _ref_hits(body, rel)
         ]
+        md_refs = sorted(markdown_refs.get(rel, set()))
         same_blob = [other for other in blobs[row["git_blob_sha1"]] if other != rel]
         kind, schema = _source_summary(rel, root / rel)
-        if exact_refs:
+        if exact_refs or md_refs:
             review_class = "text_linked_requires_semantic_review"
             action = "verify_text_link_role_and_retention"
         elif same_blob:
@@ -139,6 +172,8 @@ def build_triage(root=ROOT, tracked=None):
             "source_content_kind": kind, "sample_schema": schema,
             "exact_path_text_ref_count": len(exact_refs),
             "exact_path_text_refs": ";".join(exact_refs),
+            "markdown_resolved_ref_count": len(md_refs),
+            "markdown_resolved_refs": ";".join(md_refs),
             "same_blob_other_paths": ";".join(same_blob),
             "same_blob_other_count": len(same_blob),
             "review_class": review_class,
@@ -154,6 +189,8 @@ def build_triage(root=ROOT, tracked=None):
         "review_classes": dict(sorted(counts.items())),
         "locations": dict(sorted(Counter(x["location"] for x in records).items())),
         "exact_path_text_hits": sum(int(x["exact_path_text_ref_count"]) for x in records),
+        "resolved_markdown_link_hits": sum(int(x["markdown_resolved_ref_count"]) for x in records),
+        "files_with_resolved_markdown_links": sum(bool(x["markdown_resolved_ref_count"]) for x in records),
         "files_with_exact_path_text_hits": sum(bool(x["exact_path_text_ref_count"]) for x in records),
         "files_with_same_blob_elsewhere": sum(bool(x["same_blob_other_count"]) for x in records),
         "all_dispositions_retain": all(x["disposition"] ==
@@ -161,7 +198,7 @@ def build_triage(root=ROOT, tracked=None):
                                        for x in records),
         "deletions_or_moves_executed": 0,
         "limitations": [
-            "Text search is exact Git-relative pathname string, not manual interpretation.",
+            "Text path search and relative Markdown link resolution are hints, not semantic validation.",
             "Git history, external ZIP, original conversations, and untracked files are not searched.",
             "A matching Git blob SHA-1 does not prove the same evidence role or redundant history.",
             "Files remain protected unless a future separate decision authorizes change.",

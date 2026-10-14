@@ -116,7 +116,7 @@ def audit_catalog(root=ROOT):
             if threshold_errors:
                 raise ValueError("; ".join(threshold_errors))
             if policy_class == "historical":
-                if policy_id or candidate_id not in legacy_rows:
+                if policy_id or row["effective_constraint_sha256"] or candidate_id not in legacy_rows:
                     raise ValueError("Invalid historical provenance")
                 historical = legacy_rows[candidate_id]
                 if historical["constraint_class"] != "historical":
@@ -128,13 +128,19 @@ def audit_catalog(root=ROOT):
                 exp = experiment_rows[row["experiment_id"]]
                 if (policy_id != exp["constraint_id"] or
                         policy_class != exp["constraint_class"] or
-                        objective != exp["objective"]):
+                        objective != exp["objective"] or
+                        row["effective_constraint_sha256"] != exp["effective_constraint_sha256"]):
                     raise ValueError("Experiment index/constraint mismatch")
                 valid = registry["formal"] if policy_class == "formal" else registry["trial"]
                 if policy_id not in valid:
                     raise ValueError("Unregistered RF constraint ID")
             else:
                 raise ValueError("Unknown policy class")
+            expected_group = ("legacy_2026_10_10_full_lpf_35_historical"
+                              if policy_class == "historical" else
+                              f"{policy_id}_{objective}_{int(requirement)}_{row['threshold_classification']}")
+            if row["comparison_key"] != expected_group:
+                raise ValueError("Comparison key could mix unlike RF evidence")
             checkpoint = _json(_path(root, row["checkpoint_path"]))
             validation_path = _path(root, row["verification_path"])
             validation = _json(validation_path) if validation_path.suffix == ".json" else None
@@ -149,6 +155,9 @@ def audit_catalog(root=ROOT):
                 raise ValueError("Checkpoint identity mismatch")
             if policy_class != "historical" and checkpoint.get("constraint_id") != policy_id:
                 raise ValueError("Checkpoint constraint mismatch")
+            source_hash = checkpoint.get("effective_constraint_sha256", checkpoint.get("constraint_sha256"))
+            if source_hash and policy_class != "historical" and source_hash != row["effective_constraint_sha256"]:
+                raise ValueError("Checkpoint resolved-policy SHA differs from catalog")
             if policy_class == "formal" and policy_id != registry["active_formal_id"]:
                 raise ValueError("Formal candidate unexpectedly relabeled as active")
             if (validation_path.name == "summary.json" and

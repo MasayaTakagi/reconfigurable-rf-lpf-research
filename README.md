@@ -1,3 +1,5 @@
+**研究結果の横断台帳（2026-10-14初版）：** [Phase 2成果管理と保全規則](docs/research_result_governance.md)、[選別候補の統合台帳](data/research_candidate_register.csv)、[未解決事項](data/research_review_issues.csv)。現行RF-F002と試験RF-T004を区別し、旧結果・strict／tolerance-onlyを混在させない。初版は9記録であり全成果の網羅を意味しない。
+
 **2026-10-13 最新正式制約はRF-F002。** チップ隣接|k|≤0.15、非強結合公称0・感度≤0.03、PCB間≤0.15、chip–PCB k=0、PCB-L≤2nH、IC可変C最大2枝・各0–1.5pF/Q50・配置自由、LQW04 Q33。[RF-T004](data/constraints/trial/RF-T004.json)は可変C最大3枝の試験条件。[RF-F002](data/constraints/formal/RF-F002.json)と[台帳](data/constraints/registry.json)を現行正本とする。以下のRF-F001「現行」表現は当時の履歴。旧数値結果はRF-F002の性能実証ではない。Phase 2継続、Phase 3停止。
 
 **Stage 2 / RF-F002対応：** 新規P4-A `plan`/`run`は`--constraint-id`を必須とし、現行正式条件には`RF-F002`を指定します。`RF-T004`はRF-F002ベースの試験条件で、正式条件とは別ジョブです。RF-F001/RF-T001/T002/T003も履歴条件として選択できます。ID省略による自動変換は行いません。新仕様下のスモーク・CI結果はPR #35の最新チェックと[ローカル実行手順](docs/local_execution.md)を参照。RF-F002でのRF性能達成は未確認です。

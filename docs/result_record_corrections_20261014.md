@@ -44,3 +44,20 @@
 - 39実験全体の現行manifestの状態を、`data/experiment_evidence_inventory.csv`に読み取り専用で投影する。**manifestのevidenceが0件でも結果が未実行と確定するものではない。**
 - 完了・passed・reported_in_sources・screened・unknown・not_runを混同しない。
 - RF-F002とRF-T004、30dBと35dB、`matching_only`と`full_lpf`を分離する。Phase 3は停止したまま。
+
+## POSTHOC-001：EXP-016 4件の保存チェックポイントを固定環境で数値再照合（追記）
+
+2026-10-14、GitHub Actions [run 38587242196](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38587242196) で、Python 3.12 + `uv sync --frozen` 環境の `scripts/verify_exp016_numpy2_replay.py` による再計算とユニットテストが **PASS**。
+
+元の `EXP-016/verify.py` は NumPy 2系のバッチ線形方程式の右辺形状に不整合があり、そのままのCIでは `np.linalg.solve` の次元エラーで停止した。元のGit blobを復元・保存した上で、RF回路モデルは変えず `rhs[..., None]` に列ベクトル軸を明示する**別名の再実行用スクリプト**を追加した。元の最適化器や歴史的実行証拠を改ざんしたものではない。
+
+再照合した4候補はいずれもRF-T004試験条件（3可変C）であり、各CSV周波数区間7,001点と候補ごと84代表点の枝電流MNA、電力収支、SPDの確認を通過した。保存数値との比較を含む最新の再計算値は [再照合記録](../data/validation/exp016_ci_replay_20261014.json) に転記し、元のチェックポイントは変更していない。
+
+| 候補 | 要求H2/H3 | 再計算worst IL | 最小H2 | 最小H3 |
+|---|---:|---:|---:|---:|
+| EXP016-HV30-V053 | 30dB | 0.450900513dB | 30.199999994dB | 30.199999998dB |
+| EXP016-HV35-V009 | 35dB | 0.539439378dB | 35.199999999dB | 35.199999999dB |
+| EXP016-LQW2-30-V053 | 30dB | 0.377520153dB | 30.199999984dB | 30.199999983dB |
+| EXP016-LQW3-35-V009 | 35dB | 0.433221210dB | 35.199946605dB | 35.199999997dB |
+
+**解決できた範囲：** 保存した4回路ベクトルの現在の数値解析コードでの再現性。**未解決：** 初回217探索・追補探索の元実行環境／完全ログ／事前登録の確証、実部品Q(f)／SRF／寄生／EM／製造公差。元manifestの`unknown`/`not_run`は作成時点の履歴として維持し、今回の事後検証を別証拠として保存した。

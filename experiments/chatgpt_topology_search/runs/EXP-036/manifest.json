@@ -253,8 +253,8 @@
     "legacy_policy_version": "2026-10-10"
   },
   "code": {
-    "execution_sha": "1cd1f2e0a8199031f354dd8149f70ac71b89fe0c",
-    "working_tree_dirty": true,
+    "execution_sha": "7f62fb2491d9068e1dbd8f05ccb467340d167662",
+    "working_tree_dirty": false,
     "archive_sha": null
   },
   "random_seed": 20261014,
@@ -548,19 +548,90 @@
   },
   "bands_sha256": "1b1182e4c947059cb263c1af52ddf64236bd1fd9e83770cc844126576c7865fe",
   "execution": {
-    "status": "planned",
-    "elapsed_seconds": null,
-    "evaluation_count": null
+    "status": "completed",
+    "elapsed_seconds": 30.615,
+    "evaluation_count": 60
   },
   "validation": {
-    "numerical": "not_run",
-    "independent": "not_run",
+    "numerical": "screened",
+    "independent": "screened",
     "implementation": "not_run",
-    "analysis_grid": null,
-    "independent_grid": null
+    "analysis_grid": {
+      "optimization_points_per_csv_segment": 9,
+      "maxiter_per_stage": 5,
+      "max_attempts": 2
+    },
+    "independent_grid": {
+      "points_per_csv_segment": 21
+    }
   },
-  "evidence": [],
+  "evidence": [
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/exp036-sigint-resume/aggregate.json",
+      "sha256": "7e46aeaed79d33c549dda6160e819278bba5d1abe5a91bd7140f91c5b29a1da7"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/exp036-sigint-resume/config.json",
+      "sha256": "c8453d7cf3e5ba560cde9de3af6084bae07e53ad35c318e9b2eb9de9e5bb5204"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/exp036-sigint-resume/locks/09ab69f7b2ee7f64dac856db.lock",
+      "sha256": "8d41861dc9fc9f8729b402ec185da62518dda2dddc3e204d7257d904dc222058"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/exp036-sigint-resume/locks/3d79dd89a90001b7ef7e2679.lock",
+      "sha256": "63480de5e112e6c58d7aee95a7785e2baac53f3dd788c896d1981055aecd748c"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/exp036-sigint-resume/logs/09ab69f7b2ee7f64dac856db.attempt-1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/exp036-sigint-resume/logs/09ab69f7b2ee7f64dac856db.attempt-2.log",
+      "sha256": "e2f626e37a4d553a9701562de829ea7fe673c874fd267240b82006f35200a78f"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/exp036-sigint-resume/logs/3d79dd89a90001b7ef7e2679.attempt-1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/exp036-sigint-resume/logs/3d79dd89a90001b7ef7e2679.attempt-2.log",
+      "sha256": "15c72416e26e8a910efa121892ed01c607ef9afb59618d3080e358538807aa38"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/exp036-sigint-resume/manifest.json",
+      "sha256": "0f7aa488587fb05b5e1153cc9b9457993da8cc1a5c0935011af9cc0b9ea7f29a"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/exp036-sigint-resume/process_recovery_summary.json",
+      "sha256": "e8a55c4ea0205e18fbba928a18f6e8cddd15a55c929d8c86bc973cc762d52dd7"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/exp036-sigint-resume/results/09ab69f7b2ee7f64dac856db.json",
+      "sha256": "9d95d5aa72c1eceb5b3518b880bd0e006cd218f7d6cb607dbc81a1779d7d269a"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/exp036-sigint-resume/results/3d79dd89a90001b7ef7e2679.json",
+      "sha256": "9cc66c1095f0c48f385008a167e71e70ca0af3f5b49d12b03da14ae3a866a01f"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/exp036-sigint-resume/status.json",
+      "sha256": "c84fa333ff7ef6f8ce4f4c8a963eb0b4f6c4472822f5f4063f2696e29fa0f98f"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/exp036-sigint-resume/tasks/09ab69f7b2ee7f64dac856db.json",
+      "sha256": "5e7f7656e10f4b0f35c0d947103ebacf53bc54f15b6ab4ab95e0abda82bb1641"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/exp036-sigint-resume/tasks/3d79dd89a90001b7ef7e2679.json",
+      "sha256": "50d7bfdea05f06f7ccdceaa1c630135c1705519a52742d6ccf8f1204d24a7d57"
+    }
+  ],
   "limitations": [
-    "Working tree is dirty; execution SHA alone cannot replay this run."
+    "Working tree is dirty; execution SHA alone cannot replay this run.",
+    "Real SIGINT was delivered to the manager only after both target worker PIDs were observed computing; manager exited on SIGINT, stopped both workers, and preserved pending attempts.",
+    "After explicit --resume, both task starts were re-run from their immutable initial vectors (attempts=2) and completed; this is not continuation from an interrupted SLSQP iteration.",
+    "The two five-iteration smoke outputs are nonconverged and are not RF-F002 performance candidates.",
+    "Finite frequency grids are screening evidence only; no physical validation was performed."
   ]
 }

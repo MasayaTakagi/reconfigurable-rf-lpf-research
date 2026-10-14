@@ -7,6 +7,7 @@ verification, and preserves original archive files byte-for-byte.
 import hashlib
 import json
 import posixpath
+import subprocess
 import zipfile
 from pathlib import Path
 
@@ -44,9 +45,15 @@ def check_source_archive(root=ROOT):
         if actual != expected:
             raise ValueError("Archived SHA256SUMS mismatch: " + rel)
         hashes[rel] = actual
+    # Compare to Git-tracked archived files. The unit-test run may have
+    # created transient __pycache__ files under this old source snapshot.
+    tracked = subprocess.check_output(
+        ["git", "ls-files", "-z", "--", str(sha_path.parent.relative_to(root))],
+        cwd=root,
+    ).decode("utf-8").split("\0")
     archived = {
-        p.relative_to(archive_dir).as_posix() for p in archive_dir.rglob("*")
-        if p.is_file() and p != sha_path
+        (root / p).relative_to(archive_dir).as_posix()
+        for p in tracked if p and p != SHA_FILE
     }
     if archived != set(hashes):
         raise ValueError("SHA256SUMS omits archive files or lists absent files")

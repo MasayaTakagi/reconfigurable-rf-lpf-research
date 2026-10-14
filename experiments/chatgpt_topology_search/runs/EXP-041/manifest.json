@@ -253,7 +253,7 @@
     "legacy_policy_version": "2026-10-10"
   },
   "code": {
-    "execution_sha": "048c2154464e15a2650766d03dca7b0c115db54d",
+    "execution_sha": "fb436e9dc57399a4dd9c5e5207220bfbaed4970b",
     "working_tree_dirty": false,
     "archive_sha": null
   },
@@ -437,17 +437,84 @@
   },
   "bands_sha256": "1b1182e4c947059cb263c1af52ddf64236bd1fd9e83770cc844126576c7865fe",
   "execution": {
-    "status": "planned",
-    "elapsed_seconds": null,
-    "evaluation_count": null
+    "status": "completed",
+    "elapsed_seconds": 217.43438315899937,
+    "evaluation_count": 90
   },
   "validation": {
-    "numerical": "not_run",
-    "independent": "not_run",
+    "numerical": "screened",
+    "independent": "screened",
     "implementation": "not_run",
-    "analysis_grid": null,
-    "independent_grid": null
+    "analysis_grid": {
+      "optimization_points_per_csv_segment": 9,
+      "maxiter_per_stage": 120,
+      "ftol": 1e-08,
+      "scale_design_variables": false,
+      "harmonic_targets_db": [
+        30.0,
+        35.0
+      ]
+    },
+    "independent_grid": {
+      "points_per_csv_segment": 1001,
+      "independent_formulations": "main MNA, nodal-admittance and branch-current validation"
+    }
   },
-  "evidence": [],
-  "limitations": []
+  "evidence": [
+    {
+      "path": "data/validation/rf_f002_unscaled_followup_20261014/run/.manager.lock",
+      "sha256": "643b7064021bb924487e0b1c87f418c76d7d9e817d40335242f2e5f674b40137"
+    },
+    {
+      "path": "data/validation/rf_f002_unscaled_followup_20261014/run/aggregate.json",
+      "sha256": "b63c10933ff53b0e23d7cf25e04a23394d2f8e94f3685b1ffd08ab9d4a2317a5"
+    },
+    {
+      "path": "data/validation/rf_f002_unscaled_followup_20261014/run/config.json",
+      "sha256": "3332a575fa359fb6f6b443d63cf96e6b8b8d6698da138f1727a03f14cca78986"
+    },
+    {
+      "path": "data/validation/rf_f002_unscaled_followup_20261014/run/grid1001-validation.json",
+      "sha256": "2426765b8d872ab3c5940ba9a6cf6ec5b38d8b82d0c15bc30fbb1dae9b84ab67"
+    },
+    {
+      "path": "data/validation/rf_f002_unscaled_followup_20261014/run/locks/6acd4f80fcd682902c52c999.lock",
+      "sha256": "542fc365ffb027494a644ef7cfe0ce54949a6246470d9a24ebbbd3dce747135f"
+    },
+    {
+      "path": "data/validation/rf_f002_unscaled_followup_20261014/run/logs/6acd4f80fcd682902c52c999.attempt-1.log",
+      "sha256": "0f352703e86d0e03d4547926201369079d1b1341d66fcf50cbc618d8d2c81dd8"
+    },
+    {
+      "path": "data/validation/rf_f002_unscaled_followup_20261014/run/manager.log",
+      "sha256": "4357f29c7ccd218b3b2c3dd5f66c3d081c2a36730d3d58c85ff99a9ce3da9890"
+    },
+    {
+      "path": "data/validation/rf_f002_unscaled_followup_20261014/run/manifest.json",
+      "sha256": "ca687a47b3ba1081673d35cbef7ea796ad8de0b553909c7b0cea3e895e55b8e6"
+    },
+    {
+      "path": "data/validation/rf_f002_unscaled_followup_20261014/run/results/6acd4f80fcd682902c52c999.json",
+      "sha256": "14c6a993a940159d1a5f374213a7ef35cce371ace22292a6004520d91fcfa3e7"
+    },
+    {
+      "path": "data/validation/rf_f002_unscaled_followup_20261014/run/status.json",
+      "sha256": "cf1d0853df924a25c742dd0cc6ef2c23b5d606acf2fc26b3b779c99482b6074e"
+    },
+    {
+      "path": "data/validation/rf_f002_unscaled_followup_20261014/run/summary.json",
+      "sha256": "307e294f57ab36650b85eb8121047b866ebaabf3aa7456f925d860e4cbb781e1"
+    },
+    {
+      "path": "data/validation/rf_f002_unscaled_followup_20261014/run/tasks/6acd4f80fcd682902c52c999.json",
+      "sha256": "7b5d83c5d8133d0cfebc41626a3d2572b836485485e0c9f1139dfbecffe88e3e"
+    }
+  ],
+  "limitations": [
+    "The 30 dB-selected point is 0.3186931893 dB IL; raw H2/H3 values are 29.9999999969/29.9999999987 dB and are classified feasible only within the configured 1e-5 dB tolerance. It is not a strict-margin or nominal-35 dB candidate.",
+    "The 35 dB-selected point is 0.3783490996 dB IL. Neither result meets the 0.30 dB objective.",
+    "Independent 1001-point-per-segment validation reproduced the 21-point extrema; MNA gain mismatch was <=3.4e-15 and power residual <=2.9e-17 W. Finite-grid checking is not a continuous-band proof.",
+    "Unscaled physical coordinates are not recommended as the default: the paired EXP-040 run hit maxiter in both stages for both starts. EXP-041 only refines the promising EXP-017 30 dB seed; its 30 dB stage converged in 3 iterations and the 35 dB stage in 72.",
+    "No SRF, Q(f), parasitic, EM, tolerance, manufacturing, or physical implementation validation was performed."
+  ]
 }

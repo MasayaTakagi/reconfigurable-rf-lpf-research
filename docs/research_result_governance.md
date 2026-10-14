@@ -74,3 +74,9 @@ GitHubの運用方針の正本は `docs/chatgpt_project_instructions.md`。こ�
 - `scripts/audit_experiment_inventory.py`と`tests/test_experiment_evidence_inventory.py`を追加し、39行の保全と出典の変化をCIで監視する。
 
 以上は**source inventoryと証拠の分類作業**であり、RF-F002候補のIL≤0.30dB達成・大規模探索の完了・連続帯域保証や物理妥当性の実証ではない。未確認箇所は新しい検証証拠を取得してからステータス変更する。
+
+### Manifestがsource-onlyの実験の補助証拠索引
+
+`EXP-016/017/021/022/023/024`の6実験ではmanifestの`evidence=[]`を元のまま残し、[補助証拠リンク36件](../data/supplemental_experiment_evidence_index.csv)を新設した。各pathにはGit blob SHA-1・サイズ・役割を保存。これは**現物ファイルへの出典ポインタ**であり、manifestにSHA-256検証が登録された扱いにも、独立MNA再検証の証拠にもならない。Git blobのSHA-1はmanifestで使用するSHA-256と取り違えない。
+
+`scripts/audit_supplemental_evidence.py`は全36件のファイル存在・Git blob内容ハッシュ・6実験のファイル集合・source-onlyラベルをCIで検査する。後日manifest側に正式な証拠を追加するなら補助索引との二重正本化を避けるため同時にレビューする。

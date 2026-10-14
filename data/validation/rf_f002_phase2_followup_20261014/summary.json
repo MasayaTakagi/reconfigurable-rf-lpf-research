@@ -199,6 +199,8 @@
       "started": false,
       "recommendation": "defer: no IL<=0.30 dB result, raw 30 dB margin near zero, topology coverage and long-run scaling unverified"
     },
-    "physical_validation": "not performed: SRF, Q(f), parasitic, EM, tolerance, manufacturing and implementation remain unverified"
+    "physical_validation": "not performed: SRF, Q(f), parasitic, EM, tolerance, manufacturing and implementation remain unverified",
+    "review_pr": "https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/48",
+    "review_pr_state": "open_unmerged"
   }
 }

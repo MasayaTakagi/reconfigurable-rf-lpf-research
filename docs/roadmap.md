@@ -10,7 +10,7 @@
 
 ## 2026-10-14 Phase 2 / Full-LPF 追試状況
 
-PR #47（Full-LPF runner統合）は`origin/main`の`eb1de13841c1b4a74f18f4f9320e0316fbdd478f`に含まれる。追試branch `test/rf-f002-full-lpf-recovery-20261014` ではEXP-034～041を事前登録・記録し、live SIGINT/SIGTERM/lock/resume/hash拒否、4-task 1/2-worker比較、checkpoint terminal remapping、warm/multi-start、9→17 grid refinement、scaled/unscaled/FTOL比較を実行した。詳細は[Phase 2 Full-LPF追試報告](rf_f002_full_lpf_phase2_20261013.md)と各manifestを参照。
+PR #47（Full-LPF runner統合）は`origin/main`の`eb1de13841c1b4a74f18f4f9320e0316fbdd478f`に含まれる。追試branch `test/rf-f002-full-lpf-recovery-20261014` は[PR #48](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/48)としてレビュー中で、EXP-034～041を事前登録・記録。live SIGINT/SIGTERM/lock/resume/hash拒否、4-task 1/2-worker比較、checkpoint terminal remapping、warm/multi-start、9→17 grid refinement、scaled/unscaled/FTOL比較を実行した。詳細は[Phase 2 Full-LPF追試報告](rf_f002_full_lpf_phase2_20261013.md)と各manifestを参照。
 
 正規importされたEXP-017 warm-startの30dB stageはIL 0.318693189 dB（H2/H3生値29.999999997/29.999999999 dB、1e-5 tolerance内）、35dB stageはIL 0.378349100 dB。1001点/segment有限確認で数値一致したが、IL≤0.30dB未達、30dB点のraw marginは実質ゼロ。scaled条件は35dBで収束し、unscaledは低IL/低marginのtradeoff。よってPhase 2継続、S1（100 start）未開始、Phase 3停止、正式RF-F002不変。最新実測start時間96.7–145.0 worker秒を単純外挿したS1は1 worker 2.7–4.0h。2-workerの1.6–2.3hは短いEXP-035倍率を仮置きしただけで、長時間correctly-mapped throughputは未確認。
 

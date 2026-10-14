@@ -2,7 +2,7 @@
 
 **状態：Phase 2 継続。正式条件 RF-F002 を維持。Phase 3 移行・`main` へのマージ・制約変更はしていない。**
 
-- 現在の追試ブランチ：`test/rf-f002-full-lpf-recovery-20261014`。基点は最新`origin/main`=`eb1de13841c1b4a74f18f4f9320e0316fbdd478f`（PR #47を含むmain）で、今回のbranchはレビュー用・未merge。
+- 現在の追試ブランチ：`test/rf-f002-full-lpf-recovery-20261014`。基点は最新`origin/main`=`eb1de13841c1b4a74f18f4f9320e0316fbdd478f`（PR #47を含むmain）で、レビュー用[PR #48](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/48)はopen・未merge。
 - 先行統合の保存・コミット履歴は2026-10-14の各節に記録。今回の実行は最新main上のEXP-034～041で追試し、mainのEXP-020～033や制約正本を変更していない。
 - 後続コミット：scaled solver / Full-LPF runner=`03a6e9f...`、EXP-032条件=`132f6ce...`、EXP-032事前manifest=`c710e0a...`。最新の検証・概算は本書9節を参照。
 - RF-F002 effective SHA-256：`f20d27e93451dcec2f823e6f7c3731c06d843050c4d2ace8b0b46ded605542e2`

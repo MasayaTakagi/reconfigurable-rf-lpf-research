@@ -1,0 +1,213 @@
+{
+  "candidate_id": "EXP017-35P008",
+  "constraint_id": "RF-T004",
+  "base_constraint_id": "RF-F002",
+  "phase": "Phase 2",
+  "objective": "full_lpf",
+  "model": "lumped_constant_Q_no_SRF_EM",
+  "resolved_constraint_sha256": "c66302a281a1fdb88da355fc44dac1ef3b1c4e18e8ff297db9e842b219b5b0c4",
+  "formal_constraint_sha256": "f20d27e93451dcec2f823e6f7c3731c06d843050c4d2ace8b0b46ded605542e2",
+  "source": {
+    "source_ohms": 50,
+    "load_ohms": {
+      "real": 60,
+      "imag": -40
+    }
+  },
+  "topology": {
+    "input_node": 1,
+    "output_node": 3,
+    "ground": 0,
+    "inductor_edges": [
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "physical_row_inductor_indices": [
+      0,
+      1,
+      3,
+      4,
+      2
+    ],
+    "inductor_series": [
+      "LQW04",
+      "LQW04",
+      "LQW04",
+      "LQW04",
+      "LQW04"
+    ],
+    "inductor_Q": [
+      33,
+      33,
+      33,
+      33,
+      33
+    ],
+    "inductor_L_nH": [
+      4.344831483232069,
+      27,
+      5.479957107284907,
+      15.675500673895053,
+      8.350885896158406
+    ],
+    "signed_neighbor_k": [
+      0.12944039044509498,
+      -0.03813362666704743,
+      0.14999999999994532,
+      -0.15
+    ],
+    "fixed_GJM01_Q": 80,
+    "fixed_GJM01_edges": [
+      [
+        1,
+        2
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "fixed_GJM01_C_pF": [
+      1.1424417856993663,
+      1.1647045463859853,
+      0.7120022950906568,
+      0.24258346518897286
+    ],
+    "variable_C_Q": 50,
+    "variable_C_edges": [
+      [
+        4,
+        0
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "variable_C_by_setting_pF": {
+      "B71": [
+        0.13520067181977272,
+        0.5623276860901183,
+        1.320527914359208
+      ],
+      "B12": [
+        0.10547864454772682,
+        0.402072943474759,
+        1.1979403245388691
+      ],
+      "B28": [
+        0.09568840849184786,
+        0.27891026353726156,
+        1.1188719436812982
+      ],
+      "B13+B14": [
+        0.040053814414391826,
+        0.38990810861426145,
+        0.25510791439056096
+      ],
+      "B26": [
+        0.026882606211112207,
+        0.2339200618058951,
+        0.14068697215158105
+      ],
+      "B8": [
+        0.017566461523309953,
+        1.270932489039615e-12,
+        2.934315064619736e-12
+      ]
+    }
+  },
+  "cost": {
+    "chip_area_units": 17.666666666666668,
+    "n_LQW04": 5,
+    "n_GJM01": 4,
+    "n_variable_C": 3,
+    "n_PCB_L": 0
+  },
+  "performance": {
+    "maximum_worst_IL_db": 0.2999624819232766,
+    "minimum_H2_db": 35.00799686004885,
+    "minimum_H3_db": 35.00799999967869,
+    "IL_margin_to_0p30_db": 0.0000375180767234,
+    "harmonic_margin_over_35_db": 0.00799686004885,
+    "per_setting_max_IL_minH2_minH3_db": {
+      "B71": [
+        0.2999624819232766,
+        35.0079999995866,
+        35.00799999967869
+      ],
+      "B12": [
+        0.28203397925225493,
+        35.00799686004885,
+        40.529334854250756
+      ],
+      "B28": [
+        0.2999624819225363,
+        35.00799999901167,
+        35.20528553699094
+      ],
+      "B13+B14": [
+        0.28772247311436605,
+        35.00799999952396,
+        35.00800000027273
+      ],
+      "B26": [
+        0.2999624819221788,
+        35.00799999745474,
+        35.00800000067575
+      ],
+      "B8": [
+        0.29996248192326735,
+        35.00800000554454,
+        35.00799999982236
+      ]
+    }
+  },
+  "numerical_verification": {
+    "samples_per_continuous_frequency_segment": 14001,
+    "independent_branch_current_MNA_size": 10,
+    "independent_MNA_points": 84,
+    "max_nodal_voltage_discrepancy_V": 5.564421850464315e-15,
+    "max_power_balance_residual_W": 1.3769367590565906e-17,
+    "normalized_coupling_matrix_min_eigenvalue": 0.7851275840330142,
+    "solver_success": true,
+    "global_optimality_proven": false,
+    "physical_EM_SRF_Q_frequency_verified": false
+  },
+  "risk": {
+    "physical_parts_and_LQW04_27nH_range_unverified": true,
+    "zero_tolerance_margin": true,
+    "manufacturing_or_EM_not_validated": true,
+    "subsequent_action": "Investigate physical LQW04 availability and alternative low-area/robust topologies before claiming implementation."
+  }
+}

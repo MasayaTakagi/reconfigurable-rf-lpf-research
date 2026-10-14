@@ -1,0 +1,148 @@
+{
+  "constraint_id": "RF-T004",
+  "base_constraint_id": "RF-F002",
+  "phase": "Phase 2",
+  "objective": "full_lpf",
+  "scope": "provisional_LQW04_component_physical_check_pending",
+  "source_main_commit": "cf990d3eba625affb8e65da95b7c4f5ac4ec4be4",
+  "full_trial_effective_SHA256_status": "not independently computed: do not promote",
+  "source_ohms": 50,
+  "load_ohms": {
+    "real": 60,
+    "imag": -40
+  },
+  "Q_LQP02HV": 25,
+  "Q_LQW04": 33,
+  "Q_GJM": 80,
+  "Q_variable_C": 50,
+  "L_edges": [
+    [
+      1,
+      2
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      2,
+      5
+    ],
+    [
+      2,
+      3
+    ]
+  ],
+  "physical_chip_row": [
+    "L0",
+    "L1",
+    "L3",
+    "L2"
+  ],
+  "fixed_C_edges": [
+    [
+      1,
+      2
+    ],
+    [
+      5,
+      0
+    ],
+    [
+      2,
+      3
+    ]
+  ],
+  "variable_C_edges": [
+    [
+      4,
+      0
+    ],
+    [
+      5,
+      0
+    ],
+    [
+      2,
+      3
+    ]
+  ],
+  "tunable_C_range_pF": [
+    0,
+    1.5
+  ],
+  "chip_L_neighbor_coupling_max_abs": 0.15,
+  "nonneighbor_coupling": 0,
+  "LQW04_search_interval_nH": [
+    0.4,
+    27
+  ],
+  "LQW04_manufacturer_range_verified": false,
+  "actual_Qf_SRF_EM_coupling_manufacturing_verified": false,
+  "independent_MNA_method": "9x9 branch-current augmented MNA; 7001 grid samples per band interval plus localized extremum search",
+  "global_optimality_proven": false,
+  "id": "W03",
+  "L_series": [
+    "LQW04",
+    "LQP02HV",
+    "LQP02HV",
+    "LQW04"
+  ],
+  "L_nH": [
+    3.2750521244407946,
+    27,
+    14.194860190910488,
+    5.985357214986495
+  ],
+  "signed_neighbor_k": [
+    0.06273987322873764,
+    -0.14735814859035734,
+    -0.14999999999995972
+  ],
+  "fixed_C_pF": [
+    1.5470185004636876,
+    0.39604417071870307,
+    0.5447055619246547
+  ],
+  "variable_C_pF_by_setting": {
+    "B71": [
+      0.44304933755658066,
+      0.5166923322142207,
+      0.7923468744365448
+    ],
+    "B12": [
+      0.4002305486868915,
+      0.41783645310027134,
+      0.7800421943217041
+    ],
+    "B28": [
+      0.37631756317073045,
+      0.38653971746385013,
+      0.8447138346809139
+    ],
+    "B13+B14": [
+      0.4865516880238569,
+      6.208283991898731e-14,
+      0.523386883231724
+    ],
+    "B26": [
+      0.2915448870796669,
+      0.23882766569134237,
+      0.0632924013455468
+    ],
+    "B8": [
+      0.22241471685572892,
+      0.1410133185424268,
+      1.2611603259832365e-12
+    ]
+  },
+  "chip_area": 10,
+  "worst_IL_dB": 0.29063763326343167,
+  "min_H2_dB": 30.019999998126195,
+  "min_H3_dB": 30.019905777968418,
+  "independent_MNA": {
+    "max_voltage_diff_V": 3.972054645195637e-15,
+    "max_power_residual_W": 4.336808689942018e-18,
+    "min_K_eig": 0.7849764017853811
+  }
+}

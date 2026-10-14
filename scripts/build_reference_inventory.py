@@ -152,6 +152,12 @@ def create_inventory(root=ROOT, tracked=None):
         })
     counts = Counter(row["storage_class"] for row in records)
     decisions = Counter(row["review_decision"] for row in records)
+    duplicate_paths = defaultdict(list)
+    for record in records:
+        duplicate_paths[record["git_blob_sha1"]].append(record["path"])
+    same_bytes = [sorted(paths) for paths in duplicate_paths.values() if len(paths) > 1]
+    same_bytes.sort(key=lambda paths: (-len(paths), paths[0]))
+    review = [r for r in records if r["review_decision"] == "review_only_no_deletion"]
     summary = {
         "schema_version": 1, "phase": "Phase 2",
         "report_type": "tracked_file_reference_inventory",
@@ -161,6 +167,12 @@ def create_inventory(root=ROOT, tracked=None):
         "classified_bytes": sum(r["bytes"] for r in records),
         "storage_classes": dict(sorted(counts.items())),
         "retention_decisions": dict(sorted(decisions.items())),
+        "review_only_by_location": dict(sorted(Counter(r["location"] for r in review).items())),
+        "review_only_example_paths": [r["path"] for r in review[:25]],
+        "identical_content_blob_groups": len(same_bytes),
+        "additional_paths_with_identical_content": sum(len(p) - 1 for p in same_bytes),
+        "identical_content_examples": same_bytes[:12],
+        "duplicate_paths_also_require_independent_review": True,
         "manifest_referenced_files": sum(bool(r["manifest_experiments"]) for r in records),
         "catalog_referenced_files": sum(bool(r["catalog_candidates"]) for r in records),
         "supplemental_referenced_files": sum(bool(r["supplemental_experiments"]) for r in records),

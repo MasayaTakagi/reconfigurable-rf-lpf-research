@@ -253,7 +253,7 @@
     "legacy_policy_version": "2026-10-10"
   },
   "code": {
-    "execution_sha": "132f6cec872d0c390668b75178cf3eba3778be36",
+    "execution_sha": "c710e0af743750a706ce37a75740b595801850aa",
     "working_tree_dirty": false,
     "archive_sha": null
   },
@@ -897,17 +897,93 @@
   },
   "bands_sha256": "1b1182e4c947059cb263c1af52ddf64236bd1fd9e83770cc844126576c7865fe",
   "execution": {
-    "status": "planned",
-    "elapsed_seconds": null,
-    "evaluation_count": null
+    "status": "completed",
+    "elapsed_seconds": 210.367,
+    "evaluation_count": 226
   },
   "validation": {
-    "numerical": "not_run",
-    "independent": "not_run",
+    "numerical": "screened",
+    "independent": "screened",
     "implementation": "not_run",
-    "analysis_grid": null,
-    "independent_grid": null
+    "analysis_grid": {
+      "optimization_points_per_csv_segment": 9,
+      "maxiter_per_stage": 5
+    },
+    "independent_grid": {
+      "points_per_csv_segment": 21
+    }
   },
-  "evidence": [],
-  "limitations": []
+  "evidence": [
+    {
+      "path": "data/validation/rf_f002_full_lpf_manager_benchmark_20261014/config.json",
+      "sha256": "050cb749aa6c767afd4b7d8314441ceddea6006d0b1bde22b409797c0dad1a0d"
+    },
+    {
+      "path": "data/validation/rf_f002_full_lpf_manager_benchmark_20261014/one-worker/aggregate.json",
+      "sha256": "5e1e30817d5ad9608a7c553ad4235a10f208c1699588f1cc9b27da4d95882d18"
+    },
+    {
+      "path": "data/validation/rf_f002_full_lpf_manager_benchmark_20261014/one-worker/manifest.json",
+      "sha256": "4185995b5759b4a57156cdf8f3327df0fa3994c3e7fdcfd19bea4b335deceec5"
+    },
+    {
+      "path": "data/validation/rf_f002_full_lpf_manager_benchmark_20261014/one-worker/results/000018eed627668641a05719.json",
+      "sha256": "65a2cfb2539be1feb95fac6a38502e4cde947592bca100f0c38b44735df68aa0"
+    },
+    {
+      "path": "data/validation/rf_f002_full_lpf_manager_benchmark_20261014/one-worker/results/207f8f0b4eb3857e349ef769.json",
+      "sha256": "38a4eb2812d9ac99a3095377884f1f6375fbb4c51ea81d52ab5d9cdece2ae1cf"
+    },
+    {
+      "path": "data/validation/rf_f002_full_lpf_manager_benchmark_20261014/one-worker/results/380a9629a4b6a3ec977575b2.json",
+      "sha256": "3c7632ac9083e2d4279983d7aa04c3eabdf2aa723124f7bae3b24e63bd159a14"
+    },
+    {
+      "path": "data/validation/rf_f002_full_lpf_manager_benchmark_20261014/one-worker/results/a9b29e3185fcbf7696085711.json",
+      "sha256": "ea1bf4c748d135ed9e84917e42f32f41d7ab509411ecf38ebb0f8b4768225ca4"
+    },
+    {
+      "path": "data/validation/rf_f002_full_lpf_manager_benchmark_20261014/one-worker/status.json",
+      "sha256": "00e7bf4864229336e7bcc9f2aace10bb299c8384a7373c8266a4837fa01b3046"
+    },
+    {
+      "path": "data/validation/rf_f002_full_lpf_manager_benchmark_20261014/summary.json",
+      "sha256": "1ab292c333d46d8d24bec681b33e56ccf9af60679c36d6b4eb015ed04eed88af"
+    },
+    {
+      "path": "data/validation/rf_f002_full_lpf_manager_benchmark_20261014/two-worker/aggregate.json",
+      "sha256": "552563cf57c2c0f34bdf8ba5241d5d90ecfd30b5c3f388d384002664e8f90bef"
+    },
+    {
+      "path": "data/validation/rf_f002_full_lpf_manager_benchmark_20261014/two-worker/manifest.json",
+      "sha256": "1e254f2fb9d71c175517bf55c0f02ab0f29fd09a943f8d8c466aa4967fd4b4d3"
+    },
+    {
+      "path": "data/validation/rf_f002_full_lpf_manager_benchmark_20261014/two-worker/results/000018eed627668641a05719.json",
+      "sha256": "a12e69e19414c0da9290112b50516f8f954ea36404022c96ae08baec98a9637d"
+    },
+    {
+      "path": "data/validation/rf_f002_full_lpf_manager_benchmark_20261014/two-worker/results/207f8f0b4eb3857e349ef769.json",
+      "sha256": "3f07cbd94ae8fc67dd346df8104d875c02d588bae2aa2a61619a37e3de092cf1"
+    },
+    {
+      "path": "data/validation/rf_f002_full_lpf_manager_benchmark_20261014/two-worker/results/380a9629a4b6a3ec977575b2.json",
+      "sha256": "62be3f04766b1fa44abd49ee2c6a5724ac4789bb3b2ffc8ae7cb7d473886f30f"
+    },
+    {
+      "path": "data/validation/rf_f002_full_lpf_manager_benchmark_20261014/two-worker/results/a9b29e3185fcbf7696085711.json",
+      "sha256": "aa111f14e245c7ed06e29217ed84f3b7f6f20a1b48229b3605e0172f29aeb793"
+    },
+    {
+      "path": "data/validation/rf_f002_full_lpf_manager_benchmark_20261014/two-worker/status.json",
+      "sha256": "86123b155e0bac71d0f4f914eebcab10a4bc7a7deaca96a249ba213cef4db256"
+    }
+  ],
+  "limitations": [
+    "One topology and four perturbed starts only; this is a runner/scaling smoke test, not broad topology exploration.",
+    "Only five SLSQP iterations per 30 dB and 35 dB continuation stage were allowed; all eight worker executions are nonconverged and below mandatory 30 dB H2/H3.",
+    "The 9-point optimization grid plus 21-point independent check is screening evidence, not a continuous-band proof.",
+    "The measured 1.85x two-worker speedup applies to this short four-task workload; it is not guaranteed for long maxiter=120 runs.",
+    "No SRF, Q(f), parasitic, EM, tolerance, manufacturing, or physical validation was run."
+  ]
 }

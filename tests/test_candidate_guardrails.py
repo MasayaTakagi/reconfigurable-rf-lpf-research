@@ -69,6 +69,12 @@ class CandidateIndexGuardrails(unittest.TestCase):
         shutil.copytree(ROOT / RUNS, self.root / RUNS, ignore=shutil.ignore_patterns("__pycache__"))
         shutil.copytree(ROOT / "data/validation/rf_f002_phase2_20261013",
                         self.root / "data/validation/rf_f002_phase2_20261013")
+        for validation_dir in (
+            "rf_f002_full_lpf_manager_benchmark_20261014",
+            "rf_f002_convergence_20261014",
+        ):
+            shutil.copytree(ROOT / "data/validation" / validation_dir,
+                            self.root / "data/validation" / validation_dir)
         for relative in (
             "data/validation/rft003_20261013/five_L_cost6p33_candidates.json",
             "experiments/matching_limit/full_lpf.py",

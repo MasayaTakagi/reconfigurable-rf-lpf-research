@@ -2,9 +2,9 @@
 
 **状態：Phase 2 継続。正式条件 RF-F002 を維持。Phase 3 移行・`main` へのマージ・制約変更はしていない。**
 
-- 作業ブランチ：`feat/rf-f002-full-lpf-large-search`
-- 基準 `main`：`cf990d3eba625affb8e65da95b7c4f5ac4ec4be4`
-- 実装コミット：`fc9d424bcaa9960b900d75df279757c153a2c98c`
+- 現在の作業ブランチ：`feat/rf-f002-full-lpf-integration-20261014`（最新main基点、レビュー用。mainへ未merge）
+- 統合基点：`origin/main`=`5dbd83217f7c8bb9acd0c9fefd9f4f1ea07d4f89`。元のP4-A/Full-LPF結果は`fc9d424...` / `82a02a4...`から保存し、マージコミット`ce2f8c7...`に取り込んだ。
+- 後続コミット：scaled solver / Full-LPF runner=`03a6e9f...`、EXP-032条件=`132f6ce...`、EXP-032事前manifest=`c710e0a...`。最新の検証・概算は本書9節を参照。
 - RF-F002 effective SHA-256：`f20d27e93451dcec2f823e6f7c3731c06d843050c4d2ace8b0b46ded605542e2`
 - 数値実験時の worktree は clean。Python 3.12.15 / NumPy 2.5.4 / SciPy 1.18.1 / scipy-openblas、WSL2、AMD Ryzen 7 PRO 4750G（8 physical / 16 logical CPU、RAM 7.45 GiB）。BLAS/OMP/MKL thread は各1。
 
@@ -120,6 +120,45 @@ Full-LPF 数値solverと候補個別の変換器はあるが、**full-LPF用の�
 元のローカル実行ディレクトリも保存してある：P4-A 80候補は`results/rf-f002-p4-benchmark/20261013T160125Z-6d7d7841/`、worker比較は`results/rf-f002-worker-compare/20261013T170321Z-147811fe/`と`.../20261013T170428Z-5f59268c/`、Full-LPFは`results/full-lpf/rf-f002-*-current.json`。追跡されたJSONはそのraw fileの内容をSHA付きで保存したコピーである。
 
 これらはRF-F002の有限局所探索記録であり、RF-F002目標IL≤0.30 dBの達成解ではない。
+
+## 9. 2026-10-14 統合後のFull-LPF runner実測・optimizer追試・資源予測更新
+
+### 統合・runner・bounded smoke
+
+作業ブランチは最新main `5dbd832...` を基点とし、main側の既存EXP-020～024を保持した。ローカル既存manifestはEXP-025～031へ移し、索引を再生成。RF-F002 JSON、registry、`data/bands.csv` は不変更。統合コミット`ce2f8c7...`に続き、専用runner/worker・scaled optimizerを`03a6e9f...`へ記録した。正式条件SHA-256は全実行で`f20d27e93451dcec2f823e6f7c3731c06d843050c4d2ace8b0b46ded605542e2`。
+
+`scripts/local_full_lpf.py` / `scripts/full_lpf_worker.py` はRF-F002 full_lpf専用であり、RF-T003 seedは初期値のみ。bounded task count / wall-time / worker timeout、最低1.5GiB空きRAM gate、最大2 worker、各BLAS/OpenMP/NumExpr thread=1、config・source・policy・band hashによるresume互換性、atomic result/status、manager/worker OS lock、欠落/重複-aware aggregateを実装。再開/資源gate/lock/aggregate試験は追加した。P4-A `matching_only` は変更しない。統合branch全体のregressionは**240 tests PASS**。`uv lock --check`、`uv sync --frozen`、`uv pip check`、experiment manifest/result/provenance audits、PCB-tunable guard、`py_compile`、`git diff --check`もPASS。RF-F002正本・registry・bandsの差分はない。
+
+EXP-032は**事前登録済み**の1 topology・4 start runner smoke。最適化は各stage5 iteration、9点/segment（independent check 21点/segment）のみで、4 startすべて非収束・30dB mandatory H2/H3未達である。したがって性能候補の探索結果ではなく、runner起動・resource・worker scaling確認だけである。結果・両runのmanifest/status/aggregate・全task JSONは[`rf_f002_full_lpf_manager_benchmark_20261014/`](../data/validation/rf_f002_full_lpf_manager_benchmark_20261014/)に保存。
+
+| worker | 4 start wall | speedup | 最大aggregate worker RSS | minimum available RAM | 結果値の一致 |
+|---:|---:|---:|---:|---:|---|
+| 1 | 136.633 s | 1.00× | 82.1 MB | 6.34 GB | 基準 |
+| 2 | 73.734 s | **1.853×** | 164.2 MB | 6.29 GB | time/RSS除外後、全taskの数値結果一致 |
+
+2-worker倍率は5 iterationの短いsmokeで測定したものであり、120 iterationの長時間runへ保証付き外挿はしない。RAM gate 1.5GiBに対して実測available RAMは十分残った。中断/resumeのhash/lock機構はunit testで検証したが、この4-start smokeを実停止させたわけではない。
+
+### Scaled optimizer追試
+
+EXP-033は実行後登録であることをmanifestに明記した1 seed追試。旧trial `MARGIN_30p100`の初期値をRF-F002下で再最適化し、solver内の物理設計変数を[-1,+1]へ正規化（dB epigraphは非scale）、最大120 iteration/stage、9点/segment、独立check21点/segmentとした。実行commit`03a6e9f...`はcleanで、solver/runner source snapshotのSHAはoutputと一致する。
+
+30dB stageは120 iterationで未収束・最大制約違反0.00302dB。35dB stageは54 iterationでSLSQP成功、H2/H3は34.9999999972/34.9999999992 dBで1e-5 dB tolerance内。worst ILは0.6397543678dB、壁時計480.911sであり**IL≤0.30dBを満たす解ではない**。これは1 startのlocal SLSQP結果で一般収束性や最適性は示さない。eps=1e-5の有限差分診断は不適合停止したため棄却し、SciPy既定epsに戻した。中間diagnostic outputとそのprovenance caveatを含む[`rf_f002_convergence_20261014/`](../data/validation/rf_f002_convergence_20261014/)を参照。
+
+### S1/S2/S3予算の更新
+
+Full-LPF単一startの実測時間158–481s（初期の3 seedとscaled 120-iteration追試の範囲）から単純比例した計画値。これは統計的上限/信頼区間ではなく、トポロジー生成・失敗・再試行・適応格子overheadも含まない。2-worker欄はEXP-032の1.853×を仮置きした**未検証の参考シナリオ**。
+
+|規模|1 worker|2 worker（短時間倍率が続く仮定）|
+|---|---:|---:|
+|S1 100 starts|4.39–13.36 h|2.37–7.21 h|
+|S2 1,000 starts|1.83–5.57 d|0.99–3.00 d|
+|S3 10,000 starts|18.29–55.66 d|9.87–30.04 d|
+
+4-start smokeのpeak RSSは1 worker約82.1MB、2 worker合計164.2MB。S1/S2/S3は**すべて未起動**。大規模探索前に、拡張component alphabet/cost-bin coverageを含むtopology generator、grid adaptation、長めの2-worker throughput、fresh resume実機試験を別途レビューする。
+
+### 維持する境界・統合状態
+
+EXP-032/033を含めRF-F002でIL≤0.30dBを満たす候補はない。数値結果は有限grid/MNAのみで、continuous-band proof/global optimum/physical validationではない。RF-F002、`matching_only`/`full_lpf`/trial区分、Phase 2を維持し、main mergeとPhase 3移行はしていない。レビューPRは未作成（別途作成予定）。
 
 ## 7. 最新main統合・保存チェックポイントの数値再現（2026-10-14）
 

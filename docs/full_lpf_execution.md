@@ -43,6 +43,8 @@
 
 `plan`時にグラフ・枝数・部品/可変C/結合の範囲、初期値、RF-F002 fingerprintを検査します。タスクの素子値は **L nH / 固定C pF / 6設定の可変C pF** です。config内で`effective_constraint_sha256`を指定する場合は、台帳から解決したRF-F002 SHA-256と完全一致させます。
 
+manager/`FullLPFProblem`が使うgrounded graphの端子規約は **ground=0, source=1, load=2** です。過去の保存候補は別のnode番号（例: output=3）を使うことがあるため、保存edge番号をそのままtaskへコピーしてはいけません。`scripts/full_lpf_checkpoint_import.py`は端子を正規化してwarm-start taskを生成します。import後は21点/segmentで保存チェックポイントのIL/H2/H3を再現する回帰テストを通し、枝順・固定部品・可変C・結合行列を照合してからoptimizerを実行します。seedは初期値に限り、全出力を現在のRF-F002で再評価します。
+
 ### Topology / start重複排除
 
 runnerは順序に依存しないトポロジーフィンガープリントを計算します。同じトポロジーの別初期値はmulti-startとして許可し、同一トポロジー・同一初期値（物理列/結合/設定別Cを含む）の重複は`plan`時に拒否します。結果にはtask IDとtopology SHAを残し、集計時にもtask ID重複・欠落を検査します。トポロジー列挙器そのものはこのmanagerの範囲外であり、入力configが宣言した有限集合を超える網羅は主張しません。

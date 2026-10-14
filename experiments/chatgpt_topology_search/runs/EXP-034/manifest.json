@@ -548,17 +548,126 @@
   },
   "bands_sha256": "1b1182e4c947059cb263c1af52ddf64236bd1fd9e83770cc844126576c7865fe",
   "execution": {
-    "status": "planned",
-    "elapsed_seconds": null,
-    "evaluation_count": null
+    "status": "partial",
+    "elapsed_seconds": 33.227,
+    "evaluation_count": 60
   },
   "validation": {
-    "numerical": "not_run",
-    "independent": "not_run",
+    "numerical": "screened",
+    "independent": "screened",
     "implementation": "not_run",
-    "analysis_grid": null,
-    "independent_grid": null
+    "analysis_grid": {
+      "optimization_points_per_csv_segment": 9,
+      "maxiter_per_stage": 5,
+      "max_attempts": 1
+    },
+    "independent_grid": {
+      "points_per_csv_segment": 21
+    }
   },
-  "evidence": [],
-  "limitations": []
+  "evidence": [
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/config.json",
+      "sha256": "84c79d9d336bb11a3ed0b6a1f8915f67d51b5419e412f8cadf7c8f5d7c8e335e"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/manager-sigterm-residual/aggregate.json",
+      "sha256": "d3f7d0d8242d7059b32d5662cd96c80d4dbbf330c491f11eb1dbbf695562cfe8"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/manager-sigterm-residual/locks/09ab69f7b2ee7f64dac856db.lock",
+      "sha256": "0ce1e829d677fc6a104a3b5decf547dd63fffe3a9a8469e9886e2e0cae69075c"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/manager-sigterm-residual/locks/3d79dd89a90001b7ef7e2679.lock",
+      "sha256": "74c99d55e6c290ab099f64657a754d5d45eaa0a5a98268e85104130c470ce005"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/manager-sigterm-residual/logs/09ab69f7b2ee7f64dac856db.attempt-1.log",
+      "sha256": "e2f626e37a4d553a9701562de829ea7fe673c874fd267240b82006f35200a78f"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/manager-sigterm-residual/logs/3d79dd89a90001b7ef7e2679.attempt-1.log",
+      "sha256": "15c72416e26e8a910efa121892ed01c607ef9afb59618d3080e358538807aa38"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/manager-sigterm-residual/manager.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/manager-sigterm-residual/manifest.json",
+      "sha256": "2674dc9360b210d5c9356ec8fd46cf9e1732df4aedb6ce08fd097124902d10e2"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/manager-sigterm-residual/results/09ab69f7b2ee7f64dac856db.json",
+      "sha256": "ff9f8c966c5987552a6a5e74ce16cb4eb6062715b92563a8766d22c811f83f26"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/manager-sigterm-residual/results/3d79dd89a90001b7ef7e2679.json",
+      "sha256": "c579bdab02478142e15a88f20620c5974a4841b9e3fafe1e5fd053062c779cec"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/manager-sigterm-residual/status.json",
+      "sha256": "ef0872eea7679258034066dcf3a62131c2ff2eb2d0def5ba76a0035c71f23297"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/manager-sigterm-residual/tasks/09ab69f7b2ee7f64dac856db.json",
+      "sha256": "023cecb129379dab6fb75195c467372b594e0378846f20bfde3765eb9694813b"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/manager-sigterm-residual/tasks/3d79dd89a90001b7ef7e2679.json",
+      "sha256": "0551893852e9e1ecbcf3ba84193a44500ce29d1a371c43c82eb801d1d9ad102d"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/process_recovery_summary.json",
+      "sha256": "c2b14c1f04c152b72681350e0b716e11c379fdcd12715525663e4d2744d8b692"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/retry-config-max-attempts-2.json",
+      "sha256": "c8453d7cf3e5ba560cde9de3af6084bae07e53ad35c318e9b2eb9de9e5bb5204"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/sigint-resume/locks/09ab69f7b2ee7f64dac856db.lock",
+      "sha256": "a57fd61267872c782186ed247df651b3852c38a4574858c177aa9a2f986548b4"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/sigint-resume/locks/3d79dd89a90001b7ef7e2679.lock",
+      "sha256": "80661fb7546410ac40400455d24b2b07ee8a7bf8dcea5685cc57c50822c35904"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/sigint-resume/logs/09ab69f7b2ee7f64dac856db.attempt-1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/sigint-resume/logs/3d79dd89a90001b7ef7e2679.attempt-1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/sigint-resume/manager.log",
+      "sha256": "7b1ac589a14f164d30655aceec8a8915157d5778ba3af356b504e40cf3181425"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/sigint-resume/manifest.json",
+      "sha256": "d32a35e6a11b203b0e95391083090f60c0701a80ea901b835b8a089a7072de92"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/sigint-resume/status.json",
+      "sha256": "9b1e4bf933ce0e0a44792fcfda872a6296576028b0d5c957c4f5fd74c7c69420"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/sigint-resume/tasks/09ab69f7b2ee7f64dac856db.json",
+      "sha256": "023cecb129379dab6fb75195c467372b594e0378846f20bfde3765eb9694813b"
+    },
+    {
+      "path": "data/validation/rf_f002_recovery_20261014/sigint-resume/tasks/3d79dd89a90001b7ef7e2679.json",
+      "sha256": "0551893852e9e1ecbcf3ba84193a44500ce29d1a371c43c82eb801d1d9ad102d"
+    }
+  ],
+  "limitations": [
+    "The SIGINT manager cleanup stopped both active worker PIDs and left both starts pending, but this pre-registered config had max_attempts=1 (one total attempt), so a subsequent resume correctly made no retry and returned partial; the retryable follow-up is EXP-036 with max_attempts=2.",
+    "The separate manager-SIGTERM case passed: children continued under inherited OS locks, resume was refused while PIDs/locks remained active, then completed result files were adopted after worker exit without re-running tasks.",
+    "Result/task/source/constraint tampering checks were performed only on disposable copies, not on the source run.",
+    "Only two starts and five optimizer iterations per 30/35 dB stage were used; no RF performance conclusion is drawn.",
+    "Finite-grid checks are screening evidence only; no physical validation was performed."
+  ]
 }

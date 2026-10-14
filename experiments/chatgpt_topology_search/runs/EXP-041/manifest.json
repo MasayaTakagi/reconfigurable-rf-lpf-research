@@ -1,0 +1,453 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-041",
+  "phase": "Phase 2",
+  "purpose": "RF-F002 bounded 120-iteration unscaled follow-up from EXP-040 EXP-017 mandatory-30-dB stage",
+  "objective": "full_lpf",
+  "constraints": {
+    "class": "formal",
+    "constraint_id": "RF-F002",
+    "base_constraint_id": null,
+    "effective_constraint_sha256": "f20d27e93451dcec2f823e6f7c3731c06d843050c4d2ace8b0b46ded605542e2",
+    "effective_constraints": {
+      "policy_version": "2026-10-10",
+      "canonical_docs": "docs/specification.md",
+      "applicability": "all_new_Phase2_matching_only_and_full_lpf_explorations; historical_saved_numeric_checkpoints_preserved_with_prior_assumptions",
+      "historical_results_require_revalidation": true,
+      "source_ohms": {
+        "real": 50,
+        "imag": 0
+      },
+      "load_ohms": {
+        "real": 60,
+        "imag": -40,
+        "frequency_dependent": false
+      },
+      "bands_file": "data/bands.csv",
+      "passband_policy": "six_setting_UL_and_DL_B13B14_shared_setting",
+      "chip_area_unit": "one_LQP02_package_footprint",
+      "area_formula": "N_LQP02+(2/3)*N_LQP01+3*N_LQW04+(2/3)*N_GJM01+0*N_PCB_PATTERN_C",
+      "area_budget": {
+        "hard_cap": null,
+        "policy": "unconstrained_chip_area_pareto_objective",
+        "historical_hard_cap": 6,
+        "legacy_area_sweep": "0_to_6_in_1_over_3_units",
+        "search_upper_bounds": "experiment_specific_computational_scope_only"
+      },
+      "components": {
+        "LQP02": {
+          "category": "chip_inductor_family",
+          "q": null,
+          "q_policy": "select_from_explicit_series_not_single_package_Q",
+          "area_units": 1,
+          "common_across_settings": true,
+          "series": {
+            "LQP02HV": {
+              "q": 25,
+              "min_inductance_nH": 0.4,
+              "max_inductance_nH": 27,
+              "area_units": 1,
+              "priority": "preferred",
+              "q_is_design_assumption": true
+            },
+            "LQP02HQ": {
+              "q": 20,
+              "min_inductance_nH": 0.2,
+              "max_inductance_nH": 56,
+              "area_units": 1,
+              "priority": "fallback_only_as_justified",
+              "q_is_design_assumption": true
+            }
+          },
+          "preferred_series": "LQP02HV",
+          "preferred_max_inductance_nH": 27,
+          "require_explicit_series_for_new_candidates": true,
+          "default_series_assignment": "HV_if_0p4_to_27nH; HQ_if_above_27_up_to_56nH; explicit_HQ_below_27_allowed_with_Q20",
+          "strongly_discourage_large_inductance": true,
+          "high_inductance_risk": "Inductor SRF approaches RF operating/harmonic bands as L rises; constant-Q/lumped results can diverge from physical characteristics.",
+          "srf_and_parasitic_validation": "part_number_specific_SRF_and_S_parameter_review_before_implementation",
+          "historical_uniform_Q25_56nH_model": "legacy_numerical_only_requires_new_series_reoptimization",
+          "active_rule_since": "2026-10-12",
+          "manufacturer_range_source": "https://www.murata.com/ja-jp/products/inductor/chip/overview/lineup/rf1",
+          "legacy_baseline_q": 25,
+          "legacy_baseline_q_usage": "for_immutable_LPF007_LPF008_regression_only_not_for_new_candidates"
+        },
+        "LQP01": {
+          "category": "chip_inductor",
+          "q": 15,
+          "area_units_fraction": "2/3",
+          "common_across_settings": true,
+          "inductance_range_confirmed": false
+        },
+        "LQW04": {
+          "category": "chip_inductor",
+          "q": 33,
+          "area_units": 3,
+          "common_across_settings": true,
+          "q_is_assumption": true
+        },
+        "GJM01": {
+          "category": "fixed_chip_capacitor",
+          "q": 80,
+          "max_pf_per_component": 100,
+          "area_units_fraction": "2/3",
+          "common_across_settings": true,
+          "allowed_positions": [
+            "shunt",
+            "series",
+            "bridge"
+          ],
+          "q_is_assumption": true,
+          "area_cost_distinct_from_PCB_PATTERN_C": true
+        },
+        "IC_VARIABLE_C": {
+          "category": "IC_switched_capacitor_abstract_continuous",
+          "q": 50,
+          "area_units": 0,
+          "max_branches_principle": 2,
+          "max_total_variable_pf_per_branch": 1.5,
+          "min_total_variable_pf_per_branch": 0,
+          "positions_allowed_by_default": [
+            "shunt_to_ground",
+            "non_ground_bridge",
+            "series"
+          ],
+          "series_requires_separate_approval": false,
+          "parallel_with_fixed_GJM01_allowed": true,
+          "setting_dependent": true,
+          "physical_switch_design_phase3_paused": true,
+          "q_is_assumption": true
+        },
+        "PCB_L": {
+          "category": "embedded_inductor",
+          "q": 12,
+          "area_units": 0,
+          "max_count_principle": 3,
+          "max_inductance_nh_approx": 2,
+          "common_across_settings": true,
+          "pcb_footprint_unmodeled": true,
+          "max_inductance_nh": 2
+        },
+        "PCB_PATTERN_C": {
+          "category": "fixed_pcb_pattern_capacitor",
+          "q": 40,
+          "q_is_assumption": true,
+          "min_pf_per_component": 0.02,
+          "max_pf_per_component": 0.2,
+          "max_count": 3,
+          "area_units": 0,
+          "common_across_settings": true,
+          "allowed_positions": [
+            "shunt",
+            "series",
+            "bridge"
+          ],
+          "footprint_and_routing_area_unmodeled": true,
+          "parasitic_and_EM_validation_required": true,
+          "physical_implementation_notes": "Chip area cost is zero, not actual PCB area; 0.02 to 0.2 pF has not been verified by EM or manufacturing tolerance.",
+          "upper_limit_status": "owner_approved_2026-10-11"
+        }
+      },
+      "coupling_limits": {
+        "chip_pcb_abs_k_max": 0,
+        "pcb_pcb_theoretical_model": "full_inductance_matrix_positive_definite_required_and_abs_k_le_0_15",
+        "pcb_pcb_0_98_physical_feasibility": "historical_theoretical_only_out_of_new_default_policy",
+        "mixed_chip_package_mutual_feasibility": "unverified",
+        "pcb_pcb_abs_k_max_default": 0.15,
+        "legacy_chip_chip_major_two_pairs_abs_k_max": 0.25,
+        "legacy_chip_chip_other_pairs_abs_k_max": 0.16,
+        "chip_chip_all_pair_0_4_physical_feasibility": "unverified",
+        "full_L_inductance_matrix_positive_definite_required": true,
+        "legacy_chip_chip_all_pairs_abs_k_max_default": 0.4,
+        "chip_chip_strong_adjacent_abs_k_max": 0.15,
+        "chip_chip_nonstrong_abs_k_max": 0.03,
+        "chip_chip_nonstrong_nominal_k": 0,
+        "chip_chip_strong_allowed_only_for_physical_neighbors": true,
+        "chip_chip_allow_2d_layout": false
+      },
+      "evaluation": {
+        "il_db": "-10*log10(Pload/Pavs)",
+        "matching_only_phase2": {
+          "h2_h3_constraints": false,
+          "minimize": "worst_case_IL_over_six_settings_and_all_UL_DL_ranges"
+        },
+        "full_phase2": {
+          "minimum_h2_h3_db": 30,
+          "nominal_h2_h3_target_db": 35,
+          "nominal_max_il_db": 0.3
+        },
+        "full_results_not_yet_revalidated_under_new_policy": true
+      },
+      "phase3": "paused_until_explicit_owner_approval",
+      "overrides_require_owner_approval": [
+        "more_than_2_independent_variable_C_branches",
+        "more_than_3_PCB_inductors",
+        "PCB_PCB_abs_k_above_0_15",
+        "chip_chip_abs_k_above_0_15",
+        "chip_chip_strong_nonneighbor",
+        "chip_chip_2d_layout",
+        "chip_chip_weak_abs_k_above_0_03",
+        "more_than_3_PCB_pattern_capacitors",
+        "nonzero_chip_PCB_coupling",
+        "PCB_L_above_2_nH",
+        "IC_variable_C_per_branch_above_1p5_pF"
+      ],
+      "policy_revision": "2026-10-13_owner_approved_realistic_coupling_PCB_L_2nH_IC_C_1p5pF_Q50_any_connections_LQW04_Q33",
+      "chip_inductor_placement": {
+        "approved_layout": "single_linear_row",
+        "strength_grouping": "selected subset of consecutive physical neighbor edges",
+        "strong_pair_count_max_expression": "max(0, N_chip_inductors - 1)",
+        "strong_neighbor_degree_max": 2,
+        "nonstrong_includes": "all physically nonadjacent pairs and any adjacent pair not designated strongly coupled",
+        "nominal_k_for_nonstrong": 0,
+        "nonstrong_abs_k_max_weak_coupling_sensitivity": 0.03,
+        "strong_abs_k_max": 0.15,
+        "chip_orientation": "same magnetic-axis orientation for aiding strong coupling, signed coupling determined by electrical current reference and dot convention",
+        "placement_and_fixed_coupling_common_across_all_six_band_settings": true,
+        "all_pair_k_equal_0_4": "historical_idealized_outside_current_layout_constraints",
+        "layout_two_dimensional": "not_approved",
+        "inductance_matrix_requirement": "positive_definite_full_chip_plus_PCB_mutual_inductance_matrix",
+        "model_notes": "Upper bounds do not imply simultaneous physical realizability; variable coupling coefficients require physical justification"
+      },
+      "latest_owner_approved_extension_date": "2026-10-13",
+      "policy_version_semantics": "Active formal RF-F002 since 2026-10-13, old RF-F001 immutable. Legacy policy_version 2026-10-10 retained for historical baseline replay; new formal runs pin RF-F002 fingerprint.",
+      "inductor_series_optimization_policy": {
+        "phase": "Phase 2",
+        "primary_Rf_constraints_unchanged": true,
+        "primary_objective": "minimize_six_setting_full_UL_DL_worst_IL_with_H2_H3_requirements_and_chip_area_pareto_reporting",
+        "preferred_first_pass": "optimize_with_all_LQP02HV_in_0.4_to_27nH_Q25",
+        "conditional_fallback": "allow_LQP02HQ_Q20_0.2_to_56nH_when_HV_only_is_infeasible_or_substantially_worse_in_observed_local_search",
+        "fallback_priority": [
+          "minimize_number_of_HQ_inductors",
+          "minimize_largest_HQ_inductance_nH",
+          "minimize_sum_of_HQ_inductances_nH"
+        ],
+        "do_not_replace_IL_objective_with_unapproved_fixed_penalty": true,
+        "compare_as_pareto_axes": [
+          "worst_IL_dB",
+          "minimum_H2_H3_margin_dB",
+          "chip_area_cost",
+          "HQ_count",
+          "max_L_nH",
+          "series_srf_risk"
+        ],
+        "if_unspecified_series": "do_not_assume_Q25_for_L_over_27nH",
+        "historical_candidate_rule": "retain_original_historical_metrics_but_do_not_label_new_policy_verified_without_reoptimization_and_independent_check",
+        "frequency_dependence": "use_fixed_approved_Q_per_series_for_Phase2_optimization; real_Qf_and_SRF_check_separately",
+        "maximum_approved_HQ_nH": 56,
+        "srf_gate": "do_not_claim_measured_feasibility_without_selected_part_srf_and_parasitic_evidence"
+      },
+      "active_constraint_id": "RF-F002",
+      "active_constraint_status": "formal",
+      "cost_performance_policy": {
+        "objectives": [
+          "minimize_chip_area_cost",
+          "minimize_worst_six_setting_UL_DL_IL_db"
+        ],
+        "full_lpf_harmonics": "minimum_30dB_required_nominal_35dB_target",
+        "comparison": "best_found_non_dominated_candidates_under_identical_RF_conditions",
+        "recommendation": "final_tradeoff_selection_after_pareto_analysis",
+        "physical_implementation": "PCB_and_IC_resources_separately_reported"
+      }
+    },
+    "legacy_policy_version": "2026-10-10"
+  },
+  "code": {
+    "execution_sha": "048c2154464e15a2650766d03dca7b0c115db54d",
+    "working_tree_dirty": false,
+    "archive_sha": null
+  },
+  "random_seed": 20261014,
+  "environment": {
+    "python": "3.12.15",
+    "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "dependencies": {
+      "numpy": "2.5.4",
+      "scipy": "1.18.1"
+    }
+  },
+  "search_scope": {
+    "constraint_id": "RF-F002",
+    "effective_constraint_sha256": "f20d27e93451dcec2f823e6f7c3731c06d843050c4d2ace8b0b46ded605542e2",
+    "objective": "full_lpf",
+    "optimization": {
+      "ftol": 1e-08,
+      "harmonic_targets_db": [
+        30.0,
+        35.0
+      ],
+      "max_attempts": 1,
+      "maxiter_per_stage": 120,
+      "passband_points": 9,
+      "scale_design_variables": false,
+      "stopband_points": 9
+    },
+    "phase": "Phase 2",
+    "purpose": "Bounded 120-iteration unscaled follow-up from EXP-040 EXP-017 30 dB residual-feasible output; test whether longer local continuation improves 0.3187 dB without losing mandatory attenuation.",
+    "starting_policy": "warm-start from EXP-040 unscaled EXP-017 selected stage 0; same canonical graph and RF-F002, 30->35 dB continuation.",
+    "tasks": [
+      {
+        "canonical_terminal_map": {
+          "ground": 0,
+          "load": 2,
+          "source": 1,
+          "source_checkpoint_nodes": {
+            "ground": 0,
+            "load": 3,
+            "source": 1
+          }
+        },
+        "graph": [
+          6,
+          [
+            [
+              1,
+              3,
+              "LQW04"
+            ],
+            [
+              2,
+              4,
+              "LQP02HV"
+            ],
+            [
+              3,
+              5,
+              "LQP02HV"
+            ],
+            [
+              3,
+              2,
+              "LQW04"
+            ],
+            [
+              1,
+              3,
+              "GJM01"
+            ],
+            [
+              5,
+              0,
+              "GJM01"
+            ],
+            [
+              2,
+              1,
+              "PCB_PATTERN_C"
+            ]
+          ]
+        ],
+        "initial_base_values": [
+          2.5321170339490306,
+          27.0,
+          8.197235000939875,
+          6.5273114159114565,
+          2.1201552314724728,
+          0.967455107326753,
+          0.06520413392497498,
+          0.5204202005066998,
+          1.5,
+          0.47982690604825884,
+          1.4503866372696428,
+          0.3710572987414767,
+          1.4664227922215032,
+          0.3355900388662692,
+          0.9186837392351629,
+          0.22106422342247556,
+          0.6784381215584057,
+          0.18143896102256105,
+          0.5372234009609608
+        ],
+        "initial_coupling": [
+          [
+            1.0,
+            0.04995862125436347,
+            0.0,
+            0.0
+          ],
+          [
+            0.04995862125436347,
+            1.0,
+            -0.04315957671272708,
+            0.0
+          ],
+          [
+            0.0,
+            -0.04315957671272708,
+            1.0,
+            -0.14999999999999955
+          ],
+          [
+            0.0,
+            0.0,
+            -0.14999999999999955,
+            1.0
+          ]
+        ],
+        "initial_coupling_values": [
+          0.04995862125436347,
+          -0.04315957671272708,
+          -0.14999999999999955
+        ],
+        "perturbation_fraction_of_component_bound": 0.0,
+        "perturbation_seed": null,
+        "physical_order": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "prior_ftol": 1e-08,
+        "prior_optimization_result": "data/validation/rf_f002_solver_ablation_20261014/runs/unscaled-tight/results/0aead1527e340e0bd572b330.json",
+        "prior_optimization_result_sha256": "bfd6e87c3a6e36e3d77d81cd8eff699f894c7d884df6ed16c353d8e9b4663c8b",
+        "prior_scale_design_variables": false,
+        "prior_selected_stage_index": 0,
+        "seed_label": "EXP040-unscaled-EXP017-selected-30dB-stage",
+        "source_candidate_id": "EXP017-LQW2-H35",
+        "source_checkpoint": "experiments/chatgpt_topology_search/runs/EXP-017/EXP017-LQW2-H35.json",
+        "source_checkpoint_sha256": "556ad4a6d60ec7f5b966784b9957a7630f6a9d7492109ed3ded87908479ce11d",
+        "source_stored_metrics": {
+          "independent_MNA_points": 84,
+          "max_il_discrepancy_db": 4.689582056016661e-13,
+          "max_power_balance_residual_W": 6.071532165918825e-18,
+          "min_H2_db": 35.02999999961018,
+          "min_H3_db": 35.029999998751066,
+          "min_K_eigenvalue": 0.8468998065975589,
+          "points_per_frequency_segment": 7001,
+          "worst_IL_db": 0.37879791410736224
+        },
+        "variable_layout": {
+          "edges": [
+            [
+              4,
+              0
+            ],
+            [
+              3,
+              2
+            ]
+          ],
+          "roles": [
+            null,
+            "bridge"
+          ]
+        }
+      }
+    ]
+  },
+  "bands_sha256": "1b1182e4c947059cb263c1af52ddf64236bd1fd9e83770cc844126576c7865fe",
+  "execution": {
+    "status": "planned",
+    "elapsed_seconds": null,
+    "evaluation_count": null
+  },
+  "validation": {
+    "numerical": "not_run",
+    "independent": "not_run",
+    "implementation": "not_run",
+    "analysis_grid": null,
+    "independent_grid": null
+  },
+  "evidence": [],
+  "limitations": []
+}

@@ -2,6 +2,7 @@
 """One bounded, restartable RF-F002 full-LPF optimization task."""
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -63,6 +64,13 @@ def run_task(task_path: Path, output_path: Path, lock_fd: int) -> int:
         task = task_payload["task"]
         config = task_payload["optimization"]
         task_id = task_payload["task_id"]
+        # Guard direct worker invocation as well as manager-controlled execution.
+        task_digest = hashlib.sha256(json.dumps(
+            task, sort_keys=True, separators=(",", ":"),
+            ensure_ascii=False, allow_nan=False,
+        ).encode("utf-8")).hexdigest()
+        if task_digest != task_payload.get("task_config_sha256"):
+            raise ValueError("Worker refused: task payload checksum mismatch")
         from full_lpf import FullLPFProblem  # noqa: PLC0415
 
         graph_row = task["graph"]
@@ -114,6 +122,10 @@ def run_task(task_path: Path, output_path: Path, lock_fd: int) -> int:
                                 "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS")},
             "worker_status": "completed",
         })
+        result["result_integrity_sha256"] = hashlib.sha256(json.dumps(
+            result, sort_keys=True, separators=(",", ":"),
+            ensure_ascii=False, allow_nan=False,
+        ).encode("utf-8")).hexdigest()
         _atomic_json(output_path, result)
         print(json.dumps({
             "task_id": task_id,

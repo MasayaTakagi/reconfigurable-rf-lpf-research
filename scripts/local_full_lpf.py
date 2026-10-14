@@ -211,10 +211,14 @@ def _prepare_config(raw: bytes) -> tuple[dict, list[dict]]:
         raise ValueError("harmonic_targets_db must contain only targets >=30 dB")
     if sorted(set(map(float, targets))) != list(map(float, targets)):
         raise ValueError("harmonic_targets_db must be strictly increasing")
+    scale_design_variables = optimization.get("scale_design_variables", True)
+    if type(scale_design_variables) is not bool:
+        raise ValueError("scale_design_variables must be a JSON boolean")
     settings = {
         "harmonic_targets_db": list(map(float, targets)),
         "maxiter_per_stage": int(optimization.get("maxiter_per_stage", 120)),
         "ftol": float(optimization.get("ftol", 1e-8)),
+        "scale_design_variables": scale_design_variables,
         "passband_points": int(optimization.get("passband_points", 9)),
         "stopband_points": int(optimization.get("stopband_points", 9)),
         "max_attempts": int(optimization.get("max_attempts", 2)),

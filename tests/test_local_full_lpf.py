@@ -44,6 +44,7 @@ class LocalFullLPFManagerTests(unittest.TestCase):
         config, tasks = _prepare_config(json.dumps(_config()).encode())
         self.assertEqual(config["constraint_id"], "RF-F002")
         self.assertEqual(config["objective"], "full_lpf")
+        self.assertTrue(config["optimization"]["scale_design_variables"])
         self.assertEqual(len(tasks), 2)
         self.assertEqual(len({row["topology_sha256"] for row in tasks}), 1)
         self.assertEqual(len({row["task_id"] for row in tasks}), 2)
@@ -56,6 +57,10 @@ class LocalFullLPFManagerTests(unittest.TestCase):
         cfg = _config()
         cfg["objective"] = "matching_only"
         with self.assertRaisesRegex(ValueError, "matching_only"):
+            _prepare_config(json.dumps(cfg).encode())
+        cfg = _config()
+        cfg["optimization"]["scale_design_variables"] = "yes"
+        with self.assertRaisesRegex(ValueError, "JSON boolean"):
             _prepare_config(json.dumps(cfg).encode())
         cfg = _config()
         cfg["tasks"] = [_task("same"), _task("different-label")]

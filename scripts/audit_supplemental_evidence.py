@@ -7,6 +7,7 @@ experiment manifests). Source links do not imply verified RF performance.
 import csv
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -51,13 +52,17 @@ def check_supplemental_evidence(root=ROOT):
             issues.append(f"Evidence link incorrectly claims validation: {path}")
     if covered != KNOWN_EMPTY:
         issues.append("Some manifest-empty experiments have no supplemental source links")
+    # Audit Git-tracked evidence, not transient interpreter .pyc/__pycache__ files
+    # produced while the whole unit-test suite imports archived scripts.
+    tracked = set(subprocess.check_output(
+        ["git", "ls-files", "--", RUNS], cwd=root, text=True).splitlines())
     for exp in KNOWN_EMPTY:
         exp_dir = root / RUNS / exp
         manifest = json.loads((exp_dir / "manifest.json").read_text(encoding="utf-8"))
         if manifest["evidence"]:
             issues.append(f"Prior zero-evidence assumption changed; review links: {exp}")
-        actual_files = {p.relative_to(root).as_posix() for p in exp_dir.rglob("*")
-                        if p.is_file() and p.name != "manifest.json"}
+        actual_files = {p for p in tracked if p.startswith(f"{RUNS}/{exp}/")
+                        and p != f"{RUNS}/{exp}/manifest.json"}
         covered_files = {x for x in seen if x.startswith(f"{RUNS}/{exp}/")}
         if actual_files != covered_files:
             issues.append(f"Supplemental evidence file set is incomplete for {exp}")

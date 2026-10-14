@@ -29,6 +29,13 @@ class StorageReferenceTests(unittest.TestCase):
         self.assertGreaterEqual(summary["classified_files"], 300)
         self.assertGreater(summary["manifest_referenced_files"], 0)
         self.assertEqual(0, summary["deletions_performed"])
+        self.assertGreaterEqual(summary["identical_content_blob_groups"], 0)
+        self.assertTrue(summary["duplicate_paths_also_require_independent_review"])
+        self.assertEqual(
+            sum(summary["retention_decisions"].values()), len(entries))
+        self.assertTrue(all(r["review_decision"] == "review_only_no_deletion"
+                            for r in entries if r["path"] in
+                            summary["review_only_example_paths"]))
         by_path = {r["path"]: r for r in entries}
         p = "data/validation/rf_f002_unscaled_followup_20261014/run/results/6acd4f80fcd682902c52c999.json"
         self.assertEqual("preserve_referenced", by_path[p]["review_decision"])

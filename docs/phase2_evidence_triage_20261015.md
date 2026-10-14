@@ -34,6 +34,10 @@ experiments/chatgpt_topology_search/runs/EXP-020/source_pr38/ は別ブランチ
 
 candidates/LOSS_BREAKDOWN.jsonとLOSS_REVIEW.mdは旧候補の損失解析。最新の制約別Pareto表に直接昇格させないが、技術検討の出典として保持する。
 
+## 元PRチェックサムの適用範囲（確認済み）
+
+元の source_pr38/SHA256SUMS は、配下EXP-016～019の**17個の追跡ファイル**に対するSHA-256を列挙する。実際には最上位README.mdも保存されているため、SHA256SUMSのみで**計18資料の全件検証済みと宣言してはいけない**。scripts/verify_archived_evidence_packages.py は17件を元ハッシュと照合し、最上位READMEを別の現在値SHA-256として明示する。元のSHA256SUMSの追記・変更は行わない。別のR1 checkpoint ZIPについてもZIP構造・CRCを検査するが、回路数値や保存時の計算環境の再現は保証しない。
+
 ## 最終整理に必要な確認ゲート
 
 1. README・元PR・元runのSHAと数値実行環境を人手で照合する。パス文字列だけから採否を決めない。

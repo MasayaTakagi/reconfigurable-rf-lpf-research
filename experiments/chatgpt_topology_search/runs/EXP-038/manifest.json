@@ -253,7 +253,7 @@
     "legacy_policy_version": "2026-10-10"
   },
   "code": {
-    "execution_sha": "66717503fe46bef610970f727deb4feb102951f0",
+    "execution_sha": "759417c9a2f3c1dd3fd7041b61ced114b54af3ff",
     "working_tree_dirty": false,
     "archive_sha": null
   },
@@ -863,17 +863,125 @@
   },
   "bands_sha256": "1b1182e4c947059cb263c1af52ddf64236bd1fd9e83770cc844126576c7865fe",
   "execution": {
-    "status": "planned",
-    "elapsed_seconds": null,
-    "evaluation_count": null
+    "status": "completed",
+    "elapsed_seconds": 264.008,
+    "evaluation_count": 292
   },
   "validation": {
-    "numerical": "not_run",
-    "independent": "not_run",
+    "numerical": "screened",
+    "independent": "screened",
     "implementation": "not_run",
-    "analysis_grid": null,
-    "independent_grid": null
+    "analysis_grid": {
+      "optimization_points_per_csv_segment": 9,
+      "maxiter_per_stage": 60,
+      "ftol": 1e-08,
+      "harmonic_targets_db": [
+        30.0,
+        35.0
+      ]
+    },
+    "independent_grid": {
+      "points_per_csv_segment": 21
+    }
   },
-  "evidence": [],
-  "limitations": []
+  "evidence": [
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/.manager.lock",
+      "sha256": "e80c3f52e3a1d779ff0bae06bf5b4fc6aedccde0c0e929b0b792297a57a00b3b"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/aggregate.json",
+      "sha256": "3d1ce021b404b507d64bf971c6ed566d16252d083403d161b13d431b7b8be1d6"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/config.json",
+      "sha256": "848b6917443982bec628974d818c73116087c6c5925be356c391e4f73d4d0202"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/locks/0aead1527e340e0bd572b330.lock",
+      "sha256": "3b1f7673e10e8ad37f7b606be83da7a42b006c52ef6c045e7fde64582130b5e3"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/locks/13327a6e030cbe1d5beb9509.lock",
+      "sha256": "0ae33d5f576e2b4fabdb7b9c224d220b15aabc674062c287761d2eb26df7f585"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/locks/b95266692de70ce65fc3a208.lock",
+      "sha256": "92db0d33369e64bb712129c22058d20e15abcb23bb0cc44f34c504d03f389ab5"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/locks/ceda9978ebde1d678592f993.lock",
+      "sha256": "5337f2342d214cd108f5436e6ffb4765aad01b6111465bc39a4193dcd5e0c3d6"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/logs/0aead1527e340e0bd572b330.attempt-1.log",
+      "sha256": "6a436d98148b501e2d5f8f83b9be68b16199502fc0b039f64764cbffe7537405"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/logs/13327a6e030cbe1d5beb9509.attempt-1.log",
+      "sha256": "6104b5a5db7f2e5403df0e98e8ebb4e1238b220eb3a663332a3c74219cd286ba"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/logs/b95266692de70ce65fc3a208.attempt-1.log",
+      "sha256": "6e7912792ba3f51b8b121f1f018ad22b4db17ffaf8adcbf5eb9d77b108df464f"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/logs/ceda9978ebde1d678592f993.attempt-1.log",
+      "sha256": "1a3cb53a9bf6322453d6fc86b639d6db7913324a6ae1be7b950998d01096df26"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/manager.log",
+      "sha256": "3896084a1660bea04ca186ddbe297da6c0a551cf3d4b7a421ea460309f9d54ee"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/manifest.json",
+      "sha256": "b29fe2639b0358509c72cb14ceeb3a20c4f7831f291921f228eee8266c078d57"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/results/0aead1527e340e0bd572b330.json",
+      "sha256": "9caeae084a95675bafd9f7d8a1214afeb5e9ada63250e7d9419cb78933424e87"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/results/13327a6e030cbe1d5beb9509.json",
+      "sha256": "2bc9d63781600d2669c48f11bd5d0e8bf4035d883d4e3aeb51be914eef3c5016"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/results/b95266692de70ce65fc3a208.json",
+      "sha256": "5e9503d704aec614c7333218575256b3a6b2f7a3e149109ff2083319276ddaab"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/results/ceda9978ebde1d678592f993.json",
+      "sha256": "7941d3516656b6b512e4a3c5f0c5bace4d94e9d31108be0453a3e9890d88f974"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/status.json",
+      "sha256": "60bc6b11fbb15a0ff17e5b1656e846b9a000195b19521e9acb3225514be896e1"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/summary.json",
+      "sha256": "8e23f122e4dbbf247059bf398f0586d34ed0382528040e8659b22fd6e5709dcd"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/tasks/0aead1527e340e0bd572b330.json",
+      "sha256": "b37ca68fd99ebc2060b3d854991f47e0ddb62e49f604f6b66b9c96652a350cb1"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/tasks/13327a6e030cbe1d5beb9509.json",
+      "sha256": "44cd264c953c41750ce64a696e4bb52eeab4ef6c2173b50aaff80ca41d9ecbee"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/tasks/b95266692de70ce65fc3a208.json",
+      "sha256": "465f4c9957acc47058d3a5fd8363d6e2d00a9614d2871b390220c16b648e9628"
+    },
+    {
+      "path": "data/validation/rf_f002_checkpoint_warmstarts_20261014/corrected-run/tasks/ceda9978ebde1d678592f993.json",
+      "sha256": "e60e7848040316cd4757930d7aaea78bf4e93243e22557453647ad7a85432640"
+    }
+  ],
+  "limitations": [
+    "Terminal IDs were canonicalized by the new checkpoint importer and initial values independently reproduced the saved checkpoint metrics before optimization.",
+    "Exact and 0.5%-of-bound perturbed starts for both topologies converged to the same local solutions. These are local results only and no global-optimum claim is made.",
+    "The best finite-grid IL is 0.3783491 dB; the formal IL<=0.30 dB target is not met. The 35 dB harmonic target is met within the configured 1e-5 dB feasibility tolerance.",
+    "The optimization grid has 9 points per band segment, followed by a 21-point/segment independent MNA check. No continuous-band proof or physical SRF/Q(f)/parasitic/EM/tolerance/implementation validation is included."
+  ]
 }

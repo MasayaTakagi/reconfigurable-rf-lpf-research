@@ -17,6 +17,12 @@ class StorageReferenceTests(unittest.TestCase):
             ("unlinked_runtime_diagnostic", "review_only_no_deletion"),
             _classify(p, set()))
 
+    def test_governance_registers_are_preserved(self):
+        for p in ("data/candidate_index.csv", "data/experiment_index.csv",
+                  "data/research_candidate_register.csv"):
+            self.assertEqual(("research_governance_register", "preserve_immutable"),
+                             _classify(p, set()))
+
     def test_source_path_escape_is_rejected(self):
         for path in ("/etc/passwd", "../README.md", "data/../README.md",
                      "data\\validation\\abc.json", ""):

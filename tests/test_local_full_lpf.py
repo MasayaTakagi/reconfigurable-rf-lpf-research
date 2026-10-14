@@ -100,6 +100,64 @@ class LocalFullLPFManagerTests(unittest.TestCase):
             self.assertEqual(status["invocation_count"], 2)
             self.assertTrue(all(task["state"] == "completed" for task in status["tasks"]))
 
+            # A completed result may not be silently adopted after editing a metric.
+            result_path = run_dir / status["tasks"][0]["result_path"]
+            result = json.loads(result_path.read_text(encoding="utf-8"))
+            self.assertIn("result_integrity_sha256", result)
+            result["worst_il_db"] += 0.1
+            result_path.write_text(json.dumps(result), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "completed result checksum mismatch"):
+                aggregate(run_dir)
+            with self.assertRaisesRegex(ValueError, "completed result checksum mismatch"):
+                run_batch(run_dir, workers=1, max_runtime_seconds=30,
+                          max_tasks=1, task_timeout_seconds=30,
+                          min_free_mib=256, resume=True)
+
+    def test_modified_task_file_cannot_be_run_or_aggregated(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            config_path = base / "config.json"
+            run_dir = base / "run"
+            config_path.write_text(json.dumps(_config()), encoding="utf-8")
+            plan(config_path, run_dir)
+            task_path = next((run_dir / "tasks").glob("*.json"))
+            task_file = json.loads(task_path.read_text(encoding="utf-8"))
+            task_file["task"]["initial_base_values"][0] += 0.1
+            task_path.write_text(json.dumps(task_file), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "task payload mismatch"):
+                aggregate(run_dir)
+            with self.assertRaisesRegex(ValueError, "task payload mismatch"):
+                run_batch(run_dir, workers=1, max_runtime_seconds=30,
+                          max_tasks=1, task_timeout_seconds=30, min_free_mib=256)
+
+    def test_worker_rejects_modified_task_even_without_manager(self):
+        import os
+        from full_lpf_worker import run_task
+
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            config_path = base / "config.json"
+            run_dir = base / "run"
+            config_path.write_text(json.dumps(_config()), encoding="utf-8")
+            plan(config_path, run_dir)
+            task_path = next((run_dir / "tasks").glob("*.json"))
+            task_file = json.loads(task_path.read_text(encoding="utf-8"))
+            task_file["task"]["initial_base_values"][0] += 0.1
+            task_path.write_text(json.dumps(task_file), encoding="utf-8")
+            output_path = base / "worker-rejected.json"
+            lock_fd = os.open(base / "worker.lock", os.O_RDWR | os.O_CREAT, 0o600)
+            try:
+                exit_code = run_task(task_path, output_path, lock_fd)
+            finally:
+                try:
+                    os.close(lock_fd)
+                except OSError:
+                    pass  # run_task closes the inherited descriptor.
+            self.assertEqual(exit_code, 1)
+            worker_result = json.loads(output_path.read_text(encoding="utf-8"))
+            self.assertEqual(worker_result["worker_status"], "failed")
+            self.assertIn("task payload checksum mismatch", worker_result["error"])
+
     def test_resume_refuses_changed_sources_and_duplicate_or_missing_results_are_reported(self):
         with tempfile.TemporaryDirectory() as temporary:
             base = Path(temporary)

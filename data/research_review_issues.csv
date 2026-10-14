@@ -1,0 +1,8 @@
+issue_id,priority,status,affected_experiments,source,problem,remediation_gate
+RG-001,P0,open,EXP-017,data/validation/rf_f002_checkpoint_reproduction_20261014/summary.json,README記載のIL0.301248245dB点の回路定数と6設定Cベクトルが追跡不能,元ソース回収または再実験で新ID取得するまで順位付け禁止
+RG-002,P0,open,EXP-016,experiments/chatgpt_topology_search/runs/EXP-016/manifest.json,READMEは実行と独立MNA照合を記載するがmanifestはunknownおよびnot_runで証拠登録なし,保存結果と実行環境を照合して別の訂正記録を作成する
+RG-003,P0,mitigated_followup_open,EXP-034_to_EXP-037,docs/rf_f002_full_lpf_phase2_20261013.md,初期checkpoint端子remap不備で候補性能の比較に利用できない一部runを含む,managerベンチと候補数値を分離し比較候補への昇格を拒否する
+RG-004,P1,open,EXP-025_to_EXP-041,experiments/chatgpt_topology_search/runs/EXP-041/manifest.json,統合manifestから横断できる候補単位の登録が不足する,実証ファイルと候補ベクトルを追跡して台帳を順次拡張する
+RG-005,P1,open,EXP-034_to_EXP-041,data/validation/rf_f002_unscaled_followup_20261014/run/manifest.json,実行lockおよびworkerログと長期保存すべき研究チェックポイントが混在,証拠SHAを保持して保存階層を検討し削除は別承認とする
+RG-006,P1,open,project,docs/roadmap.md,歴史的な未merge記述や旧RF-F001条件を現況として読み違えやすい,現況サマリーを先頭へ集約し歴史記録の時点を明示する
+RG-007,P2,open,project,docs/maintenance/branch_cleanup_20261014.md,前回整理後に再び残った作業ブランチが存在する,PRおよびSHAと固有成果を照合し削除は別承認とする

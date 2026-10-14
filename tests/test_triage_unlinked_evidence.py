@@ -3,7 +3,8 @@ import unittest
 from pathlib import Path
 
 from scripts.triage_unlinked_evidence import (
-    EXCLUDE_TEXT_SOURCES, _ref_hits, build_triage, to_csv,
+    EXCLUDE_TEXT_SOURCES, _ref_hits, build_triage,
+    resolved_markdown_references, to_csv,
 )
 
 
@@ -13,6 +14,14 @@ class TriageEvidenceTests(unittest.TestCase):
         self.assertTrue(_ref_hits(f"see " + needle + " in report", needle))
         self.assertFalse(_ref_hits(needle + ".bak", needle))
         self.assertFalse(_ref_hits("copy/" + needle, needle))
+
+    def test_resolve_relative_markdown_links_without_promoting_web_urls(self):
+        tracked = {"docs/source.md", "data/validation/a.json"}
+        texts = {"docs/source.md": "[checkpoint](../data/validation/a.json) "
+                 "[wrong](https://site.invalid/data/validation/a.json)"}
+        refs = resolved_markdown_references(texts, tracked)
+        self.assertEqual({"docs/source.md"}, refs["data/validation/a.json"])
+        self.assertEqual(1, len(refs))
 
     def test_review_does_not_confer_disposition_to_delete(self):
         rows, summary = build_triage()

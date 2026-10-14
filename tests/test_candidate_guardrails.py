@@ -72,6 +72,13 @@ class CandidateIndexGuardrails(unittest.TestCase):
         for validation_dir in (
             "rf_f002_full_lpf_manager_benchmark_20261014",
             "rf_f002_convergence_20261014",
+            "rf_f002_recovery_20261014",
+            "rf_f002_parallel_benchmark_20261014",
+            "rf_f002_warm_start_refinement_20261014",
+            "rf_f002_checkpoint_warmstarts_20261014",
+            "rf_f002_grid_refinement_20261014",
+            "rf_f002_solver_ablation_20261014",
+            "rf_f002_unscaled_followup_20261014",
         ):
             shutil.copytree(ROOT / "data/validation" / validation_dir,
                             self.root / "data/validation" / validation_dir)

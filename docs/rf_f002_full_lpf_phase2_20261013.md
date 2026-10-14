@@ -2,8 +2,8 @@
 
 **状態：Phase 2 継続。正式条件 RF-F002 を維持。Phase 3 移行・`main` へのマージ・制約変更はしていない。**
 
-- 現在の作業ブランチ：`feat/rf-f002-full-lpf-integration-20261014`（最新main基点、レビュー用。mainへ未merge）
-- 統合基点：`origin/main`=`5dbd83217f7c8bb9acd0c9fefd9f4f1ea07d4f89`。元のP4-A/Full-LPF結果は`fc9d424...` / `82a02a4...`から保存し、マージコミット`ce2f8c7...`に取り込んだ。
+- 現在の追試ブランチ：`test/rf-f002-full-lpf-recovery-20261014`。基点は最新`origin/main`=`eb1de13841c1b4a74f18f4f9320e0316fbdd478f`（PR #47を含むmain）で、レビュー用[PR #48](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/48)はopen・未merge。
+- 先行統合の保存・コミット履歴は2026-10-14の各節に記録。今回の実行は最新main上のEXP-034～041で追試し、mainのEXP-020～033や制約正本を変更していない。
 - 後続コミット：scaled solver / Full-LPF runner=`03a6e9f...`、EXP-032条件=`132f6ce...`、EXP-032事前manifest=`c710e0a...`。最新の検証・概算は本書9節を参照。
 - RF-F002 effective SHA-256：`f20d27e93451dcec2f823e6f7c3731c06d843050c4d2ace8b0b46ded605542e2`
 - 数値実験時の worktree は clean。Python 3.12.15 / NumPy 2.5.4 / SciPy 1.18.1 / scipy-openblas、WSL2、AMD Ryzen 7 PRO 4750G（8 physical / 16 logical CPU、RAM 7.45 GiB）。BLAS/OMP/MKL thread は各1。
@@ -158,7 +158,7 @@ Full-LPF単一startの実測時間158–481s（初期の3 seedとscaled 120-iter
 
 ### 維持する境界・統合状態
 
-EXP-032/033を含めRF-F002でIL≤0.30dBを満たす候補はない。数値結果は有限grid/MNAのみで、continuous-band proof/global optimum/physical validationではない。RF-F002、`matching_only`/`full_lpf`/trial区分、Phase 2を維持し、main mergeとPhase 3移行はしていない。レビュー用[PR #47](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/47)を作成した（open、未merge）。
+当時のEXP-032/033を含む先行統合ではRF-F002でIL≤0.30dBを満たす候補がなかった。先行レビュー[PR #47](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/47)はその後mainへ統合され、現行baseは`eb1de138...`。今回のEXP-034～041追試branchは未mergeであり、Phase 2を継続する。
 
 ## 7. 最新main統合・保存チェックポイントの数値再現（2026-10-14）
 
@@ -194,3 +194,73 @@ EXP-017 READMEに記載の近接30dB候補（最悪IL 0.301248245 dB）につい
 - `matching_only`、RF-T003/RF-T004の元性能、再最適化後のRF-F002性能は別々に保持する。
 - 有限グリッドの数値/MNA再現は、連続周波数保証・大域最適・SRF/Q(f)/寄生/EM/公差/実装の証明ではない。
 - 本変更・検証をもってPhase 3には進まず、制約正本は変更しない。mainへのmergeは実施していない。
+
+## 10. 最新mainからのrunner実停止・再開、候補warm-start、スケーリング追試（2026-10-14）
+
+今回の追試branchは`test/rf-f002-full-lpf-recovery-20261014`、基点は`origin/main`=`eb1de13841c1b4a74f18f4f9320e0316fbdd478f`（PR #47を含むmain）。RF-F002 fingerprintは引き続き`f20d27e93451dcec2f823e6f7c3731c06d843050c4d2ace8b0b46ded605542e2`。正式制約JSON、registry、`data/bands.csv`、Phase 2判定は不変更。最終unittest discoveryは**246件PASS**。`uv lock --check`、`uv sync --frozen`、`uv pip check`、manifest/result audit、PCB-tunable guard、`py_compile`、制約ファイルのorigin/main比較、`git diff --check`もPASS。
+
+### 10.1 実プロセス停止・resume・hash/lock integrity
+
+- EXP-034で2 worker稼働中にmanagerへSIGINT。managerは両workerへSIGTERMを送り、結果未完了taskをpendingとして保存した。最初の試験configは`max_attempts=1`だったため、停止分を再試行できずresume結果はpartialになった（設定した総試行回数を正しく守った結果）。
+- 同EXP-034でmanagerだけにSIGTERMを送り異常終了させたケースでは、子workerは継承file descriptorのOS lockを保持して処理を継続。残存PID/lockがある間のresumeは拒否され、両worker終了後にresumeするとatomic resultを採用し、attempts=1のままcompletedとなった。完了済みtaskは再実行されていない。
+- EXP-036では`max_attempts=2`を事前登録してSIGINT試験を反復。稼働中の両PIDを確認後にSIGINTを送り、managerがworkerを停止。resumeはSLSQP途中状態ではなく各初期ベクトルから再実行し、2件completed（attempts=2）。最大5 iteration/stageのrunner testであり、性能候補ではない。
+- 完了runのresult JSON変更、task payload変更、source hash変更、RF-F002 fingerprint変更を**各独立の使い捨てcopyでのみ**試し、aggregate/resumeが全件拒否することを確認。元の完了runは変更していない。lock fileは削除していない。
+- raw manifest/status/task/result/logと判定は[`rf_f002_recovery_20261014/`](../data/validation/rf_f002_recovery_20261014/)に保存。EXP-034の初回SIGINT configは最大試行回数不足でpartial、EXP-036が再試行可能設定での成功証拠である。
+
+### 10.2 1/2 worker 完了benchmarkとseed import端子対応の修正
+
+事前登録EXP-035は同一4 task・same config hash・20 iteration/stage・9点/segment・21点/segment検証を1 worker/2 workerで正常完了した。manager wallは**347.126/201.347秒**、speedup **1.724×**、peak aggregate worker RSS **82.36/163.98 MB**、最低available RAMは6.34/6.29 GB。worker実行数値はruntime/resource/integrity fieldを除いて完全一致。これは4 taskの短いthroughput測定であり長時間runへspeedupを保証しない。
+
+実行後のseed import監査で重大な注意点が判明した。保存EXP-017/023はground=0/source=1/load=3を使う一方、`FullLPFProblem`のcanonical graphはground=0/source=1/load=2を前提にする。EXP-034/035/036/037の初期configの一部はsource edge番号を正規化せず渡しており、**その数値出力を保存checkpointのwarm-start再評価として扱ってはならない**。EXP-035の同一入力によるworker scaling・RAM・数値再現確認は有効なmanager benchmarkだが、候補のIL/H2/H3結果はcheckpoint性能の比較から除外する。EXP-037の長いrunも候補品質 evidence から除外し、manager task実行recordとしてのみ保持した。
+
+再発防止として[`scripts/full_lpf_checkpoint_import.py`](../scripts/full_lpf_checkpoint_import.py)を追加し、saved node IDsをground/source/load=0/1/2へ明示的にremap。回帰テストは初期MNA値をチェックし、21点/segmentでEXP-023の0.460180295/35.020000/35.020000 dB、EXP-017の0.378797914/35.030000/35.030000 dBを再現する。managerの一般graph validatorだけでは端子の意図は復元できないため、保存候補importにはこのhelperを使う。
+
+### 10.3 正しいterminal mappingでのwarm-start・multi-startとstaged grid
+
+**EXP-038**はcanonical remap済みのEXP-023/017 exact warm-startと、各0.5%-of-bound deterministic perturbationの計4 task（2 topology）を60 max iteration/stage、`ftol=1e-8`、scaled variables、30→35 dB continuationで実行。4件すべて30/35 dB stageがSLSQP成功し、独立21点/segment検証で35 dB目標を1e-5 dB tolerance内で満たした。perturbed startsは各exact startとほぼ同じ局所解（IL差<6e-12 dB）に収束。
+
+| source warm-start | 保存IL [dB] | EXP-038 exact-start IL [dB] | min H2/H3 [dB] | IL≤0.30 |
+|---|---:|---:|---:|---|
+| EXP-023 4L/2C | 0.4601802954 | **0.4598082052** | 34.9999999990 / 34.9999999994 | 未達 |
+| EXP-017 `LQW2-H35` | 0.3787979141 | **0.3783490996** | 34.9999999975 / 34.9999999963 | 未達 |
+
+これは改善だが差はそれぞれ約0.000372/0.000449 dBで、最終目標0.30 dBを達成しない。35 dB minimaは両方とも30→35継続のSLSQP結果で、1e-5 dB feasibility tolerance内。完全な周波数証明ではない。
+
+**EXP-039**ではEXP-038の最適化出力をwarm-startとしてuniform frequency gridを9→17点/segmentへ段階増密し、独立21点/segmentで確認。IL差はEXP-023で−6.0e-12 dB、EXP-017で−9.6e-13 dB。両解は安定して35 dB条件を保ったがIL≤0.30には届かない。これはstaged uniform refinementであってlocal adaptive refinementではなく、連続帯域保証でもない。
+
+### 10.4 scaling・FTOL・residual分類・unscaled follow-up
+
+EXP-040では同一2 checkpoint starts/initial vectors、同一9点grid、同一60 maxiter/stageでscaled/unscaledとFTOLを対比した。
+
+- **scaled / FTOL=1e-8**（現行推奨）：両startで収束し、EXP-017 IL 0.3783490996 dB、H2/H3は35 dB within 1e-5、stage最大制約違反3.7e-9 dB。
+- **scaled / FTOL=1e-6**：同等のIL（差<2e-10 dB）で両start収束。最大residualは2.1e-7 dBで1e-5 tolerance内。収束品質向上は見えず、既定FTOLを変更する根拠にはならない。
+- **unscaled / FTOL=1e-8**：4 stageすべて60 iteration上限に到達し、SLSQPは全2 startで未収束。EXP-023はIL0.464235 dB、35 dBを約0.0081 dB miss。EXP-017はIL0.3186931915 dBの30 dB stageを見つけたがraw H2/H3は29.999999819/29.999998786 dB（1e-5 feasibility tolerance内）、35 dB stageは未達。unscaledは同候補のscaled 35 dB結果より低ILだが減衰余裕と収束を失うtradeoffで、標準solver条件にはしない。
+
+optimizer成功statusとpost-hoc constraint residualは別々に読む。EXP-040 unscaled EXP-017はSLSQP未収束だが30 dB stage residualは1e-5 tolerance内、名目35 dB residualは未達。feasibility toleranceだけをoptimizer convergenceと読み替えない。
+
+EXP-041でEXP-040 unscaledのEXP-017 30 dB stageをwarm-startし、120 iteration/stageで継続。30 dB stageは3 iteration、35 dB stageは72 iterationで収束。requirement別best-foundは:
+
+| requirement stage | worst IL [dB] | min H2/H3 [dB] | 状態 |
+|---|---:|---:|---|
+| mandatory 30 dB（1e-5 dB tolerance内） | **0.3186931893** | 29.9999999969 / 29.9999999987 | 30dB boundary近傍、35dB未達 |
+| nominal 35 dB（1e-5 dB tolerance内） | 0.3783490996 | 34.9999999958 / 34.9999999990 | 35dB内、IL未達 |
+
+30 dB点のILは元EXP-017 H35保存値0.3787979141 dBより約0.060105 dB低いが、H2/H3は生値で厳密な30 dBを約3e-9 dBだけ下回り、optimizer toleranceでのみfeasibleと分類されている。IL≤0.30 dBとの差は0.018693 dB。1001点/segmentの追加確認でも同じ極値を得て、独立MNA gain mismatch≤3.4e-15、power residual≤2.9e-17 W。有限gridの結果であり、連続band・実装保証ではない。候補としては境界的なPhase 2 数値seedにとどめ、35dB nominal解と同一の要件として扱わない。
+
+### 10.5 更新されたS1/S2/S3予算と開始判断
+
+EXP-038の正しくmappedされた4 warm/multi startsは各約96.7–145.0 worker seconds（60 max iteration/stage、実際は収束で早期停止）。この限定sampleを単純100倍し、topology generation・failure/retry・grid refinement overheadを除いた予算は:
+
+| batch | 1 worker換算 | 2 worker仮置き（1.724×を仮定） | 実施 |
+|---|---:|---:|---|
+| S1: 100 starts | 2.7–4.0 h | 1.6–2.3 h | **未実施** |
+| S2: 1,000 starts | 1.12–1.68 d | 0.65–0.97 d | **未実施** |
+| S3: 10,000 starts | 11.2–16.8 d | 6.5–9.7 d | **未実施** |
+
+2-worker欄は4 task/20 iterationのEXP-035で観測した倍率を仮置きしただけで、長いcorrectly-mapped runで1/2-workerの対照測定はしていない。EXP-038は2workerだけの実測wall 264.0s/4 tasks。CPU/RAM上は2-workerで問題なかったが、**現時点ではS1を開始しない**。理由はIL目標0.30 dB未達、30 dB点は厳密閾値に余裕なし、unscaled改善はnominal35/convergenceとtradeoff、P4-Aのfull component/cost topology coverageが未証明であり、100グラフを追加しても候補品質改善の根拠が弱い。次は境界候補の数値robustnessとsolver条件を小さくレビューし、必要なら同一correctly-mapped candidatesでworker count比較を長めに行ってから新たな有限S1案を事前登録する。S1/S2/S3・Phase 3はいずれも開始していない。
+
+### 10.6 保存先と最終境界
+
+追試全体の集約summaryは[`rf_f002_phase2_followup_20261014/summary.json`](../data/validation/rf_f002_phase2_followup_20261014/summary.json)。実験ledger EXP-034～041は`data/experiment_index.csv`と対応manifestで監査。live recovery raw evidenceは[`rf_f002_recovery_20261014/`](../data/validation/rf_f002_recovery_20261014/)、corrected checkpoint/importer/warm-startは[`rf_f002_checkpoint_warmstarts_20261014/`](../data/validation/rf_f002_checkpoint_warmstarts_20261014/)、9→17 gridは[`rf_f002_grid_refinement_20261014/`](../data/validation/rf_f002_grid_refinement_20261014/)、scaled/unscaled/FTOLは[`rf_f002_solver_ablation_20261014/`](../data/validation/rf_f002_solver_ablation_20261014/)、1001点 unscaled follow-upは[`rf_f002_unscaled_followup_20261014/`](../data/validation/rf_f002_unscaled_followup_20261014/)にある。誤mappingで作られた過去taskはlimitationsに明記して候補比較から除外した。
+
+**判定：Phase 2継続、RF-F002不変、`matching_only`と`full_lpf`は別目的、trial条件は初期値だけ、100 graph S1未開始、Phase 3停止、main未変更・未merge。** 数値結果はfinite-grid/MNAのみ。SRF、実Q(f)、parasitic、EM、tolerance、manufacturing、physical implementationは未確認。

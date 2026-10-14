@@ -25,7 +25,7 @@ from p4_batch import bounds_for, settings_for
 ROOT = Path(__file__).resolve().parents[2]
 CAP_TYPES = {"GJM01", "PCB_PATTERN_C"}
 CHIP_L_TYPES = {"LQP01", "LQP02", "LQP02HV", "LQP02HQ", "LQW04"}
-ALGORITHM_VERSION = "rf-f002-full-lpf-epigraph-v2-scaled"
+ALGORITHM_VERSION = "rf-f002-full-lpf-epigraph-v3-scaled-coordinate-ablation"
 
 
 def _frequency_records(rows, region, points):
@@ -239,7 +239,8 @@ class FullLPFProblem:
         return dense, reports
 
     def optimize(self, initial_vector, *, harmonic_targets=(30.0, 35.0),
-                 maxiter=120, ftol=1e-8, feasibility_tolerance=1e-5):
+                 maxiter=120, ftol=1e-8, feasibility_tolerance=1e-5,
+                 scale_design_variables=True):
         """Run staged 30->35 dB SLSQP epigraph minimax and revalidate densely."""
         if not harmonic_targets or any(float(x) < 30 for x in harmonic_targets):
             raise ValueError("RF-F002 requires at least 30 dB stop-band attenuation")
@@ -255,16 +256,30 @@ class FullLPFProblem:
         widths = upper - lower
         if np.any(widths <= 0):
             raise ValueError("Full-LPF design bounds must have positive width")
+        if type(scale_design_variables) is not bool:
+            raise ValueError("scale_design_variables must be a boolean")
 
-        def to_solver_coordinates(physical):
-            return np.concatenate((2.0 * (physical[:-1] - lower) / widths - 1.0,
-                                   [physical[-1]]))
+        if scale_design_variables:
+            def to_solver_coordinates(physical):
+                return np.concatenate((2.0 * (physical[:-1] - lower) / widths - 1.0,
+                                       [physical[-1]]))
 
-        def from_solver_coordinates(scaled):
-            return np.concatenate((lower + 0.5 * (scaled[:-1] + 1.0) * widths,
-                                   [scaled[-1]]))
+            def from_solver_coordinates(scaled):
+                return np.concatenate((lower + 0.5 * (scaled[:-1] + 1.0) * widths,
+                                       [scaled[-1]]))
 
-        bounds = [(-1.0, 1.0)] * len(design_bounds) + [(0.0, 100.0)]
+            bounds = [(-1.0, 1.0)] * len(design_bounds) + [(0.0, 100.0)]
+            parameterization = "normalized_design_variables_minus1_to_plus1_epigraph_db"
+        else:
+            def to_solver_coordinates(physical):
+                return np.asarray(physical, dtype=float).copy()
+
+            def from_solver_coordinates(raw):
+                return np.asarray(raw, dtype=float).copy()
+
+            bounds = [(float(low), float(high)) for low, high in design_bounds]
+            bounds.append((0.0, 100.0))
+            parameterization = "physical_design_variables_epigraph_db_unscaled"
         stages = []
         stage_vectors = []
         started = time.monotonic()
@@ -298,6 +313,7 @@ class FullLPFProblem:
                 "iterations": int(getattr(result, "nit", 0)),
                 "function_evaluations": int(getattr(result, "nfev", 0)),
                 "finite_difference_policy": "SciPy SLSQP default eps",
+                "solver_parameterization": parameterization,
                 "max_constraint_violation": float(max(0.0, -np.min(residuals))),
                 "feasible_on_optimization_grid": bool(np.min(residuals) >= -feasibility_tolerance),
                 "epigraph_il_db": float(vector[-1]),
@@ -360,7 +376,7 @@ class FullLPFProblem:
         variable_values = base[len(edges):].reshape(6, len(self.variable_layout["edges"]))
         return {
             "algorithm_version": ALGORITHM_VERSION,
-            "solver_parameterization": "normalized_design_variables_minus1_to_plus1_epigraph_db",
+            "solver_parameterization": parameterization,
             "finite_difference_policy": "SciPy SLSQP default eps",
             "analysis_mode": "full_lpf",
             "constraint_id": self.constraint_id,

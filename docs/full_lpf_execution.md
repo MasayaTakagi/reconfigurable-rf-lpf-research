@@ -20,6 +20,7 @@
     "harmonic_targets_db": [30.0, 35.0],
     "maxiter_per_stage": 120,
     "ftol": 1e-8,
+    "scale_design_variables": true,
     "passband_points": 9,
     "stopband_points": 9,
     "max_attempts": 2
@@ -41,7 +42,9 @@
 }
 ```
 
-`plan`時にグラフ・枝数・部品/可変C/結合の範囲、初期値、RF-F002 fingerprintを検査します。タスクの素子値は **L nH / 固定C pF / 6設定の可変C pF** です。config内で`effective_constraint_sha256`を指定する場合は、台帳から解決したRF-F002 SHA-256と完全一致させます。
+`plan`時にグラフ・枝数・部品/可変C/結合の範囲、初期値、RF-F002 fingerprintを検査します。タスクの素子値は **L nH / 固定C pF / 6設定の可変C pF** です。config内で`effective_constraint_sha256`を指定する場合は、台帳から解決したRF-F002 SHA-256と完全一致させます。`scale_design_variables`はJSON booleanで、省略時は`true`です。`false`は物理設計単位をそのままSLSQPへ渡す**比較用ablation**であり、推奨設定ではありません。結果の`solver_parameterization`に実際の条件を記録します。
+
+manager/`FullLPFProblem`が使うgrounded graphの端子規約は **ground=0, source=1, load=2** です。過去の保存候補は別のnode番号（例: output=3）を使うことがあるため、保存edge番号をそのままtaskへコピーしてはいけません。`scripts/full_lpf_checkpoint_import.py`は端子を正規化してwarm-start taskを生成します。import後は21点/segmentで保存チェックポイントのIL/H2/H3を再現する回帰テストを通し、枝順・固定部品・可変C・結合行列を照合してからoptimizerを実行します。seedは初期値に限り、全出力を現在のRF-F002で再評価します。
 
 ### Topology / start重複排除
 

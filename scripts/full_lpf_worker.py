@@ -99,6 +99,7 @@ def run_task(task_path: Path, output_path: Path, lock_fd: int) -> int:
             harmonic_targets=tuple(config["harmonic_targets_db"]),
             maxiter=int(config["maxiter_per_stage"]),
             ftol=float(config["ftol"]),
+            scale_design_variables=config["scale_design_variables"],
         )
         result.update({
             "task_id": task_id,

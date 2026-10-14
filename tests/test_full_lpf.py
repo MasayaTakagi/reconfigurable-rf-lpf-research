@@ -43,12 +43,24 @@ class FullLPFObjectiveTests(unittest.TestCase):
         self.assertEqual(first["analysis_mode"], "full_lpf")
         self.assertEqual(first["solver_parameterization"],
                          "normalized_design_variables_minus1_to_plus1_epigraph_db")
+        self.assertEqual(first["algorithm_version"],
+                         "rf-f002-full-lpf-epigraph-v3-scaled-coordinate-ablation")
         self.assertEqual([stage["harmonic_target_db"] for stage in first["continuation_stages"]],
                          [30.0, 35.0])
         self.assertIn(first["best_found_category"],
                       {"nominal_35db", "mandatory_30_to_35db", "below_mandatory_30db"})
         self.assertTrue(first["independent_validation_by_case"]["B13+B14"]["frequency_count"] > 0)
         self.assertTrue(first["dense_grid_only_not_interval_proof"])
+
+    def test_unscaled_coordinate_ablation_is_explicitly_reported(self):
+        problem = self.problem(points=2)
+        initial = problem.initial_vector(np.asarray([2.0] + [0.4] * 12))
+        result = problem.optimize(initial, harmonic_targets=(30.0,), maxiter=1,
+                                  scale_design_variables=False)
+        self.assertEqual(result["solver_parameterization"],
+                         "physical_design_variables_epigraph_db_unscaled")
+        self.assertEqual(result["continuation_stages"][0]["solver_parameterization"],
+                         "physical_design_variables_epigraph_db_unscaled")
 
     def test_segment_grid_keeps_b13_b14_ranges_disjoint(self):
         grid = full_lpf_frequency_grid(load_bands(), passband_points=2, stopband_points=2)

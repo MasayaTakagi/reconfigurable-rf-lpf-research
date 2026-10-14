@@ -1,0 +1,5 @@
+candidate_id,origin_experiment_id,base_constraint_id,replay_validation_status,replay_evidence_path,source_manifest_changed,physical_validation
+EXP016-HV30-V053,EXP-016,RF-T004,independent_finite_grid_passed,data/validation/exp016_rf_t004_numpy2_replay_20261014/summary.json,false,not_run
+EXP016-HV35-V009,EXP-016,RF-T004,independent_finite_grid_passed,data/validation/exp016_rf_t004_numpy2_replay_20261014/summary.json,false,not_run
+EXP016-LQW2-30-V053,EXP-016,RF-T004,independent_finite_grid_passed,data/validation/exp016_rf_t004_numpy2_replay_20261014/summary.json,false,not_run
+EXP016-LQW3-35-V009,EXP-016,RF-T004,independent_finite_grid_passed,data/validation/exp016_rf_t004_numpy2_replay_20261014/summary.json,false,not_run

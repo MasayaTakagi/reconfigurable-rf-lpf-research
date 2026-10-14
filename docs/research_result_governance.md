@@ -80,3 +80,7 @@ GitHubの運用方針の正本は `docs/chatgpt_project_instructions.md`。こ�
 `EXP-016/017/021/022/023/024`の6実験ではmanifestの`evidence=[]`を元のまま残し、[補助証拠リンク36件](../data/supplemental_experiment_evidence_index.csv)を新設した。各pathにはGit blob SHA-1・サイズ・役割を保存。これは**現物ファイルへの出典ポインタ**であり、manifestにSHA-256検証が登録された扱いにも、独立MNA再検証の証拠にもならない。Git blobのSHA-1はmanifestで使用するSHA-256と取り違えない。
 
 `scripts/audit_supplemental_evidence.py`は全36件のファイル存在・Git blob内容ハッシュ・6実験のファイル集合・source-onlyラベルをCIで検査する。後日manifest側に正式な証拠を追加するなら補助索引との二重正本化を避けるため同時にレビューする。
+
+### 保存元を変更しない独立追試の追加
+
+[EXP-016の独立追試summary](../data/validation/exp016_rf_t004_numpy2_replay_20261014/summary.json)を、元のsource-only manifestとは別の**新規実行済み証拠**として登録した。成功したGitHub Actionsは[run 38587242196](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38587242196)。選別4候補について、各7,001点/区間と84点の独立枝電流MNAが保存数値に一致。結果の追跡は[検証オーバーレイ](../data/research_validation_overlays.csv)、整合性検査は`scripts/audit_validation_overlays.py`。分類上、旧レポートであることと、今回の再現実行が成功したことを併記し、元の`execution=unknown`を無断で上書きしない。これらはRF-T004試験条件の数値結果であり、物理性・連続周波数極値保証ではない。

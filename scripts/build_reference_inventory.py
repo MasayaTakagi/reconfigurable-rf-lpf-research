@@ -207,6 +207,10 @@ def main():
           summary["manifest_referenced_files"], "files linked from manifests;",
           summary["retention_decisions"])
     print("No deletion or directory migration was performed.")
+    print("Identical-content Git blobs:", summary["identical_content_blob_groups"],
+          "groups,", summary["additional_paths_with_identical_content"],
+          "additional file paths (not deletion candidates).")
+    print("Unlinked review by directory:", summary["review_only_by_location"])
 
 
 if __name__ == "__main__":

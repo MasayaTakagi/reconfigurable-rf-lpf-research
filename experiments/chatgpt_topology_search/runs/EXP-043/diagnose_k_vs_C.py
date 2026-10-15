@@ -23,6 +23,7 @@ CFG="zero_gjm_double"
 TARGET=30.01
 
 def row(ev,x,label):
+    x=np.asarray(x,float)
     y=ev.summary(x)
     return {"id":label,"k_L0Ls":float(x[6]),"k_LsL1":float(x[7]),
             "worst_IL_db":y["worst_IL_db"],"min_H2_db":y["min_H2_db"],

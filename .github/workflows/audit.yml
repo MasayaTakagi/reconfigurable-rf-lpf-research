@@ -66,3 +66,27 @@ jobs:
           path: artifacts/phase2_reports/
           if-no-files-found: warn
           retention-days: 30
+
+  history-backup:
+    # A temporary restore-tested backup, not authorization to delete branches.
+    # This narrow PR-only run does not enlarge every future main/PR audit.
+    if: github.event_name == 'pull_request' && github.event.pull_request.number == 53
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Fetch all current branch refs with full ancestry
+        run: git fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*'
+      - name: Create full backup and verify independent restore
+        run: |
+          python scripts/backup_complete_git_history.py --output artifacts/phase2_git_history/phase2-all-branches.bundle --manifest artifacts/phase2_git_history/phase2-all-branches-manifest.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phase2-complete-git-history
+          path: artifacts/phase2_git_history/
+          if-no-files-found: error
+          retention-days: 90

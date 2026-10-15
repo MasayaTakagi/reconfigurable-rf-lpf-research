@@ -41,3 +41,4 @@ EXP-039,legacy_recorded,,,,,,data/experiment_index.csv
 EXP-040,legacy_recorded,,,,,,data/experiment_index.csv
 EXP-041,legacy_recorded,,,,,,data/experiment_index.csv
 EXP-042,reserved,MasayaTakagi,rft005-exp21-bsf-20261016,RF-T005 optimization of EXP-021 4L bridge/BSF topology with fixed external S2P,RF-T005,2026-10-15T16:34:23Z,main_manual_connector_reservation
+EXP-043,reserved,MasayaTakagi,rft005-threeL-multimode-20261015,RF-T005 single-shunt 3L multimode topology area-IL Pareto exploration,RF-T005,2026-10-15T17:24:47Z,main_manual_connector_reservation

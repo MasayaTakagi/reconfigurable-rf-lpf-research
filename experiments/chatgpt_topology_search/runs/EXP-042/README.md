@@ -52,3 +52,29 @@ L matrix is SPD: minimum eigenvalues 2.06441687nH and 2.99143488nH respectively.
 ### Additional model-level feasibility finding
 
 See `external_s2p_MAG_bound.md`: Using **only** the fixed external input and output S2P (no LPF losses) at B8-DL 960MHz, independent passive-network maximum-available-gain (MAG) analysis yields an optimistic system insertion-loss floor of **0.385849404 dB**, with input/output individual minimum losses 0.245776952/0.140072452dB. Consequently the formal **IL<=0.30dB** target cannot be met under the current mandatory S2P model by *any passive LPF*, even one with ideal lossless matching. This is a **model-specific theoretical bound**, not a physical measurement. The approved RF-F003/RF-T005 constraints remain unchanged and Phase 3 remains paused.
+
+
+## RF-T005 interim objective and area Pareto (2026-10-15 UTC; executed)
+
+User-authorized **EXP-042/RF-T005 interim** worst-case full-band IL goal **0.8 dB**; the formal RF-F003 objective **0.3 dB** and H2/H3 mandatory **30 dB**, nominal **35 dB**, remain unchanged. Numerical analysis always includes frozen mandatory external input/output S2P and 50-ohm source / 60-j40-ohm load, 28 disconnected CSV intervals. Original 4L bridge topology, 3 tunable C branches Q35 each 0..3pF, and physical strong-neighbor k<=0.10 are unchanged.
+
+Actions runs:
+- [original 30/35dB SLSQP](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38773925329) — 30dB IL 0.804524449 dB, H2 29.999980852dB / H3 29.999976614dB, numerically slightly infeasible and solver nonconverged. 35dB branch best IL 0.877414399dB, harmonic limits within <1e-8dB of 35dB but slightly below; do not claim strict 35dB.
+- [fixed GJM deletion study](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38775558755) — fixed Cf1/Cf2 absorbed into parallel variable C and removed from cost.
+- [fixed GJM to Q40 PCB pattern substitution](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38775559008) — converted Cf1 and/or Cf2 from GJM01 Q80 to 0.02–0.2pF PCB-pattern C Q40, with residual capacitance absorbed by the parallel tunable. Existing Cp already occupies one of three PCB pattern C slots.
+
+| topology/variant | chip area | PCB-C count | finite-grid worst IL dB | min H2 dB | min H3 dB |
+|---|---:|---:|---:|---:|---:|
+| 4HV/3GJM baseline, SLSQP30 | 6 | 1 | 0.804524449 | 29.999980852 | 29.999976614 |
+| remove Cf1 GJM, use Cv1 | 5⅓ | 1 | 0.812877054 | 30.020000 | 30.020000 |
+| remove Cf2 GJM, use Cv2 | 5⅓ | 1 | 0.813554271 | 30.020000 | 30.020000 |
+| remove Cf1 and Cf2 | 4⅔ | 1 | 0.822191335 | 30.020000 | 30.020000 |
+| replace Cf1 GJM with PCB Q40 | **5⅓** | 2 | **0.811306586** | 30.020000 | 30.020000 |
+| replace Cf2 GJM with PCB Q40 | 5⅓ | 2 | 0.812800269 | 30.020000 | 30.020000 |
+| replace both Cf1 and Cf2 with PCB Q40 | **4⅔** | 3 | **0.819564515** | 30.020000 | 30.020000 |
+
+The six area variants were SLSQP optimized and assessed on 1,001 points **per separate band interval**, with independent explicit 9×9 branch-current MNA at 84 points each. For the selected 5⅓-PCB-Cf1 variant, worst MNA-ABCD discrepancy **1.54e-12dB** and max power-balance residual **1.30e-17W**, full L matrix SPD. All six independent checks PASS (no negative constituent dissipation). These are finite-grid **best-found local solutions**, not global bounds and not continuous-band proofs.
+
+**Interpretation:** Reducing chip area from 6 to 5⅓ (11.1%) and 4⅔ (22.2%) is numerically possible under RF-T005 30dB conditions, but **no area-optimized candidate meets the interim 0.8dB IL goal yet**. Best observed at area 5⅓ is 0.811306586dB; best at 4⅔ is 0.819564515dB. PCB-C replacements increase separate PCB pattern occupation; zero chip-cost is not zero RF parasitic/physical layout cost. Capacitor Q(f), exact PCB geometry/EM, L SRF, simultaneous k, robustness and variable IC implementation remain open.
+
+Permanent selected vectors have been curated under `checkpoints/pcb_cf1.json`, `checkpoints/pcb_both.json`, `checkpoints/cf1.json`. Trial resolved hash is held in `manifest.json`; complete candidate histories remain available as the cited time-limited Actions artifacts, not claimed as permanent Git source.

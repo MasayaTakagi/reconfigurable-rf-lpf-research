@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "active_formal_id": "RF-F002",
+  "active_formal_id": "RF-F003",
   "formal": {
     "RF-F001": {
       "file": "data/constraints/formal/RF-F001.json",
@@ -15,6 +15,13 @@
       "approved_at": "2026-10-13",
       "description": "Physical limits updated: chip neighbor k<=0.15, nonstrong nominal zero and sensitivity<=0.03, PCB pairs<=0.15, chip-PCB zero, PCB L<=2nH; variable C up to 2, each 0..1.5pF Q50 unrestricted positions; LQW04 Q33.",
       "effective_constraint_sha256": "f20d27e93451dcec2f823e6f7c3731c06d843050c4d2ace8b0b46ded605542e2"
+    },
+    "RF-F003": {
+      "file": "data/constraints/formal/RF-F003.json",
+      "state": "approved",
+      "approved_at": "2026-10-16",
+      "description": "RF-F002 plus two mandatory fixed S2P port parasitics, k limits chip-neighbor/PCB-pair <=0.10, variable C up to 2 branches per 0..3pF Q35; system-level external-port GT/IL/H2/H3.",
+      "effective_constraint_sha256": "f85710200ccda5b72ab32f943540fbfd7a8abb3137c5f4e6e5ba7a6d7b3da2ba"
     }
   },
   "trial": {
@@ -45,6 +52,13 @@
       "base_constraint_id": "RF-F002",
       "approved_at": "2026-10-13",
       "description": "Phase 2 trial allowing up to three variable C branches with all other RF-F002 conditions unchanged."
+    },
+    "RF-T005": {
+      "file": "data/constraints/trial/RF-T005.json",
+      "state": "study_authorized",
+      "base_constraint_id": "RF-F003",
+      "approved_at": "2026-10-16",
+      "description": "Phase 2 trial: up to three variable-C branches (per branch 0..3pF Q35), RF-F003 base otherwise unchanged."
     }
   },
   "historical": {

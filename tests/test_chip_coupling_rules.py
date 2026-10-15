@@ -24,7 +24,7 @@ def is_positive_definite_tridiagonal_model(n,mask,kweak):
     M=[[1.0 if i==j else float(kweak) for j in range(n)] for i in range(n)]
     for i in range(n-1):
         if mask & (1<<i):
-            M[i][i+1]=M[i+1][i]=0.15
+            M[i][i+1]=M[i+1][i]=0.10
     C=[[0.0]*n for _ in range(n)]
     for i in range(n):
         x=M[i][i]-sum(C[i][r]**2 for r in range(i))
@@ -40,13 +40,13 @@ class ApprovedChipCouplingRules(unittest.TestCase):
         l=POLICY["chip_inductor_placement"]
         self.assertIsNone(POLICY["area_budget"]["hard_cap"])
         self.assertEqual(POLICY["area_budget"]["historical_hard_cap"],6)
-        self.assertEqual(c["chip_chip_strong_adjacent_abs_k_max"],0.15)
+        self.assertEqual(c["chip_chip_strong_adjacent_abs_k_max"],0.10)
         self.assertEqual(c["chip_chip_nonstrong_abs_k_max"],0.03)
         self.assertEqual(c["chip_chip_nonstrong_nominal_k"],0)
         self.assertFalse(c["chip_chip_allow_2d_layout"])
         self.assertEqual(l["approved_layout"],"single_linear_row")
         self.assertEqual(l["strong_neighbor_degree_max"],2)
-        self.assertEqual(c["pcb_pcb_abs_k_max_default"],0.15)
+        self.assertEqual(c["pcb_pcb_abs_k_max_default"],0.10)
         self.assertEqual(c["chip_pcb_abs_k_max"],0)
         self.assertEqual(POLICY["phase3"],"paused_until_explicit_owner_approval")
 

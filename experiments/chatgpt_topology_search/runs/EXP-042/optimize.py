@@ -140,7 +140,7 @@ def policy_and_seed():
 
 def main():
     ap=argparse.ArgumentParser()
-    ap.add_argument("--target",type=float,choices=(30.,35.),default=30.)
+    ap.add_argument("--target",type=float,default=30.,help="H2/H3 design target, e.g. 30.05 or 35.05 for numerical margin")
     ap.add_argument("--starts",type=int,default=3)
     ap.add_argument("--maxiter",type=int,default=140)
     ap.add_argument("--grid",type=int,default=9)
@@ -148,6 +148,8 @@ def main():
     ap.add_argument("--seed",type=int,default=20261016)
     ap.add_argument("--out",type=Path)
     arg=ap.parse_args()
+    if not 30. <= arg.target <= 36.:
+        ap.error("target must be between 30 and 36 dB")
     p,start=policy_and_seed()
     rng=np.random.default_rng(arg.seed)
     ev=Evaluator(p,arg.grid)

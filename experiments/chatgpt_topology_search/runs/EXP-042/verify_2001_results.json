@@ -1,0 +1,68 @@
+{
+  "experiment_id": "EXP-042",
+  "date_utc": "2026-10-15T16:44:27.094Z",
+  "constraint": "RF-T005",
+  "provenance": "repo main fixed S2P, EXP021-HV35 topology; full 7-node nodal Y analysis independently compared to Schur-complement S2P ABCD cascade",
+  "verification": "finite grid 2001 points per 28 individual CSV intervals, 84 independent probes per candidate, real/imag linear S interpolation, constant Q model",
+  "results": [
+    {
+      "target": 30.3,
+      "grid": "2001 points per each of 28 CSV segments",
+      "worst": 0.9802411067979022,
+      "h2": 33.27061306781212,
+      "h3": 30.344321338187434,
+      "worst_at": [
+        "B8",
+        "DL",
+        960
+      ],
+      "h2_at": [
+        "B71",
+        1326
+      ],
+      "h3_at": [
+        "B8",
+        2745
+      ],
+      "independent_probes": 84,
+      "max_discrepancy_db": 2.8421709430404007e-13,
+      "power_remaining_min_W": 0.0007760289645194511,
+      "power_remaining_max_W": 0.0028662848744752216,
+      "SPD_gershgorin_lower_bound_nH": 1.4189411695505212,
+      "SPD_pass": true,
+      "area": 8,
+      "HV_count": 4,
+      "variable_C_count": 3
+    },
+    {
+      "target": 35.15,
+      "grid": "2001 points per each of 28 CSV segments",
+      "worst": 1.0518180102745243,
+      "h2": 35.21316195056341,
+      "h3": 35.41397356444874,
+      "worst_at": [
+        "B8",
+        "DL",
+        960
+      ],
+      "h2_at": [
+        "B71",
+        1326
+      ],
+      "h3_at": [
+        "B8",
+        2640
+      ],
+      "independent_probes": 84,
+      "max_discrepancy_db": 4.831690603168681e-13,
+      "power_remaining_min_W": 0.0008174992543067876,
+      "power_remaining_max_W": 0.002190083016405547,
+      "SPD_gershgorin_lower_bound_nH": 1.5048680534056822,
+      "SPD_pass": true,
+      "area": 8,
+      "HV_count": 4,
+      "variable_C_count": 3
+    }
+  ],
+  "limitations": "not 7001 points/segment, no continuous frequency extremal proof, no device SRF / Q(f) / EM / layout or manufacturing validation"
+}

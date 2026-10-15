@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "phase": "Phase 2",
+  "storage_backend": "GitHub Git only",
+  "external_archive_required": false,
+  "legacy_main_snapshot": {
+    "commit_sha": "ad1cda8c47054fbe97edc5b8bb97261804281285",
+    "tracked_files": 731,
+    "tracked_bytes": 8449154
+  },
+  "thresholds": {
+    "individual_new_file_soft_bytes": 131072,
+    "individual_new_file_hard_bytes": 1048576,
+    "new_experiment_curated_soft_bytes": 524288,
+    "total_tracked_bytes_review_bytes": 26214400
+  },
+  "rules": {
+    "new_evidence_must_be_git_tracked": true,
+    "do_not_modify_historical_evidence": true,
+    "git_history_rewrite": false,
+    "history_tag_required_before_any_deletion": true,
+    "prior_owner_approval_required_for_deletion": true,
+    "trial_never_auto_promoted": true,
+    "full_candidate_vectors_required": true
+  },
+  "scope": "new files and informational repository snapshot; existing legacy exceptions retained"
+}

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "experiment_id": "EXP-043",
   "phase": "Phase 2",
-  "purpose": "RF-T005 EXP-021 C-H30p0002 corrected parallel bridge; area/IL Pareto study including GJM deletion and PCB substitution",
+  "purpose": "RF-T005 three-inductor single-shunt multimode topology search for chip area and IL Pareto",
   "objective": "full_lpf",
   "constraints": {
     "class": "trial",
@@ -347,14 +347,14 @@
     "baseline": "EXP-042 corrected parallel Cf2/Cv2 RF-T005 chip-area Pareto",
     "allowed_3L_branches": "two series inductors and one tapped shunt inductor",
     "chip_area_search": [
-      3.0,
+      3,
       3.6666666666666665,
       4.333333333333333
     ],
     "interim_worst_IL_target_db": 0.8,
     "formal_worst_IL_target_db": 0.3,
-    "minimum_harmonic_db": 30.0,
-    "nominal_harmonic_db": 35.0,
+    "minimum_harmonic_db": 30,
+    "nominal_harmonic_db": 35,
     "candidate_selection": "retain best per topology, numerical counterexamples, independent MNA of finalists"
   },
   "bands_sha256": "1b1182e4c947059cb263c1af52ddf64236bd1fd9e83770cc844126576c7865fe",

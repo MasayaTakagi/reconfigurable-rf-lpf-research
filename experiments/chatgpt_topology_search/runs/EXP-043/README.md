@@ -137,3 +137,23 @@ The owner requested improvement of `checkpoints/gjm_cp.json` (RF-T005 compliant 
 **Designed and registered, NOT COMPUTATIONALLY EXECUTED:** `refine_one_gjm_cp.py` and `.github/workflows/exp043_one_gjm_cp_refinement.yml` implement additional multis start constrained epigraph searches with all L/C/k reoptimization, two frequency-mesh stages (9 and 31 samples per each of 28 segments), 1001-point dense verification, and explicit independent 84-point branch-current MNA. Eight first-pass branches retain fixed one GJM Cp and two PCB fixed capacitors, but rearrange tunable/non-GJM PCB positions; all are chip-area 3⅔ and RF-T005 component/Q/bound policies. [Actions 38823582063](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38823582063) **all eight jobs failed before reporting any validated circuit data**. Retrying the baseline job also failed; no valid improved IL exists from these jobs. No cause was established because redirected job logs were unavailable. The script/workflow existence must not be misconstrued as executed optimization.
 
 **Next technical step:** diagnose GitHub Actions pre-run failures, run the existing 8-case matrix with retained error artifacts, inspect/verify best numerical vector by independently constructed 7×7 MNA and a denser critical-stopband 7001-point grid, then add adversarial adjacent-k/PCB tolerance analysis. The owner's interim IL≤0.8 goal remains unmet and cannot be claimed. Phase 3 remains **not authorized**.
+
+
+### Actual passband dissipation limits of the area3⅔ circuit (independent 7×7 MNA)
+
+Directly evaluated the unchanged `checkpoints/gjm_cp.json` with both mandatory S2P models, 50Ω source and 60−j40Ω load. Numerical proof and full five-setting point budget: `area3p667_passband_loss_budget.json`. This *numerical probing* succeeded separately from failed multi-topology GitHub Actions. Normalization Pavs=5.000mW for 1Vrms 50Ω source. Power conservation residual <4e-15mW.
+
+| power component | B28 803MHz mW | B8 960MHz mW |
+|---|---:|---:|
+| chip-L resistors Q25 | 0.370445 | 0.375984 |
+| input fixed S2P | 0.292735 | 0.299450 |
+| output fixed S2P | 0.167149 | 0.167151 |
+| fixed PCB Cs Q40 | 0.006977 | 0.010357 |
+| GJM Cp Q80 | 0.027601 | 0.036242 |
+| three IC Cv Q35 | 0.065031 | 0.028189 |
+| reflection | 0.002262 | 0.014826 |
+| **delivered Pload** | **4.067800** | **4.067800** |
+| **IL** | **0.8961038 dB** | **0.8961038 dB** |
+| driven magnetic Q_L_eff | 25.28988 | 25.33627 |
+
+Both 803MHz B28 and 960MHz B8 tie the worst IL. Chip L is the largest *adjustable* loss group (~0.37mW); input external S2P and output external S2P losses are immutable model components. At B28 the reflected power is only 0.00226mW, so reducing reflection alone cannot meaningfully reach 0.8dB. To beat 0.8961 while maintaining H2/H3≥30dB, a viable optimization should lower actual L currents and L resistor power at both limiting settings. All calculations are on ideal constant-Q RF-T005; component Q(f)/SRF and EM remain open.

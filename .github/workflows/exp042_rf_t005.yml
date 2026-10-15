@@ -62,3 +62,28 @@ jobs:
           name: exp042-rft005-target-${{ matrix.target }}
           path: results/EXP-042/target_${{ matrix.target }}.json
           if-no-files-found: warn
+
+  independent_validation:
+    name: EXP-042 full S2P 7001-grid / independent MNA
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: Reproduce saved candidates on full grid and independent circuit solver
+        run: |
+          uv sync --frozen
+          uv run --frozen python experiments/chatgpt_topology_search/runs/EXP-042/verify.py
+      - name: Upload MNA and dense-grid evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: exp042-rft005-independent-7001
+          path: results/EXP-042/verification_7001.json
+          if-no-files-found: warn

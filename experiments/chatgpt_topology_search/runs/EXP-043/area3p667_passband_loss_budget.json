@@ -1,0 +1,125 @@
+{
+  "experiment": "EXP-043",
+  "phase": 2,
+  "condition_id": "RF-T005",
+  "source": "checkpoints/gjm_cp.json, unchanged physical component vector",
+  "status": "EXECUTED independent 7x7 branch-current MNA at B71/B12/B28/B26/B8 passband edges; GitHub main source two SHA-frozen input/output S2Ps",
+  "method": {
+    "reference": "1 V RMS source with 50 ohm source R (5mW Pavs); load 60-j40ohm",
+    "formula": "Q_m=25*Re(I^H Lmatrix I)/sum_i Li|Ii|², L resistor Rii=ωLi/25",
+    "units": "mW source budget sums to 5mW, corresponding transducer IL -10log10(Pload/Pavs)",
+    "L_branch_order": "L0,L1,Ls",
+    "PCB_Q": 40,
+    "GJM_Q": 80,
+    "IC_Q": 35
+  },
+  "data": [
+    {
+      "case": "B71",
+      "frequency_MHz": 698,
+      "IL_db": 0.8495211000243157,
+      "Q_L_eff": 25.255200888001013,
+      "load_mW": 4.111666621483154,
+      "reflection_mW": 0.0356196052183403,
+      "input_S2P_loss_mW": 0.29886080684572625,
+      "output_S2P_loss_mW": 0.168948630231449,
+      "chip_L_loss_mW": 0.30145007252618206,
+      "PCB_C_loss_mW": 0.004336578299869475,
+      "GJM_Cp_loss_mW": 0.022231853000732278,
+      "IC_Cv_loss_mW": 0.05688583239454501,
+      "chip_L_current_RMS_mA": [
+        12.885289111832991,
+        11.884688369303733,
+        4.074421374293733
+      ],
+      "power_balance_W_less_than": 4e-18
+    },
+    {
+      "case": "B12",
+      "frequency_MHz": 746,
+      "IL_db": 0.8853194855295334,
+      "Q_L_eff": 25.33053564025372,
+      "load_mW": 4.077913935901172,
+      "reflection_mW": 0.03619480015911264,
+      "input_S2P_loss_mW": 0.3063078570829554,
+      "output_S2P_loss_mW": 0.16756310013757003,
+      "chip_L_loss_mW": 0.32121032737768385,
+      "PCB_C_loss_mW": 0.005158695693404564,
+      "GJM_Cp_loss_mW": 0.025256047230427965,
+      "IC_Cv_loss_mW": 0.060395236417674185,
+      "chip_L_current_RMS_mA": [
+        13.045424102414636,
+        11.646335929783243,
+        4.637764736567598
+      ],
+      "power_balance_W_less_than": 4e-18
+    },
+    {
+      "case": "B28",
+      "frequency_MHz": 803,
+      "IL_db": 0.8961037943381784,
+      "Q_L_eff": 25.289879293008656,
+      "load_mW": 4.067800308351428,
+      "reflection_mW": 0.002261670795231544,
+      "input_S2P_loss_mW": 0.292734845859035,
+      "output_S2P_loss_mW": 0.1671488425648354,
+      "chip_L_loss_mW": 0.3704448380800032,
+      "PCB_C_loss_mW": 0.00697718986714458,
+      "GJM_Cp_loss_mW": 0.027601369655969692,
+      "IC_Cv_loss_mW": 0.06503093482634949,
+      "chip_L_current_RMS_mA": [
+        13.630032622222071,
+        12.115521850376547,
+        4.301004572566069
+      ],
+      "power_balance_W_less_than": 4e-18
+    },
+    {
+      "case": "B26",
+      "frequency_MHz": 894,
+      "IL_db": 0.8902799206778564,
+      "Q_L_eff": 25.30738566083108,
+      "load_mW": 4.0732588733350905,
+      "reflection_mW": 0.00911421776986118,
+      "input_S2P_loss_mW": 0.29490290317667983,
+      "output_S2P_loss_mW": 0.16737474336933014,
+      "chip_L_loss_mW": 0.3717026298854434,
+      "PCB_C_loss_mW": 0.0088841934675999,
+      "GJM_Cp_loss_mW": 0.03227876723294947,
+      "IC_Cv_loss_mW": 0.042483671763044774,
+      "chip_L_current_RMS_mA": [
+        12.121819762689894,
+        11.814558772566405,
+        4.351488636533426
+      ],
+      "power_balance_W_less_than": 4e-18
+    },
+    {
+      "case": "B8",
+      "frequency_MHz": 960,
+      "IL_db": 0.8961037943284902,
+      "Q_L_eff": 25.336265254135483,
+      "load_mW": 4.067800308360502,
+      "reflection_mW": 0.014826006173512821,
+      "input_S2P_loss_mW": 0.299450187524794,
+      "output_S2P_loss_mW": 0.16715133330753168,
+      "chip_L_loss_mW": 0.3759836599826452,
+      "PCB_C_loss_mW": 0.010357227404070952,
+      "GJM_Cp_loss_mW": 0.03624213057501255,
+      "IC_Cv_loss_mW": 0.02818914667193104,
+      "chip_L_current_RMS_mA": [
+        11.549131947836779,
+        11.490764008679744,
+        4.506606230558105
+      ],
+      "power_balance_W_less_than": 4e-18
+    }
+  ],
+  "interpretation": "B28 at 803MHz and B8 at 960MHz jointly define 0.896104dB worst IL; main unavoidable losses: chip L ~0.37-0.376mW and input S2P ~0.293-0.299mW and output S2P ~0.167mW. Reflection very small at B28 (0.00226mW). Optimizing Q of LC eigenmodes alone is not enough; decrease actual inductor branch currents while sustaining matching and harmonic notches. Output S2P is fixed model, not adjustable.",
+  "limitations": [
+    "Point frequencies not full-band power decomposition",
+    "Ideal constant Q and mutual k, no real SRF/EM",
+    "Independent MNA power-balance checked but no independent third method",
+    "Any hypothetical decreased L winding loss or physical Q improvement not yet tested"
+  ]
+}

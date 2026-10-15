@@ -26,7 +26,7 @@ def tracked_paths(root):
 def new_paths(root, base_ref):
     git(root, "rev-parse", "--verify", base_ref)
     raw = git(root, "diff", "--diff-filter=A", "--name-only", "-z",
-              base_ref + "...HEAD")
+              base_ref + "..HEAD")
     return set(p.decode("utf-8") for p in raw.split(b"\0") if p)
 
 

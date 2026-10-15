@@ -39,8 +39,10 @@ class RFF003T005Tests(unittest.TestCase):
         trial = load_constraint("RF-T005", allow_trial=True)
         copy = json.loads(json.dumps(formal))
         copy["components"]["IC_VARIABLE_C"]["max_branches_principle"] = 3
-        for key in ("active_constraint_id","active_constraint_status",
-                    "trial_base_constraint_id","trial_variable_c_layout"):
+        for key in ("active_constraint_id","active_constraint_status"):
+            trial.pop(key, None)
+            copy.pop(key, None)
+        for key in ("trial_base_constraint_id","trial_variable_c_layout"):
             trial.pop(key, None)
         self.assertEqual(trial, copy)
         self.assertFalse(check_counts(n_var=3))

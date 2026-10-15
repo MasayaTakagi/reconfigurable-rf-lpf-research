@@ -3,6 +3,7 @@
 Never modifies the original EXP-017 manifest or promotes a 3-C RF-T004 trial.
 """
 import csv
+import hashlib
 import json
 import math
 import unittest
@@ -28,6 +29,24 @@ class RecoveredFormalCheckpointTests(unittest.TestCase):
         self.assertFalse(candidate["source"]["raw_original_zip_git_committed"])
         self.assertFalse(candidate["status"]["nominal_IL_le_0p30"])
         self.assertTrue(candidate["status"]["source_vector_recovered"])
+
+    def test_byte_exact_original_source_member_is_now_saved_in_git(self):
+        candidate = json.loads(CANDIDATE.read_text(encoding="utf-8"))
+        src = candidate["source"]
+        original_path = ROOT / src["git_original_member_path"]
+        bytes_ = original_path.read_bytes()
+        self.assertEqual(2959, len(bytes_))
+        self.assertEqual(src["git_original_member_bytes"], len(bytes_))
+        self.assertEqual("fa997fb131a1237c41ec8a42ead80e40fe2436275a7e944837afecea9c387896",
+                         hashlib.sha256(bytes_).hexdigest())
+        self.assertEqual(src["git_original_member_expected_sha256"],
+                         hashlib.sha256(bytes_).hexdigest())
+        original = json.loads(bytes_)
+        self.assertEqual(candidate["x_logL_logC_k_6x2Cv_epi"],
+                         original["x_logL_logC_k_6x2Cv_epi"])
+        self.assertEqual(18, len(original["nominal_metrics"]["crit"]))
+        self.assertTrue(original["solver_success"])
+        self.assertFalse(candidate["source"]["raw_original_zip_git_committed"])
 
     def test_independent_full_six_setting_mna_replay(self):
         r = replay(1001)

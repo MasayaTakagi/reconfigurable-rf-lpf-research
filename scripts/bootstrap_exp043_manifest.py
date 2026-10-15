@@ -10,6 +10,7 @@ from src.lpf.constraint_versions import ROOT
 def main():
     root=Path(ROOT)
     directory=root/"experiments/chatgpt_topology_search/runs/EXP-043"
+    directory.mkdir(parents=True,exist_ok=True)
     dest=directory/"manifest.json"
     if dest.exists():
         print("EXP-043 manifest exists; do not overwrite provenance")

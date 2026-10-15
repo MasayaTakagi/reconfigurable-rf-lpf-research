@@ -109,12 +109,12 @@ class CandidateIndexGuardrails(unittest.TestCase):
     def _add_candidate(self, name):
         item = json.loads((self.root / "candidates/LPF-007.json").read_text())
         item["candidate_id"] = name
-        item["spec_id"] = "RF-F002"
+        item["spec_id"] = "RF-F003"
         for cap in item["topology"]["variable_caps"]:
-            cap["Q"] = 50
-            cap["max_pF"] = 1.5
+            cap["Q"] = 35
+            cap["max_pF"] = 3.0
         item["ic_variable_C_pf_by_setting"] = {
-            k: [min(float(x), 1.5) for x in values]
+            k: [min(float(x), 3.0) for x in values]
             for k, values in item["ic_variable_C_pf_by_setting"].items()
         }
         (self.root / "candidates" / (name + ".json")).write_text(json.dumps(item))
@@ -129,9 +129,9 @@ class CandidateIndexGuardrails(unittest.TestCase):
         manifests = [(p.relative_to(self.root).as_posix(), json.loads(p.read_text()))
                      for p in (self.root / RUNS).glob("EXP-*/manifest.json")]
         (self.root / "data/experiment_index.csv").write_text(experiment_index(manifests))
-        rows.append(dict(rows[0], candidate_id=name, spec_id="RF-F002",
+        rows.append(dict(rows[0], candidate_id=name, spec_id="RF-F003",
                          evidence=f"candidates/{name}.json", constraint_class="formal",
-                         constraint_id="RF-F002", historical_registry_key="",
+                         constraint_id="RF-F003", historical_registry_key="",
                          effective_constraint_sha256=m["constraints"]["effective_constraint_sha256"],
                          manifest=f"{RUNS}/EXP-999/manifest.json"))
         with index.open("w", newline="", encoding="utf-8") as f:
@@ -162,7 +162,7 @@ class CandidateIndexGuardrails(unittest.TestCase):
         self._add_candidate("LPF-TEST-ADDED")
         index = self.root / "data/candidate_index.csv"
         index.write_text(index.read_text().replace(
-            json.loads((self.root / "data/constraints/registry.json").read_text())["formal"]["RF-F002"]["effective_constraint_sha256"], "0" * 64))
+            json.loads((self.root / "data/constraints/registry.json").read_text())["formal"]["RF-F003"]["effective_constraint_sha256"], "0" * 64))
         self.assertTrue(any("Candidate constraint fingerprint" in msg for msg in self._audit()))
 
     def test_manifest_index_drift_is_rejected(self):

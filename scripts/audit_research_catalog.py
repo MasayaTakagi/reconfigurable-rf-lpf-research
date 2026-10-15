@@ -175,8 +175,10 @@ def audit_catalog(root=ROOT):
             source_hash = checkpoint.get("effective_constraint_sha256", checkpoint.get("constraint_sha256"))
             if source_hash and policy_class != "historical" and source_hash != row["effective_constraint_sha256"]:
                 raise ValueError("Checkpoint resolved-policy SHA differs from catalog")
-            if policy_class == "formal" and policy_id != registry["active_formal_id"]:
-                raise ValueError("Formal candidate unexpectedly relabeled as active")
+            if policy_class == "formal" and registry["formal"][policy_id]["state"] != "approved":
+                raise ValueError("Formal candidate references an unapproved snapshot")
+            # Approved earlier formal snapshots remain valid historical evidence;
+            # changing active_formal_id must not relabel their original metrics.
             if (validation_path.name == "summary.json" and
                     row["experiment_id"] in ("EXP-017", "EXP-023")):
                 replays = validation["reproductions"]

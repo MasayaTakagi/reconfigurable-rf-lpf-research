@@ -15,7 +15,7 @@ class VersionedConstraintsTests(unittest.TestCase):
         active = load_constraint()
         legacy_access = json.loads((ROOT / "data/design_constraints.json").read_text())
         self.assertEqual(active, legacy_access)
-        self.assertEqual(active["active_constraint_id"], "RF-F002")
+        self.assertEqual(active["active_constraint_id"], "RF-F003")
         self.assertEqual(active["active_constraint_status"], "formal")
         self.assertIsNone(active["area_budget"]["hard_cap"])
         self.assertEqual(len(constraint_fingerprint(active)), 64)
@@ -97,7 +97,7 @@ class VersionedConstraintsTests(unittest.TestCase):
         self.assertEqual(load_constraint("RF-T002", allow_trial=True)["active_constraint_status"], "trial")
         with self.assertRaises(ValueError):
             load_constraint("RF-F000")
-        self.assertEqual(load_constraint()["active_constraint_id"], "RF-F002")
+        self.assertEqual(load_constraint()["active_constraint_id"], "RF-F003")
 
 
 if __name__ == "__main__":

@@ -116,6 +116,8 @@ class ConstraintRegistryTests(unittest.TestCase):
         policy = load_constraint()
         self.assertEqual(constraint_fingerprint(policy), constraint_fingerprint(dict(reversed(list(policy.items())))))
         self.assertEqual(constraint_fingerprint(policy),
+                         validate_registry()["formal"]["RF-F003"]["effective_constraint_sha256"])
+        self.assertEqual(constraint_fingerprint(load_constraint("RF-F002")),
                          "f20d27e93451dcec2f823e6f7c3731c06d843050c4d2ace8b0b46ded605542e2")
         self.assertEqual(constraint_fingerprint(load_constraint("RF-F001")),
                          "df6b4cbd347aac06538527cd68963b785207582152e17117a683c10058af0c54")
@@ -139,7 +141,7 @@ class ManifestTests(unittest.TestCase):
     def test_new_manifest_captures_inputs_and_refuses_policy_drift(self):
         m = new_manifest("EXP-016", "Metadata smoke only", {"max_search_area": 8},
                          objective="matching_only", seed=12)
-        self.assertEqual(m["constraints"]["constraint_id"], "RF-F002")
+        self.assertEqual(m["constraints"]["constraint_id"], "RF-F003")
         self.assertIsNone(m["constraints"]["effective_constraints"]["area_budget"]["hard_cap"])
         self.assertEqual(m["execution"]["status"], "planned")
         self.assertEqual(m["validation"]["independent"], "not_run")

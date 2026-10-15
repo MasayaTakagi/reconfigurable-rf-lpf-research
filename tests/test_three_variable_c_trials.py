@@ -15,8 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 class TrialThreeVariableCTests(unittest.TestCase):
     def test_registered_trial_scopes_and_formal_immutability(self):
         registry = validate_registry()
-        self.assertEqual(registry["active_formal_id"], "RF-F002")
-        self.assertEqual(set(registry["trial"]), {"RF-T001", "RF-T002", "RF-T003", "RF-T004"})
+        self.assertEqual(registry["active_formal_id"], "RF-F003")
+        self.assertEqual(set(registry["trial"]), {"RF-T001", "RF-T002", "RF-T003", "RF-T004", "RF-T005"})
         base = load_constraint("RF-F001")
         self.assertEqual(load_constraint(), json.loads((ROOT / "data/design_constraints.json").read_text()))
         self.assertEqual(base["components"]["IC_VARIABLE_C"]["max_branches_principle"], 2)

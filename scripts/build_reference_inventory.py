@@ -69,7 +69,7 @@ def _location(path):
         return "experiment"
     if path.startswith("candidates/"):
         return "legacy_candidate"
-    if path.startswith("data/constraints/") or path in (
+    if path.startswith(("data/constraints/", "data/parasitics/")) or path in (
             "data/design_constraints.json", "data/bands.csv"):
         return "rf_policy"
     if path.startswith("data/"):

@@ -13,7 +13,7 @@ from verify_rft003_30db import verify
 class RFT003Tests(unittest.TestCase):
     def test_registration_and_formal_non_regression(self):
         registry=validate_registry()
-        self.assertEqual(registry["active_formal_id"],"RF-F002")
+        self.assertEqual(registry["active_formal_id"],"RF-F003")
         self.assertEqual(registry["trial"]["RF-T003"]["state"],"study_authorized")
         f=load_constraint("RF-F001")
         self.assertEqual(f["evaluation"]["full_phase2"]["nominal_h2_h3_target_db"],35)

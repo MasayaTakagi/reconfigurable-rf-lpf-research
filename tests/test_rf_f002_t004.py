@@ -13,9 +13,9 @@ ROOT = Path(__file__).resolve().parents[1]
 class RevisedRFConstraintsTests(unittest.TestCase):
     def test_formal_identity_hash_and_components(self):
         reg = validate_registry()
-        self.assertEqual(reg["active_formal_id"], "RF-F002")
-        current = load_constraint()
-        self.assertEqual(current, json.loads((ROOT/"data/design_constraints.json").read_text()))
+        self.assertEqual(reg["active_formal_id"], "RF-F003")
+        current = load_constraint("RF-F002")
+        self.assertEqual(load_constraint(), json.loads((ROOT/"data/design_constraints.json").read_text()))
         self.assertEqual(reg["formal"]["RF-F002"]["effective_constraint_sha256"],
                          constraint_fingerprint(current))
         self.assertEqual(current["components"]["IC_VARIABLE_C"]["q"], 50)

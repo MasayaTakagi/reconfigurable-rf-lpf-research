@@ -54,7 +54,7 @@ class Phase2CurrentStatusTests(unittest.TestCase):
         self.assertIn("RF-T004", notes)
         self.assertIn("14,001", notes)
         issues = {x["issue_id"]: x for x in read_csv("data/research_review_issues.csv")}
-        self.assertTrue(issues["RG-001"]["status"].startswith("open_"))
+        self.assertTrue(issues["RG-001"]["status"].startswith("resolved_"))
         self.assertIn("RF-F002", issues["RG-001"]["problem"])
 
     def test_review_gates_are_traceable_without_fabricating_missing_metadata(self):

@@ -5,7 +5,15 @@
 - **本ファイルの役割:** プロジェクトの**運用指示の正本**。ChatGPTの「プロジェクトの指示」欄は、このファイルへの短い参照文のみとする。
 - **最重要:** **研究全体はPhase 2**。**Phase 3はユーザーが明示承認するまで開始しない。**
 
-## 現行研究・運用状況（2026-10-15／PR #54 main統合後）
+## 2026-10-16：RF-F003 正式採用・RF-T005 試験条件（現行）
+
+**ユーザー承認済み変更（本ブランチで実装）：** 正式RF-F003は旧RF-F002を保持しつつ、外部入力とLPF間・LPFと外部出力間に固定寄生S2Pを挿入する。入力寄生Port1→Port2、LPF、出力寄生Port1→Port2の順。2ファイルは`data/parasitics/`に固定保存し、RF-F003にSHA-256を記録。50Ω・RI形式・0～6GHz/1MHzで、解析プロセスごとに1回ロード・キャッシュ、格子間では複素S値の実部虚部線形補間。寄生RLCの毎回再計算およびモデル外挿は禁止。50Ω源・60−j40Ω負荷を維持し、総合外部ポート間のIL・H2/H3を判定する。
+
+チップL隣接強結合とPCB-L間の許容`|k|`は各0.10以下、IC可変Cは最大2枝・各0～3pF・Q35。その他RF-F002条件を継承。**RF-T005はRF-F003を基準に可変C枝数上限のみ2→3へ緩和した明示試験条件**。RF-T004は旧RF-F002基準のまま保持する。現行正本は`data/constraints/registry.json`のactive正式IDと`data/constraints/formal/RF-F003.json`、周波数帯は`data/bands.csv`。新RF-F003/試験RF-T005の実LPF全帯域最適化・寄生込み評価・SRF/EM/実測は未実行。S2Pはモデル由来で測定データではない。歴史的RF-F002最良ILを新条件の達成実績に流用しない。Phase 2継続、Phase 3停止。
+
+## 2026-10-15 以前の開発状況（履歴・RF-F002基準）
+
+## 2026-10-15当時の研究・運用状況（RF-F002履歴）
 
 > 本節は2026-10-15時点の現況整理。新しい研究・実行時にはmainの最新データを改めて確認する。以下の2026-10-12時点のRF-F001条件・開発チェックポイントは**履歴**であり、数値・結果の正本ではない。
 
@@ -39,7 +47,7 @@
 | 情報 | 正本・確認先 |
 |---|---|
 | ChatGPTの役割、開発方針、作業ルール | **本ファイル** `docs/chatgpt_project_instructions.md` |
-| 承認済み数値制約・部品モデル・例外承認の状態 | **`data/constraints/formal/RF-F002.json`**（現行の承認済み正式スナップショット）と`data/constraints/registry.json`（台帳）。`data/design_constraints.json`は互換用コピー |
+| 承認済み数値制約・部品モデル・例外承認の状態 | **`data/constraints/registry.json` のactive指定に対応する `data/constraints/formal/RF-F003.json`**。旧RF-F002は履歴保持。`data/design_constraints.json`は現行正式の互換用コピー |
 | 周波数帯域と不連続区間 | **`data/bands.csv`** |
 | 数値仕様の説明、部品採用理由 | `docs/specification.md`、`docs/inductor_series_policy.md` |
 | 現在の開発ゲート・未完了課題 | `docs/roadmap.md` |

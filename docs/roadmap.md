@@ -2,6 +2,12 @@
 
 > この節が現時点の開発状況の入口です。以下の2026-10-10～14の日付付き段落は**当時の計画・数値・PR状態の履歴**として保持しており、現在の未マージ状態や現行RF制約の宣言ではありません。現行数値制約は data/constraints/registry.json の正式 RF-F002、帯域は data/bands.csv。Phase 3は所有者の明示承認まで停止。
 
+## 次回新規実験の必須開始ゲート（PR #53準備中）
+
+- **EXP番号は開始前にmainへ予約する。** [中央台帳と並列予約設計](experiment_number_reservation_policy_20261015.md)を参照。過去39実験と歴史的欠番EXP-018/019を保護し、次番号候補は**EXP-042（未予約）**。
+- GitHub Actionsから予約をmainのGit履歴へ非force pushで確定し、最新版mainを再取得してから実験を開始。重複pushは再採番、branch protectionで拒否された場合は予約用PRをmainへ反映するまで開始禁止。
+- **mainへ予約workflowが統合されるまで運用開始とは扱わない。** PR #53はDraft・未マージであり、今は新しい研究runを発行していない。Phase 2継続。
+
 ## mainへ統合済みの作業と検査
 
 - [PR #48](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/48)（2026-10-14にmerge）：EXP-034～041のRF-F002 Full-LPF runner復旧・継続試験。元のremap不備があるrunと後続の修正runを区別する。

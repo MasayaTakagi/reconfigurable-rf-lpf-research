@@ -1,0 +1,53 @@
+name: Reserve next EXP number
+
+on:
+  workflow_dispatch:
+    inputs:
+      purpose:
+        description: "Purpose of the new experiment (saved permanently)"
+        required: true
+        type: string
+      constraint_id:
+        description: "Approved RF condition"
+        required: true
+        default: "RF-F002"
+        type: choice
+        options:
+          - RF-F002
+          - RF-T004
+      request_key:
+        description: "Stable idempotency key (optional; defaults to workflow run ID)"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  reserve:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: true
+          fetch-depth: 1
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Reserve on central main ledger with optimistic concurrency
+        env:
+          RESERVATION_ACTOR: ${{ github.actor }}
+          RESERVATION_PURPOSE: ${{ inputs.purpose }}
+          RESERVATION_CONSTRAINT: ${{ inputs.constraint_id }}
+          RESERVATION_REQUEST_KEY: ${{ inputs.request_key }}
+          WORKFLOW_REQUEST_ID: ${{ github.run_id }}
+        run: |
+          REQUEST_ID="${RESERVATION_REQUEST_KEY:-$WORKFLOW_REQUEST_ID}"
+          python scripts/reserve_experiment_number.py \
+            --owner "$RESERVATION_ACTOR" \
+            --purpose "$RESERVATION_PURPOSE" \
+            --constraint-id "$RESERVATION_CONSTRAINT" \
+            --request-id "$REQUEST_ID"

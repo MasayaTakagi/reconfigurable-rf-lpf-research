@@ -48,6 +48,28 @@ class RecoveredFormalCheckpointTests(unittest.TestCase):
         self.assertTrue(original["solver_success"])
         self.assertFalse(candidate["source"]["raw_original_zip_git_committed"])
 
+    def test_full_source_zip_index_and_byte_exact_saved_member(self):
+        index = json.loads((ROOT / "data/exp017_rf_f002_source_zip_index_20261015.json")
+                           .read_text(encoding="utf-8"))
+        self.assertEqual("RF-F002", index["constraint_id"])
+        self.assertEqual("EXP-017", index["experiment_id"])
+        self.assertEqual(26, index["archive"]["member_count"])
+        self.assertEqual(157492, index["archive"]["size_bytes"])
+        self.assertEqual(715495, index["archive"]["total_uncompressed_bytes"])
+        self.assertFalse(index["archive"]["original_zip_binary_committed_to_git"])
+        self.assertFalse(index["preservation"]["source_archive_all_453_trials_stored_in_git"])
+        members = index["members"]
+        self.assertEqual(26, len(members))
+        self.assertEqual(26, len({m["path"] for m in members}))
+        self.assertEqual(715495, sum(m["size_bytes"] for m in members))
+        saved = [m for m in members if m["git_storage_status"] == "byte_exact_git_copy"]
+        self.assertEqual(1, len(saved))
+        self.assertEqual("EXP-017/EXP017-LQW4-H30-NEAR.json", saved[0]["path"])
+        original_path = ROOT / index["preservation"]["original_member_git_path"]
+        raw = original_path.read_bytes()
+        self.assertEqual(saved[0]["size_bytes"], len(raw))
+        self.assertEqual(saved[0]["sha256"], hashlib.sha256(raw).hexdigest())
+
     def test_independent_full_six_setting_mna_replay(self):
         r = replay(1001)
         self.assertTrue(r["strict_finite_grid_30db"])

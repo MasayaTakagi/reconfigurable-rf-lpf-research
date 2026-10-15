@@ -355,26 +355,35 @@
     "formal_worst_IL_target_db": 0.3,
     "minimum_harmonic_db": 30,
     "nominal_harmonic_db": 35,
-    "candidate_selection": "retain best per topology, numerical counterexamples, independent MNA of finalists"
+    "candidate_selection": "retain best per topology, numerical counterexamples, independent MNA of finalists",
+    "evaluated_variants": 21,
+    "attempted_starts_per_variant": 4,
+    "selected_checkpoint": "checkpoints/zero_gjm_double.json",
+    "interim_0p8db_status": "not_achieved",
+    "overall_verification": "finite-grid and selected independent MNA only"
   },
   "bands_sha256": "1b1182e4c947059cb263c1af52ddf64236bd1fd9e83770cc844126576c7865fe",
   "execution": {
-    "status": "planned",
+    "status": "partial",
     "elapsed_seconds": null,
     "evaluation_count": null
   },
   "validation": {
-    "numerical": "not_run",
-    "independent": "not_run",
+    "numerical": "screened",
+    "independent": "passed",
     "implementation": "not_run",
-    "analysis_grid": "not_run_before_solver",
-    "independent_grid": "not_run_before_solver"
+    "analysis_grid": "28 distinct CSV segments x 701 points; 21 best-found topology variants; not continuous-band proof",
+    "independent_grid": "7x7 explicit branch-current MNA and power conservation on 84 probes for each of two saved 3L candidate vectors"
   },
   "evidence": [],
   "limitations": [
     "New topology search not yet executed at manifest creation.",
     "Finite local search cannot establish global feasibility/non-feasibility.",
     "0.8 dB interim target is not a modification of approved formal RF-F003.",
-    "Q(f), SRF, EM, source S2P reference planes, PCB and variable-C implementation remain unverified."
+    "Q(f), SRF, EM, source S2P reference planes, PCB and variable-C implementation remain unverified.",
+    "Some local SLSQP variants failed constraints or converged to poorly matched circuits; 21 screened graphs are not an exhaustive topology census.",
+    "Only two saved selected candidates have explicit independent MNA validation.",
+    "The 0.8dB interim IL objective is not achieved; best finite-grid 0.944268363dB at area3.",
+    "The source execution SHA is a preflight anchor; specific optimizer execution revisions are identified by GitHub Actions run IDs in run_summary.json."
   ]
 }

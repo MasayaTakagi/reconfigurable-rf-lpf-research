@@ -42,8 +42,8 @@
 **終了時（失敗・中断も記録）**：
 
 - `execution_status=completed|partial|failed|interrupted|not_run|unknown`、開始/終了UTC、elapsed、graph/start/iter/evaluationの計画/実施/成功/未収束/失敗/未実施数、最終solver success/exit code/停止理由、CPU/RSS、再開・retry履歴。
-- `archive_status=local_only|upload_pending|uploaded_unverified|verified_restore|lost_or_unavailable` を**execution/validationとは独立**させる。
-- `validation_status=not_run|reported_only|finite_grid_passed|independent_mna_passed|physical_validated|failed`を別軸で保持。数値公差による分類`strict_finite_grid|tolerance_only|failed_threshold|not_checked`を別属性にし、`success=False`を性能限界と誤読しない。
+- `archive_status=local_only|upload_pending|uploaded_unverified|verified_restore|lost_or_unavailable|corrupted` を**execution/validationとは独立**させる。
+- 既存manifestの`validation.numerical`、`validation.independent`、`validation.implementation`の**3軸を継続**し、それぞれ未実施・報告のみ・有限格子確認・独立MNA確認・物理確認・失敗などの状態と検証実行IDを記録する（許可状態値と軸間の整合は新規schema v2策定時に定義）。数値公差による分類`strict_finite_grid|tolerance_only|failed_threshold|not_checked`をさらに別属性にし、`success=False`を性能限界と誤読しない。
 - 元コード/生データ/ログ/チェックポイント/検証を`evidence[]`として登録：`role`、`logical_path`、`relative_git_path`又は外部`archive_id`、`sha256`、`size_bytes`、`provenance`、`retention_class`、`availability_status`。**新規runで evidence 0件は「保存完了」と認めない。**
 - 新規または後日実施した再検証は**別の検証実行ID/ファイル/コードSHA/条件SHAを持つimmutable overlay**として登録。元source report・manifestを再解釈して上書きしない。
 
@@ -72,7 +72,7 @@
 2. バージョニング/削除保護のある外部ストレージに原本を書き込み、`archive_id`、保存場所URI、アップロード日時、保存期限、世代、アクセス権、保管媒体/複製先を領収記録として保存。**ChatGPT添付やGitHub Actions artifactのみは`verified_restore`を許可しない。**
 3. **アップロード元ではなく保管先から再ダウンロード**してSHA-256とZIP memberを照合。代表checkpointに対しrun metadataと6設定Cvが再ロード可能であることも試験（非信頼ZIPは安全な領域で展開、検証時のコードの実行には別許可）。
 4. `archive_status=verified_restore`と復旧テスト日時/ソフト/結果をGit台帳に記録して初めて元ローカルrawを整理対象に移す。**元ファイル自動削除は行わない**。研究証拠の削除・不可逆な移動は個別の所有者承認が必要。
-5. 保管先の障害・期限・アクセス不能・hash不一致が起きたら`archive_status=unavailable|corrupted`の新しい監査記録を追加し、候補の根拠が欠けることを通知する。元の正常な過去記録は消さない。
+5. 保管先の障害・期限・アクセス不能・hash不一致が起きたら`archive_status=lost_or_unavailable|corrupted`の新しい監査記録を追加し、候補の根拠が欠けることを通知する。元の正常な過去記録は消さない。
 
 **保管期間の初期案（採用時に所有者決定）：** A/B/Cと昇格済みD・元公式rawは期限を定めず保全。E診断は関連不具合や再開エビデンスならD同等に保存し、それ以外は**少なくとも90日を目安**に保全してから削除審査。Fキャッシュは再生成可能かと原証拠に含まれないことを確認して整理。日数だけをトリガーとする削除・Git履歴改変は禁止。容量超過時は保持期間短縮でなく原本/副本の階層移動を検討。
 

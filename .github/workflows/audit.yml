@@ -37,6 +37,9 @@ jobs:
       - run: python scripts/audit_results.py
       - run: python scripts/audit_research_catalog.py
       - run: python scripts/verify_exp016_numpy2_replay.py
+      - name: Recheck recovered RF-F002 EXP-017 original checkpoint (full 7001-point grid)
+        run: |
+          python scripts/verify_exp017_recovered_mna.py --points 7001 --summary artifacts/phase2_reports/exp017_recovered_fullgrid_validation.json
       - run: python scripts/audit_experiment_inventory.py
       - run: python scripts/audit_supplemental_evidence.py
       - run: python scripts/audit_validation_overlays.py

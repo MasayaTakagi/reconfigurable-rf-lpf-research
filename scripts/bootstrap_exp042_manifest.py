@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Create EXP-042 provenance manifest and rebuild canonical experiment index."""
 import json
+import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.lpf.experiment_manifest import new_manifest, experiment_index, validate_manifest
 from src.lpf.constraint_versions import ROOT
 

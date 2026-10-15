@@ -157,3 +157,22 @@ Directly evaluated the unchanged `checkpoints/gjm_cp.json` with both mandatory S
 | driven magnetic Q_L_eff | 25.28988 | 25.33627 |
 
 Both 803MHz B28 and 960MHz B8 tie the worst IL. Chip L is the largest *adjustable* loss group (~0.37mW); input external S2P and output external S2P losses are immutable model components. At B28 the reflected power is only 0.00226mW, so reducing reflection alone cannot meaningfully reach 0.8dB. To beat 0.8961 while maintaining H2/H3≥30dB, a viable optimization should lower actual L currents and L resistor power at both limiting settings. All calculations are on ideal constant-Q RF-T005; component Q(f)/SRF and EM remain open.
+
+
+### 2026-10-16 Directly computed local retuning with Actions outage
+
+The owner asked to continue lowering IL for the **same area 3⅔** GJM Cp three-L candidate. The newly added eight-case GitHub Actions scan in run 38823582063 **failed in every job**, including a retry. Numeric results below are from separate **actual in-chat executed JS circuit computations using the immutable input/output S2P files fetched from GitHub main**; they are not incorrectly ascribed to GitHub Actions.
+
+Coarse local pattern search (28×5 frequency points) with 28×31 screening covered eight circuits: original topology, Cf0→IN-to-shunt tip, Cf0→A-to-GND, Cf0→IN-to-OUT, Cf1→OUT-to-shunt tip, Cf1→OUT-to-GND, Cv2→IN-to-OUT, Cv0→IN-to-shunt tip. Fixed components are still two PCB C≤0.2pF Q40 and exactly one GJM Cp Q80, three LQP02HV Q25, three IC Cv≤3pF Q35, two physical adjacent k with |k|≤0.1.
+
+| Local variant | IL dB (28×31) | H2/H3 >=30dB? |
+|---|---:|---|
+| Original topology locally retuned | **0.8959933012** | PASS |
+| Cf0→A-to-GND | 0.9096346 | PASS |
+| Cf1→OUT-to-GND | 0.9405466 | PASS |
+| Cf0→IN-to-shunt tip | 1.0020951 | PASS |
+| Other changed-C topology configurations | not selected | FAIL harmonic, or worse-than-reference |
+
+**Independently re-evaluated using explicit 7×7 branch-current complex MNA at all 28×1001 points**: the new same-graph candidate has worst IL **0.895993301207573dB**, minimum H2 **30.00326362311118dB**, minimum H3 **30.00586595367983dB**; it passes 30dB mandatory finite-grid criterion, but not nominal35dB or interim0.8dB. At B28 803MHz, chip-L dissipation moves **0.37044484→0.37035526mW** and Pload **4.06780031→4.06790380mW**. At B8 960MHz, chip-L loss **0.37598366→0.37589569mW**, Pload **4.06780031→4.06795187mW**. In both cases explicit 7-way power balance residual ≤3.47e−18W. Full vector plus limitations and original comparison: `checkpoints/gjm_cp_local_H30p0032.json`. Deterministic reproducibility script: `verify_area3p667_local.py`, added but **NOT yet run on GitHub Actions**.
+
+**Practical selection:** This is only **0.000110493dB** better than stored `checkpoints/gjm_cp.json` but shrinks the H2 margin from 0.02dB to just **0.00326dB**; do **not** automatically replace the old checkpoint as robust reference. None of the explorations achieved meaningful IL reduction. A tolerance/physical SRF evaluation is missing. Further IL reduction likely requires materially different topology or a different current distribution in the B28/B8 critical states; changing only independent band tune values cannot reduce tied B28/B8 worst-case IL.

@@ -96,6 +96,8 @@ def _classify(path, sources):
                 else "registered_manifest_evidence"), "preserve_referenced"
     if "candidate_checkpoint" in sources:
         return "curated_checkpoint", "preserve_referenced"
+    if "recovered_original_checkpoint" in sources:
+        return "byte_exact_recovered_source", "preserve_referenced"
     if "candidate_verification" in sources or "posthoc_replay" in sources:
         return "curated_validation_evidence", "preserve_referenced"
     if "supplemental_blob" in sources:
@@ -126,7 +128,7 @@ def create_inventory(root=ROOT, tracked=None):
         d["kinds"].add(kind)
         if kind == "manifest_sha256":
             d["manifest"].add(owner)
-        elif kind in ("candidate_checkpoint", "candidate_verification"):
+        elif kind in ("candidate_checkpoint", "candidate_verification", "recovered_original_checkpoint"):
             d["candidates"].add(owner)
         elif kind == "supplemental_blob":
             d["supplemental"].add(owner)
@@ -141,6 +143,14 @@ def create_inventory(root=ROOT, tracked=None):
     for row in _read_csv(root, "data/research_candidate_register.csv"):
         link(row["checkpoint_path"], "candidate_checkpoint", row["catalog_id"])
         link(row["verification_path"], "candidate_verification", row["catalog_id"])
+        checkpoint = json.loads((root / row["checkpoint_path"]).read_text(encoding="utf-8"))
+        provenance = checkpoint.get("source") or {}
+        if "git_original_member_path" in provenance:
+            path = provenance["git_original_member_path"]
+            link(path, "recovered_original_checkpoint", row["catalog_id"])
+            actual_sha = hashlib.sha256((root / path).read_bytes()).hexdigest()
+            if actual_sha != provenance["git_original_member_expected_sha256"]:
+                raise ValueError("Byte-exact original recovered source digest differs: " + path)
     for row in _read_csv(root, "data/supplemental_experiment_evidence_index.csv"):
         link(row["source_path"], "supplemental_blob", row["experiment_id"])
     for row in _read_csv(root, "data/research_validation_overlays.csv"):

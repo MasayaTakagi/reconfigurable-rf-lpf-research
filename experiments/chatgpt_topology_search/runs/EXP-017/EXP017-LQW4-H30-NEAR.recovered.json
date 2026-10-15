@@ -19,7 +19,10 @@
     "zip_member_sha256": "fa997fb131a1237c41ec8a42ead80e40fe2436275a7e944837afecea9c387896",
     "raw_original_zip_git_committed": false,
     "historical_experiment_baseline_sha": "cf990d3eba625affb8e65da95b7c4f5ac4ec4be4",
-    "lineage": "Recovered full original optimization vector, decoded using the user's EXP-017/rff002_explore.py. This compact normalized JSON is derived, not byte-identical to the ZIP member."
+    "lineage": "Recovered full original optimization vector, decoded using the user's EXP-017/rff002_explore.py. This compact normalized JSON is derived, not byte-identical to the ZIP member.",
+    "git_original_member_path": "experiments/chatgpt_topology_search/runs/EXP-017/EXP017-LQW4-H30-NEAR.original.json",
+    "git_original_member_bytes": 2959,
+    "git_original_member_expected_sha256": "fa997fb131a1237c41ec8a42ead80e40fe2436275a7e944837afecea9c387896"
   },
   "parameter_names": [
     "logL0",

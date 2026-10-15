@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "candidate_id": "EXP017-LQW4-H30-NEAR",
+  "experiment_id": "EXP-017",
+  "phase": "Phase 2",
+  "objective": "full_lpf",
+  "constraint_class": "formal",
+  "constraint_id": "RF-F002",
+  "effective_constraint_sha256": "f20d27e93451dcec2f823e6f7c3731c06d843050c4d2ace8b0b46ded605542e2",
+  "bands_sha256": "1b1182e4c947059cb263c1af52ddf64236bd1fd9e83770cc844126576c7865fe",
+  "requirement_db": 30,
+  "area_units": 13.3333333333,
+  "source": {
+    "user_uploaded_zip": "EXP-017_RF-F002_loss_exploration_20261014.zip",
+    "zip_size_bytes": 157492,
+    "zip_sha256": "e685e918a4592a9ec53ffb8221c8b4d59fdf8604dd9119cf3cabbf42174a0daf",
+    "zip_member": "EXP-017/EXP017-LQW4-H30-NEAR.json",
+    "zip_member_bytes": 2959,
+    "zip_member_sha256": "fa997fb131a1237c41ec8a42ead80e40fe2436275a7e944837afecea9c387896",
+    "raw_original_zip_git_committed": false,
+    "historical_experiment_baseline_sha": "cf990d3eba625affb8e65da95b7c4f5ac4ec4be4",
+    "lineage": "Recovered full original optimization vector, decoded using the user's EXP-017/rff002_explore.py. This compact normalized JSON is derived, not byte-identical to the ZIP member."
+  },
+  "parameter_names": [
+    "logL0",
+    "logL1",
+    "logL2",
+    "logL3",
+    "logGJM0",
+    "logGJM1",
+    "logPCB_C",
+    "k01",
+    "k12",
+    "k23",
+    "Cv_B71_0",
+    "Cv_B71_1",
+    "Cv_B12_0",
+    "Cv_B12_1",
+    "Cv_B28_0",
+    "Cv_B28_1",
+    "Cv_B13+B14_0",
+    "Cv_B13+B14_1",
+    "Cv_B26_0",
+    "Cv_B26_1",
+    "Cv_B8_0",
+    "Cv_B8_1",
+    "epigraph_IL"
+  ],
+  "x_logL_logC_k_6x2Cv_epi": [
+    0.6942027325750599,
+    3.295083304854802,
+    2.265709810107437,
+    1.8888507078667272,
+    1.0168160807962379,
+    -0.15482772916774096,
+    -2.4126834766132483,
+    0.07256922015393111,
+    -0.061310658109207716,
+    -0.14999999999999972,
+    0.49030824317278926,
+    1.5,
+    0.42435080805140973,
+    1.35922024707899,
+    0.43868796500430973,
+    1.1141221166940967,
+    0.33042519605261933,
+    0.7733996776635645,
+    0.26247715405798017,
+    0.6121169706271303,
+    0.19353168803533305,
+    0.47215269746896127,
+    0.30124824514890525
+  ],
+  "topology": {
+    "node_count": 5,
+    "ground_node": 0,
+    "source_node": 1,
+    "load_node": 3,
+    "source_ohms": 50,
+    "load_ohms": {
+      "real": 60,
+      "imag": -40
+    },
+    "inductor_edges": [
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "inductor_series": [
+      "LQW04",
+      "LQW04",
+      "LQW04",
+      "LQW04"
+    ],
+    "inductor_Q": [
+      33,
+      33,
+      33,
+      33
+    ],
+    "physical_order": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "adjacent_couplings": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "fixed_capacitor_edges": [
+      [
+        1,
+        2
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "fixed_capacitor_Q": [
+      80,
+      80,
+      40
+    ],
+    "variable_capacitor_edges": [
+      [
+        4,
+        0
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "variable_capacitor_Q": [
+      50,
+      50
+    ],
+    "variable_setting_order": [
+      "B71",
+      "B12",
+      "B28",
+      "B13+B14",
+      "B26",
+      "B8"
+    ],
+    "units": {
+      "inductors": "nH (exp(logL))",
+      "fixed_caps": "pF (exp(logC))",
+      "variable_caps": "pF",
+      "mutual_k": "dimensionless"
+    },
+    "q_and_physical_model": "Phase 2 constant-Q lumped network, not SRF/Q(f)/EM validated"
+  },
+  "performance": {
+    "worst_IL_db": 0.3012482451489075,
+    "min_H2_db": 30.00499999998695,
+    "min_H3_db": 30.00464170157136
+  },
+  "solver": {
+    "success_as_reported": true,
+    "harmonic_optimizer_target_db": 30.005,
+    "original_453_attempts_reported": true,
+    "independent_453_attempt_replay": false
+  },
+  "status": {
+    "source_vector_recovered": true,
+    "independent_full_band_mna_validation": "see data/validation/exp017_rf_f002_recovered_20261015/summary.json",
+    "strict_finite_grid": true,
+    "nominal_IL_le_0p30": false,
+    "continuous_band_extrema_unverified": true,
+    "physical_implementation_unverified": true
+  }
+}

@@ -1,6 +1,6 @@
 # EXP-042 — EXP-021 bridge/BSF-type 4L optimization under RF-T005 (Phase 2)
 
-**Status: exploratory local optimizations executed; 2001-point/CSV-segment evaluation and independent 7-node MNA completed in the chat tool environment.** A portable Python checker and PR-triggered workflow are included, but the Python checker has not been asserted PASS until its CI run is observed. **Phase 3 not started.**
+**Status: exploratory local optimizations executed; 2001-point/CSV-segment evaluation and independent 7-node MNA completed in the chat tool environment.** The hash-verified independent Python checker achieved **PASS** in [GitHub Actions run 38772980575](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38772980575); it remains finite-grid nominal verification only. **Phase 3 not started.**
 
 ## Central reservation and RF conditions
 
@@ -45,7 +45,7 @@ A separate **4×HV, initial EXP021-HV35 values with k clipped to ±0.10**, had 1
 
 The primary electrical metric was evaluated via (i) coupled 5-node LPF nodal admittance reduced to LPF-2port, then input/LPF/output ABCD multiplication, and (ii) independent coupled **7-node full nodal admittance**, attaching the original S2P two-port admittances directly without implicit 50Ω terminations. Each of four optimized/re-screened rows used **84 independent frequencies** (three per CSV segment) and 2001 points/segment across the 28 intervals.
 
-Maximum observed ABCD-vs-7-node IL mismatch: **4.83×10⁻¹³dB** for HV and **1.71×10⁻¹³dB** for Q33. Series-matrix SPD checked by positive Gershgorin lower bound; all four checked rows were positive (>1.38nH), and the source-delivered-minus-load power was nonnegative. See `verify_2001_results.json` and `verify_q33_2001_results.json`. These are executed chat-runtime results; `verify_rf_t005.py` is newly authored separately for reproduction and has not yet been considered CI-PASS.
+Maximum observed ABCD-vs-7-node IL mismatch: **4.83×10⁻¹³dB** for HV and **1.71×10⁻¹³dB** for Q33. Series-matrix SPD checked by positive Gershgorin lower bound; all four checked rows were positive (>1.38nH), and the source-delivered-minus-load power was nonnegative. See `verify_2001_results.json` and `verify_q33_2001_results.json`. These are executed chat-runtime results. The separately authored `verify_rf_t005.py` was then independently run with the locked uv environment and passed in GitHub Actions run 38772980575 (five candidate comparisons, including the clipped baseline).
 
 ### Selected Q33×4, 35dB numerics
 
@@ -63,6 +63,6 @@ uv sync --frozen
 OPENBLAS_NUM_THREADS=1 uv run python experiments/chatgpt_topology_search/runs/EXP-042/verify_rf_t005.py
 ```
 
-The checker loads original S2P from GitHub checkout and fails on SHA mismatch; it validates candidate dimensionality/bounds, SPD, the 2001-point all-segment response, 84 independent points/candidate, and nonnegative energy dissipated. Its execution status must be determined from CI evidence, not presumed from its existence.
+The checker loads original S2P from GitHub checkout and fails on SHA mismatch; it validates candidate dimensionality/bounds, SPD, the 2001-point all-segment response, 84 independent points/candidate, and nonnegative energy dissipated. This reproduction has independently **passed** GitHub Actions run 38772980575. Passing numerical CI is not evidence of physical implementation.
 
-**Unresolved:** independent CI check pending; finite mesh not a continuous-band proof; no complete local multistart, no 7001-point repeat, no robust parasitic/coupling/tolerance analysis; `LQW04 Q=33` is not verified from a particular part's Q(f)/SRF; adjacent coupling simultaneity and exact dot polarity unproven. S2P are schematic-derived rather than measured. Phase 2 only, Phase 3 stopped. Optimize alternate EXP-021 wiring and EXP-020 5L topology later if needed; keep numerical and physical conclusions separate.
+**Unresolved:** finite mesh not a continuous-band proof; no complete local multistart, no 7001-point repeat, no robust parasitic/coupling/tolerance analysis; `LQW04 Q=33` is not verified from a particular part's Q(f)/SRF; adjacent coupling simultaneity and exact dot polarity unproven. S2P are schematic-derived rather than measured. Phase 2 only, Phase 3 stopped. Optimize alternate EXP-021 wiring and EXP-020 5L topology later if needed; keep numerical and physical conclusions separate.

@@ -186,7 +186,7 @@ def main():
         assert abs(stored["h3"]-h3)<2e-4
         assert mismatch < 1e-8
         assert dissip_min >= -1e-10
-        print(json.dumps(dict(source=result["source"],target=result["target"],
+        print(json.dumps(dict(source=result.get("source", result.get("original")),target=result["target"],
             worst_IL_dB=worst,min_H2_dB=h2,min_H3_dB=h3,
             SPD_min_eig_nH=eig,MNA_ABCD_max_error_dB=mismatch,
             independent_probes=probes,minimum_network_loss_W=dissip_min)))

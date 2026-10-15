@@ -25,6 +25,7 @@ GOVERNANCE_RECORDS = {
     "data/research_storage_triage.csv",
     "data/branch_retention_review_20261015.csv",
     "data/external_trial_zip_manifest_20261015.json",
+    "data/exp017_rf_f002_source_zip_index_20261015.json",
     "data/phase2_git_storage_budget.json",
     "data/experiment_number_registry.csv",
 }

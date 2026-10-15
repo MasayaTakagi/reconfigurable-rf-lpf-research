@@ -1,0 +1,67 @@
+{
+  "experiment_id": "EXP-042",
+  "date_utc": "2026-10-15T16:48:13.937Z",
+  "constraint": "RF-T005",
+  "verification": "same independent coupled 7-node MNA versus Schur-S2P ABCD as HV candidate; finite 2001 points/segment",
+  "results": [
+    {
+      "target": 30.2,
+      "grid": "2001 points per each of 28 CSV segments",
+      "worst": 0.8460998165749678,
+      "h2": 33.95584422799915,
+      "h3": 30.15431974742521,
+      "worst_at": [
+        "B8",
+        "DL",
+        960
+      ],
+      "h2_at": [
+        "B71",
+        1326
+      ],
+      "h3_at": [
+        "B28",
+        2244
+      ],
+      "independent_probes": 84,
+      "max_discrepancy_db": 1.6775469902086115e-13,
+      "power_remaining_min_W": 0.000713779562821871,
+      "power_remaining_max_W": 0.002677009864151381,
+      "SPD_gershgorin_lower_bound_nH": 1.3881209768029594,
+      "SPD_pass": true,
+      "area": 16,
+      "Q33_count": 4,
+      "variable_C_count": 3
+    },
+    {
+      "target": 35.2,
+      "grid": "2001 points per each of 28 CSV segments",
+      "worst": 0.911530726122114,
+      "h2": 35.200903557613195,
+      "h3": 35.876102809165424,
+      "worst_at": [
+        "B8",
+        "DL",
+        960
+      ],
+      "h2_at": [
+        "B28",
+        1406
+      ],
+      "h3_at": [
+        "B71",
+        2071.4775
+      ],
+      "independent_probes": 84,
+      "max_discrepancy_db": 1.7053025658242404e-13,
+      "power_remaining_min_W": 0.0007422447273310612,
+      "power_remaining_max_W": 0.002144829338447151,
+      "SPD_gershgorin_lower_bound_nH": 1.388475370582512,
+      "SPD_pass": true,
+      "area": 16,
+      "Q33_count": 4,
+      "variable_C_count": 3
+    }
+  ],
+  "limitations": "Q33 LQW04 assumed and SRF/real part-number not verified. no continuous frequency extrema guarantee."
+}

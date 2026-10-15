@@ -1,0 +1,140 @@
+{
+  "experiment": "EXP-043",
+  "phase": 2,
+  "trial_condition_id": "RF-T005",
+  "base_condition_id": "RF-F003",
+  "status": "executed_numeric_local_candidate_with_independent_7x7_branch_MNA_28x1001_verify",
+  "candidate_id": "EXP043-one_gjm_cp-fine_local_20261016",
+  "parent": {
+    "worst_IL_db": 0.8961037943381784,
+    "minimum_H2_dB": 30.019999998091155,
+    "minimum_H3_dB": 30.019999999476255,
+    "original_run": 38783493014
+  },
+  "source": "direct in-chat JS coordinate pattern search at 28x5; assessed 28x31; separate independent 7x7 branch-current complex MNA at 28x1001 using GitHub main fixed S2P",
+  "L_edges": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      3
+    ]
+  ],
+  "fixed_C_edges": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      3,
+      -1
+    ]
+  ],
+  "variable_C_edges": [
+    [
+      3,
+      -1
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ]
+  ],
+  "physical_L_order": [
+    "L0",
+    "Ls",
+    "L1"
+  ],
+  "fixed_C_types": [
+    "PCB_Q40",
+    "PCB_Q40",
+    "GJM_Q80"
+  ],
+  "area_chip_units": 3.6666666666666665,
+  "L_Q": 25,
+  "tunable_C_Q": 35,
+  "tunable_limits_pF": [
+    0,
+    3
+  ],
+  "strong_neighbor_k_max_abs": 0.1,
+  "vector_order": "L0,L1,Ls,Cf0,Cf1,Cp,k0s,ks1, then Cv0,Cv1,Cv2 x B71,B12,B28,B13+B14,B26,B8",
+  "vector": [
+    3.2925321835765495,
+    7.710415239527519,
+    4.9728393917692095,
+    0.19866045614116043,
+    0.2,
+    1.1612999744014958,
+    0.1,
+    -0.07166805730766193,
+    0.4110019357493417,
+    2.994937024587299,
+    1.2568936666654607,
+    0.4629248183860568,
+    2.567936066328905,
+    0.9623083764433327,
+    0.22742173886529893,
+    2.99889145344,
+    0.9283565339664822,
+    0.00010657952052064759,
+    2.191684416018305,
+    0.87178698474095,
+    0.07183391066233659,
+    1.6423066657146432,
+    0.5762544224250881,
+    0,
+    1.0960497282746877,
+    0.36108212451748756
+  ],
+  "result": {
+    "frequency_segments": 28,
+    "samples_per_segment": 1001,
+    "worst_IL_db": 0.8959933012075728,
+    "minimum_H2_dB": 30.003263623111177,
+    "minimum_H3_dB": 30.00586595367983,
+    "IL_at_B28_803MHz_dB": 0.8959933012075728,
+    "IL_at_B8_960MHz_dB": 0.895941982263868,
+    "mandatory_H2H3_30db_pass": true,
+    "interim_IL_0p8db_pass": false,
+    "improvement_over_parent_db": 0.00011049313060562671,
+    "independent_7x7_MNA_pass": true,
+    "largest_seen_power_balance_residual_W": 3.469446951953614e-18
+  },
+  "loss_B28_803MHz": {
+    "parent_L_mW": 0.3704448380800032,
+    "candidate_L_mW": 0.37035525507327943,
+    "parent_Pload_mW": 4.067800308351428,
+    "candidate_Pload_mW": 4.067903802576465,
+    "parent_Qmag": 25.289879293008653,
+    "candidate_Qmag": 25.29010239851555
+  },
+  "loss_B8_960MHz": {
+    "parent_L_mW": 0.3759836599826452,
+    "candidate_L_mW": 0.37589569421803615,
+    "parent_Pload_mW": 4.067800308360502,
+    "candidate_Pload_mW": 4.067951871748044
+  },
+  "interpretation": "Pure local continuous component retuning in same graph gives only +0.0001105 dB worst IL reduction and worsens harmonic margin from ~0.020dB to 0.00326dB. Candidate is a numeric lower-IL benchmark, not recommended as physical-robust replacement for original saved checkpoint.",
+  "eligibility": "RF-T005 numeric range compliant only; no physical SRF, Q(f), EM or tolerance certification",
+  "other_screen": "eight graphs directly compared with coarse 28x5 optimization and 28x31 screening: baseline .8959933, Cf0→tapGND .9096346, Cf1→OUT-GND .9405466, Cf0→IN-tip 1.0020951, four others missed H2/H3 >=30; exploratory local best-found only.",
+  "actions_status": {
+    "run": 38823582063,
+    "result": "8 jobs failed; latest retry also failed, no optimizer result from Actions",
+    "notes": "GitHub Actions failure and independent direct numeric evaluations are kept distinct."
+  }
+}

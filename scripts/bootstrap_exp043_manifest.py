@@ -59,7 +59,7 @@ def main():
         original=h.read()
     if "EXP-043," not in original:
         row="EXP-043,trial,RF-T005,full_lpf,planned,not_run,not_run,not_run,0,true,true,true,false,none,experiments/chatgpt_topology_search/runs/EXP-043/manifest.json"
-        inventory.write_text(original.rstrip()+"\\n"+row+"\\n",encoding="utf-8")
+        inventory.write_text(original.rstrip()+"\n"+row+"\n",encoding="utf-8")
     print("Created",dest,"and updated index; number of manifests",len(all_manifests))
 
 if __name__=="__main__":

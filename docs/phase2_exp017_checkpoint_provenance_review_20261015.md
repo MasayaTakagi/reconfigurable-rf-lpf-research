@@ -1,5 +1,16 @@
 # Phase 2 / EXP-017 30dB近接報告点の原ソース追跡（2026-10-15）
 
+## 追補（2026-10-15）：正式RF-F002の原ベクトルを回収し、独立MNA追試PASS
+
+**旧記録の「未回収／RG-001 open」は本段落追加より前の調査時点の状態。以下が現在の更新結果であり、旧文書・元manifest/元READMEを改竄しない。**
+
+- ユーザー提供 `EXP-017_RF-F002_loss_exploration_20261014.zip`（157,492バイト、SHA-256 `e685e918a4592a9ec53ffb8221c8b4d59fdf8604dd9119cf3cabbf42174a0daf`、26メンバ・CRC PASS）から、元候補 `EXP-017/EXP017-LQW4-H30-NEAR.json`（2,959バイト、SHA-256 `fa997fb131a1237c41ec8a42ead80e40fe2436275a7e944837afecea9c387896`）を確認。23要素の全最適化パラメータ、LQW04×4、固定GJM×2/PCB C×1、物理順序L0,L1,L2,L3、隣接k3、6設定×2枝の可変Cが記録されている。
+- 元ZIPには、24+44+33+172+132+48＝**453局所最適化試行のデータ**と元Pythonスクリプトも存在。ただし今回は**元の453回を再最適化したわけではない**。比較用に供給されたもう一つのZIP `rff002_phase2_exploration_20261014.zip`（84,505バイト、SHA-256 `24fa1dd5f41cbe708ef3360f621b13b83b6c2afaa7bf0b2335bf48c0f6f8b4f7`）は**EXP-016**の元データであって欠落点の置換ではない。
+- 新規のGit上の派生チェックポイント：[EXP017-LQW4-H30-NEAR.recovered.json](../experiments/chatgpt_topology_search/runs/EXP-017/EXP017-LQW4-H30-NEAR.recovered.json)。**元ZIPのバイトそのものと同一ではない正規化表現**である。元ZIPのSHAとmember SHAを保持。
+- 元ソースから独立して作成した `scripts/verify_exp017_recovered_mna.py`による**9×9枝電流MNA**と**5×5ノード方程式**のクロスチェックを、`data/bands.csv`の28のUL/DL/H2/H3個別周波数区間×**7,001点**で実行（**計196,028回の複素回路解析**）。[検証summary](../data/validation/exp017_rf_f002_recovered_20261015/summary.json) に6設定の数値・発生周波数・環境を保存。
+- **再評価最悪IL 0.3012482451489075dB、H2最小30.004999999986865dB、H3最小30.004641701571376dB。** K最小固有値0.8351878156601953、最大電力収支残差1.8214596497756474e−17W、5×5式との最悪IL差1.1937117960769683e−11dB。**元報告と一致。30dBの有限格子判定PASS。IL目標0.30dBは未達。**
+- 旧EXP-017 `manifest.json` は変更せず、研究候補台帳に `EXP017-LQW4-H30-NEAR`を追記する。これにより**RG-001「欠落した正式回路ベクトル」の問題は解決**し、ソースZIPの原本バイナリGit保管・全453件再実行・連続帯域極値保証・SRF/Q(f)/EM/寄生/公差の物理実証は**未完了**と区別する。RF-T004の試験3可変Cの成果と混同しない。
+
 ## 適用範囲・判定
 
 - 調査基準は main commit ad1cda8c47054fbe97edc5b8bb97261804281285（PR #52の統合後）、運用正本 docs/chatgpt_project_instructions.md、現行正式RF-F002、帯域 data/bands.csv。

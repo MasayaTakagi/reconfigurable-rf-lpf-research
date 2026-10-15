@@ -15,8 +15,7 @@ def main():
     if dest.exists():
         print("EXP-043 manifest exists; do not overwrite provenance")
         return
-    purpose=("RF-T005 EXP-021 C-H30p0002 corrected parallel bridge; "
-             "area/IL Pareto study including GJM deletion and PCB substitution")
+    purpose="RF-T005 three-inductor single-shunt multimode topology search for chip area and IL Pareto"
     scope={
         "experiment_id":"EXP-043",
         "objective":"full_lpf",

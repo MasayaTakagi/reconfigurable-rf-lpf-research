@@ -154,6 +154,9 @@ def main():
     for filename in ("phase2_refinement_checkpoint.json", "phase2_q33_checkpoints.json"):
         doc = json.loads((HERE/filename).read_text())
         candidates.extend(doc["results"])
+    baseline = json.loads((HERE/"baseline_hv35_clipped.json").read_text())
+    candidates.append(dict(source="EXP021-HV35 clipped baseline", target=30.0,
+                           candidate=baseline["candidate"]))
     for result in candidates:
         c = result["candidate"]
         K, Cs, eig = prepare_candidate(c)
@@ -180,10 +183,11 @@ def main():
             other=cascade_abcd(Y[ix],pin[ix],pout[ix])
             mismatch=max(mismatch,float(np.max(np.abs(other-il[ix]))))
             probes+=3
-        stored = result["dense201"]
-        assert abs(stored["worst"]-worst)<2e-4
-        assert abs(stored["h2"]-h2)<2e-4
-        assert abs(stored["h3"]-h3)<2e-4
+        stored = result.get("dense201")
+        if stored is not None:
+            assert abs(stored["worst"]-worst)<2e-4
+            assert abs(stored["h2"]-h2)<2e-4
+            assert abs(stored["h3"]-h3)<2e-4
         assert mismatch < 1e-8
         assert dissip_min >= -1e-10
         print(json.dumps(dict(source=result.get("source", result.get("original")),target=result["target"],

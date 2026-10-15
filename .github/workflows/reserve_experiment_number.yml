@@ -51,3 +51,7 @@ jobs:
             --purpose "$RESERVATION_PURPOSE" \
             --constraint-id "$RESERVATION_CONSTRAINT" \
             --request-id "$REQUEST_ID"
+      - name: Verify committed main registry after push (GITHUB_TOKEN push does not trigger push CI)
+        run: |
+          python scripts/audit_experiment_number_registry.py --main-ref origin/main
+          git rev-parse --verify origin/main

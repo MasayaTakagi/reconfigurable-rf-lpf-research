@@ -88,6 +88,18 @@ def check_supplemental_evidence(root=ROOT):
                     issues.append("Recovered EXP-017 candidate lacks independent curated provenance")
                 else:
                     actual_files.discard(recovered)
+                    provenance = json.loads((root / recovered).read_text(
+                        encoding="utf-8"))["source"]
+                    raw_path = provenance.get("git_original_member_path")
+                    if raw_path:
+                        raw_bytes = (root / raw_path).read_bytes()
+                        if hashlib.sha256(raw_bytes).hexdigest() != provenance.get(
+                                "git_original_member_expected_sha256"):
+                            issues.append("EXP-017 recovered original source SHA256 mismatch")
+                        elif len(raw_bytes) != provenance.get("git_original_member_bytes"):
+                            issues.append("EXP-017 recovered source byte size mismatch")
+                        else:
+                            actual_files.discard(raw_path)
         if actual_files != covered_files:
             issues.append(f"Supplemental evidence file set is incomplete for {exp}")
     return issues

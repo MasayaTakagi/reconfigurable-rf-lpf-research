@@ -38,9 +38,18 @@ def audit(root=ROOT, main_ref="origin/main"):
         for a, b in zip(local, remote):
             if a["experiment_id"] != b["experiment_id"]:
                 raise ValueError("Main reservation ID reordering detected")
-            if (a["state"] in ("legacy_recorded", "legacy_gap_retired")
-                    and a != b):
-                raise ValueError("Historical registry row changed")
+            fixed = ("experiment_id", "owner", "request_id", "purpose",
+                     "constraint_id", "reserved_at_utc", "origin")
+            if any(a[field] != b[field] for field in fixed):
+                raise ValueError("Existing main reservation provenance was rewritten")
+            if b["state"] in ("legacy_recorded", "legacy_gap_retired"):
+                if a["state"] != b["state"]:
+                    raise ValueError("Historical registry row changed")
+            elif b["state"] in ("completed", "cancelled"):
+                if a["state"] != b["state"]:
+                    raise ValueError("Terminal experiment number state was reopened")
+            elif b["state"] == "active" and a["state"] == "reserved":
+                raise ValueError("Experiment state regressed from active to reserved")
     except subprocess.CalledProcessError:
         # Bootstrapping PR #53 is allowed; start checks below still fail
         # closed if a new EXP manifest was added without central reservation.

@@ -33,3 +33,22 @@ The 1,001-point worst-IL location is B13+B14 798MHz; worst H2 B13+B14 1554MHz; w
 ## Open items
 
 New SLSQP solver execution and convergence evidence; dense 7,001-per-segment verification of any improved candidate; continuous-band stationary extrema; independent branch-MNA verification of the **final optimized vector**; S2P power balance, physical simultaneous k feasibility, PCB area, component part-number-specific Q(f)/SRF, EM, tolerances, switch/IC implementation. Phase 3 is **not** authorized.
+
+## 2026-10-16 update — GitHub Actions SLSQP and independent verification COMPLETED
+
+This dated addendum supersedes the earlier "SLSQP run not executed" statement above; the earlier statement is retained as an accurate historical status prior to execution.
+
+- SLSQP source: `optimize.py`. Three starts per harmonic target, 9-point/segment optimization and 1,001-point/segment post-check, actual frozen SHA-verified S2P, pinned `uv.lock`. First run [Actions 38773925329](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38773925329) detected insufficient raw slack at exact 30/35dB boundary; not recorded as strict successes.
+- Repeated with **internal 0.05dB safety margin** in [Actions 38774357292](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38774357292). Exact 29-parameter vectors archived in `selected_checkpoints_rft005.json` with original artifacts 11992827824 and 11992608049. The 30dB-margin SLSQP run did not report solver convergence; the 35dB-margin selected SLSQP run reported convergence.
+- Dense final check [Actions 38774922692](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38774922692), verified in `verify.py`, proof `verified_7001.json`, raw artifact 11992359539: **28 individual `bands.csv` frequency segments ×7,001 points per candidate** plus **84 independent full 9×9 branch-current MNA points per candidate**. Both pass their *original* 30 and 35 dB harmonic requirements and remain Phase-2 constant-Q idealized numeric candidates.
+
+| Selected candidate | worst UL/DL IL (dB) | min H2 (dB) | min H3 (dB) | area | MNA maximum IL difference | power-balance residual |
+|---|---:|---:|---:|---:|---:|---:|
+| EXP042-30m005 (SLSQP **nonconverged**) | **0.805148668214** | **30.049999992664** | **30.049999999108** | 6 | 3.41e-12 dB | 1.47e-17 W |
+| EXP042-35m005 (SLSQP **converged**) | **0.878223792180** | **35.049999998367** | **35.049999996794** | 6 | 1.56e-12 dB | 1.04e-17 W |
+
+L matrix is SPD: minimum eigenvalues 2.06441687nH and 2.99143488nH respectively. Physical simultaneous coupling realization, real component SRF/Q(f), PCB parasitic tolerance, EM and measurements have **not** been tested. These are **finite-mesh** validations, not mathematical continuous-frequency extremum proofs or global-optimum guarantees.
+
+### Additional model-level feasibility finding
+
+See `external_s2p_MAG_bound.md`: Using **only** the fixed external input and output S2P (no LPF losses) at B8-DL 960MHz, independent passive-network maximum-available-gain (MAG) analysis yields an optimistic system insertion-loss floor of **0.385849404 dB**, with input/output individual minimum losses 0.245776952/0.140072452dB. Consequently the formal **IL<=0.30dB** target cannot be met under the current mandatory S2P model by *any passive LPF*, even one with ideal lossless matching. This is a **model-specific theoretical bound**, not a physical measurement. The approved RF-F003/RF-T005 constraints remain unchanged and Phase 3 remains paused.

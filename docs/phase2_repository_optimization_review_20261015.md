@@ -53,6 +53,23 @@
 
 従来のPhase 2 regressionは `push` と `pull_request` の双方を無条件に監視し、同一PRコミットで重複したフル監査を起動していた。今回のPR差分では `.github/workflows/audit.yml` を変更し、**pushはmainのみ、PRはpull_requestのみ、必要に応じてworkflow_dispatch**とする。PR側の古い実行に限りconcurrencyで自動キャンセルし、mainへのpush時の検証実行はキャンセルさせない。元RF評価検証・候補台帳監査・全ユニットテスト・出典監査・ブランチ監査は継続する。**これはPR #53のCI動作設定でありmainにはまだ反映されていない。** 計算費用の実測削減は本PRマージ後のイベント比較を要する。
 
+## 全履歴Git bundleの実生成・独立復元試験（2026-10-15）
+
+**実行済み:** PR #53の[GitHub Actions #38680667358](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38680667358)の`history-backup`ジョブにて、`scripts/backup_complete_git_history.py` が現在のリモート8参照（main、#47〜52元branch 6本、PR #53 Draft 1本）を完全履歴で取得し、Git bundleを生成。別の空リポジトリへfetchし、全8先端SHAの完全一致と復元先`git fsck --full --no-reflogs`を確認した。**PASS**。元GitHub refの削除・更新は0件。
+
+- `phase2-all-branches.bundle` は **6,352,099 bytes**、**SHA-256 `98515ab9865e5c964485272d1abf55c49a4f081de0e3ad208122545823b3f3cd`**。
+- Actions artifact **phase2-complete-git-history**（ID **11947109061**、ダウンロードZIP約6.30MB）。
+- **期限：2027-01-13 04:17:12 UTC**（GitHub API）。Actions artifactは恒久バックアップではない。
+- これはjob実行時のrefsスナップショットである。後のPR #53のコミット追加は同bundleに含まれないので、現行branchの復元では**毎回**bundle manifestの`branch_tip_sha`とGitHub最新refを照合する。旧branch 6本が後で変更されていないことも確認が必要。
+- 補完条件：利用者管理の、期限に依存しない安全な保管先へアーティファクトZIPを取り出し、内部`.bundle`のSHAと`manifest.json`を検証。保管媒体からの復元試験まで完了する必要がある。**この外部保管・検証は未実施**。bundleの存在だけでbranch削除を承認しない。
+- `audit.yml`内`history-backup`は**PR #53の監査時だけ**の限定ジョブであり、通常のmain監査実行を倍増させない。ただしPR中の変更に伴いbundleは再生成される。最終的な保存物は最終headのActions runに紐づけて評価する。
+
+## ユーザー提供の試験ZIPのファイル別証拠台帳（2026-10-15）
+
+受領済み`RF-T004-EXP017-bundle.zip`の**35エントリごとのファイル名・非圧縮バイト数・CRC32・SHA-256**を`data/external_trial_zip_manifest_20261015.json`に記録した。単一のZIP全体SHA-256も保持。これにより外部保管先へ複写したZIPを`scripts/verify_external_trial_zip.py --zip <actual-path>`で**展開・実行せず**に逐次確認できる。ソースZIPの検査はアップロード元について実施、GitHub CI上では元ZIP実体がないため**外部バイト列の実走査は未実施**。CIはマニフェスト不変性・検証スクリプトの人工データ試験を実行する。
+
+**重要:** 登録したものはZIP原本ではなく、ハッシュによる目録だけ。元ZIPの保管は既存ChatGPT添付に依存し、GitHub main/PRには原ZIPのバイナリを保存していない。LFSや専用保管領域への移行前に、元ZIPを失わないようダウンロードして利用者管理領域へバックアップし、ハッシュ照合する必要がある。RF-F002 2可変CのEXP-017欠落候補とは別実験（RF-T004 3可変C）なので、RG-001は保留を維持する。
+
 ## 保管ポリシーの移行ゲート（将来提案、未実施）
 
 | 資料 | 望ましい保管先・方針 | 必須確認 |

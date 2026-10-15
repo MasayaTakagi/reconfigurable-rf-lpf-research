@@ -83,3 +83,30 @@ User question and controlled study: [GitHub Actions 38782551270](https://github.
 - Relax C≤4pF with k **free** (outside RF-T005): IL **0.93876531dB**, k=(+0.08003985,-0.05773506), B71 Cv1=4.0pF, B28 Cv1=3.74328pF. The allowable 3pF ceiling **does** limit some loss reduction, but increased C does **not** favor saturated |k|.
 
 **Conclusion**: The variable-C ceiling partly constrains the optimum, but does not explain why |k|<0.1: at forced full mutual coupling the optimizer finds admissible ≤3pF values and worse IL. In the constant-Q model, increased coupling affects the imaginary mutual term, *not* Rii=ωLi/25. It may help some modes' effective Q while degrading passband power match or placing harmonic transmission zeros wrongly. PCB fixed-capacity limit of 0.2pF is also binding (all three fixed Cs), and was **not** relaxed by this study, so its separate effect remains open. The experiment establishes local finite-grid comparisons, **not** a global proof about every 3L graph or all k branches.
+
+
+## 2026-10-15: EXP-043 PCB fixed-C ceiling and GJM Q80 replacement executed
+
+Nine cases ran in [Actions 38783493014](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38783493014). The script is `diagnose_pcb_gjm.py`; full results and provenance in `pcb_Q40_vs_GJM_Q80_comparison.json`. All nine passed 28 separate bands ×1001-point finite-mesh H2/H3≥30dB and independent 7×7 branch-current MNA on 84 points per candidate with passive power-conservation checks. These are local candidate optima, NOT global bounds.
+
+| Fixed C variant | Chip area | Worst IL dB | H2/H3 strict ≥30dB |
+|---|---:|---:|---|
+| Three PCB Q40 C ≤0.2pF | 3 | 0.944268 | PASS |
+| Three PCB Q40 C ≤0.3pF **OFF-SPEC** | 3 | 0.940583 | PASS |
+| Three PCB Q40 C ≤0.5pF **OFF-SPEC** | 3 | 0.935978 | PASS |
+| Replace Cf0 PCB with GJM Q80 | 3⅔ | 0.919130 | PASS |
+| Replace Cf1 PCB with GJM Q80 | 3⅔ | 0.929790 | PASS |
+| **Replace Cp PCB with GJM Q80** | **3⅔** | **0.896104** | PASS |
+| Replace Cf0 and Cf1 with GJM Q80 | 4⅓ | 0.909912 | PASS |
+| **Replace Cf0 and Cp with GJM Q80** | **4⅓** | **0.879245** | PASS |
+| Replace Cf1 and Cp with GJM Q80 | 4⅓ | 0.884267 | PASS |
+
+All **permitted** candidates still miss interim IL≤0.8dB. The best area 4⅓ uses Cf0_GJM=2.494893pF, Cf1_PCB=0.200pF, Cp_GJM=1.348066pF, with k=(+0.073804,-0.024308), maximum used IC C=2.61921pF. Complete vector: `checkpoints/gjm_cf0_cp.json`; best area 3⅔: `checkpoints/gjm_cp.json`. The dominant design improvement comes from allowing the *shunt ground capacitor Cp* to be substantially larger, BUT GJM substitution simultaneously alters fixed capacitance and component Q (40→80). These effects are **not yet isolated**.
+
+Further Q-versus-capacity contrasts were scripted in `diagnose_GJM_Q_vs_C.py` and submitted in [Actions 38784302819](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38784302819), but jobs **failed with no verified numerical output** (log fetch 404 BlobNotFound). The independent power-budget script `analyze_loss_budget.py` was submitted in [Actions 38784302918](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38784302918), also FAILED with no validated output. These are uncompleted controlled contrasts, not executed findings.
+
+### Intrinsic modal-Q examination of the baseline 3L network
+
+Independent unloaded lossless eigenanalysis finds the two positive finite eigenmodes correspond to currents in *L0 alone* and *L1 alone* (shunt Ls current practically zero), despite off-diagonal mutual inductance. The current eigenvectors and intrinsic mode Q remain unchanged when k is varied within model limits. B71 resonances: 1.538635GHz with Q≈14.631 and 1.616884GHz with Q≈14.706; B8: 2.104460GHz with Q≈14.673 and 2.660529GHz with Q≈14.920. For each local bypass mode, 1/Qinternal=1/25+1/Q_Ceff, Q_Ceff=(Cf+Cv)/(Cf/40+Cv/35). These numbers are **not externally loaded Q** and not full-filter attenuation. Changing k primarily affects driving-point response, transmission and matching; claiming that bigger k lowers component loss directly is unsupported under the specified constant-Q mutual model.
+
+Numeric limitations: finite-grid local optimizers only; 30dB margin ≈0.02dB; source S2P are fixed **models**, not measurement; no component SRF, Q(f), tolerance, simultaneous sign-valid k geometry or PCB EM. Trial RF-T005 and Phase 2 remain unchanged; no Phase 3 authorization.

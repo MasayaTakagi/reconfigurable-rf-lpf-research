@@ -1,22 +1,23 @@
-**新規EXP番号はmainで事前予約：** [実験番号中央台帳と並列採番ルール](docs/experiment_number_reservation_policy_20261015.md)。mainの予約コミット・再照合が成功するまで新規runを開始しない。EXP-018/019は欠番として再利用禁止。次の候補EXP-042も**まだ予約していない**。予約workflowはPR #53のDraft提案内で、main未導入。
-
-**新規実験の保存先はGitHubのみ：** [完全候補・実行条件・検証証拠を小容量で保存する運用案](docs/experiment_result_storage_policy_proposal_20261015.md)。外部アーカイブは使用しない。既存の元証拠は保全し、新規runへ段階導入する。現行mainのtracked bytesは約8.45MB。**本案はPR #53内の未マージ提案であり、まだmainの運用規則ではない。**
-
-**現行Phase 2の開発状態（2026-10-15）：** [ロードマップ現況・未解決ゲート](docs/roadmap.md)、[EXP-017の0.301248245dB報告点に関する追加原ソース調査](docs/phase2_exp017_checkpoint_provenance_review_20261015.md)、[最新の未解決課題台帳](data/research_review_issues.csv)を参照。PR #48～#52はmain統合済み。旧段落は当時の歴史的状態として保持。EXP-017の該当30dB候補ベクトルは未回収であり、正式RF-F002のIL≤0.30dB達成は未確認。Phase 3未着手。
-
-**Phase 2研究証拠の個別保全レビュー：** [46ファイルの根拠・保管判断](docs/phase2_evidence_triage_20261015.md)、[Git blob SHA付き個別台帳](data/research_storage_triage.csv)。元PRソースのSHA-256と復旧ZIP整合をCIで検査。実験データの削除・移動なし。
-
-**保存証拠の参照逆引きと条件別Pareto（Phase 2）：** [保全判定・比較方法とCI実績](docs/phase2_storage_pareto_review_20261015.md)。GitHub Actionsから保管分類CSV/JSONと候補別Pareto表を取得可能。既存ファイルの自動削除・移動なし。
-
-**成果整理の進捗（2026-10-14、Phase 2）：** [全39実験の証拠台帳](data/experiment_evidence_inventory.csv)（正式19／trial5／履歴15）、[統合候補台帳](data/research_candidate_register.csv)（選別13記録、全候補網羅ではない）、[EXP-016/017の記録訂正](docs/result_record_corrections_20261014.md)、[補助証拠リンク36件](data/supplemental_experiment_evidence_index.csv)、[ストレージ監査](docs/repository_storage_audit_20261014.md)。旧数値・元チェックポイントは保全し、数値最適化やPhase 3への移行は実施していない。
-
-**研究結果の横断台帳（2026-10-14初版）：** [Phase 2成果管理と保全規則](docs/research_result_governance.md)、[選別候補の統合台帳](data/research_candidate_register.csv)、[未解決事項](data/research_review_issues.csv)。現行RF-F002と試験RF-T004を区別し、旧結果・strict／tolerance-onlyを混在させない。初版は9記録であり全成果の網羅を意味しない。
-
-**2026-10-13 最新正式制約はRF-F002。** チップ隣接|k|≤0.15、非強結合公称0・感度≤0.03、PCB間≤0.15、chip–PCB k=0、PCB-L≤2nH、IC可変C最大2枝・各0–1.5pF/Q50・配置自由、LQW04 Q33。[RF-T004](data/constraints/trial/RF-T004.json)は可変C最大3枝の試験条件。[RF-F002](data/constraints/formal/RF-F002.json)と[台帳](data/constraints/registry.json)を現行正本とする。以下のRF-F001「現行」表現は当時の履歴。旧数値結果はRF-F002の性能実証ではない。Phase 2継続、Phase 3停止。
-
-**Stage 2 / RF-F002対応：** 新規P4-A `plan`/`run`は`--constraint-id`を必須とし、現行正式条件には`RF-F002`を指定します。`RF-T004`はRF-F002ベースの試験条件で、正式条件とは別ジョブです。RF-F001/RF-T001/T002/T003も履歴条件として選択できます。ID省略による自動変換は行いません。新仕様下のスモーク・CI結果はPR #35の最新チェックと[ローカル実行手順](docs/local_execution.md)を参照。RF-F002でのRF性能達成は未確認です。
-
 # Reconfigurable RF LPF Research — Phase 2
+
+## 現行ステータス（2026-10-15／PR #54統合後のmain）
+
+> この節は2026-10-15時点の状況を記録する。最新の数値・実験状態は[RF制約台帳](data/constraints/registry.json)、[ロードマップ](docs/roadmap.md)、[研究候補台帳](data/research_candidate_register.csv)、[課題台帳](data/research_review_issues.csv)を確認する。下の「過去の研究記録」にある旧時点の「現行」「未導入」「hard cap 6」等は現在の承認済み仕様を示さない。
+
+- **研究フェーズ・正本：** Phase 2継続、**Phase 3はユーザーの明示承認まで停止**。[ChatGPT運用正本](docs/chatgpt_project_instructions.md)と、正式数値制約[RF-F002](data/constraints/formal/RF-F002.json)を適用する。[design_constraints.json](data/design_constraints.json)は互換コピー、周波数区間は[bands.csv](data/bands.csv)。RF-T004は3可変Cの認可済み**試験条件**であり正式RF-F002と区別する。
+- **PRとCI：** PR [#48](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/48)～[#54](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/54)はmainへ統合済み。PR #54のマージコミットは `70ef42acab4bb2388adc6366746f8ef87a0a9066`。そのmainに対する[Phase 2 regression](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38744650334)は**PASS**。CI成功は連続帯域・実機の物理性能証明ではない。
+- **実験番号：** 既存39実験（EXP-001～017、EXP-020～041）をmain台帳に登録、EXP-018/019は永久欠番。PR #53で[中央予約台帳](data/experiment_number_registry.csv)と[手動予約workflow](.github/workflows/reserve_experiment_number.yml)をmain導入済み。ただし**GitHub上の手動予約の本番運用・同時申請は未検証**。EXP-042は未予約であり、mainへの予約確定と再照合PASSより前に新規実験を開始しない。[予約規則](docs/experiment_number_reservation_policy_20261015.md)を参照。
+- **研究候補：** [選別候補14件・比較区分8件](data/research_candidate_register.csv)。正式RF-F002／H2・H3≥30dBのstrict有限格子における保存候補は、EXP-017の最悪IL **0.301248245dB**、H2最小 **30.005000dB**、H3最小 **30.004642dB**。**IL≤0.30dBは未達**であり、公称35dB減衰も未達。RF-T004のIL **0.297114032dB**は試験条件の結果であり正式仕様の達成には数えない。候補間の共通格子による横断再評価は未完了。
+- **EXP-017原ベクトル：** PR #54で正式2可変C・23要素ベクトルを回収。元ZIP内の候補JSON（2,959B）をバイト同一でGitに保全し、[正規化候補](experiments/chatgpt_topology_search/runs/EXP-017/EXP017-LQW4-H30-NEAR.recovered.json)・[検証記録](data/validation/exp017_rf_f002_recovered_20261015/summary.json)を追加。独立9×9枝電流MNA／5×5ノード式を28周波数区間×7,001点＝196,028点で照合。**元ZIPバイナリ全体、残り25member、453最適化試行の全履歴はGit未収録／未再実行**。詳細は[出典レビュー](docs/phase2_exp017_checkpoint_provenance_review_20261015.md)。
+- **証拠保存：** 外部アーカイブを使わずGitHubを長期管理先とするユーザー方針を維持。[GitHub-only保存方針文書](docs/experiment_result_storage_policy_proposal_20261015.md)は**段階導入中の提案**であり、すべての旧実験が完全再現可能になったことを意味しない。元資料は削除・改竄しない。
+- **残課題：** 旧warm-start端子remap関連（RG-003）、候補横断共通格子（RG-010）、実験メタデータ欠損（RG-009）、物理Q(f)・SRF・寄生・EM・公差評価。S1の100 graph/start大規模探索は未開始。新規探索は[ロードマップ](docs/roadmap.md)のゲートを優先する。
+
+---
+
+## 過去の研究記録（当時の仕様・作業状態の保存）
+
+以下は2026-10-12以降の歴史的な記述であり、旧RF-F001、旧面積hard cap、旧PRの進捗を現在の正式状態として使用しない。
+
 
 **2026-10-12（当時の正式条件RF-F001に関する履歴）：** [制約版管理](data/constraints/README.md)を導入。以下のRF-F001に関する実験方針は当時の記録であり、**現行正式条件はRF-F002**。チップ面積はハード制約ではなく、6設定全帯域最悪ILと並ぶパレート評価軸。P4-Aの面積最大6などは計算上の有限探索範囲に限定。Phase 2継続、Phase 3停止。
 

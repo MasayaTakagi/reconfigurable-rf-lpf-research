@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Read-only registry and new EXP manifest provenance check.
 
-Checks central main (not a proposed PR ledger) for any *new experiment* being
-introduced. Legacy manifests remain exempt. Does not create or reserve an ID.
+Checks central main (not a proposed PR ledger) for any *new experiment path*
+being introduced. Legacy EXP-001..041 additions remain exempt. Does not create or reserve an ID.
 """
 import argparse
 import json
@@ -13,9 +13,9 @@ from pathlib import Path
 from experiment_id_registry import PATH, is_reserved_on_main, read_ledger
 
 ROOT = Path(__file__).resolve().parents[1]
-NEW_MANIFEST = re.compile(
+NEW_EXPERIMENT_PATH = re.compile(
     r"^experiments/(?:chatgpt_topology_search|matching_limit)/runs/"
-    r"(EXP-\d{3,})/manifest\.json$"
+    r"(EXP-\d{3,})/"
 )
 
 
@@ -49,7 +49,8 @@ def audit(root=ROOT, main_ref="origin/main"):
                     main_ref, "HEAD").split(b"\0")
     new_ids = sorted(set(
         m.group(1) for raw in new_paths if raw
-        if (m := NEW_MANIFEST.fullmatch(raw.decode("utf-8")))
+        if (m := NEW_EXPERIMENT_PATH.match(raw.decode("utf-8")))
+        if int(m.group(1).split("-")[1]) >= 42
     ))
     for exp_id in new_ids:
         if not on_main:

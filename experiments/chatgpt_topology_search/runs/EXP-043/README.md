@@ -110,3 +110,19 @@ Further Q-versus-capacity contrasts were scripted in `diagnose_GJM_Q_vs_C.py` an
 Independent unloaded lossless eigenanalysis finds the two positive finite eigenmodes correspond to currents in *L0 alone* and *L1 alone* (shunt Ls current practically zero), despite off-diagonal mutual inductance. The current eigenvectors and intrinsic mode Q remain unchanged when k is varied within model limits. B71 resonances: 1.538635GHz with Q≈14.631 and 1.616884GHz with Q≈14.706; B8: 2.104460GHz with Q≈14.673 and 2.660529GHz with Q≈14.920. For each local bypass mode, 1/Qinternal=1/25+1/Q_Ceff, Q_Ceff=(Cf+Cv)/(Cf/40+Cv/35). These numbers are **not externally loaded Q** and not full-filter attenuation. Changing k primarily affects driving-point response, transmission and matching; claiming that bigger k lowers component loss directly is unsupported under the specified constant-Q mutual model.
 
 Numeric limitations: finite-grid local optimizers only; 30dB margin ≈0.02dB; source S2P are fixed **models**, not measurement; no component SRF, Q(f), tolerance, simultaneous sign-valid k geometry or PCB EM. Trial RF-T005 and Phase 2 remain unchanged; no Phase 3 authorization.
+
+
+## 2026-10-15 owner question: passband effective L/R and mutual-coupling loss effect
+
+**Correction to the eigenmode-only explanation above:** the driven passband magnetic-group Q, defined as `Q_L,eff(f) = omega Re[I^H Lmatrix I] / (I^H Rmatrix I)` with `Rii = omega Lii / Q25`, **does change with mutual k**. The two undriven individual resonator eigenmodes having unchanged Q is not a proof about driven passband effective Q. Mutual coupling can raise magnetic Q above each coil's Q25 when signed k × relative phase of branch currents adds magnetic stored energy.
+
+A direct independent 7x7 branch-current MNA using both frozen external S2Ps yielded `passband_magnetic_Q_probe.json`. At **B28 803MHz**, adjusting *only* adjacent k to (+0.1,-0.1) while fixing all other C/L values:
+
+| RF-T005 3L variant | k original -> forced | magnetic Q original -> forced | chip-L resistive dissipation original -> forced | full loaded transducer IL original -> forced |
+|---|---|---|---|---|
+| area3 zero GJM | (+0.07937,−0.08430) -> (+0.1,−0.1) | 25.30112 -> 25.38176 | 0.372492 -> 0.373518mW | 0.944268 -> 0.948560dB |
+| area4⅓ GJM Cf0+Cp | (+0.07380,−0.02431) -> (+0.1,−0.1) | 25.13634 -> 25.29995 | **0.363526 -> 0.362269mW** | **0.879245 -> 0.885434dB** |
+
+Thus **the owner's intuition that coupling improves passband magnetic effective Q is correct**, and in the GJM candidate the coil's *absolute* resistive loss actually decreases at this frequency. Nevertheless the system IL worsens because matching/reflection, capacitor current losses and the frozen external two-port dissipations/referred load power also change. An increase of `Q=omega*W_mag/P_L` may also result from increased magnetic energy without decreased `P_L` (area3 counterexample). The full objective is externally terminated minimax IL with H2/H3 constraints; no fixed stored magnetic energy or fixed inductor current is assumed.
+
+In addition, previous controlled whole-band experiment `k_vs_C_sensitivity_verified_summary.json` shows reoptimized forced |k|=.1 (H2/H3>=30) has IL 0.969909dB, compared to free-k 0.944080dB, so it cannot be inferred that saturation helps the mandatory full-band objective. These observations are point-frequency and finite-grid model results, not hardware proof. New Python reproduction `analyze_passband_q.py` and its Actions job were added but **the initial workflow failed**; its failure is kept separate from independently executed JS numeric probes. The 7x7 JS probes conserve power to <4e-15mW on reported samples. More physical Q(f), true SRF and EM remain unverified.

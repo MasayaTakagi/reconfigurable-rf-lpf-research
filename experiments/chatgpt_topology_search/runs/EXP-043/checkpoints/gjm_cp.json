@@ -1,0 +1,68 @@
+{
+  "experiment": "EXP-043",
+  "condition_id": "RF-T005",
+  "status": "executed_local_SLSQP_dense_1001_numeric_plus_7x7_MNA_pass",
+  "variant": "gjm_cp",
+  "source_run_id": 38783493014,
+  "source_artifact_id": 11996469406,
+  "area_cost": 3.6666666666666665,
+  "normalization": "complete external S2P 50ohm source 60-j40ohm load",
+  "L_Q": 25,
+  "GJM_Q": 80,
+  "PCB_C_Q": 40,
+  "Cvariable_Q": 35,
+  "Cvariable_limits_pf": [
+    0,
+    3
+  ],
+  "fixed_C_types": [
+    "PCB",
+    "PCB",
+    "GJM"
+  ],
+  "vector_order": "L0,L1,Ls,Cf0,Cf1,Cp,k(L0,Ls),k(Ls,L1), [Cv0,Cv1,Cv2] each for B71,B12,B28,B13+B14,B26,B8",
+  "vector": [
+    3.29249833025766,
+    7.711225490155755,
+    4.972588626444102,
+    0.2,
+    0.2,
+    1.1612999744014958,
+    0.1,
+    -0.07153100064206193,
+    0.4110019357493417,
+    2.994937024587299,
+    1.2568936666654607,
+    0.4629248183860568,
+    2.567936066328905,
+    0.9623083764433327,
+    0.22742173886529893,
+    3,
+    0.9283565339664822,
+    0.00010657952052064759,
+    2.191684416018305,
+    0.87178698474095,
+    0.06998633306233659,
+    1.6423066657146432,
+    0.5762544224250881,
+    0,
+    1.0971582748346878,
+    0.36108212451748756
+  ],
+  "metrics": {
+    "worst_IL_db": 0.8961037943381701,
+    "min_H2_db": 30.019999998091205,
+    "min_H3_db": 30.019999999476244,
+    "mesh_points_per_segment": 1001,
+    "segments": 28
+  },
+  "independent_MNA": {
+    "samples": 84,
+    "passed": true
+  },
+  "warnings": [
+    "not global optimum",
+    "finite-grid only",
+    "part SRF Q(f) physical simultaneous magnetic k PCB EM not tested"
+  ]
+}

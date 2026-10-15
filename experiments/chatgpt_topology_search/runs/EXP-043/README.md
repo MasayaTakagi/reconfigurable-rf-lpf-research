@@ -69,3 +69,17 @@ Some other topologies gave substantially worse IL and **some fail 30dB**; consul
 **Numerical area reduction is possible:** one shunt-L can support **two useful tunable eigenmodes** with no GJM and chip cost 3. However, with the present topology family, **worst IL <= 0.8dB has not been attained** (best found 0.944dB). A third positive eigenmode is theoretically accessible by capacitive feedback into the shunt node, but our finite exploratory placements did not improve IL, and effective modal placement across all settings remains unsolved.
 
 Further Phase2 study should separate electrical model constraints from physical feasibility: optimization of *where* two or three transfer zeros appear over H2/H3 rather than unconstrained eigenmode count; active-selection of bridge C positions and nonzero-range requirements; Monte Carlo margins/3pF upper-bound sensitivity; and LQP01/PCB_L area reduction only under their existing Q/range/SRF policies. No assertion of exhaustive topology optimum or physical implementation readiness.
+
+
+## RF-T005 adjacent mutual coupling: why the selected 3L solution does not saturate |k|=0.10
+
+User question and controlled study: [GitHub Actions 38782551270](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38782551270), source `diagnose_k_vs_C.py`, archived numerical summary `k_vs_C_sensitivity_verified_summary.json`, full run artifact 11996901214. This is an *EXP-043 sensitivity* on `zero_gjm_double`, not a separate new experiment. 28 frequency intervals ×1,001 points each; four local SLSQP retunes; H2/H3 retune target 30.01dB.
+
+- Saved k=(+0.07936954,-0.08429740): worst IL **0.94426836dB**, H2/H3 minimum 30.0199+dB.
+- Both k pushed to (+0.10,-0.10) with all other components **fixed**: worst IL **0.95029046dB**, H2 **27.038dB**, H3 **27.665dB** (infeasible). Zero k reduces IL to 0.93705dB but destroys harmonics (15.918/18.869dB).
+- **After numerical reoptimization**, k free, IC C≤3pF: worst IL **0.94408044dB**, H2/H3 >30.0099dB, best k=(+0.07940407,-0.08436595). This retune uses **3.0pF on B71 Cv1** and hence has an active C bound.
+- Reoptimize with k pinned (+0.10,-0.10) and IC C≤3pF: worst IL **0.96990904dB**, H2/H3 ≥30.0099dB. Largest IC C is **2.86991pF**, so the 3pF ceiling is **not binding** for this full-k solution.
+- Reoptimize same pinned k but *diagnostically* relax IC C≤4pF: worst IL remains **0.96990904dB**; utilized maximum C 2.94123pF. This hypothetical bound change has **no IL benefit**.
+- Relax C≤4pF with k **free** (outside RF-T005): IL **0.93876531dB**, k=(+0.08003985,-0.05773506), B71 Cv1=4.0pF, B28 Cv1=3.74328pF. The allowable 3pF ceiling **does** limit some loss reduction, but increased C does **not** favor saturated |k|.
+
+**Conclusion**: The variable-C ceiling partly constrains the optimum, but does not explain why |k|<0.1: at forced full mutual coupling the optimizer finds admissible ≤3pF values and worse IL. In the constant-Q model, increased coupling affects the imaginary mutual term, *not* Rii=ωLi/25. It may help some modes' effective Q while degrading passband power match or placing harmonic transmission zeros wrongly. PCB fixed-capacity limit of 0.2pF is also binding (all three fixed Cs), and was **not** relaxed by this study, so its separate effect remains open. The experiment establishes local finite-grid comparisons, **not** a global proof about every 3L graph or all k branches.

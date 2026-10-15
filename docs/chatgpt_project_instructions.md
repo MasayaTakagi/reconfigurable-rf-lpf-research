@@ -5,17 +5,28 @@
 - **本ファイルの役割:** プロジェクトの**運用指示の正本**。ChatGPTの「プロジェクトの指示」欄は、このファイルへの短い参照文のみとする。
 - **最重要:** **研究全体はPhase 2**。**Phase 3はユーザーが明示承認するまで開始しない。**
 
-## 2026-10-15 新規実験番号のmain事前予約（PR #53で導入予定）
+## 現行研究・運用状況（2026-10-15／PR #54 main統合後）
+
+> 本節は2026-10-15時点の現況整理。新しい研究・実行時にはmainの最新データを改めて確認する。以下の2026-10-12時点のRF-F001条件・開発チェックポイントは**履歴**であり、数値・結果の正本ではない。
+
+- **現行正式制約：** `data/constraints/registry.json` が指定する **RF-F002**（`data/constraints/formal/RF-F002.json`）。周波数区間は `data/bands.csv`、`data/design_constraints.json` は互換コピー。**RF-T004（最大3可変C）は試験条件**であって正式版に自動昇格しない。RF制約の無断変更は禁止。
+- **現在の研究状態：** Phase 2継続、Phase 3は明示承認まで未着手。PR #48～#54はmain統合済み。PR #54統合後main（`70ef42acab4bb2388adc6366746f8ef87a0a9066`）の[Phase 2 regression](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38744650334)はPASS。CIは物理性能保証ではない。
+- **EXP番号：** PR #53で中央台帳・予約workflow・監査をmain導入済み。既存39実験＋永久欠番EXP-018/019を登録、**EXP-042は未予約**。模擬競合テストは実施済みだが、手動workflowのGitHub上での本番予約・並列競合は**未検証**。新規EXPの開始条件はmainでの予約確定と照合PASS。
+- **選別成果：** 候補台帳は14件・条件別8区分。PR #54でRF-F002正式2可変CのEXP-017完全23要素ベクトルを原ZIPから回収し、原候補JSONをバイト同一でGitへ記録。28区間×7,001点・独立9×9MNAと5×5式で、最悪IL **0.301248245dB**、H2 **30.005000dB**、H3 **30.004642dB**を再現。有限格子で30dB必須値はPASSだが**IL≤0.30dB・公称35dBは未達**。RF-T004のIL **0.297114032dB**は試験仕様の数値であり正式達成ではない。
+- **出典と限界：** EXP-017原ZIP（26member）全体と453試行履歴はGitへ未保管／未再実行。保存済みはバイト同一の原候補JSON1件・正規化候補・索引・検証サマリー。その他の元実験も欠損メタデータがある。共通格子の候補横断比較、連続帯域極値、Q(f)/SRF/寄生/EM/公差・実装検証は未完了。原manifestと過去資料を上書きしない。
+- **保管方針：** 外部アーカイブを使わずGitHubで重要証拠を選別保全するユーザー指示を維持。`docs/experiment_result_storage_policy_proposal_20261015.md`は段階導入中の**提案文書**であり、GitHubにすべての元ZIP・探索トレースがあると主張しない。残課題は`docs/roadmap.md`と`data/research_review_issues.csv`を参照。
+
+## 2026-10-15 新規実験番号のmain事前予約（PR #53で導入済み・本番動作未検証）
 
 **新しいEXP-NNN実験は、着手前にGitHubのmainブランチの `data/experiment_number_registry.csv` に番号が確定・コミットされていることを必須とする。** 原則 `.github/workflows/reserve_experiment_number.yml` の手動workflow（`purpose`、承認済み`constraint_id`）を使い、mainへのGit fast-forward pushで番号を確保。成功後は `python scripts/experiment_id_registry.py --experiment-id EXP-NNN --owner <GitHub actor>` でmainを照合し、**PASSを確認してから**探索・新規runを開始する。実験番号の台帳・自動化・検証ルールの詳細は [中央予約規則](experiment_number_reservation_policy_20261015.md)。
 
 - 予約処理は最新版のmainを取得し、台帳の最大番号+1を採番する。並列の競合は非force pushの成功・失敗で判定し、失敗側は最新版を再取得して次番号で再試行する。**他者の予約を上書きしたり、現在のmainにない番号を使用したりしない。**
-- 既存39件`EXP-001〜017`／`EXP-020〜041`を登録済み（導入PR内）。欠番の`EXP-018/019`は`legacy_gap_retired`、再利用禁止。最初の新番号は`EXP-042`予定だが、**実際のmain予約完了前にEXP-042を使用しない**。中断/キャンセル番号も再利用しない。
+- 既存39件`EXP-001〜017`／`EXP-020〜041`をmain台帳に登録済み。欠番の`EXP-018/019`は`legacy_gap_retired`、再利用禁止。最初の新番号は`EXP-042`予定だが、**実際のmain予約完了前にEXP-042を使用しない**。中断/キャンセル番号も再利用しない。
 - 共同作業者が同一実験をworker/shardで並列化する場合は同じEXP番号を共有し、`run_id`と`shard_id`で分離。独立した実験目的・制約を持つ作業は各々正式な予約を取得する。
 - mainのブランチ保護等によりworkflowの直接pushが拒否される場合は、**fail-closed**とし、台帳予約用PRをmainにマージしたのち、予約を再検証してから実験を開始する。PR上の未マージ台帳やチャット上の番号は予約として扱わない。
-- 新規runの証拠管理は[GitHub-only保存方針](experiment_result_storage_policy_proposal_20261015.md)を順守し、完全な回路ベクトル、全6設定可変C、実行条件/seed/ソースSHA、別検証を小容量Git証拠として保存する。既存39実験の元manifestを番号予約のために改竄しない。
+- 新規runでは、GitHub-onlyの重要証拠保全原則に従い、完全な回路ベクトル、全6設定可変C、実行条件/seed/ソースSHA、別検証を小容量Git証拠として保存する。[保存方針文書](experiment_result_storage_policy_proposal_20261015.md)は段階導入中の提案であり、詳細運用の実装済み範囲を個別に検証する。既存39実験の元manifestを番号予約のために改竄しない。
 
-**適用開始条件:** 予約用台帳・workflow・監査がmainに反映され、手動予約の動作を確認できた後。PR #53がDraft・未マージの間は予約workflowの本番稼働を主張しない。研究はPhase 2を継続し、Phase 3への移行はユーザーの別途明示承認を要する。
+**導入・確認状況（2026-10-15）:** 予約用台帳・workflow・監査はPR #53でmainに反映済み。ただしGitHub Actionsの手動予約・同時申請の本番動作は未検証であり、成功済みとは主張しない。最初の新番号EXP-042は未予約。正式な新規run開始には、予約が実際にmainへコミットされたことと事後の照合PASSを必須とする。研究はPhase 2を継続し、Phase 3への移行はユーザーの別途明示承認を要する。
 
 ## 2026-10-13 制約改訂
 
@@ -124,7 +135,7 @@ AI考案回路をグラフ探索のシードにし、グラフ探索の良好解
 - 旧条件の良好解を履歴保存し、**最新の条件を満たした独立検証済みの候補が現れるまで旧基準を置換しない**。
 - コスト別の**best-found IL**、パレートフロンティア、探索済み数、未完了・失敗件数、資源を記録する。有限探索の値を数学的な大域最適値・理論下界・実装保証と呼ばない。
 
-## 6. 開発状態と優先課題（2026-10-12時点のチェックポイント）
+## 6. 開発状態と優先課題（2026-10-12時点の履歴チェックポイント・現況ではない）
 
 最新の実験結果・ゲート状態は`docs/roadmap.md`、各`experiments/`、`candidates/`で都度確認する。この節は**進行状態の例示**であり固定の結果正本ではない。
 

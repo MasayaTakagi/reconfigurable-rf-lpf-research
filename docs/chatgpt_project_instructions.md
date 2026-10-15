@@ -5,6 +5,18 @@
 - **本ファイルの役割:** プロジェクトの**運用指示の正本**。ChatGPTの「プロジェクトの指示」欄は、このファイルへの短い参照文のみとする。
 - **最重要:** **研究全体はPhase 2**。**Phase 3はユーザーが明示承認するまで開始しない。**
 
+## 2026-10-15 新規実験番号のmain事前予約（PR #53で導入予定）
+
+**新しいEXP-NNN実験は、着手前にGitHubのmainブランチの `data/experiment_number_registry.csv` に番号が確定・コミットされていることを必須とする。** 原則 `.github/workflows/reserve_experiment_number.yml` の手動workflow（`purpose`、承認済み`constraint_id`）を使い、mainへのGit fast-forward pushで番号を確保。成功後は `python scripts/experiment_id_registry.py --experiment-id EXP-NNN --owner <GitHub actor>` でmainを照合し、**PASSを確認してから**探索・新規runを開始する。実験番号の台帳・自動化・検証ルールの詳細は [中央予約規則](experiment_number_reservation_policy_20261015.md)。
+
+- 予約処理は最新版のmainを取得し、台帳の最大番号+1を採番する。並列の競合は非force pushの成功・失敗で判定し、失敗側は最新版を再取得して次番号で再試行する。**他者の予約を上書きしたり、現在のmainにない番号を使用したりしない。**
+- 既存39件`EXP-001〜017`／`EXP-020〜041`を登録済み（導入PR内）。欠番の`EXP-018/019`は`legacy_gap_retired`、再利用禁止。最初の新番号は`EXP-042`予定だが、**実際のmain予約完了前にEXP-042を使用しない**。中断/キャンセル番号も再利用しない。
+- 共同作業者が同一実験をworker/shardで並列化する場合は同じEXP番号を共有し、`run_id`と`shard_id`で分離。独立した実験目的・制約を持つ作業は各々正式な予約を取得する。
+- mainのブランチ保護等によりworkflowの直接pushが拒否される場合は、**fail-closed**とし、台帳予約用PRをmainにマージしたのち、予約を再検証してから実験を開始する。PR上の未マージ台帳やチャット上の番号は予約として扱わない。
+- 新規runの証拠管理は[GitHub-only保存方針](experiment_result_storage_policy_proposal_20261015.md)を順守し、完全な回路ベクトル、全6設定可変C、実行条件/seed/ソースSHA、別検証を小容量Git証拠として保存する。既存39実験の元manifestを番号予約のために改竄しない。
+
+**適用開始条件:** 予約用台帳・workflow・監査がmainに反映され、手動予約の動作を確認できた後。PR #53がDraft・未マージの間は予約workflowの本番稼働を主張しない。研究はPhase 2を継続し、Phase 3への移行はユーザーの別途明示承認を要する。
+
 ## 2026-10-13 制約改訂
 
 正式現行版はRF-F002（`data/constraints/formal/RF-F002.json`）、3可変C緩和の試験版はRF-T004（RF-F002固定ベース）。旧RF-F001および旧RF-T001〜T003は変更せず履歴として保持。以下の2026-10-12時点の条件概要は旧版の記録であり最新数値正本ではない。Phase 2継続、Phase 3停止。

@@ -1,3 +1,9 @@
+**新規EXP番号はmainで事前予約：** [実験番号中央台帳と並列採番ルール](docs/experiment_number_reservation_policy_20261015.md)。mainの予約コミット・再照合が成功するまで新規runを開始しない。EXP-018/019は欠番として再利用禁止。次の候補EXP-042も**まだ予約していない**。予約workflowはPR #53のDraft提案内で、main未導入。
+
+**新規実験の保存先はGitHubのみ：** [完全候補・実行条件・検証証拠を小容量で保存する運用案](docs/experiment_result_storage_policy_proposal_20261015.md)。外部アーカイブは使用しない。既存の元証拠は保全し、新規runへ段階導入する。現行mainのtracked bytesは約8.45MB。**本案はPR #53内の未マージ提案であり、まだmainの運用規則ではない。**
+
+**現行Phase 2の開発状態（2026-10-15）：** [ロードマップ現況・未解決ゲート](docs/roadmap.md)、[EXP-017の0.301248245dB報告点に関する追加原ソース調査](docs/phase2_exp017_checkpoint_provenance_review_20261015.md)、[最新の未解決課題台帳](data/research_review_issues.csv)を参照。PR #48～#52はmain統合済み。旧段落は当時の歴史的状態として保持。EXP-017の該当30dB候補ベクトルは未回収であり、正式RF-F002のIL≤0.30dB達成は未確認。Phase 3未着手。
+
 **Phase 2研究証拠の個別保全レビュー：** [46ファイルの根拠・保管判断](docs/phase2_evidence_triage_20261015.md)、[Git blob SHA付き個別台帳](data/research_storage_triage.csv)。元PRソースのSHA-256と復旧ZIP整合をCIで検査。実験データの削除・移動なし。
 
 **保存証拠の参照逆引きと条件別Pareto（Phase 2）：** [保全判定・比較方法とCI実績](docs/phase2_storage_pareto_review_20261015.md)。GitHub Actionsから保管分類CSV/JSONと候補別Pareto表を取得可能。既存ファイルの自動削除・移動なし。

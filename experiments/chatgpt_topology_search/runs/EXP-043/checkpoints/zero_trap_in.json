@@ -1,0 +1,71 @@
+{
+  "experiment": "EXP-043",
+  "variant": "zero_trap_in",
+  "constraint_id": "RF-T005",
+  "phase": "Phase 2",
+  "source_run": 38779860466,
+  "artifact_id": 11994659806,
+  "status": "finite_701_per_segment_best_found_not_independent_MNA",
+  "description": "3L, Cf0(0,1),Cf1(1,2),Cp(3,GND), Cv0(3,GND),Cv1(1,2),Cv2(0,3). Third LC mode only when bridge capacitance nonzero; B28/B8 near-zero and rank deficiency.",
+  "area_units": 3,
+  "component_L_Q": 25,
+  "component_C_Q": [
+    40,
+    40,
+    40,
+    35,
+    35,
+    35
+  ],
+  "vector_order": "L0,L1,Ls,Cf0,Cf1,Cp,k_L0Ls,k_LsL1, then Cv0 Cv1 Cv2 per six cases",
+  "vector": [
+    5.7568127042847355,
+    9.509435977831776,
+    3.2970607299505192,
+    0.19999999999995635,
+    0.2,
+    0.19999999999987436,
+    0.09999999999999931,
+    -0.0795830246824304,
+    2.446653618165811,
+    0.8094666391581117,
+    0.004417777671996205,
+    2.2772811574930034,
+    0.6103912872600357,
+    0.043253123781842366,
+    2.08347124990296,
+    0.7262710850163023,
+    2.894310693673509e-13,
+    2.1016088206665624,
+    0.3070632668699797,
+    0.001548152074107196,
+    1.819347203777148,
+    0.16211481421416515,
+    0.012786988106205061,
+    1.543547690150148,
+    0.07494783164950769,
+    1.118204898007327e-13
+  ],
+  "verified_finite_mesh": {
+    "worst_IL_db": 1.0733727468918275,
+    "min_H2_db": 30.01999999997973,
+    "min_H3_db": 30.019999999992145
+  },
+  "lossless_modes_selected": {
+    "B71_GHz": [
+      1.6244,
+      4.6309,
+      42.5872
+    ],
+    "B8_usable_finite_positive_GHz": [
+      3.1126,
+      4.6904
+    ],
+    "notes": "B8 and B28 show C_rank=3 and spurious very large numerical eig values from effectively zero branch C; third mode not maintained over six settings"
+  },
+  "limitations": [
+    "finite grid local best found",
+    "no independent MNA",
+    "SRF EM Q(f) parasitic verification pending"
+  ]
+}

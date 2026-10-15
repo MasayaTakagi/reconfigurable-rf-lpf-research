@@ -59,6 +59,8 @@ jobs:
         run: |
           git fetch --no-tags --depth=1 origin '+refs/heads/*:refs/remotes/origin/*'
           python scripts/audit_branch_retention.py --report artifacts/phase2_reports/branch_retention_summary.json --check
+      - name: Audit new experiment manifests against reservations already on main
+        run: python scripts/audit_experiment_number_registry.py --main-ref origin/main
       - name: Audit compact GitHub-only experiment evidence sizes
         run: |
           python scripts/audit_git_storage_budget.py --base origin/main --summary artifacts/phase2_reports/git_storage_budget.json --check

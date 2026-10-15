@@ -21,6 +21,10 @@
 - **探索の再実行可能**：上記に加え、最適化コード・環境/seed・探索範囲/初期値・ワーカー/端子mappingを揃えて探索を再実行できる。浮動小数点・並列の非決定性により完全一致を保証しない。
 - **厳密な全試行履歴保存**：全iterations/tasks/logsを保持する場合のみ主張。**Git-only省容量運用ではデフォルトの保証対象にしない。** run manifestに保存レベルを明記し、未保持データを「後で復元できる」と主張しない。
 
+## 新規実験開始ゲート：mainでEXP番号を予約
+
+**計算を開始する前に**中央の`main:data/experiment_number_registry.csv`へ新しいEXP-NNNが確定されていることを必須とする。予約専用のGitHub Actions、競合時の非force push再試行、GitHub branch protection時のfail-closed・予約用PR代替、`origin/main`を照合する事前確認は[中央予約規則](experiment_number_reservation_policy_20261015.md)に定める。既存39実験と永久欠番EXP-018/019を再利用しない。**EXP-042は新番号の候補であり、このPRでは予約しない**。複数worker/shardで1件の実験を実行するときは同じEXP番号を使用し、`run_id/shard_id`で区別する。
+
 ## 2. 必ずGitに残す情報（A：重要証拠）
 
 | 種別 | 必須内容・理由 | 保存形態 |

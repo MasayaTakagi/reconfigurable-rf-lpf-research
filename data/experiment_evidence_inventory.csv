@@ -38,4 +38,4 @@ EXP-038,formal,RF-F002,full_lpf,completed,screened,screened,not_run,23,true,true
 EXP-039,formal,RF-F002,full_lpf,completed,screened,screened,not_run,15,true,true,true,false,none,experiments/chatgpt_topology_search/runs/EXP-039/manifest.json
 EXP-040,formal,RF-F002,full_lpf,completed,screened,screened,not_run,47,true,true,true,false,none,experiments/chatgpt_topology_search/runs/EXP-040/manifest.json
 EXP-041,formal,RF-F002,full_lpf,completed,screened,screened,not_run,12,true,true,true,false,none,experiments/chatgpt_topology_search/runs/EXP-041/manifest.json
-EXP-043,trial,RF-T005,full_lpf,partial,screened,passed,not_run,0,true,true,true,false,none,experiments/chatgpt_topology_search/runs/EXP-043/manifest.json
+EXP-043,trial,RF-T005,full_lpf,partial,screened,passed,not_run,0,true,true,true,true,none,experiments/chatgpt_topology_search/runs/EXP-043/manifest.json

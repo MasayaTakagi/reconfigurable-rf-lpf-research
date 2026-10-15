@@ -119,7 +119,7 @@ def full_mna(Y, sp_in, sp_out):
     mat[:,6,6] += YLOAD
     rhs = np.zeros((n,7), complex)
     rhs[:,5] = 1 / RIN
-    voltage = np.linalg.solve(mat, rhs)
+    voltage = np.linalg.solve(mat, rhs[...,None])[...,0]
     GT = 4*RIN*YLOAD.real * np.abs(voltage[:,6])**2
     IL = -10*np.log10(GT)
     Isrc = (1-voltage[:,5])/RIN

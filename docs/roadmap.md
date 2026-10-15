@@ -27,7 +27,7 @@
 1. **P0 / RG-001:** EXP-017のIL=0.301248245dBは**30dB要求のsource-reported局所点**。完全な回路ベクトルと6設定CvがGitHubで未確認。元のチャットZIP/ローカルソースは本作業で未回収。別の35dB候補のL/Cで代用不可。[追加出典調査](phase2_exp017_checkpoint_provenance_review_20261015.md)を参照。
 2. **P0 / RG-003:** EXP-034～037の旧warm-start端子remap不備を修正後の成果と混同しない。実行基盤性能と回路性能を分離する。
 3. **P1 / RG-004・RG-008:** 統合候補台帳は13件の選別結果であり全成果網羅ではない。EXP-016/017/021/022/023/024の元manifestのevidence登録は0件（遡及改変せず補助索引あり）。
-4. **P1 / RG-005・RG-007:** 残存**6旧ブランチの先端Git blob照合は実施済み**で、研究証拠領域にmain欠落blobは検出されない。全履歴・復元bundleの検証と原ZIPのバイナリ保管方式は**未完了**。現行の[保管最適化監査](phase2_repository_optimization_review_20261015.md)を参照。元証拠・branch削除は別承認が必要。
+4. **P1 / RG-005・RG-007:** 旧6ブランチの先端Git blob照合済み。main＋旧6本＋PR #53の**8 refsを全履歴Git bundle化し別repo復元/fsck PASS**（一時的Actions artifact）。外部永続バックアップは未完了。RF-T004 ZIPの35エントリハッシュ目録は追加したが、**原ZIPバイナリの恒久保管は未完了**。[保管最適化監査](phase2_repository_optimization_review_20261015.md)を参照。元証拠・branch削除は別承認が必要。
 5. **P1:** 候補間の周波数格子・独立MNAの共通条件での再比較、元試行環境・seedの再現性確認、物理SRF/寄生/EM・温度公差。新規解析を実行した場合は別検証記録として出典を固定する。
 
 現在の課題ステータスは [研究レビュー台帳](../data/research_review_issues.csv)、候補区分は [研究候補台帳](../data/research_candidate_register.csv)、全39実験は [証拠インベントリ](../data/experiment_evidence_inventory.csv) を参照。

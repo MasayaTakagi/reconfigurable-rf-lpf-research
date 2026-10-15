@@ -1,0 +1,143 @@
+{
+  "experiment": "EXP-043",
+  "phase": 2,
+  "model": "RF-T005",
+  "evidence_status": "executed JS compact independent branch-current MNA using original mandatory GitHub S2P main; Python Actions reproduction submitted but not yet successfully completed",
+  "source_files": [
+    "data/parasitics/circuit1_ant_coupler_0_6ghz.s2p",
+    "data/parasitics/circuit2_poc_through_0_6ghz.s2p",
+    "experiments/chatgpt_topology_search/runs/EXP-043/checkpoints/zero_gjm_double.json",
+    "experiments/chatgpt_topology_search/runs/EXP-043/checkpoints/gjm_cf0_cp.json"
+  ],
+  "calculation": {
+    "branch_current_MNA": "7 nodal+coil-current unknowns; 3 L, 4 nodes; no Kron-reduction",
+    "component_R_ohm": "omega L_i / 25",
+    "component_Q": "inductor chip Q25, fixed PCB C Q40 or GJM Q80, IC C Q35",
+    "mutual_nH": "M_0s=k_0s sqrt(L0 Ls); M_1s=k_1s sqrt(L1 Ls); M_01=0",
+    "passband_Q": "Q_L,eff=25 * Re[I^H M I]/sum_i L_i |I_i|²",
+    "gain": "Pload/Pavs; Pavs=5mW for 1Vrms source, RL=60-j40ohm",
+    "check": "absolute 7-way power balance residual <4e-15 mW in sampled points",
+    "k_intervention": "Only k changed; no L/C retuning; forced values physically within abs k<=0.10"
+  },
+  "observations": [
+    {
+      "candidate": "zero_gjm_double",
+      "area": 3,
+      "band": "B28",
+      "frequency_MHz": 803,
+      "default": {
+        "k": [
+          0.07936953715601942,
+          -0.08429740093791295
+        ],
+        "Q_m": 25.30111980638069,
+        "P_L_mW": 0.37249156670240535,
+        "IL_dB": 0.944268363343782,
+        "other": {
+          "Pref_mW": 0.0035111973547680623,
+          "P_inputS2P_mW": 0.2949485617309228,
+          "P_outputS2P_mW": 0.16530535276928268,
+          "P_fixedC_mW": 0.016625569258899676,
+          "P_varC_mW": 0.12418134024776882,
+          "Pload_mW": 4.022936411935951
+        }
+      },
+      "forced_k": {
+        "k": [
+          0.1,
+          -0.1
+        ],
+        "Q_m": 25.381757014949596,
+        "P_L_mW": 0.37351752824779666,
+        "IL_dB": 0.9485603960374166
+      },
+      "zero_k": {
+        "k": [
+          0,
+          0
+        ],
+        "Q_m": 25,
+        "P_L_mW": 0.36983166777923676,
+        "IL_dB": 0.9292287783289971
+      }
+    },
+    {
+      "candidate": "gjm_cf0_cp",
+      "area": 4.333333333333333,
+      "band": "B28",
+      "frequency_MHz": 803,
+      "default": {
+        "k": [
+          0.07380367533290422,
+          -0.024307590960767865
+        ],
+        "Q_m": 25.136336687457636,
+        "P_L_mW": 0.3635256913549989,
+        "IL_dB": 0.8792446895976784,
+        "other": {
+          "Pref_mW": 0.006721270950914961,
+          "P_inputS2P_mW": 0.2899734295518071,
+          "P_outputS2P_mW": 0.16779896746346984,
+          "P_fixedC_mW": 0.040303690870290676,
+          "P_varC_mW": 0.04805494492271638,
+          "Pload_mW": 4.083622004885802
+        }
+      },
+      "forced_k": {
+        "k": [
+          0.1,
+          -0.1
+        ],
+        "Q_m": 25.299948746802166,
+        "P_L_mW": 0.3622686115911935,
+        "IL_dB": 0.8854336508183919
+      },
+      "zero_k": {
+        "k": [
+          0,
+          0
+        ],
+        "Q_m": 25,
+        "P_L_mW": 0.3605725980235252,
+        "IL_dB": 0.8747182643540885
+      }
+    },
+    {
+      "candidate": "gjm_cf0_cp",
+      "area": 4.333333333333333,
+      "band": "B8",
+      "frequency_MHz": 960,
+      "default": {
+        "k": [
+          0.07380367533290422,
+          -0.024307590960767865
+        ],
+        "Q_m": 25.229403934642466,
+        "P_L_mW": 0.36327850577927306,
+        "IL_dB": 0.8792446895953111
+      },
+      "forced_k": {
+        "k": [
+          0.1,
+          -0.1
+        ],
+        "Q_m": 25.47029494914067,
+        "P_L_mW": 0.36298232123876667,
+        "IL_dB": 0.8881424156725676
+      }
+    }
+  ],
+  "interpretation": [
+    "Magnetic Q increases with mutual cross terms if signs and AC current phases reinforce stored energy.",
+    "Increasing magnetic Q at fixed coil RMS currents increases stored reactive energy at same ohmic loss; this does not lower power loss directly unless current changes.",
+    "For area4.333 B28 803 MHz even coil ohmic loss is 0.001257mW smaller at saturated k, but delivered load power falls and IL increases by 0.00619dB due aggregate matching/non-coil changes.",
+    "Saturation hurts mandatory harmonic rejection at unchanged C from previously executed EXP-043 global-band sensitivity, and reoptimization of C/L at saturated k still worse than free-k.",
+    "This current-based Q differs from prior local eigenmode Q; the earlier claim that k cannot change effective Q in passband was incomplete."
+  ],
+  "limits": [
+    "Local point-frequency evidence; not a proof of IL monotonicity vs k",
+    "S2P are fixed constructed model, not VNA-measured",
+    "Frequency-dependent Q, SRF, physical coupling, PCB implementation and tolerance unverified",
+    "The reproducibility Python Actions workflow submitted but failed; do not classify it PASS"
+  ]
+}

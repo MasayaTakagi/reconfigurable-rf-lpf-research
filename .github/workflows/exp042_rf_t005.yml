@@ -54,7 +54,7 @@ jobs:
         run: uv sync --frozen
       - name: Optimize full external-port LPF
         run: |
-          uv run --frozen python experiments/chatgpt_topology_search/runs/EXP-042/optimize.py             --target ${{ matrix.target }} --starts 3 --maxiter 140             --grid 9 --verify-grid 301 --seed 20261016             --out results/EXP-042/target_${{ matrix.target }}.json
+          uv run --frozen python experiments/chatgpt_topology_search/runs/EXP-042/optimize.py             --target ${{ matrix.target }}.05 --starts 3 --maxiter 140             --grid 9 --verify-grid 1001 --seed 20261016             --out results/EXP-042/target_${{ matrix.target }}.json
       - name: Upload numerical evidence
         if: always()
         uses: actions/upload-artifact@v4

@@ -93,8 +93,16 @@ def audit(detail=False):
                 issues.append(f"Candidate identity or objective mismatch: {name}")
             if row["objective"] != "full_lpf":
                 issues.append(f"Active candidate is not full_lpf: {name}")
-            expected_spec = (policy["policy_version"] if name in {"LPF-007", "LPF-008", "LPF-009"}
-                             else policy["active_constraint_id"])
+            if row.get("constraint_class") == "historical":
+                # Immutable legacy entries are audited against their own
+                # recorded policy epoch, NEVER reclassified to active RF-F003.
+                historical_key = row.get("historical_registry_key")
+                if not historical_key or historical_key not in registry["historical"]:
+                    issues.append(f"Missing historical registry identity: {name}")
+                    continue
+                expected_spec = registry["historical"][historical_key]["policy_version"]
+            else:
+                expected_spec = policy["active_constraint_id"]
             if item["spec_id"] != expected_spec or row["spec_id"] != expected_spec:
                 issues.append(f"Candidate spec mismatch: {name}")
             perf = item["performance"]

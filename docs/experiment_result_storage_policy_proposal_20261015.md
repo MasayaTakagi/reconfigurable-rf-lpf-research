@@ -1,109 +1,104 @@
-# Phase 2：今後の実験結果保存・再現性・アーカイブ運用方針（提案、2026-10-15）
+# Phase 2：GitHubのみで管理する実験結果保存方針（2026-10-15、提案）
 
-> **状態：提案／未採用。** この文書をGitHubに追加しても、既存実験のデータ移動・削除、正式RF制約変更、Phase 3開始、PR #53マージを許可したことにはならない。運用正本は `docs/chatgpt_project_instructions.md`、正式制約の値は`data/constraints/formal/RF-F002.json`とregistry、周波数は`data/bands.csv`。旧実験の`manifest.json`は遡及改変しない。
+> **変更指示：ユーザーは外部アーカイブの不使用を明示。GitHubを唯一の長期保管場所とし、保存対象を厳選する。** 本文は先行する「外部アーカイブ併用案」を置換する方針案であり、**採用/本番導入は未完了**。元のrun・manifest・保存候補・PR #53 Draftは不変更。Phase 2継続、Phase 3未承認。正本は `docs/chatgpt_project_instructions.md` と現行 `RF-F002` / `data/bands.csv`。
 
-## 1. 過去の観測と設計要件
+## 1. GitHubの実容量と背景
 
-| 観測済みの問題 | 改善する保存ルール |
-|---|---|
-| EXP-017 RF-F002・30dB・IL=0.301248245dBの**報告値だけ**残り、完全なL/Cおよび6設定Cvと元ChatGPT ZIPが回収できない（RG-001、保留） | 重要候補は発見時に完全な機械可読checkpointとハッシュを保存し、外部原ZIPの保管確認なしに実験を「archived」としない |
-| 39実験のうちseed未記録25、実行SHA未記録15、環境未記録16、execution unknown16 | 実験開始前にrun identity/条件/seed/環境を記録。終了時に実行/最適化/検証状態を別々に確定。未確認値は`unknown`にする |
-| 6つの元manifestはevidence 0件。補助索引36件が別に存在 | 新規runではmanifest↔元証拠↔SHAを必須とする。旧manifestは変更せず検証overlayとsupplemental ledgerで関連付け |
-| EXP-034〜037旧warm-startの端子remap不具合 | インポート元checkpoint SHA、グラフ/端子mapping、元制約、修正revision、実行stageを記録し、bad resultとcorrected runを混合しない |
-| RF-T004試験3CとRF-F002正式2C、H2/H3 30/35dB、strict/toleranceを混同しやすい | 制約ID+effective SHA、objective、threshold、validation classを**比較キー**に含め、違う比較キーを自動Paretoに入れない |
-| 生実験ファイルとmanager/worker logs/lock、Git blob重複が混在 | 不変研究原本・診断/再開根拠・一時ファイルを**用途と役割**で分類。SHA一致は同じ証拠用途を意味しない |
-| Actions成果物は有期限、チャットZIPは別チャットから発見困難 | 一時配布と永続保管を分離し、複写先のhash再確認と**実際の復元試験**を保存終了条件にする |
+2026-10-15確認のmain `ad1cda8c47054fbe97edc5b8bb97261804281285`：**731個のtracked blob、非圧縮ファイルサイズ合計8,449,154バイト**。`data/validation/` 264ファイル・4,395,071B、`experiments/chatgpt_topology_search/runs/` 249ファイル・2,621,302B、その他218ファイル・1,432,781B。Gitの全履歴・packサイズではないため、容量判定に`git count-objects -vH`と`git-sizer`を併用する。
 
-## 2. 運用上の三層構成と正本
+公式GitHubの一般ガイダンスはリポジトリ**理想的には1GB未満**、単一Gitオブジェクト**1MB推奨上限（100MB制限）**。本プロジェクトでは余裕を持って、以下の**内部レビュー閾値**を提案する（GitHub公式のハード制限とは異なる）。
 
-1. **Gitに残す小型正本（A/B/C）**：RF制約、bands、実験/run manifest、出典台帳、候補の完全な回路JSON、独立検証サマリー、比較用の選別台帳、集計結果。これらはレビュー・差分・CIに適している。
-2. **外部永続アーカイブ（D）**：全生探索・全iteration/seed・元実行コードのスナップショット・中間checkpoint・生ZIP・診断の要保全部分。**推奨**はバージョニングされた非公開オブジェクトストレージ＋別障害ドメインへの複製、または同等の耐久性を備える保管先。content-addressed（例：`sha256/<hash>.zip`）で不変性を確認。Git LFSでもよいが利用枠、転送量、参照維持、backup、取得テストを事前確認し、Git通常blobに巨大base64は埋め込まない。
-3. **作業領域（E/F）**：ローカル`results/`内のraw run、ログ、lock、status、scratch、キャッシュ。動作中は原子書込み・再開性を優先し、終了時に外部保全対象と再生成可能データを分類。**バックアップ検証が終わる前の自動削除は禁止**。GitHub Actions artifactはCI配布/短期一時コピーであり、長期保存の唯一の根拠にはしない。
+| 指標 | 新規保存の目安 | 超過時の扱い |
+|---|---:|---|
+| 新規runのキュレーション一式（元コード共通部を除く） | **512KiB以下** | 超過はデータ役割・圧縮・重複を見直し、必要証拠なら例外を記録 |
+| 新規の単一Gitファイル | **128KiB以下が望ましい** | 128KiB超はレビュー、**1MiB超は原則新規追加しない**（所有者承認例外） |
+| 現行mainの全trackedファイル非圧縮合計 | **25MiBで増加監査** | 研究不要データの無条件削除ではなく、追加傾向と選別基準を見直す |
+| 大容量探索を開始する前 | **保存見込みサイズをrun planに記載** | 原本が肥大する探索は保存すべき最小の意味ある成果へ縮約 |
 
-**原則：Git上のmanifest/保存台帳がインデックス、外部アーカイブのハッシュ照合可能なraw bytesが原本。** 保存先URIだけの記述やSHA文字列だけの記録を「原本保存済み」とは判定しない。アクセス権・機密性・鍵管理はストレージ運用で別途定義する。
+### Git-onlyでの「再現性」の範囲
 
-## 3. 新規実験の識別と保存パス
+- **候補再評価可能**：完全回路定義＋全6設定可変C＋RF制約/bands/code SHA＋評価器で、IL/H2/H3を再計算できる。全探索途中経過の保存は不要。
+- **探索の再実行可能**：上記に加え、最適化コード・環境/seed・探索範囲/初期値・ワーカー/端子mappingを揃えて探索を再実行できる。浮動小数点・並列の非決定性により完全一致を保証しない。
+- **厳密な全試行履歴保存**：全iterations/tasks/logsを保持する場合のみ主張。**Git-only省容量運用ではデフォルトの保証対象にしない。** run manifestに保存レベルを明記し、未保持データを「後で復元できる」と主張しない。
 
-- AI主導探索は既存`experiments/chatgpt_topology_search/runs/EXP-NNN/`、汎用探索は`experiments/matching_limit/`を維持。歴史的IDのリネーム禁止。並列stageは別`run_id`（例：`EXP-042/20261015T...-rf-f002-35db-seed0001`）で識別し、全生成物と共通コードSHAを結び付ける。既存リポジトリのパスを**今すぐ移動しない**。
-- 各新規runのGit管理文書には`manifest.json`（元実行の記録）、`run_summary.json`（集計）、`checkpoints/<candidate_id>.json`（選別候補）、`validation/<validation_id>.json`（後日別実行、元と区別）、`archive_receipts.json`（原本保管証明）の**役割**を割り当てる。導入時の実ディレクトリは既存`data/validation/`等との互換とリンク整合を検査し決定する。
-- 新規候補は「実験番号＋内部run ID＋stage ID＋候補ID」で衝突を回避。名称の再使用、PRや別チャットでの異なる`EXP-017`系列の同一視を禁止。旧IDとの対応は`legacy_origin_id`で明示する。
-- 元データの取得元は`git_commit`/`GitHub Actions run`/`local run`/`chat_attachment`等の列挙値、`source_uri`、`captured_utc`、ZIP/各member SHAで記録。保存時のGit SHAと実行時のGit SHAは別属性にする。
+## 2. 必ずGitに残す情報（A：重要証拠）
 
-## 4. run manifest：実行前に必須のものと終了後に追加するもの
+| 種別 | 必須内容・理由 | 保存形態 |
+|---|---|---|
+| 制約/帯域 | 有効な `RF-F002` / `RF-T004` の区分、`effective_constraint_sha256`、`bands_sha256`、30/35dB条件 | 既存正本の**SHA付き参照**。runごとの巨大な制約全文コピーはしない |
+| run manifest | 実験ID/run/stage、実行Git SHA、dirty時のコードsnapshot/patch SHA、uv.lock/数値環境、seed、開始/終了/exit/収束、探索目的と範囲 | **短いJSON**。終了前/途中/失敗/unknownを区別 |
+| 実験サマリー | 実行/未実行/未収束/失敗の件数、グラフ/seed/iter/evaluation範囲、最良値と制約余裕、理由別失敗内訳、選別ルール | **集計JSON + 短いREADME**。全iteration履歴で代用しない |
+| 完全候補checkpoint | **全L/C、各部品Q/系列/端子、固定/PCB部品、結合符号kと物理一列順、6設定の可変C値、出典と閾値** | 候補ごとJSON、保存候補のID一意化。best/閾値近傍/パレート/代表的失敗を残す |
+| 検証証拠 | 6設定UL/DLとH2/H3各不連続区間、worst周波数・min attenuation・格子条件、MNA/SPD/電力収支、実行器/検証器SHA | 数値サマリーJSON、必要な代表波形のみ。独立検証は別ID・別ファイル |
+| 根拠チェーン | `candidate_id` → `experiment_id/run_id/stage_id` → checkpoint/git blob/元run/検証overlayへのパス/SHA | 既存の研究候補台帳とmanifest evidenceで参照 |
+| 再現に必要なコード | 共通実装は`src/lpf/`または`scripts/`のGit SHAを参照。実験固有コードで元Gitに無いものは短い実コード/差分を保存 | コード重複/巨大なsource_snapshotを省略できるのは**Gitから元コードが復元可能な場合のみ** |
 
-**実行開始前（未実行でも残す）**：
+**候補がよい数値を示した直後、READMEへ値を書く前に、完全checkpointをGitで追跡可能な形へ保存する。** EXP-017のIL=0.301248245dB（正式RF-F002 30dB）の欠落を繰り返さない。報告値だけで元ベクトルがない場合は`reported_only`のままで、候補台帳へ昇格させない。
 
-- `experiment_id`、`run_id`、`stage_id`、`phase=Phase 2`、`objective=full_lpf|matching_only|diagnostic`、開始UTC、実行者/実行方式（ChatGPT/WSL2/Actions）。
-- `constraint_class=formal|trial|historical`、`constraint_id`、`base_constraint_id`（trial時）、`effective_constraint_sha256`、`bands_sha256`、**減衰要求`required_harmonic_attenuation_db=30|35`**、6設定の設定ID、不連続周波数区間の扱い。
-- `execution_git_sha`、`working_tree_dirty`、dirty時の完全patchまたは実コードsnapshotのSHA、`uv.lock` SHA、Python/NumPy/SciPy/BLAS/OS/CPU、および解決済み数値環境。
-- `search_space`、グラフ列挙上限、目的関数・loss定義、初期候補、warm-start元候補SHA、**端子/枝/可変C mapping定義とそのversion/hash**、`random_seed`とseedの導出方法、シャード・worker割当て。
-- `execution_status=planned`。必要値を取得できない場合は**未記録のままcompletedとせず`unknown`と理由**を記載。run開始前のCI検査では新仕様の必須項目がない場合、実行許可を出さない方式を段階導入する。
+## 3. 条件付きでGitに残す情報（B：必要な場合に保全）
 
-**終了時（失敗・中断も記録）**：
+- **探索失敗と中断の証拠**：crash時最終checkpoint、原因を示す代表ログ/stacktrace、失敗時の端子mappingや誤継承の実例、stop/resumeベンチに必須なstatus/lockの記録。EXP-034〜037のように原因同定へ不可欠な場合は保存する。
+- **全探索の縮小要約**：全試行の個別ベクトルを残す代わり、目的・条件・グラフ/seed別の計画/試行/収束/失敗件数、分布統計、局所最小の順位、失敗種別と代表例を保存する。非決定探索で厳密再生不能な点は`limitations`に書く。
+- **最良以外の候補**：面積–ILパレート点、30/35dB境界付近、異なるトポロジーの有望解・反例、独立検証に使った点は完全ベクトルで保存。選別上位Kや数値差閾値は**実行前のplanで宣言**する。Kを固定して重要点を落とさない。
+- **ChatGPT添付ZIP**：手元またはGitHubのほかに完全元コード・初期探索履歴が無い場合は、ファイル自体が**小容量ならGitへ原本を直接保全**してよい。元ZIPはSHA/件数/内部pathを台帳化し、展開後の同一データを無批判に二重コミットしない。特に受領済みRF-T004原ZIPは**118,646B**なので推奨128KiB以内。現状は台帳のみGitにあり、**ZIPのGit保存は未実施**。
 
-- `execution_status=completed|partial|failed|interrupted|not_run|unknown`、開始/終了UTC、elapsed、graph/start/iter/evaluationの計画/実施/成功/未収束/失敗/未実施数、最終solver success/exit code/停止理由、CPU/RSS、再開・retry履歴。
-- `archive_status=local_only|upload_pending|uploaded_unverified|verified_restore|lost_or_unavailable|corrupted` を**execution/validationとは独立**させる。
-- 既存manifestの`validation.numerical`、`validation.independent`、`validation.implementation`の**3軸を継続**し、それぞれ未実施・報告のみ・有限格子確認・独立MNA確認・物理確認・失敗などの状態と検証実行IDを記録する（許可状態値と軸間の整合は新規schema v2策定時に定義）。数値公差による分類`strict_finite_grid|tolerance_only|failed_threshold|not_checked`をさらに別属性にし、`success=False`を性能限界と誤読しない。
-- 元コード/生データ/ログ/チェックポイント/検証を`evidence[]`として登録：`role`、`logical_path`、`relative_git_path`又は外部`archive_id`、`sha256`、`size_bytes`、`provenance`、`retention_class`、`availability_status`。**新規runで evidence 0件は「保存完了」と認めない。**
-- 新規または後日実施した再検証は**別の検証実行ID/ファイル/コードSHA/条件SHAを持つimmutable overlay**として登録。元source report・manifestを再解釈して上書きしない。
+## 4. 原則Gitに追加しない情報（C：実行中だけの一時成果）
 
-## 5. チェックポイントの最小完全性（EXP-017再発防止）
+- 毎iterationのフルパラメータダンプ、全試行の巨大JSON、ランダムな中間波形/大量の周波数ごとの全行列。
+- 成功時の全worker stdout/stderr、heartbeat、空の`.lock`、cache、再生成可能な`*.pyc`、ダウンロード済み依存パッケージ、同一sourceファイルのrunごとの完全コピー。
+- checksum・origin・環境を持たない一時ZIP、同一元候補の多重表現で内容が再現できるもの。
 
-良好値を発見したときは、報告テキストの前に**完全な回路ベクトルを機械可読JSONとして確定**する。
+**省略の前提**：run終了前にAと必要なBが**Gitへコミット済み・元SHAで読み戻し検証済み**であること。これに失敗した場合、ローカル`results/`のrawを保持したまま`preservation_incomplete`を記録する。成功前の自動削除は禁止。ローカルのscratchは長期アーカイブではなく作業領域である。
 
-- 全枝の`component_id`、種別/系列、ノード端子、値、Qモデル、PCB/IC資源、固定GJM/パターンC、各磁気結合の符号・k・物理隣接配置、共有トポロジー。部品ID・ノードIDの意味を安定化させる。
-- **6設定すべて**の可変C枝ごとの接続と数値、UL/DLおよびH2/H3の区間ごとの最悪値と周波数、面積算出内訳、悪化ケース、反射・損失の必要な内訳。
-- `constraint_id`+`effective_sha`+`bands_sha`+`evaluation_grid`（区間・点数・端点/極値探索）+`solver SHA`+`execution status`を候補に固定する。
-- 未収束点、source-reported点、修正前の端子対応失敗runは消さず、`candidate_status`と`validation_status`を分けて保存。未保存ベクトルは**候補登録・Pareto昇格不可**。
-- 粗いスクリーニングで全iterationをGitへ登録しない。**各トポロジー/面積/条件群の有望上位Kと境界近傍、反例、失敗原因を示す数例**の完全checkpointはGit登録候補に選別する。それ以外のraw試行・途中全checkpointは外部アーカイブへ保持する。K・選別基準はrun設定に記録し、終了後に恣意的に変更しない。
+## 5. 具体的なファイル構造と保存例
 
-## 6. 数値結果の比較・昇格条件
+既存 `experiments/chatgpt_topology_search/runs/EXP-NNN/`・`data/validation/`・`src/lpf/`を維持し、新規runに限って次の役割を定義する（既存39件は不変更）。
 
-- 最低比較キー：`constraint_class + constraint_id + effective_constraint_sha256 + objective + H2/H3 threshold + validation_depth + grid_policy`。`matching_only`と`full_lpf`、RF-F002とRF-T004、30dBと35dBを混在させない。
-- **source_reported** は元の報告値。**replay_passed** は同ソースの再実行。**independent_mna_passed** は別実装と高密度6設定UL/DL/H2/H3の全不連続区間・受動性・SPD・電力収支の照合を伴う。さらに**physical_validated**はQ(f)/SRF/部品寄生/実装レイアウト/EM/公差等を別証拠で追補する。これらをまとめて単一の`passed`にしない。
-- `strict_finite_grid`と`tolerance_only`の比較を分ける。有限格子内の合格は連続周波数区間の数学的保証や実機合格ではない。
-- 正式制約でIL≤0.30dBの認定は、必要な**正式2可変Cの合法回路ベクトル**と独立検証証拠が揃うまで保留。試験3可変C・0.297dB級はtrialのまま維持。
+```text
+experiments/chatgpt_topology_search/runs/EXP-NNN/
+  manifest.json               # run状態、制約SHA、実行コード、seed、選別理由
+  README.md                   # 目的、探索範囲、達成/未達、問題点
+  run_summary.json            # 試行・失敗・収束件数と分布/選別集計
+  checkpoints/
+    <candidate_id>.json       # 完全L/C/結合/6設定Cv
+data/validation/<run_id>/
+  validation_summary.json     # 別数値検証の結果、検証器SHA、失敗理由
+  representative_failure.json # 保存が必要な診断点のみ
+data/research_candidate_register.csv
+  ...                         # full_lpf/matching_only、正式/試験、strict/公差を分離
+```
 
-## 7. 原本アーカイブの保存と復旧検査
+- 元の `manifest.json` は不変のsource evidence、再解析は`data/research_validation_overlays.csv`と別validationファイルで追記する。
+- 実行状態 `planned/completed/partial/failed/interrupted/unknown`、最適化収束、出典再現、独立MNA、物理性、保存完了を**独立フィールド**にする。
+- ファイルの証拠リンクには `path`、`sha256`、`role`、`bytes` を保存。元のtrial `RF-T004`とformal `RF-F002`の比較禁止、H2/H3 30/35dB、`strict_finite_grid`と`tolerance_only`の分離を維持する。
+- 実験ID衝突時は元名称/出所branch・チャットを残し、別source_idで区別する。後から別のEXP-017の元ZIPを同じ実験番号へ置換しない。
 
-**保存ハンドシェイク（毎回）**
+## 6. Git-onlyでの完了判定とコミット前検査
 
-1. raw探索結果・実コード・実行環境・checkpoint/ログのmanifestを確定し、パスごとのSHA-256、サイズ、件数を記録する。ZIP化する場合は**ZIP全体と全member**のSHA-256とCRC/サイズを記録。
-2. バージョニング/削除保護のある外部ストレージに原本を書き込み、`archive_id`、保存場所URI、アップロード日時、保存期限、世代、アクセス権、保管媒体/複製先を領収記録として保存。**ChatGPT添付やGitHub Actions artifactのみは`verified_restore`を許可しない。**
-3. **アップロード元ではなく保管先から再ダウンロード**してSHA-256とZIP memberを照合。代表checkpointに対しrun metadataと6設定Cvが再ロード可能であることも試験（非信頼ZIPは安全な領域で展開、検証時のコードの実行には別許可）。
-4. `archive_status=verified_restore`と復旧テスト日時/ソフト/結果をGit台帳に記録して初めて元ローカルrawを整理対象に移す。**元ファイル自動削除は行わない**。研究証拠の削除・不可逆な移動は個別の所有者承認が必要。
-5. 保管先の障害・期限・アクセス不能・hash不一致が起きたら`archive_status=lost_or_unavailable|corrupted`の新しい監査記録を追加し、候補の根拠が欠けることを通知する。元の正常な過去記録は消さない。
+**保存完了条件**：重要候補の完全ベクトル、必須Aの全ファイル、必要なBの代表原証拠がGitに存在し、元ファイルのSHAとGit再取得内容が一致、6設定を読み込み数値再評価できることを確認。コミットやCI成功だけでは独立MNA/物理検証を主張しない。
 
-**保管期間の初期案（採用時に所有者決定）：** A/B/Cと昇格済みD・元公式rawは期限を定めず保全。E診断は関連不具合や再開エビデンスならD同等に保存し、それ以外は**少なくとも90日を目安**に保全してから削除審査。Fキャッシュは再生成可能かと原証拠に含まれないことを確認して整理。日数だけをトリガーとする削除・Git履歴改変は禁止。容量超過時は保持期間短縮でなく原本/副本の階層移動を検討。
+1. `plan`：探索前に分類（full_lpfかmatching_onlyか）、constraint SHA、seed、コード、上位K/反例保存規則と予測保存容量を宣言。
+2. `preflight`：元コードがGit commitから復元できるか確認、dirtyなら差分または源コードも保持。開始前に最小run manifest保存。
+3. `run`：ローカル`results/`へ原子書込み。重要な数値点の完全checkpointは失わないよう実行中に保存。
+4. `finalize`：全試行の件数と最良値を集計。元トレースのうち重要候補/失敗証拠を抽出してサイズ監査。
+5. `commit+verify`：Aおよび必要なBをGitへコミットし、SHA・ソース構成・制約/帯域一致・全6設定確認。**この時点までは元の一時ファイルを消さない**。
+6. `independent_validate`：検証は元探索とは別の結果JSON・条件SHA・検証器SHAで保存。共通格子数値や物理確認を実施していない場合は明記。
+7. `review`：formal/trial・閾値・strict/toleranceで分離した比較台帳に昇格。必要に応じてパレート生成。
 
-## 8. CIで導入する機械的ゲート
+将来のCIゲート（本書の追加だけでは未実装）：新規runだけのmanifest schema v2、全設定checkpoint completeness、同一候補・コード・shaの重複確認、容量予算の閾値表示、RUN status と集計整合。旧39 manifestは不変・互換保持。
 
-1. **new-manifest schema / preflight**：新規runだけ必須ID・条件SHA・帯域SHA・seed・コード/環境記録・mappingを検査。旧39 manifestには遡及適用しない。
-2. **finalize check**：実行/数値/物理/アーカイブの各状態を分離、回路ベクトルと設定数、証拠role・SHA・サイズ/所在、失敗・未収束の件数整合を検査。
-3. **candidate promotion**：正式/試験の混同、未保存ベクトル、source-only、wrong remap、tolerance-onlyをstrict候補へ昇格させない。既存候補監査と接続。
-4. **archive integrity**：Git保管なら実bytesをSHA-256検査。外部保管なら必要な認証で**保管先の実bytes**を検査。CIがアクセスできなければ`archive_not_reverified`と表示しPASSと同義にしない。
-5. **inventory and retention**：Git参照逆引き、旧manifestとoverlay整合、保管台帳の一意ID、重複内容を別役割で保持する理由、期限切れActions artifact参照の有無を検査。外部URLがあってもハッシュ一致なしでは保存証明としない。
+## 7. GitHub上の旧ブランチと全履歴の保存
 
-**CI軽量化:** push(main)・PRで重複実行しない。metadata/sha/分類の軽量検査を毎PR、RF高密度/独立MNAやバックアップ復元を重要成果・手動実行・定期監査に分ける。定期チェックを新設する場合もGitHub Actionsによる実際の実行結果が出るまで「実装済み」としない。
+- GitHubを唯一の保管場所とする以上、**期限付きActions artifactのGit bundleを恒久バックアップの代わりにしない**。
+- 既存mainと履歴が異なる旧6ブランチを削除する必要がある場合は、**先端SHAを指すGitHub上の保護対象tagまたはarchive ref**を新設し、`git fetch --tags`と`git fsck`で履歴が到達可能であることを確認してから削除の可否を個別審査する。タグ・refの生成自体が履歴保存であり、巨大なbundleをGitの中へコミットして二重保管しない。
+- archive refの移動・削除は禁止として運用。GitHub外部障害に対する別サイト冗長性を保証しないという**GitHub単独保管のリスクは受容**する。
+- **今回、旧branch・実験ファイル・Git履歴の削除は実施しない。** Tag/branch削除はユーザーの別承認が必要。
 
-## 9. 実験運用手順（提案）
+## 8. 導入順序と判定
 
-`plan`（実行しない）→ `preflight`（実効RF条件・コード/環境/seed・mappingハッシュ確定）→ `run`（rawファイルへ原子記録、シャード別checkpoint、定期スナップショット）→ `finalize`（成功/未収束/中断の内訳）→ `archive+verify_restore`（外部原本のハッシュ照合）→ `curate`（代表完全checkpointのGit登録）→ `independent_validate`（別実行・別証拠）→ `review`（条件別台帳/Paretoへ昇格）。
+- **G1：方針案と容量基準**（今回）：Git-only方針を文書・PRへ反映し、容量監査を追加。元実験未変更。
+- **G2：新規1件の端から端までの試行**（未実施）：preflight → run → 完全候補 → Git commit → Gitから再取得・数値追試 → 別validation overlay。証拠未保存時のエラーも検査。
+- **G3：重要な元添付の採否**（未実施）：RF-T004 ZIPは119KB弱。**1回だけ原ZIPをGitに保全**する案と、必要な元コード・局所探索要約・独立候補だけをGitへ整理する案を比較し、重要根拠を欠かさず最小化。raw ZIPを未保存のまま「保管完了」としない。
+- **G4：旧46ファイル・重複とログ整理**（未実施）：元39 manifest／源run出典／付随PR参照を再検証し、新旧保管階層を遡及変更せず整理案を作成。削除は別承認。
 
-長時間runは「毎Nタスクまたは一定時間」のcheckpoint間隔と再開pointを事前指定し、成果物配布の期限より前に**incremental backup**を確保する。中断やSIGTERMでも`partial`と最終checkpoint出典を残し、無条件の`completed`へ読み替えない。
-
-## 10. 旧資料の移行と導入順
-
-- **M0（本書のみ）:** 既存39実験のメタデータ不足・source-only・保管分離を記録。元manifest/生証拠は改変しない。RG-001は引き続き保留。
-- **M1（新規runの最小ルール）:** schema v2の追加仕様・preflight template/CIを新規runだけに適用し、manifest→checkpoint/evidence参照の整合を確保。旧索引は互換保持。
-- **M2（原本保管先確定）:** 専用の外部永続領域を選定し、少量のtrial ZIP・1つの模擬raw runでupload→download→全SHA→復旧を実地検証。適格性/運用費/容量/アクセス・機密性を評価。これができるまで保管先を**決定済み**と扱わない。
-- **M3（大規模探索への適用）:** WSL2/GitHub Actions runner双方にpreflight/finalize/archive/curationを導入し、新しい1実験をend-to-endで監査する。
-- **M4（旧データの非破壊整理）:** 当初46件、Git branch全履歴、source-only manifest6件を個別レビュー。十分な復元検証と所有者承認がない削除・history rewrite/force pushは禁止。
-
-## 11. 合意・完了基準（提案）
-
-- 少なくとも**新規1件の完全な実験**でrun前/後メタデータ、失敗・中断時のstatus、全設定回路ベクトル、Git候補、archive領収、外部原本の復元、独立MNA overlayまで一貫してPASS。
-- 証拠が消失した際に機械的に`unavailable`を表示し、`strict`結果を誤昇格させない。
-- 既存mainのRF制約・bands・39元manifest・raw evidenceに差分がない。
-- 所有者がアーカイブ先、保管期限、外部アクセス/費用、実際の削除を別途承認。
-- **最適化の記録方針の採用 ≠ リポジトリ保管最適化の完了 ≠ RF性能達成 ≠ Phase 3承認**。PR #53は所有者が明示するまでDraft/未マージを維持。
+**今回の文書化を、完全導入・研究結果の新規達成・正式RF制約の変更・Phase 3の開始・PR #53マージと混同しない。** EXP-017正式RF-F002の未回収0.301248245dBは引き続き保留。

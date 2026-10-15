@@ -26,16 +26,20 @@ class Phase2CurrentStatusTests(unittest.TestCase):
         self.assertIn("Phase 3", current)
         self.assertIn("未merge", historic)
 
-    def test_exp017_near_0301_is_report_only_and_never_promoted_to_catalog(self):
+    def test_exp017_near_0301_is_recovered_without_changing_original_sources(self):
         source = (ROOT / "experiments/chatgpt_topology_search/runs/EXP-017/README.md").read_text(encoding="utf-8")
         self.assertIn("30dB必須条件での近接値", source)
         self.assertIn("0.301248245", source)
         issues = {x["issue_id"]: x for x in read_csv("data/research_review_issues.csv")}
-        self.assertTrue(issues["RG-001"]["status"].startswith("open_"))
+        self.assertTrue(issues["RG-001"]["status"].startswith("resolved_"))
         self.assertEqual("EXP-017", issues["RG-001"]["affected_experiments"])
         self.assertIn("ZIP", issues["RG-001"]["problem"])
         curated = read_csv("data/research_candidate_register.csv")
-        self.assertFalse(any(abs(float(x["worst_il_db"]) - 0.301248245) < 1e-6 for x in curated))
+        near = [x for x in curated if x["catalog_id"] == "EXP017-LQW4-H30-NEAR"]
+        self.assertEqual(1, len(near))
+        self.assertEqual("formal", near[0]["constraint_class"])
+        self.assertEqual("RF-F002", near[0]["constraint_id"])
+        self.assertGreater(float(near[0]["worst_il_db"]), 0.30)
         older = json.loads((ROOT / "data/validation/exp017_20261012/checkpoints.json").read_text(encoding="utf-8"))
         self.assertEqual("RF-F001", older["candidate"]["formal_constraint_reference"])
         self.assertEqual("NONCANONICAL_UNAPPROVED", older["candidate"]["constraint_status"])
@@ -50,8 +54,8 @@ class Phase2CurrentStatusTests(unittest.TestCase):
         self.assertIn("RF-T004", notes)
         self.assertIn("14,001", notes)
         issues = {x["issue_id"]: x for x in read_csv("data/research_review_issues.csv")}
-        self.assertTrue(issues["RG-001"]["status"].startswith("open_"))
-        self.assertIn("RF-T004", issues["RG-001"]["problem"])
+        self.assertTrue(issues["RG-001"]["status"].startswith("resolved_"))
+        self.assertIn("RF-F002", issues["RG-001"]["problem"])
 
     def test_review_gates_are_traceable_without_fabricating_missing_metadata(self):
         issues = {x["issue_id"]: x for x in read_csv("data/research_review_issues.csv")}

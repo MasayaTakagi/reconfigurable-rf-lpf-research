@@ -63,10 +63,14 @@ class ParetoRegressions(unittest.TestCase):
 
     def test_register_groups_cannot_promote_trial_to_formal(self):
         view, summary = make_report()
-        self.assertEqual(13, summary["candidate_count"])
+        self.assertEqual(14, summary["candidate_count"])
         self.assertEqual(8, summary["comparison_group_count"])
         self.assertFalse(summary["formal_strict_rf_f002_il0p3_met"])
         by_id = {r["catalog_id"]: r for r in view}
+        recovered = by_id["EXP017-LQW4-H30-NEAR"]
+        self.assertEqual("formal", recovered["constraint_class"])
+        self.assertEqual("RF-F002", recovered["constraint_id"])
+        self.assertEqual("false", recovered["il_0p30_met_on_recorded_grid"])
         trial = by_id["EXP018-C13.667"]
         self.assertEqual("trial", trial["constraint_class"])
         self.assertEqual("RF-T004", trial["constraint_id"])

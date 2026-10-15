@@ -1,12 +1,12 @@
-# Phase 2 現行状況 — 2026-10-15 (JST) / main ad1cda8c
+# Phase 2 現行状況 — 2026-10-15 (JST) / main e069c70fd（PR #53統合後）＋RF-F002 EXP-017原データ回収追補PR
 
 > この節が現時点の開発状況の入口です。以下の2026-10-10～14の日付付き段落は**当時の計画・数値・PR状態の履歴**として保持しており、現在の未マージ状態や現行RF制約の宣言ではありません。現行数値制約は data/constraints/registry.json の正式 RF-F002、帯域は data/bands.csv。Phase 3は所有者の明示承認まで停止。
 
-## 次回新規実験の必須開始ゲート（PR #53準備中）
+## 次回新規実験の必須開始ゲート（PR #53統合済み）
 
 - **EXP番号は開始前にmainへ予約する。** [中央台帳と並列予約設計](experiment_number_reservation_policy_20261015.md)を参照。過去39実験と歴史的欠番EXP-018/019を保護し、次番号候補は**EXP-042（未予約）**。
 - GitHub Actionsから予約をmainのGit履歴へ非force pushで確定し、最新版mainを再取得してから実験を開始。重複pushは再採番、branch protectionで拒否された場合は予約用PRをmainへ反映するまで開始禁止。
-- **mainへ予約workflowが統合されるまで運用開始とは扱わない。** PR #53はDraft・未マージであり、今は新しい研究runを発行していない。Phase 2継続。
+- **予約台帳・workflowはPR #53でmainへ統合済み**。ただし手動予約workflowの本番実行は未検証。EXP-042は未予約。Phase 2継続。
 
 ## mainへ統合済みの作業と検査
 
@@ -17,11 +17,11 @@
 - [PR #52](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/52)：要レビュー46ファイルの根拠台帳（参照あり32、同一内容の別パスのみ9、元PR説明README5）、元PR #38の17ファイルSHA256照合、R1復旧ZIPのCRC確認。**元資料の削除・移動は0件**。
 - main ad1cda8cの[Phase 2 regression](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38651724459)：**PASS**。検査は保存証拠の完全な再現性やRF物理実装を保証するものではない。
 
-## 現行のRF数値評価（候補台帳13件の範囲）
+## 現行のRF数値評価（EXP-017の14件目を追補するPR）
 
 | 条件 | 台帳内の最小worst IL | 区分と限界 |
 |---|---:|---|
-| RF-F002正式 30dB | 0.381014385 dB | strict_finite_grid（保存候補） |
+| RF-F002正式 30dB | **0.301248245 dB** | **回収したEXP-017正式2可変C・strict_finite_grid**。独立9×9MNAで7001点/区間を検証。**IL 0.30dB未達** |
 | RF-F002正式 35dB | 0.378797914 dB | strict_finite_grid（保存候補） |
 | RF-F002正式 30dB | 0.318693189 dB | tolerance_only。H2/H3生値は30dBを微小に下回る |
 | RF-T004試験 35dB | 0.297114032 dB | 3可変C、strict_finite_grid。**正式RF-F002の達成ではない** |
@@ -30,9 +30,9 @@
 
 ## 重要な未解決ゲート
 
-1. **P0 / RG-001:** EXP-017のIL=0.301248245dBは**30dB要求のsource-reported局所点**。完全な回路ベクトルと6設定CvがGitHubで未確認。元のチャットZIP/ローカルソースは本作業で未回収。別の35dB候補のL/Cで代用不可。[追加出典調査](phase2_exp017_checkpoint_provenance_review_20261015.md)を参照。
+1. **RG-001／欠落ベクトル回収・独立有限格子追試済み:** 元正式RF-F002 ZIPを回収し、EXP-017の0.301248245dB・30dBの**完全23要素ベクトルと6設定Cv**を新ファイルへ記録。9×9独立MNAの7,001点×28区間で元値を再現、K SPD・電力保存PASS。[追補・元ソースの区別](phase2_exp017_checkpoint_provenance_review_20261015.md)を参照。IL目標と実装物理検証は**未達／未実行**、元ZIP全体のGit原本保存と全453最適化試行の再実行は**未実施**。
 2. **P0 / RG-003:** EXP-034～037の旧warm-start端子remap不備を修正後の成果と混同しない。実行基盤性能と回路性能を分離する。
-3. **P1 / RG-004・RG-008:** 統合候補台帳は13件の選別結果であり全成果網羅ではない。EXP-016/017/021/022/023/024の元manifestのevidence登録は0件（遡及改変せず補助索引あり）。
+3. **P1 / RG-004・RG-008:** 統合候補台帳は回収した正式候補を加えて14件（本追補PR反映時）の選別結果であり全成果網羅ではない。EXP-016/017/021/022/023/024の元manifestのevidence登録は0件（遡及改変せず補助索引あり）。
 4. **P1 / RG-005・RG-007:** **外部アーカイブは使用しない（ユーザー指示）**。現行main 731ファイル/約8.45MB。新規実験の完全候補と再現用最小証拠をGitHubへ保存し、全iterationログは原則保管しない[Git-only保存方針案](experiment_result_storage_policy_proposal_20261015.md)へ変更した。旧6ブランチの先端監査・一時Git bundle復元PASSだが、ブランチ削除は**承認とGitHub内archive ref保全**まで保留。RF-T004小容量ZIPは35member SHA登録済み・**元バイナリGit未収録**。[保管最適化監査](phase2_repository_optimization_review_20261015.md)を参照。
 5. **P1:** 候補間の周波数格子・独立MNAの共通条件での再比較、元試行環境・seedの再現性確認、物理SRF/寄生/EM・温度公差。新規解析を実行した場合は別検証記録として出典を固定する。
 

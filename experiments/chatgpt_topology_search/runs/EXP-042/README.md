@@ -78,3 +78,25 @@ The six area variants were SLSQP optimized and assessed on 1,001 points **per se
 **Interpretation:** Reducing chip area from 6 to 5⅓ (11.1%) and 4⅔ (22.2%) is numerically possible under RF-T005 30dB conditions, but **no area-optimized candidate meets the interim 0.8dB IL goal yet**. Best observed at area 5⅓ is 0.811306586dB; best at 4⅔ is 0.819564515dB. PCB-C replacements increase separate PCB pattern occupation; zero chip-cost is not zero RF parasitic/physical layout cost. Capacitor Q(f), exact PCB geometry/EM, L SRF, simultaneous k, robustness and variable IC implementation remain open.
 
 Permanent selected vectors have been curated under `checkpoints/pcb_cf1.json`, `checkpoints/pcb_both.json`, `checkpoints/cf1.json`. Trial resolved hash is held in `manifest.json`; complete candidate histories remain available as the cited time-limited Actions artifacts, not claimed as permanent Git source.
+
+
+## 2026-10-16 passband effective magnetic Q of 4L pcb_cf1 (driven L/R, not resonance mode Q)
+
+User follow-up: check the 4L winner's passband driven inductor effective Q, resistive power, harmonic attenuation and matching under mutual coupling. Original **chip area 5⅓**, H2/H3 ≥30dB, worst external-port IL **0.811306586dB** on 28×1001 saved grid. Under the physical chip row L0–L1–L3–L2, the adjacent k are **(+0.100000, +0.06018549, −0.100000)**: two of the three already saturate |k|=0.10.
+
+Driven passband Q definition (at fixed S2P, load, Vsource and RF-T005 Q25 chip L model): Q_L_eff = omega Re(I^H Lmatrix I)/(I^H Rmatrix I), Rii=omega Li/25. This is neither undriven LC modal Q nor overall loaded Q. The calculation uses independent **9×9 branch-current MNA** and exact saved 29-element checkpoint, with separate C Q80,Q40,Q80,Q40; Q35 tunables. Source numerical JSON **`passband_magnetic_q_probe.json`**, reproducibility source **`analyze_passband_q.py`** (its initial Actions workflow run 38822400076 **FAILED**, and log was unavailable; **do not** report that independent Python CI as PASS). The original checkpoint prior 9×9 independent 84-sample checks passed.
+
+| Pass sample | k(L1,L3) | Q_L_eff | coil ohmic dissipation mW | total external-port IL dB |
+|---|---:|---:|---:|---:|
+| B71 698MHz | 0.060185 original | 25.506389 | 0.236728 | 0.796022 |
+| B71 698MHz | 0.100000 forced | **25.714124** | 0.238496 | **0.794318** |
+| B28 803MHz | 0.060185 original | 25.482128 | 0.305714 | **0.811307** |
+| B28 803MHz | 0.100000 forced | **25.682031** | **0.308175** | 0.814157 |
+| B8 960MHz | 0.060185 original | 25.415969 | 0.309924 | **0.811307** |
+| B8 960MHz | 0.100000 forced | **25.550239** | **0.311184** | 0.815403 |
+
+Thus the original owner's thesis is **correct**: mutual k can raise passband energy-based Q above each L's Q25. Nevertheless its effect on actual I and total power loss is non-monotone: at 803/960MHz coil absolute dissipation and full-network IL grow when k(L1,L3) is forced to 0.1. At 698MHz the loaded IL locally improves despite bigger coil loss, due total matching redistribution. At B28 803MHz input S2P dissipates **0.293622mW**, output S2P **0.170445mW**, chip L **0.305714mW**, fixed C **0.021363mW**, IC C **0.056831mW**, reflection **0.004021mW**, output delivered **4.148006mW**, totalling **5mW** source available. The 9×9 power balance residual was <1e-14mW.
+
+28×31 grid with **no C/L retuning**, changing only k(L1,L3): original worst IL=0.811307, min H2/H3=30.02/30.02; forced +0.1 => worst IL=0.815403 and H2/H3 minima **21.355/23.254dB**, strictly **fails RF-T005 mandatory ≥30dB**. Middle-k=0 also fails 18.988/24.996dB; all k=0 has worst IL=0.803760 but H2/H3=15.080/17.232dB. This does **not** prove no retuned +0.1 design can work; only that mutual coupling is pivotal for stopband interference, not simply loss minimization.
+
+At B28 803MHz baseline RMS currents through (L0,L1,L2,L3) are approximately (12.415, 1.791, 0.714, 12.763)mA. The two smaller shunt branch currents imply limited mutual magnetic-energy contribution in this specific bridge topology. All results are Phase2 constant-Q lumped-model estimates, not measured part/SRF/EM performance. Phase3 remains paused.

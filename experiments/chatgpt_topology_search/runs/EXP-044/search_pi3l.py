@@ -2,9 +2,9 @@
 """EXP-044: three-chip-L pi network with two shunt-L resonators, RF-T005.
 
 All numbers are complete external input S2P @ LPF @ output S2P transducer IL.
-The schematic is not an ideal single shunt resonator: two inductively independent
-series arms each carry a parallel capacitance, while a tapped third L has a
-capacitive ground/feedback network. Supports six setting-dependent 3-pF IC Cs.
+The schematic has a central series L, two independent series-LC shunt legs,
+and a third adjustable capacitor branch. FAIR comparison: LQP02HV Q25 x3,
+GJM01 Q80 at most 2; no LQW04/Q33. Six RF-T005 states.
 Run with --variant two_gjm_pi / one_gjm_pi / zero_gjm_pi etc. A finite-grid result is not a bound.
 """
 import argparse
@@ -141,11 +141,11 @@ class Evaluator:
         }
 
 def seed_vector(ev,rng,j):
-    if ev.config=="three_gjm_pi" and np.all(ev.inductor_q==33.) and j==0:
+    if False and ev.config=="three_gjm_pi" and np.all(ev.inductor_q==33.) and j==0: # historical seed disabled
         ckpt=json.loads((HERE/"checkpoints"/"all_lqw04_3gjm_exact_28x1001.json").read_text())
         return np.asarray(ckpt["vector"],dtype=float)
-    # EXP-042 four-L bridge: approximately L0=2nH, L1_series=7nH,
-    # Lshunt ~ 15nH. Different random starts avoid artificial topology bias.
+    # Fair search seed (3x LQP02HV): approximately Ls=3.8nH, La=8.5nH,
+    # Lb=7nH. Other seeds must still be explored to avoid topology bias.
     Lbase=np.array([3.8,8.5,7.0])
     x=np.empty(26,float)
     x[:3]=Lbase*np.exp(rng.normal(0,.20 if j else .01,3))
@@ -180,6 +180,12 @@ def evaluate_objective(ev,x,target,weight):
         return 1.e7
 
 def search(config,policy,starts=4,maxiter=140,coarse=5,dense=301,seed=20261015,inductor_q=(25.,25.,25.)):
+    # User-approved fair-comparison gate (2026-10-16):
+    # LQW04(Q33) and GJM01 count>2 are historical/noncomparable only.
+    if tuple(float(v) for v in inductor_q)!=(25.,25.,25.):
+        raise ValueError("FAIR_COMPARISON: use 3x LQP02HV Q25; LQW04 forbidden")
+    if sum(t=="GJM" for t in CONFIGS[config][0])>2:
+        raise ValueError("FAIR_COMPARISON: no more than two GJM01 fixed caps")
     ev=Evaluator(policy,config,coarse,inductor_q)
     rng=np.random.default_rng(seed+sum(ord(c) for c in config))
     results=[]
@@ -255,7 +261,7 @@ def search(config,policy,starts=4,maxiter=140,coarse=5,dense=301,seed=20261015,i
 
 def main():
     ap=argparse.ArgumentParser()
-    ap.add_argument("--variant",required=True,choices=CONFIGS)
+    ap.add_argument("--variant",required=True,choices=[v for v,t in CONFIGS.items() if sum(x=="GJM" for x in t[0])<=2])
     ap.add_argument("--starts",type=int,default=4)
     ap.add_argument("--maxiter",type=int,default=140)
     ap.add_argument("--coarse",type=int,default=5)
@@ -273,6 +279,8 @@ def main():
     assert policy["coupling_limits"]["chip_chip_strong_adjacent_abs_k_max"]==0.1
     assert (HERE/"manifest.json").exists(), "Pre-run manifest missing"
     q=tuple(float(v) for v in a.inductor_q.split(','))
+    if q!=(25.,25.,25.):
+        ap.error("FAIR_COMPARISON: LQW04 is not permitted; use --inductor-q 25,25,25")
     result=search(a.variant,policy,a.starts,a.maxiter,a.coarse,a.dense,a.seed,q)
     file=a.output or ROOT/"results"/"EXP-044"/("search_"+a.variant+".json")
     file.parent.mkdir(parents=True,exist_ok=True)

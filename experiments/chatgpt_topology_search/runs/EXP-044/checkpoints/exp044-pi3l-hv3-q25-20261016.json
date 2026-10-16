@@ -1,0 +1,116 @@
+{
+  "experiment_id": "EXP-044",
+  "constraint_id": "RF-T005",
+  "phase": "Phase 2",
+  "candidate_id": "EXP044-PI3L-HV3-Q25-20261016",
+  "status": "executed_local_chebyshev_s2p_surrogate_only",
+  "variant": "two_gjm_pi",
+  "inductor_Q": [
+    25,
+    25,
+    25
+  ],
+  "inductor_series": [
+    "LQP02HV",
+    "LQP02HV",
+    "LQP02HV"
+  ],
+  "area_cost": 4.333333333333333,
+  "inductor_edges": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      1,
+      3
+    ]
+  ],
+  "physical_row": [
+    "La",
+    "Ls",
+    "Lb"
+  ],
+  "fixed_C_edges": [
+    [
+      2,
+      -1
+    ],
+    [
+      3,
+      -1
+    ],
+    [
+      0,
+      1
+    ]
+  ],
+  "fixed_C_types": [
+    "GJM_Q80",
+    "GJM_Q80",
+    "PCB_Q40"
+  ],
+  "variable_C_edges": [
+    [
+      2,
+      -1
+    ],
+    [
+      3,
+      -1
+    ],
+    [
+      0,
+      1
+    ]
+  ],
+  "vector_order": "Ls,La,Lb,CfL,CfR,CfB,k(Ls,La),k(Ls,Lb),then CvL,CvR,CvB x 6 settings (B71,B12,B28,B13+B14,B26,B8)",
+  "vector": [
+    9.49291033631,
+    8.671144999616,
+    7.249106612243,
+    0.868918678978,
+    0.686858602331,
+    0.2,
+    -0.030759463647,
+    -0.023312444117,
+    0.595513839593,
+    0.10047610737,
+    0.851285539295,
+    0.395419716402,
+    0.057329657982,
+    0.800639314034,
+    0.406652321596,
+    0,
+    0.724034292587,
+    0.253895474143,
+    0.108843161957,
+    0.28638874121,
+    0.144448478458,
+    0.116678428846,
+    0.211407978266,
+    0,
+    0,
+    0.139129339245
+  ],
+  "numerical": {
+    "worst_IL_db": 1.0035497240192015,
+    "min_H2_db": 30.0249999937272,
+    "min_H3_db": 30.024999998217076,
+    "grid": "28x301 local Chebyshev-S2P surrogate; 28x1001 dense verification pending for rounded vector"
+  },
+  "comparison": {
+    "EXP043_worst_IL_db": 0.8959933012075728,
+    "conclusion": "does not beat EXP-043 3L"
+  },
+  "limitations": [
+    "Not exact original S2P full-grid evaluation",
+    "No Q(f)/SRF/EM/physical coupling validation",
+    "Not independently 7x7 MNA verified at all 28x1001 points",
+    "Numerical 26-vector decimals truncated on export; re-evaluate full precision before claims"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "experiment": "EXP-042",
+  "status": "verified_finite_grid_not_optimization_converged",
+  "constraint_id": "RF-T005",
+  "topology": "C-H30p0002 parallel Cf2 and Cv2",
+  "parameter_checkpoint": "preliminary_js_5pt.json",
+  "grid_points_per_segment": 1001,
+  "segments": 28,
+  "pass30": true,
+  "pass35": false,
+  "metrics": {
+    "worst_il_db": 0.866435981207506,
+    "min_h2_db": 30.05092511878769,
+    "min_h3_db": 30.12192887625519,
+    "critical": {
+      "worst_il_db": {
+        "case": "B13+B14",
+        "frequency_mhz": 798,
+        "segment": 13
+      },
+      "min_h2_db": {
+        "case": "B13+B14",
+        "frequency_mhz": 1554,
+        "segment": 16
+      },
+      "min_h3_db": {
+        "case": "B26",
+        "frequency_mhz": 2547,
+        "segment": 23
+      }
+    }
+  },
+  "independent_check": {
+    "branch_current_MNA_points": 84,
+    "max_IL_discrepancy_db": 1.3358203432289883e-12,
+    "max_power_balance_residual_W": 1.1275702593849246e-17,
+    "negative_loss_samples": 0
+  },
+  "limitations": [
+    "finite-grid only",
+    "original image rounded values",
+    "no SRF, EM, Q(f), tolerance verification",
+    "no local optimizer convergence claimed"
+  ],
+  "date_utc": "2026-10-15T16:58:15.293Z"
+}

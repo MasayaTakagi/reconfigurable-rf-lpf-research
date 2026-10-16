@@ -101,3 +101,20 @@ def test_independent_elliptic_integral_matches_neumann():
         direct = circle_mutual(1e-3, (0., 0.), (distance_m, 0.), 1024)
         independent = circle_mutual_via_vector_potential(1e-3, distance_m)
         assert abs(direct - independent) < 1e-15
+
+
+def test_all_mode_non_degradation_inequality_is_exact():
+    # For k12=a, k13=b, k23=-c and I1=I2+I3, all-mode
+    # Q >= Q0 holds iff (a+b-c)^2 <= 4ab (plus a,b>=0).
+    from scipy.linalg import eigvalsh
+    for a, b, c in (
+        (.0550707939, .0460477729, .0680869053),  # displaced circle
+        (.01, .01, .10),  # correct signs, insufficient balance
+        (.05507, .05507, .05507),  # exact uniform gain
+    ):
+        k_mat = np.array([[1., a, b], [a, 1., -c], [b, -c, 1.]])
+        modes = eigvalsh(BRANCH_MAP.T @ k_mat @ BRANCH_MAP,
+                        BRANCH_MAP.T @ BRANCH_MAP)
+        psd_rule = (a + b - c)**2 <= 4*a*b
+        assert psd_rule == bool(modes.min() >= 1 - 1e-12)
+        assert np.linalg.eigvalsh(k_mat).min() > 0

@@ -1,0 +1,165 @@
+{
+  "experiment": "EXP-043",
+  "phase": "Phase 2",
+  "constraint_id": "RF-T005",
+  "date": "2026-10-15 UTC",
+  "execution": {
+    "status": "completed numerical nine local variants",
+    "github_actions_run_id": 38783493014,
+    "frequency_segments": 28,
+    "samples_per_segment": 1001,
+    "independent_validation": "7x7 branch-current MNA on 84 frequencies per candidate, no negative internal losses, power-conservation check PASS for all 9"
+  },
+  "baseline": "3 LQP02HV Q25, three fixed PCB Q40 each 0.2pF, three IC Q35 0..3pF, physical adjacent k <=0.1; mandatory fixed S2P input/out at 50ohm/60-j40ohm",
+  "formulation": "all fixed L/C, magnetic k and 18 tunable state settings optimized with 30.02 dB constrained SLSQP; 4 starts per case; values local best only",
+  "metrics": [
+    {
+      "variant": "baseline",
+      "chip_area": 3,
+      "worst_IL_db": 0.9442683633296806,
+      "min_H2_db": 30.019999999936424,
+      "min_H3_db": 30.01992300994975,
+      "rf_t005_compliant": true,
+      "source_artifact_id": 11997085291,
+      "source_run_id": 38783493014,
+      "independent_MNA_pass": true,
+      "strict_30db_finite_mesh_pass": true,
+      "interim_0p8db_met": false
+    },
+    {
+      "variant": "pcb_0p3_OFFSPEC",
+      "chip_area": 3,
+      "worst_IL_db": 0.9405830422745737,
+      "min_H2_db": 30.01999999994672,
+      "min_H3_db": 30.019503244903877,
+      "rf_t005_compliant": false,
+      "source_artifact_id": 11996169511,
+      "source_run_id": 38783493014,
+      "independent_MNA_pass": true,
+      "strict_30db_finite_mesh_pass": true,
+      "interim_0p8db_met": false
+    },
+    {
+      "variant": "pcb_0p5_OFFSPEC",
+      "chip_area": 3,
+      "worst_IL_db": 0.9359779354510884,
+      "min_H2_db": 30.019999999488263,
+      "min_H3_db": 30.019525736900516,
+      "rf_t005_compliant": false,
+      "source_artifact_id": 11996604013,
+      "source_run_id": 38783493014,
+      "independent_MNA_pass": true,
+      "strict_30db_finite_mesh_pass": true,
+      "interim_0p8db_met": false
+    },
+    {
+      "variant": "gjm_cf0",
+      "chip_area": 3.6666666666666665,
+      "worst_IL_db": 0.9191299627882659,
+      "min_H2_db": 30.01999999862086,
+      "min_H3_db": 30.01999999976075,
+      "rf_t005_compliant": true,
+      "source_artifact_id": 11997045299,
+      "source_run_id": 38783493014,
+      "independent_MNA_pass": true,
+      "strict_30db_finite_mesh_pass": true,
+      "interim_0p8db_met": false
+    },
+    {
+      "variant": "gjm_cf1",
+      "chip_area": 3.6666666666666665,
+      "worst_IL_db": 0.92978984594748,
+      "min_H2_db": 30.019999998603453,
+      "min_H3_db": 30.019999999495113,
+      "rf_t005_compliant": true,
+      "source_artifact_id": 11997280130,
+      "source_run_id": 38783493014,
+      "independent_MNA_pass": true,
+      "strict_30db_finite_mesh_pass": true,
+      "interim_0p8db_met": false
+    },
+    {
+      "variant": "gjm_cp",
+      "chip_area": 3.6666666666666665,
+      "worst_IL_db": 0.8961037943381701,
+      "min_H2_db": 30.019999998091205,
+      "min_H3_db": 30.019999999476244,
+      "rf_t005_compliant": true,
+      "source_artifact_id": 11996469406,
+      "source_run_id": 38783493014,
+      "independent_MNA_pass": true,
+      "strict_30db_finite_mesh_pass": true,
+      "interim_0p8db_met": false
+    },
+    {
+      "variant": "gjm_cf0_cf1",
+      "chip_area": 4.333333333333333,
+      "worst_IL_db": 0.9099117912066712,
+      "min_H2_db": 30.019999999883325,
+      "min_H3_db": 30.019999999827398,
+      "rf_t005_compliant": true,
+      "source_artifact_id": 11996199522,
+      "source_run_id": 38783493014,
+      "independent_MNA_pass": true,
+      "strict_30db_finite_mesh_pass": true,
+      "interim_0p8db_met": false
+    },
+    {
+      "variant": "gjm_cf0_cp",
+      "chip_area": 4.333333333333333,
+      "worst_IL_db": 0.8792446895976731,
+      "min_H2_db": 30.01999999543464,
+      "min_H3_db": 30.019999999988368,
+      "rf_t005_compliant": true,
+      "source_artifact_id": 11996003837,
+      "source_run_id": 38783493014,
+      "independent_MNA_pass": true,
+      "strict_30db_finite_mesh_pass": true,
+      "interim_0p8db_met": false
+    },
+    {
+      "variant": "gjm_cf1_cp",
+      "chip_area": 4.333333333333333,
+      "worst_IL_db": 0.8842672852363571,
+      "min_H2_db": 30.01999999938054,
+      "min_H3_db": 30.019999999886746,
+      "rf_t005_compliant": true,
+      "source_artifact_id": 11997000313,
+      "source_run_id": 38783493014,
+      "independent_MNA_pass": true,
+      "strict_30db_finite_mesh_pass": true,
+      "interim_0p8db_met": false
+    }
+  ],
+  "best_compliant": {
+    "variant": "gjm_cf0_cp",
+    "chip_area": 4.333333333333333,
+    "worst_IL_db": 0.8792446895976731,
+    "min_H2_db": 30.01999999543464,
+    "min_H3_db": 30.019999999988368,
+    "source_checkpoint": "checkpoints/gjm_cf0_cp.json",
+    "fixed_caps_pf": {
+      "Cf0_GJM_Q80": 2.4948929671322553,
+      "Cf1_PCB_Q40": 0.2,
+      "Cp_GJM_Q80": 1.348065784784747
+    },
+    "k": [
+      0.07380367533290422,
+      -0.024307590960767865
+    ],
+    "Cmax_used_pf": 2.6192043181846896
+  },
+  "next_control_study": {
+    "execution_state": "queued/completed FAILURE no numerical data verified",
+    "requested": "tight GJM0.2pF Q80 vs hypothetical high-C Q40 to distinguish capacitance from Q",
+    "github_actions_run_id": 38784302819,
+    "logs_access": "404 BlobNotFound",
+    "interpretation": "Results unavailable; do not attribute .879dB improvement to Q vs C individually"
+  },
+  "physical_limits": [
+    "PCB upper-bound diagnostic cases NOT RF-T005 compliant",
+    "Constant Q, L SRF, capacitor SRF, EM and physical coupling not validated",
+    "Finite frequency grid, local SLSQP, not proof global minimum",
+    "3-L optimum still above interim 0.8 dB objective"
+  ]
+}

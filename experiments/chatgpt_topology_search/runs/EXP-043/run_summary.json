@@ -1,0 +1,292 @@
+{
+  "experiment": "EXP-043",
+  "constraint_id": "RF-T005",
+  "status": "executed_finite_local_multi_topology_screening",
+  "phase": 2,
+  "source_conditions": "RF-F003 fixed SHA-verified two external S2P files, 50ohm source, 60-j40ohm load, 6 settings, 28 CSV segments",
+  "interim_IL_target_db": 0.8,
+  "mandatory_H2_H3_db": 30,
+  "nominal_35db_not_attained": true,
+  "chip_area_model": "LQP02=1 and GJM01=2/3; PCB_PATTERN_C=0; variable C=0; area ignores PCB real footprint",
+  "number_of_graph_variants_evaluated": 21,
+  "initial_starts_per_variant": 4,
+  "numerical_reference": {
+    "grid_points_per_csv_segment": 701,
+    "grid_coverage": "both pass and H2/H3 stop regions; no continuous-band proof"
+  },
+  "selected": "zero_gjm_double",
+  "selected_area": 3,
+  "selected_worst_IL": 0.9442683633443206,
+  "selected_min_H2": 30.019999999989203,
+  "selected_min_H3": 30.01992324296687,
+  "reference_EXP042": {
+    "variant": "pcb_cf1",
+    "area": 5.333333333333333,
+    "worst_IL_db": 0.8113065857640376,
+    "independent_verification": true
+  },
+  "independent_selected_check": {
+    "source": "GitHub Actions run 38779436797, 7x7 explicit current MNA on 84 samples per candidate",
+    "candidates": [
+      {
+        "id": "zero_gjm_double",
+        "worst_MNA_difference_db": 1.3855583347321954e-13,
+        "worst_power_imbalance_W": 7.806255641895632e-18
+      },
+      {
+        "id": "two_gjm_bridge",
+        "worst_MNA_difference_db": 1.7763568394002505e-13,
+        "worst_power_imbalance_W": 6.938893903907228e-18
+      }
+    ],
+    "pass": true
+  },
+  "known_limits": [
+    "3 pF tunable is active at boundary for B71 in zero_gjm_double",
+    "all three PCB pattern C are at 0.2pF physical pattern limit in selected optimum",
+    "constant Q, absent part SRF and EM, simultaneous k and tolerances not verified",
+    "21 locally optimized variants do not prove impossibility of IL <=0.8",
+    "additional tapped bridge capacitor sometimes goes near zero, collapsing apparent third eigenmode"
+  ],
+  "runs": 21,
+  "source_actions": [
+    38778406907,
+    38778917206,
+    38779344067,
+    38779860466,
+    38779436797
+  ],
+  "variants": [
+    {
+      "id": "zero_gjm_double",
+      "group": "3L_center",
+      "area": 3,
+      "worst_IL_db": 0.9442683633443206,
+      "min_H2_db": 30.019999999989203,
+      "min_H3_db": 30.01992324296687,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": true
+    },
+    {
+      "id": "two_gjm_bridge",
+      "group": "3L_center",
+      "area": 4.333333333333333,
+      "worst_IL_db": 0.9469490960159627,
+      "min_H2_db": 30.01999999987049,
+      "min_H3_db": 30.01999999966116,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": true
+    },
+    {
+      "id": "one_gjm_bridge",
+      "group": "3L_center",
+      "area": 3.6666666666666665,
+      "worst_IL_db": 1.4167568888813138,
+      "min_H2_db": 30.01999999997968,
+      "min_H3_db": 30.02000000004025,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "one_gjm_fork",
+      "group": "3L_center",
+      "area": 3.6666666666666665,
+      "worst_IL_db": 12.473763061686638,
+      "min_H2_db": 30.01999999999775,
+      "min_H3_db": 30.019342914072848,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "one_gjm_tap",
+      "group": "3L_center",
+      "area": 3.6666666666666665,
+      "worst_IL_db": 5.53793278665855,
+      "min_H2_db": 30.019999999993846,
+      "min_H3_db": 30.01999999998718,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "two_gjm_fork",
+      "group": "3L_center",
+      "area": 4.333333333333333,
+      "worst_IL_db": 11.171553893844425,
+      "min_H2_db": 30.019999999991175,
+      "min_H3_db": 30.01999999999385,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "zero_gjm_bridge",
+      "group": "3L_center",
+      "area": 3,
+      "worst_IL_db": 1.6672434391802562,
+      "min_H2_db": 30.019999999946492,
+      "min_H3_db": 30.019999999840444,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "shunt_in_twoGJM",
+      "group": "3L_relocated",
+      "area": 4.333333333333333,
+      "worst_IL_db": 1.2075812794055505,
+      "min_H2_db": 30.01999999994595,
+      "min_H3_db": 30.019999999736964,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "shunt_out_zeroBridge",
+      "group": "3L_relocated",
+      "area": 3,
+      "worst_IL_db": 2.4081150687994244,
+      "min_H2_db": 30.01999999956203,
+      "min_H3_db": 30.019999998566508,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "shunt_out_twoGJM",
+      "group": "3L_relocated",
+      "area": 4.333333333333333,
+      "worst_IL_db": 1.9188566529468745,
+      "min_H2_db": 30.019999999944773,
+      "min_H3_db": 30.01999999984113,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "shunt_in_zeroBridge",
+      "group": "3L_relocated",
+      "area": 3,
+      "worst_IL_db": 1.3960826443091299,
+      "min_H2_db": 30.019999999999808,
+      "min_H3_db": 29.953486669852385,
+      "finite_701_point_30db_pass": false,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "shunt_in_zero",
+      "group": "3L_relocated",
+      "area": 3,
+      "worst_IL_db": 1.4289950555882833,
+      "min_H2_db": 30.01999999999995,
+      "min_H3_db": 29.979322458698473,
+      "finite_701_point_30db_pass": false,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "shunt_out_zero",
+      "group": "3L_relocated",
+      "area": 3,
+      "worst_IL_db": 3.009742720855914,
+      "min_H2_db": 30.020000000195072,
+      "min_H3_db": 30.01999999975186,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "4L_oneGJM_ends",
+      "group": "4L_single_shunt",
+      "area": 4.666666666666667,
+      "worst_IL_db": 19.46232502493772,
+      "min_H2_db": 16.959719470222556,
+      "min_H3_db": 21.25680036312035,
+      "finite_701_point_30db_pass": false,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "4L_oneGJM_cross",
+      "group": "4L_single_shunt",
+      "area": 4.666666666666667,
+      "worst_IL_db": 3.5337479640669756,
+      "min_H2_db": 30.020000000000557,
+      "min_H3_db": 30.019999999999843,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "4L_noGJM_caps",
+      "group": "4L_single_shunt",
+      "area": 4,
+      "worst_IL_db": 6.189547829321432,
+      "min_H2_db": 30.01999999995016,
+      "min_H3_db": 30.019999999468553,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "4L_noGJM_bridge",
+      "group": "4L_single_shunt",
+      "area": 4,
+      "worst_IL_db": 17.51229169248019,
+      "min_H2_db": 30.01762502164376,
+      "min_H3_db": 30.020000003236973,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "zero_trap_out",
+      "group": "3L_third_mode_attempt",
+      "area": 3,
+      "worst_IL_db": 12.24770941024006,
+      "min_H2_db": 30.019999999999417,
+      "min_H3_db": 30.02000000000056,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "zero_trap_in",
+      "group": "3L_third_mode_attempt",
+      "area": 3,
+      "worst_IL_db": 1.0733727468918275,
+      "min_H2_db": 30.01999999997973,
+      "min_H3_db": 30.019999999992145,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "one_trap_out",
+      "group": "3L_third_mode_attempt",
+      "area": 3.6666666666666665,
+      "worst_IL_db": 13.152049534784929,
+      "min_H2_db": 30.02000000000693,
+      "min_H3_db": 30.019999999880916,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    },
+    {
+      "id": "two_trap_out",
+      "group": "3L_third_mode_attempt",
+      "area": 4.333333333333333,
+      "worst_IL_db": 1.0483326769718755,
+      "min_H2_db": 30.019999999773177,
+      "min_H3_db": 30.01999999911847,
+      "finite_701_point_30db_pass": true,
+      "interim_IL_0p8_pass": false,
+      "independent_7x7_MNA_done": false
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "experiment": "EXP-043",
+  "variant": "two_gjm_bridge",
+  "source_run": 38778406907,
+  "artifact": 11994353152,
+  "condition": "RF-T005 Phase 2",
+  "topology": "three LQP02HV with one shunt inductor; electrical L0(0,1),L1(1,2),Ls(1,3); adjacent k [L0-Ls,Ls-L1]",
+  "component_q": {
+    "L": 25,
+    "variable_C": 35,
+    "GJM": 80,
+    "PCB_C": 40
+  },
+  "area": 4.333333333333333,
+  "variables": "L0,L1,Ls,Cf0,Cf1,Cp,k01,k12,then Cv0,Cv1,Cv2 per setting [B71,B12,B28,B13+B14,B26,B8]",
+  "vector": [
+    3.6236524818105402,
+    6.833919979073653,
+    4.505099043832453,
+    2.0886969347358404,
+    0.5896559189816293,
+    0.19999999999999993,
+    0.04377856513364596,
+    -0.0651946972385956,
+    1.6458411191480005,
+    0.03968918570820869,
+    1.293064344286662,
+    1.545389083968069,
+    0.03331456133359637,
+    1.2191473549902767,
+    1.2950495873581767,
+    0.03589792228208098,
+    1.1315056986325656,
+    1.4359670397182784,
+    0.002330535431410327,
+    0.2786498527148732,
+    1.1663498797735998,
+    0.00005485674983606306,
+    0.23063929004149025,
+    0.8079395321263397,
+    1.262526155107308e-16,
+    0
+  ],
+  "verification_grid_points_per_csv_segment": 701,
+  "metrics": {
+    "worst_IL_db": 0.9469490960159627,
+    "min_H2_db": 30.01999999987049,
+    "min_H3_db": 30.01999999966116
+  },
+  "status": "executed_candidate_not_yet_independently_MNA_checked",
+  "limitations": [
+    "finite-grid",
+    "local non-global result",
+    "unverified physical/EM/SRF"
+  ]
+}

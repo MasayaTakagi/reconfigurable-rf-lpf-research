@@ -1,0 +1,148 @@
+{
+  "experiment": "EXP-043",
+  "date_UTC": "2026-10-15",
+  "phase": "Phase 2",
+  "constraint_id": "RF-T005",
+  "reference": "checkpoints/gjm_cp.json",
+  "question": "Lower area3+2/3 one-shunt 3L, GJM Cp, PCB Cf0/Cf1 worst IL under mandatory H2,H3>=30dB",
+  "execution_classification": "Direct numerical evaluation of saved S2P and checkpoint; setting-dependent-C-only coordinate search EXECUTED, 28x301 grid checked; independent 7x7 MNA NOT run on changed vector",
+  "reference_validated": {
+    "IL": 0.8961037943381701,
+    "minH2": 30.019999998091205,
+    "minH3": 30.019999999476244,
+    "source_run": 38783493014,
+    "independent_MNA_PASS": true
+  },
+  "reference_per_setting_301_point": [
+    {
+      "name": "B71",
+      "worstIL": 0.8495211000243146,
+      "minH2": 30.16897412404405,
+      "minH3": 30.01999999998703
+    },
+    {
+      "name": "B12",
+      "worstIL": 0.8853194855295328,
+      "minH2": 31.292044873769214,
+      "minH3": 32.936013429237654
+    },
+    {
+      "name": "B28",
+      "worstIL": 0.8961037943381738,
+      "minH2": 30.019999999627622,
+      "minH3": 30.019999999476244
+    },
+    {
+      "name": "B13+B14",
+      "worstIL": 0.8276999653235557,
+      "minH2": 33.519515810643846,
+      "minH3": 31.908344003023828
+    },
+    {
+      "name": "B26",
+      "worstIL": 0.8902799206778534,
+      "minH2": 30.02000000412111,
+      "minH3": 35.356642848137916
+    },
+    {
+      "name": "B8",
+      "worstIL": 0.8961037943284902,
+      "minH2": 30.019999998091215,
+      "minH3": 38.57221870337467
+    }
+  ],
+  "setting_only_search": {
+    "scope": "L0,L1,Ls,Cf0,Cf1,Cp,k01,k12 kept frozen, only 18 Cv by six settings adjusted",
+    "method": "bounded ± coordinate pattern search on 28x9 grid with 30.025dB internal harmonic margin (old B28/B8 boundary kept), dense 28x301 verification",
+    "result_worstIL_db": 0.8961037943381738,
+    "minH2_db": 30.019999998091215,
+    "minH3_db": 30.019999999476244,
+    "six_setting_worstIL_db": [
+      0.8493678107887246,
+      0.8830817411693599,
+      0.8961037943381738,
+      0.8200390897272782,
+      0.8902883501252112,
+      0.8961037943284902
+    ],
+    "new_Cv_by_setting_pF": [
+      [
+        0.4110019357493417,
+        2.998361915357506,
+        1.2497859710729589
+      ],
+      [
+        0.46233489124008725,
+        2.3726137482984244,
+        0.9627782751223735
+      ],
+      [
+        0.22742173886529893,
+        3,
+        0.9283565339664822
+      ],
+      [
+        0,
+        1.8931523802812869,
+        0.87178698474095
+      ],
+      [
+        0.07002770457646956,
+        1.6426400781076425,
+        0.5762027080324221
+      ],
+      [
+        0,
+        1.0971582748346878,
+        0.36108212451748756
+      ]
+    ],
+    "full_vector": [
+      3.29249833025766,
+      7.711225490155755,
+      4.972588626444102,
+      0.2,
+      0.2,
+      1.1612999744014958,
+      0.1,
+      -0.07153100064206193,
+      0.4110019357493417,
+      2.998361915357506,
+      1.2497859710729589,
+      0.46233489124008725,
+      2.3726137482984244,
+      0.9627782751223735,
+      0.22742173886529893,
+      3,
+      0.9283565339664822,
+      0,
+      1.8931523802812869,
+      0.87178698474095,
+      0.07002770457646956,
+      1.6426400781076425,
+      0.5762027080324221,
+      0,
+      1.0971582748346878,
+      0.36108212451748756
+    ],
+    "strict_30db_pass": true,
+    "IL0p8_pass": false,
+    "new_verified_MNA": false
+  },
+  "analysis": "B28 and B8 both at ~0.89610 IL and H2 or H3 near 30.02db; marginal Cv-only improvements other settings cannot reduce global worst. Need shared L,C,k and/or topology placement changes.",
+  "new_workflow": {
+    "script": "refine_one_gjm_cp.py",
+    "workflow": ".github/workflows/exp043_one_gjm_cp_refinement.yml",
+    "run": 38823582063,
+    "status": "all 8 jobs failed before any verified result",
+    "classification": "planned code, execution failed, no numerical result",
+    "cause": "Unknown (job logs unavailable)"
+  },
+  "not_validated": [
+    "continuous frequency global extremum",
+    "physical simultaneous L couplings",
+    "chip C Q(f), inductor SRF, RF PCB EM",
+    "newly retuned vector independent MNA"
+  ],
+  "phase_3": "Not authorized"
+}

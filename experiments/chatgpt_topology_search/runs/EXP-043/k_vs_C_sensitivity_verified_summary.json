@@ -1,0 +1,137 @@
+{
+  "experiment": "EXP-043",
+  "phase": "Phase 2",
+  "constraint_id": "RF-T005",
+  "classification": "executed numerical sensitivity; local SLSQP and finite dense mesh",
+  "source_action_run": 38782551270,
+  "source_artifact_id": 11996901214,
+  "source_artifact_sha256": "fa91ad4daae008f23f1cf67715be6a82c6c9628e09e1203555b6a4c8afd152fa",
+  "topology": "3 LQP02HV Q25, 3 PCB fixed C Q40, 3 variable C Q35, zero_gjm_double",
+  "frequency_mesh": {
+    "segments": 28,
+    "points_per_segment": 1001
+  },
+  "compliant_RF_T005_inputs": "variable C each 0..3pF, adjacent k within 0.1",
+  "direct_fixed_component_tests": [
+    {
+      "case": "saved",
+      "k": [
+        0.07936953715601942,
+        -0.08429740093791295
+      ],
+      "IL": 0.9442683633443218,
+      "H2": 30.019999999989203,
+      "H3": 30.0199230206908
+    },
+    {
+      "case": "both k zero",
+      "k": [
+        0,
+        0
+      ],
+      "IL": 0.9370485917038833,
+      "H2": 15.918220973111145,
+      "H3": 18.868522732455155
+    },
+    {
+      "case": "both k saturation",
+      "k": [
+        0.1,
+        -0.1
+      ],
+      "IL": 0.9502904552718762,
+      "H2": 27.038076757861084,
+      "H3": 27.66520681740262
+    },
+    {
+      "case": "first k saturation",
+      "k": [
+        0.1,
+        -0.08429740093791295
+      ],
+      "IL": 0.9483228157722963,
+      "H2": 27.845867709559062,
+      "H3": 29.1291251741401
+    },
+    {
+      "case": "second k saturation",
+      "k": [
+        0.07936953715601942,
+        -0.1
+      ],
+      "IL": 0.9463494407208077,
+      "H2": 28.85763523429636,
+      "H3": 28.405845475488007
+    }
+  ],
+  "retuning_cases": [
+    {
+      "case": "k free; Cmax 3",
+      "RF_T005_compliant": true,
+      "solver_success": true,
+      "k": [
+        0.07940407,
+        -0.08436595
+      ],
+      "IL": 0.9440804404308076,
+      "H2": 30.009999999892724,
+      "H3": 30.00991490622684,
+      "C_max_used": 3,
+      "notes": "B71 Cv1 saturates 3pF"
+    },
+    {
+      "case": "both k at ±0.1; Cmax 3",
+      "RF_T005_compliant": true,
+      "solver_success": true,
+      "k": [
+        0.1,
+        -0.1
+      ],
+      "IL": 0.9699090415876122,
+      "H2": 30.009999999364503,
+      "H3": 30.00999999990524,
+      "C_max_used": 2.869907487425983,
+      "notes": "3pF variable-C limit NOT ACTIVE in this forced-k optimum"
+    },
+    {
+      "case": "both k at ±0.1; Cmax 4",
+      "RF_T005_compliant": false,
+      "solver_success": true,
+      "k": [
+        0.1,
+        -0.1
+      ],
+      "IL": 0.9699090415814344,
+      "H2": 30.009999999152882,
+      "H3": 30.009999999608507,
+      "C_max_used": 2.9412279241424955,
+      "notes": "Diagnostic only, achieved capacitances below 3pF, no IL benefit; outside permitted search bounds despite achieved C <=3."
+    },
+    {
+      "case": "k free; Cmax 4",
+      "RF_T005_compliant": false,
+      "solver_success": true,
+      "k": [
+        0.08003985,
+        -0.05773506
+      ],
+      "IL": 0.9387653123664403,
+      "H2": 30.00999999991807,
+      "H3": 30.00999999999705,
+      "C_max_used": 4,
+      "example_variable_C": {
+        "B71_Cv1": 4,
+        "B28_Cv1": 3.74327961
+      },
+      "notes": "Out-of-spec diagnostic: +0.005315 dB improvement over compliant optimized Cmax3; k not pinned even after C relaxation."
+    }
+  ],
+  "interpretation": "k influences reactive resonances and S2P terminated matching, not diagonal chip-L dissipative R=omega L/Q under constant Q. C3 cap partly binds optimum but cannot explain absence of k saturation: forced full-k optimization has no max-C binding and worsens IL.",
+  "not_verified": [
+    "global constrained optimum",
+    "continuous-frequency extrema",
+    "part-specific SRF and Q(f)",
+    "simultaneous physical k implementation",
+    "independent MNA for newly reoptimized sensitivity vectors"
+  ]
+}

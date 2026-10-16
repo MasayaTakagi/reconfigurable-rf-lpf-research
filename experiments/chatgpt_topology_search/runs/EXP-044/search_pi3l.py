@@ -34,6 +34,7 @@ CONFIGS={
  "two_gjm_cross":(("GJM","GJM","PCB"),((2,-1),(3,-1),(2,3))),
  "one_gjm_cross":(("GJM","PCB","PCB"),((2,-1),(3,-1),(2,3))),
  "two_gjm_fork":(("GJM","GJM","PCB"),((2,-1),(0,3),(0,1))),
+ "three_gjm_pi":(("GJM","GJM","GJM"),((2,-1),(3,-1),(0,1))),
 }
 
 def incidence(edges):
@@ -65,6 +66,7 @@ def parse_bands():
 class Evaluator:
     def __init__(self,policy,config,points,inductor_q=(25.,25.,25.)):
         self.bounds,self.Q_C,self.area,self.BC=bounds_and_q(config)
+        self.config=config
         self.inductor_q=np.asarray(inductor_q,float)
         if self.inductor_q.shape!=(3,) or np.any(~np.isin(self.inductor_q,[25.,33.])):
             raise ValueError('Inductor Q series must be 25 (LQP02HV) or 33 (LQW04)')
@@ -139,6 +141,9 @@ class Evaluator:
         }
 
 def seed_vector(ev,rng,j):
+    if ev.config=="three_gjm_pi" and np.all(ev.inductor_q==33.) and j==0:
+        ckpt=json.loads((HERE/"checkpoints"/"all_lqw04_3gjm_exact_28x1001.json").read_text())
+        return np.asarray(ckpt["vector"],dtype=float)
     # EXP-042 four-L bridge: approximately L0=2nH, L1_series=7nH,
     # Lshunt ~ 15nH. Different random starts avoid artificial topology bias.
     Lbase=np.array([3.8,8.5,7.0])

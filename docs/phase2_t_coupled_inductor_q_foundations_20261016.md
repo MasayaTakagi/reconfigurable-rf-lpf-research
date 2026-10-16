@@ -7,13 +7,13 @@
 
 ## 1. 回路・電流の定義
 
-\`\`\`
+```
 IN ---- L1 ---- o ---- L2 ---- OUT
                  |
                  L3
                  |
                 GND
-\`\`\`
+```
 
 L1の電流 I1 は左→中央、L2の I2 は中央→右、L3の I3 は中央→GND。
 キルヒホッフ則: **I1 = I2 + I3**。相互インダクタンスは符号付き Mij = kij sqrt(Li Lj) と定義し、電流の参照向きとドット極性に整合すること。
@@ -107,4 +107,4 @@ Z_port = B^T (R+jωL) B。
 - IEEE Transactions on Microwave Theory and Techniques (2007), *Modeling and Characterization of On-Chip Transformers for Silicon RFIC*, DOI: 10.1109/TMTT.2007.893647（実測Sパラメータ・Q・結合モデル）。
 - IEEE Transactions on Microwave Theory and Techniques (2021), *An Improved Six-Port Equivalent-Circuit Model for Millimeter-Wave On-Chip Transformers With Accurate Coupling Factor Modeling*, DOI: 10.1109/TMTT.2021.3092342（mutual resistive coupling, substrate loss）。
 - IEEE Transactions on Industry Applications (2007), *Design of Equivalent Circuits and Characterization Strategy for n-Input Coupled Inductors*, DOI: 10.1109/TIA.2006.887001（n巻線のエネルギーに基づく等価回路）。
-- *Q-based design method for T network impedance matching* (2006), DOI: 10.1016/j.ijepes.2006.02.001 は、通常のシリーズL2個・シャントC1個のT整合回路の文献であり、本ノートのシリーズL2個・シャントL1個の3L構造の直接の先行実証ではない。混同しないこと。
+- *Q-based design method for T network impedance matching* (2006), DOI: 10.1016/j.mejo.2006.01.019 は、通常のシリーズL2個・シャントC1個のT整合回路の文献であり、本ノートのシリーズL2個・シャントL1個の3L構造の直接の先行実証ではない。混同しないこと。

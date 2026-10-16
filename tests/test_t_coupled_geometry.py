@@ -78,3 +78,26 @@ def test_one_coil_position_perturbation_keeps_gain_positive():
     assert abs(gains[0] - 1.04360810) < 1e-6
     assert abs(gains[1] - 1.06919555) < 1e-6
     assert np.linalg.eigvalsh(k).min() > 0
+
+# Independent 1D elliptic-integral vector-potential calculation.
+from scipy.special import ellipk, ellipe
+
+
+def circle_mutual_via_vector_potential(radius_m: float, separation_m: float,
+                                      samples: int = 4096) -> float:
+    theta = 2*np.pi*(np.arange(samples)+.5)/samples
+    rho = np.sqrt(separation_m**2 + radius_m**2 +
+                  2*separation_m*radius_m*np.cos(theta))
+    m = 4*radius_m*rho/(radius_m+rho)**2
+    a_phi = MU0/(np.pi*np.sqrt(m))*np.sqrt(radius_m/rho) * (
+        (1-m/2)*ellipk(m) - ellipe(m))
+    tangent_projection = radius_m*(radius_m+separation_m*np.cos(theta))/rho
+    return np.sum(a_phi*tangent_projection)*2*np.pi/samples
+
+
+def test_independent_elliptic_integral_matches_neumann():
+    for distance_mm in (2.05, 2.10, 2.50, 3.00):
+        distance_m = distance_mm * 1e-3
+        direct = circle_mutual(1e-3, (0., 0.), (distance_m, 0.), 1024)
+        independent = circle_mutual_via_vector_potential(1e-3, distance_m)
+        assert abs(direct - independent) < 1e-15

@@ -78,7 +78,10 @@ def main():
     ap.add_argument("--checkpoint",type=Path,required=True)
     ap.add_argument("--points",type=int,default=3)
     a=ap.parse_args()
-    out=verify(json.loads(a.checkpoint.read_text()),a.points)
+    candidate=json.loads(a.checkpoint.read_text())
+    if "vector" not in candidate and "selected" in candidate:
+        candidate=dict(candidate,vector=candidate["selected"]["vector"])
+    out=verify(candidate,a.points)
     print(json.dumps(out,indent=2),flush=True)
     if not out["PASS"]:raise SystemExit(2)
 

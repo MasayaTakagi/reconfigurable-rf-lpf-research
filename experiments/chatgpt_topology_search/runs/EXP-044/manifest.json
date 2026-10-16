@@ -383,31 +383,45 @@
     "stopband_nominal_target_db": 35,
     "passband_nominal_target_db": 0.3,
     "study_interim_target_db": 0.8,
-    "phase3": "not authorized"
+    "phase3": "not authorized",
+    "additional_validated_variant": "three_gjm_pi with LQW04 Q33 x3, GJM Q80 x3; area 11",
+    "observed_best_finite_grid_worst_IL_db": 0.8708673281216226,
+    "observed_min_H2_db": 30.019999977703943,
+    "observed_min_H3_db": 30.01994662920847,
+    "performance_worse_than_target_0p8": true
   },
   "bands_sha256": "1b1182e4c947059cb263c1af52ddf64236bd1fd9e83770cc844126576c7865fe",
   "execution": {
-    "status": "planned",
+    "status": "partial",
     "elapsed_seconds": null,
-    "evaluation_count": null
+    "evaluation_count": null,
+    "note": "Local SLSQP exploratory run and exact GitHub-main S2P 28x1001 verification completed; GitHub Actions attempts failed with empty step logs"
   },
   "validation": {
-    "numerical": "not_run",
-    "independent": "not_run",
+    "numerical": "passed_finite_grid",
+    "independent": "passed_85_sample_exact_original_S2P_7x7_MNA",
     "implementation": "not_run",
-    "analysis_grid": "not_run",
-    "independent_grid": "not_run"
+    "analysis_grid": "28 distinct CSV regions x 1001 samples, original immutable S2P; not continuous proof",
+    "independent_grid": "85 original frozen S2P probes, independent 7x7 current MNA versus 4x4 nodal Y, power conservation PASS"
   },
   "evidence": {
     "source_experiment": "EXP-043",
-    "numeric_output": "results/EXP-044/*.json (not yet generated)"
+    "numeric_output": "results/EXP-044/*.json (not yet generated)",
+    "candidate": "experiments/chatgpt_topology_search/runs/EXP-044/checkpoints/all_lqw04_3gjm_exact_28x1001.json",
+    "independent_validation": "experiments/chatgpt_topology_search/runs/EXP-044/independent_original_s2p_85point_mna.json",
+    "workflow_attempts": [
+      38908768631,
+      38908768691
+    ]
   },
   "limitations": [
-    "At creation this EXP-044 is planned and contains no verified RF-T005 pi design result.",
     "Main EXP-044 reservation was manually committed and independently reread from main before experiment source files were created.",
     "The GitHub reservation workflow remains limited to older approved RF choices; manual main write used as in EXP-042/043.",
     "No new optimum is claimed; fixed-cap layout, 3-L physics, and two-coupling sign feasibility require testing.",
     "Full-passband IL must be compared against EXP-043 strict 28x1001 0.8959933012dB benchmark.",
-    "Missing RF-T005 full-spectrum MNA independent validation, source SHA, CI run and experimental EM/Q(f)/SRF/power margin."
+    "Validated numerical best only at chip area11, not area-cost dominant vs EXP-043 area3⅔.",
+    "LQW04 part-specific Q(f), SRF and 2 simultaneous mutual couplings physically unverified.",
+    "Finite 28x1001 grid + separate 85-point independent MNA, no continuous-frequency extrema guarantee.",
+    "GitHub Actions matrix PR-run failed without any step details; result is from independent connector-backed in-chat computation, not Actions."
   ]
 }

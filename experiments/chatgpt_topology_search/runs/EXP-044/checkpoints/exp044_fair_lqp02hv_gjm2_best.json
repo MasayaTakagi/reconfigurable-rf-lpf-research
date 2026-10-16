@@ -1,0 +1,209 @@
+{
+  "experiment_id": "EXP-044",
+  "constraint_id": "RF-T005",
+  "phase": "Phase 2",
+  "candidate_id": "EXP044-FAIR-Q25-GJM2-PI3L-20261016",
+  "verification_status": "executed_local_chebyshev_S2P_surrogate_only; not formally validated against full original 1MHz S2P grid",
+  "comparability_policy": "LQP02HV x3 (Q=25), no LQW04, GJM01 fixed capacitors at most 2; equal RF-T005 termination and band constraints",
+  "chip_area_units": 4.333333333333333,
+  "inductors": {
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "series": [
+      "LQP02HV",
+      "LQP02HV",
+      "LQP02HV"
+    ],
+    "Q": [
+      25,
+      25,
+      25
+    ],
+    "L_nH": [
+      9.492910336309764,
+      8.671144999615636,
+      7.249106612243031
+    ]
+  },
+  "coupling": {
+    "physical_row": [
+      "La",
+      "Ls",
+      "Lb"
+    ],
+    "pairs": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "k": [
+      -0.030759463646654286,
+      -0.023312444116701095
+    ],
+    "k_other": 0
+  },
+  "fixed_caps": {
+    "edges": [
+      [
+        2,
+        -1
+      ],
+      [
+        3,
+        -1
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "types": [
+      "GJM01",
+      "GJM01",
+      "PCB_PATTERN_C"
+    ],
+    "C_pF": [
+      0.8689186789778501,
+      0.686858602331315,
+      0.19999999999957155
+    ],
+    "Q": [
+      80,
+      80,
+      40
+    ]
+  },
+  "variable_caps": {
+    "edges": [
+      [
+        2,
+        -1
+      ],
+      [
+        3,
+        -1
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "Q": 35,
+    "case_order": [
+      "B71",
+      "B12",
+      "B28",
+      "B13+B14",
+      "B26",
+      "B8"
+    ],
+    "values_pF": [
+      [
+        0.5955138395928653,
+        0.1004761073700894,
+        0.8512855392953034
+      ],
+      [
+        0.3954197164020755,
+        0.05732965798220047,
+        0.8006393140338012
+      ],
+      [
+        0.4066523215959462,
+        0,
+        0.7240342925872427
+      ],
+      [
+        0.25389547414265995,
+        0.10884316195682003,
+        0.2863887412100106
+      ],
+      [
+        0.14444847845834324,
+        0.11667842884588563,
+        0.2114079782662562
+      ],
+      [
+        0,
+        3.489237729692409e-13,
+        0.13912933924524412
+      ]
+    ]
+  },
+  "vector_order": "Ls_nH,La_nH,Lb_nH,CfL_pF,CfR_pF,CfB_pF,k_LsLa,k_LsLb, then CvL/CvR/CvB (pF) for six settings",
+  "vector": [
+    9.492910336309764,
+    8.671144999615636,
+    7.249106612243031,
+    0.8689186789778501,
+    0.686858602331315,
+    0.19999999999957155,
+    -0.030759463646654286,
+    -0.023312444116701095,
+    0.5955138395928653,
+    0.1004761073700894,
+    0.8512855392953034,
+    0.3954197164020755,
+    0.05732965798220047,
+    0.8006393140338012,
+    0.4066523215959462,
+    0,
+    0.7240342925872427,
+    0.25389547414265995,
+    0.10884316195682003,
+    0.2863887412100106,
+    0.14444847845834324,
+    0.11667842884588563,
+    0.2114079782662562,
+    0,
+    3.489237729692409e-13,
+    0.13912933924524412
+  ],
+  "metrics": {
+    "worst_IL_db": 1.0035497240192015,
+    "min_H2_db": 30.0249999937272,
+    "min_H3_db": 30.024999998217076,
+    "grid": "28 CSV intervals x 301 sample points, Chebyshev S2P surrogate",
+    "pass_IL_by_setting_db": {
+      "B71": 0.9907868970306091,
+      "B12": 0.950291994176581,
+      "B28": 1.0035497240192015,
+      "B13+B14": 0.9364789536884811,
+      "B26": 0.9960328883439052,
+      "B8": 1.0035497239806814
+    }
+  },
+  "baseline_exp043": {
+    "area_units": 3.6666666666666665,
+    "worst_IL_db": 0.8959933012075728,
+    "min_H2_db": 30.003263623111177,
+    "min_H3_db": 30.00586595367983,
+    "comparison": "does not beat baseline",
+    "IL_penalty_db": 0.1075564228116287
+  },
+  "limitations": [
+    "Not an exhaustive topology or global optimizer proof",
+    "Only local surrogate full-grid; original S2P directly evaluated at isolated critical frequencies in earlier local checks",
+    "Independent 7x7 MNA on this exact final vector over all 28x301/1001 grid not yet run",
+    "Constant-Q assumption, SRF/EM/physical coupling not checked",
+    "GJM2 means larger chip footprint than area3+2/3 comparator",
+    "H2/H3 margins ~0.025dB do not establish robust production."
+  ]
+}

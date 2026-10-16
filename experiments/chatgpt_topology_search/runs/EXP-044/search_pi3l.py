@@ -63,8 +63,12 @@ def parse_bands():
     return rows
 
 class Evaluator:
-    def __init__(self,policy,config,points):
+    def __init__(self,policy,config,points,inductor_q=(25.,25.,25.)):
         self.bounds,self.Q_C,self.area,self.BC=bounds_and_q(config)
+        self.inductor_q=np.asarray(inductor_q,float)
+        if self.inductor_q.shape!=(3,) or np.any(~np.isin(self.inductor_q,[25.,33.])):
+            raise ValueError('Inductor Q series must be 25 (LQP02HV) or 33 (LQW04)')
+        self.area+=2.*np.count_nonzero(self.inductor_q==33.)
         rows=parse_bands()
         freq=[];setting=[];role=[];segment=[]
         for seg,r in enumerate(rows):
@@ -87,7 +91,7 @@ class Evaluator:
         M=np.diag(L.copy())
         for (i,j),k in zip(((0,1),(0,2)),x[6:8]):
             M[i,j]=M[j,i]=k*np.sqrt(L[i]*L[j])
-        H=np.diag(L/25.)+1j*M
+        H=np.diag(L/self.inductor_q)+1j*M
         return BL@np.linalg.solve(H,BL.T),M,H
     def il(self,x):
         x=np.asarray(x,float)
@@ -170,8 +174,8 @@ def evaluate_objective(ev,x,target,weight):
     except (ValueError,np.linalg.LinAlgError,FloatingPointError,OverflowError):
         return 1.e7
 
-def search(config,policy,starts=4,maxiter=140,coarse=5,dense=301,seed=20261015):
-    ev=Evaluator(policy,config,coarse)
+def search(config,policy,starts=4,maxiter=140,coarse=5,dense=301,seed=20261015,inductor_q=(25.,25.,25.)):
+    ev=Evaluator(policy,config,coarse,inductor_q)
     rng=np.random.default_rng(seed+sum(ord(c) for c in config))
     results=[]
     for j in range(starts):
@@ -218,7 +222,7 @@ def search(config,policy,starts=4,maxiter=140,coarse=5,dense=301,seed=20261015):
         m=r["coarse"];g=max(0.,30.02-m["min_H2_db"],30.02-m["min_H3_db"])
         return (float(g>1e-5),g,m["worst_IL_db"])
     chosen=min(results,key=lex)
-    fine=Evaluator(policy,config,dense)
+    fine=Evaluator(policy,config,dense,inductor_q)
     fm=fine.summary(chosen["vector"])
     print("FINAL",config,"area",ev.area,"dense",fm,"PASS30",
           fm["min_H2_db"]>=30 and fm["min_H3_db"]>=30,
@@ -229,7 +233,7 @@ def search(config,policy,starts=4,maxiter=140,coarse=5,dense=301,seed=20261015):
        "variant":config,"L_connections":L_EDGES,"fixed_C_connections":CF_EDGES,
        "fixed_C_types":CONFIGS[config][0],
        "variable_C_connections":CONFIGS[config][1],
-       "physical_L_order":["La","Ls","Lb"],"adjacent_k_max":.1,
+       "physical_L_order":["La","Ls","Lb"],"inductor_Q":list(map(float,inductor_q)),"adjacent_k_max":.1,
        "variable_C_max_pF":3,"variable_C_Q":35,
        "chip_area_units":ev.area,
        "coarse_points_per_csv_interval":coarse,"verification_points_per_interval":dense,
@@ -253,6 +257,7 @@ def main():
     ap.add_argument("--dense",type=int,default=301)
     ap.add_argument("--seed",type=int,default=20261015)
     ap.add_argument("--output",type=Path)
+    ap.add_argument("--inductor-q",default="25,25,25",help="Ls,La,Lb intrinsic Q values 25=LQP02HV / 33=LQW04")
     a=ap.parse_args()
     from lpf.constraint_versions import load_constraint
     policy=load_constraint("RF-T005",allow_trial=True)
@@ -262,7 +267,8 @@ def main():
     assert policy["components"]["IC_VARIABLE_C"]["max_branches_principle"]==3
     assert policy["coupling_limits"]["chip_chip_strong_adjacent_abs_k_max"]==0.1
     assert (HERE/"manifest.json").exists(), "Pre-run manifest missing"
-    result=search(a.variant,policy,a.starts,a.maxiter,a.coarse,a.dense,a.seed)
+    q=tuple(float(v) for v in a.inductor_q.split(','))
+    result=search(a.variant,policy,a.starts,a.maxiter,a.coarse,a.dense,a.seed,q)
     file=a.output or ROOT/"results"/"EXP-044"/("search_"+a.variant+".json")
     file.parent.mkdir(parents=True,exist_ok=True)
     file.write_text(json.dumps(result,indent=2,ensure_ascii=False)+"\n")

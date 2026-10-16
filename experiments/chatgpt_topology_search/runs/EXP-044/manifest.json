@@ -388,18 +388,39 @@
     "observed_best_finite_grid_worst_IL_db": 0.8708673281216226,
     "observed_min_H2_db": 30.019999977703943,
     "observed_min_H3_db": 30.01994662920847,
-    "performance_worse_than_target_0p8": true
+    "performance_worse_than_target_0p8": true,
+    "user_fairness_gate_20261016": {
+      "required_inductors": "exactly 3 LQP02HV Q25; LQW04 forbidden for fair benchmark",
+      "max_fixed_gjm01": 2,
+      "variable_caps": "same RF-T005 3 branches 0..3pF Q35",
+      "physical_coupling": "2 neighboring pairs |k|<=0.1",
+      "compare_area": "EXP-043 area 3.6667; GJM2 pi area 4.3333",
+      "excluded_historical": "LQW04 Q33 and 3 GJM checkpoint results retained as history only; not eligible to beat benchmark"
+    },
+    "fair_best_local_surrogate": {
+      "checkpoint": "checkpoints/exp044_fair_lqp02hv_gjm2_best.json",
+      "worst_IL_db": 1.0035497240192015,
+      "min_H2_db": 30.0249999937272,
+      "min_H3_db": 30.024999998217076,
+      "area_units": 4.333333333333333,
+      "full_original_s2p_validation": "not_run"
+    }
   },
   "bands_sha256": "1b1182e4c947059cb263c1af52ddf64236bd1fd9e83770cc844126576c7865fe",
   "execution": {
-    "status": "partial",
+    "status": "partial_local_surrogate_screening_completed; Github Actions failed before steps",
     "elapsed_seconds": null,
     "evaluation_count": null,
-    "note": "Local SLSQP exploratory run and exact GitHub-main S2P 28x1001 verification completed; GitHub Actions attempts failed with empty step logs"
+    "note": "Local SLSQP exploratory run and exact GitHub-main S2P 28x1001 verification completed; GitHub Actions attempts failed with empty step logs",
+    "cadence": "EXPERIMENT_ID_RESERVED_ON_MAIN_EXP-044",
+    "local_fair_gjm_placement_cases": 10,
+    "local_fair_sign_ablation_cases": 16,
+    "github_actions_run_status": "failure no steps",
+    "executed_rf_t005_fair_full_original_s2p_run": false
   },
   "validation": {
-    "numerical": "passed_finite_grid",
-    "independent": "passed_85_sample_exact_original_S2P_7x7_MNA",
+    "numerical": "local Chebyshev-S2P screened 28x301, NOT full original S2P",
+    "independent": "historical high-Q candidate has 85-point original-S2P MNA; fair Q25 winning checkpoint full independent MNA not done",
     "implementation": "not_run",
     "analysis_grid": "28 distinct CSV regions x 1001 samples, original immutable S2P; not continuous proof",
     "independent_grid": "85 original frozen S2P probes, independent 7x7 current MNA versus 4x4 nodal Y, power conservation PASS"
@@ -412,7 +433,10 @@
     "workflow_attempts": [
       38908768631,
       38908768691
-    ]
+    ],
+    "fair_gate_document": "experiments/chatgpt_topology_search/runs/EXP-044/fair_comparison_gate_20261016.md",
+    "fair_checkpoint": "experiments/chatgpt_topology_search/runs/EXP-044/checkpoints/exp044_fair_lqp02hv_gjm2_best.json",
+    "fair_validation_test": "tests/test_exp044_fair_policy.py"
   },
   "limitations": [
     "Main EXP-044 reservation was manually committed and independently reread from main before experiment source files were created.",
@@ -422,6 +446,10 @@
     "Validated numerical best only at chip area11, not area-cost dominant vs EXP-043 area3⅔.",
     "LQW04 part-specific Q(f), SRF and 2 simultaneous mutual couplings physically unverified.",
     "Finite 28x1001 grid + separate 85-point independent MNA, no continuous-frequency extrema guarantee.",
-    "GitHub Actions matrix PR-run failed without any step details; result is from independent connector-backed in-chat computation, not Actions."
+    "GitHub Actions matrix PR-run failed without any step details; result is from independent connector-backed in-chat computation, not Actions.",
+    "Since 2026-10-16 owner expressly disallows LQW04 in performance competition, all Q33 numerical checkpoints are archival and not compared as wins.",
+    "GJM01 2 allowed, but π candidate area4.333 vs EXP043 area3.667; report Pareto cost.",
+    "Fair π Q25/GJM2 current best local surrogate IL1.003549724, does NOT beat EXP043 IL0.895993301.",
+    "Independent exact-original full-grid verification of fair best checkpoint is pending."
   ]
 }

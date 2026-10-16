@@ -1,0 +1,82 @@
+{
+  "candidate_id": "EXP042-pcb_cf1",
+  "experiment_id": "EXP-042",
+  "base_topology": "C-H30p0002; Cf2 parallel Cv2",
+  "constraint_id": "RF-T005",
+  "base_constraint_id": "RF-F003",
+  "original_action_run_id": 38775559008,
+  "source_artifact_id": 11993611323,
+  "status": "finite_grid_1001_per_segment_numerical_best_found; not physical qualification",
+  "L_series": [
+    "LQP02HV",
+    "LQP02HV",
+    "LQP02HV",
+    "LQP02HV"
+  ],
+  "chip_area_units": 5.333333333333333,
+  "PCB_pattern_C_count": 2,
+  "GJM01_count": 2,
+  "CF_Q_by_fixed_index": [
+    80,
+    40,
+    80,
+    40
+  ],
+  "tunable_Q": 35,
+  "tunable_C_bounds_pF": [
+    0,
+    3
+  ],
+  "physical_inductor_order": [
+    "L0",
+    "L1",
+    "L3",
+    "L2"
+  ],
+  "vector_order": "L0,L1,L2,L3,Cf0,Cf1,Cf2,Cp,k(L0-L1),k(L1-L3),k(L3-L2),Cv0,Cv1,Cv2 for B71,B12,B28,B13+B14,B26,B8",
+  "vector": [
+    2.167260661613276,
+    18.6422123291325,
+    21.542921585434353,
+    6.814365947708239,
+    3.0788222295432957,
+    0.2,
+    0.5355546489220763,
+    0.1939121340551198,
+    0.09999999999999996,
+    0.06018549127444663,
+    -0.0999999999999999,
+    0.571463452970501,
+    0.12152678963252792,
+    1.072752370643013,
+    0.30532250210623946,
+    0.09536209219702954,
+    1.471358712721476,
+    0.46716553899076185,
+    0.04842746677478945,
+    0.9197772135682876,
+    0.18571595787006873,
+    0.2511887066207075,
+    0.1654615263710131,
+    0.06735766380405078,
+    0.21409019977388702,
+    0.1941397811477295,
+    0.07209219627083502,
+    0.09977559316481487,
+    2.1163626405195508e-16
+  ],
+  "verification": {
+    "segments": 28,
+    "samples_per_segment": 1001,
+    "worst_IL_db": 0.8113065857640376,
+    "min_H2_db": 30.019999999450626,
+    "min_H3_db": 30.01999999999574,
+    "M_min_eig_nH": 2.142624171952032,
+    "independent_9x9_MNA_samples": 84,
+    "max_IL_difference_db": 1.5347723092418164e-12,
+    "max_power_balance_residual_W": 1.3010426069826053e-17
+  },
+  "interim_target_IL_db": 0.8,
+  "mandatory_harmonic_target_db": 30,
+  "remarks": "Finite local optimizer; Q(f), component SRF, EM, parasitics beyond fixed input/output S2P, tolerances and simultaneous chip-k feasibility not validated."
+}

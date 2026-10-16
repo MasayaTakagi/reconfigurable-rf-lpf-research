@@ -1,0 +1,87 @@
+{
+  "experiment": "EXP-042",
+  "condition": "RF-T005",
+  "source": "full frozen RF-F003 S2P",
+  "phase": 2,
+  "checks": [
+    {
+      "id": "EXP042-30m005",
+      "grid_points_per_segment": 7001,
+      "segments": 28,
+      "dense": {
+        "worst_il_db": 0.8051486682136992,
+        "min_h2_db": 30.049999992664343,
+        "min_h3_db": 30.049999999107712,
+        "critical": [
+          {
+            "case": "B8",
+            "frequency_mhz": 960,
+            "segment": 25
+          },
+          {
+            "case": "B26",
+            "frequency_mhz": 1628,
+            "segment": 22
+          },
+          {
+            "case": "B26",
+            "frequency_mhz": 2547,
+            "segment": 23
+          }
+        ],
+        "M_min_eig_nH": 2.064416872772229
+      },
+      "pass30": true,
+      "pass35": false,
+      "independent_MNA_points": 84,
+      "max_IL_difference_db": 3.410605131648481e-12,
+      "max_power_balance_residual_W": 1.474514954580286e-17,
+      "min_component_dissipation_W": 3.0257323963029874e-11
+    },
+    {
+      "id": "EXP042-35m005",
+      "grid_points_per_segment": 7001,
+      "segments": 28,
+      "dense": {
+        "worst_il_db": 0.8782237921796193,
+        "min_h2_db": 35.04999999836683,
+        "min_h3_db": 35.04999999679355,
+        "critical": [
+          {
+            "case": "B28",
+            "frequency_mhz": 803,
+            "segment": 9
+          },
+          {
+            "case": "B71",
+            "frequency_mhz": 1326,
+            "segment": 2
+          },
+          {
+            "case": "B8",
+            "frequency_mhz": 2640,
+            "segment": 27
+          }
+        ],
+        "M_min_eig_nH": 2.991434879475333
+      },
+      "pass30": true,
+      "pass35": true,
+      "independent_MNA_points": 84,
+      "max_IL_difference_db": 1.5631940186722204e-12,
+      "max_power_balance_residual_W": 1.0408340855860843e-17,
+      "min_component_dissipation_W": 8.695563092294295e-10
+    }
+  ],
+  "continuous_band_proof": false,
+  "physical_implementation_verified": false,
+  "provenance": {
+    "workflow_run": 38774922692,
+    "job_id": 116559976752,
+    "artifact_id": 11992359539,
+    "artifact_sha256": "",
+    "origin_file": "results/EXP-042/verification_7001.json",
+    "script": "experiments/chatgpt_topology_search/runs/EXP-042/verify.py",
+    "commit": "dbf6c2efd645c745aff4aca3b302e0f9d9223701"
+  }
+}

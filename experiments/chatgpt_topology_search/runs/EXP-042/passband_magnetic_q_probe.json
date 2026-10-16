@@ -1,0 +1,190 @@
+{
+  "experiment": "EXP-042",
+  "phase": "Phase 2",
+  "constraint_id": "RF-T005",
+  "variant": "pcb_cf1",
+  "source_checkpoint": "checkpoints/pcb_cf1.json",
+  "method": "Independent explicit complex 9x9 branch-current MNA, 5 LPF node voltages+4 chip-L currents, full mandatory two S2Ps, source 50ohm/1Vrms and load 60-j40ohm. Physical inductors order [L0,L1,L3,L2]. Magnetic Q equals omega*Re(I^H Lmatrix I)/(I^H R I), R_ii=omega Li/25. Reduced-ABCD original check confirms baseline IL exactly at 803MHz and 960MHz.",
+  "model": {
+    "L_Q": 25,
+    "CF_Q": [
+      80,
+      40,
+      80,
+      40
+    ],
+    "IC_Q": 35,
+    "k_neighborhood_pairs": [
+      "L0-L1",
+      "L1-L3",
+      "L3-L2"
+    ],
+    "chip_area": 5.333333333333333,
+    "chip_L_count": 4,
+    "PCB_C_count": 2,
+    "GJM_count": 2,
+    "k_bounds": [
+      -0.1,
+      0.1
+    ]
+  },
+  "validation": {
+    "source_Pavs_mW": 5,
+    "max_7way_power_balance_error_mW": 1e-14,
+    "independent_full_baseline_1001pt_per_segment": {
+      "IL": 0.8113065857640376,
+      "H2": 30.019999999450626,
+      "H3": 30.01999999999574
+    },
+    "reported_JS_MNA_passband_IL_at_803": 0.8113065857640399,
+    "reported_JS_MNA_passband_IL_at_960": 0.8113065857640246,
+    "js_basis": "independent 9x9 MNA using main-branch unchanged S2P content and checkpoint values"
+  },
+  "passband": [
+    {
+      "case": "B71",
+      "f_MHz": 698,
+      "normal": {
+        "Qeff": 25.50638932196362,
+        "P_L_mW": 0.23672762792263516,
+        "IL_dB": 0.7960221952769909
+      },
+      "k_mid_plus_point1": {
+        "Qeff": 25.71412445018381,
+        "P_L_mW": 0.238495934185888,
+        "IL_dB": 0.7943180565748693
+      }
+    },
+    {
+      "case": "B28",
+      "f_MHz": 803,
+      "normal": {
+        "Qeff": 25.482127895320616,
+        "P_L_mW": 0.30571358428160267,
+        "IL_dB": 0.8113065857640399,
+        "P_reflected_mW": 0.004020928011589289,
+        "P_inputS2P_mW": 0.2936215416022275,
+        "P_outputS2P_mW": 0.17044454032975453,
+        "P_fixed_C_mW": 0.0213630570257778,
+        "P_var_C_mW": 0.05683063676659579,
+        "P_load_mW": 4.148005711982454,
+        "L_branch_currents_mA": [
+          12.414670672992512,
+          1.7911797904339768,
+          0.7137361561877865,
+          12.762896256369793
+        ]
+      },
+      "k_mid_plus_point1": {
+        "Qeff": 25.68203139638264,
+        "P_L_mW": 0.30817470374614225,
+        "IL_dB": 0.8141568188737708
+      }
+    },
+    {
+      "case": "B26",
+      "f_MHz": 894,
+      "normal": {
+        "Qeff": 25.369518923504003,
+        "P_L_mW": 0.29410168925889235,
+        "IL_dB": 0.7826774283716835
+      },
+      "k_mid_plus_point1": {
+        "Qeff": 25.48002057713096,
+        "P_L_mW": 0.2950837904333332,
+        "IL_dB": 0.7842999587319437
+      }
+    },
+    {
+      "case": "B8",
+      "f_MHz": 960,
+      "normal": {
+        "Qeff": 25.415968710838605,
+        "P_L_mW": 0.30992422418253895,
+        "IL_dB": 0.8113065857640246
+      },
+      "k_mid_plus_point1": {
+        "Qeff": 25.550239036599017,
+        "P_L_mW": 0.31118357748823766,
+        "IL_dB": 0.8154034061258857
+      }
+    }
+  ],
+  "k_perturbation": {
+    "policy": "change only k(L1,L3), keep both saturating other k and all L/C/settings unchanged",
+    "variants": [
+      {
+        "case": "saved",
+        "k": [
+          0.1,
+          0.06018549127444663,
+          -0.1
+        ],
+        "IL": 0.8113065857640399,
+        "H2": 30.019999999450565,
+        "H3": 30.019999999995832
+      },
+      {
+        "case": "middle_at_+0.1",
+        "k": [
+          0.1,
+          0.1,
+          -0.1
+        ],
+        "IL": 0.8154034061258857,
+        "H2": 21.355173755670023,
+        "H3": 23.25379188413588
+      },
+      {
+        "case": "middle_at_0",
+        "k": [
+          0.1,
+          0,
+          -0.1
+        ],
+        "IL": 0.8101286562907948,
+        "H2": 18.988415120340928,
+        "H3": 24.99625492620264
+      },
+      {
+        "case": "middle_at_-0.1",
+        "k": [
+          0.1,
+          -0.1,
+          -0.1
+        ],
+        "IL": 0.816819218199301,
+        "H2": 11.515017005185193,
+        "H3": 16.683578648901822
+      },
+      {
+        "case": "all_k_zero",
+        "k": [
+          0,
+          0,
+          0
+        ],
+        "IL": 0.8037596240591327,
+        "H2": 15.080073407971977,
+        "H3": 17.231926274557125
+      }
+    ],
+    "frequency_sweep": "28 CSV frequency intervals x31 points, endpoints inclusive",
+    "warning": "Non-original k cases are NOT RF-T005 feasible at fixed C; no reoptimization performed."
+  },
+  "interpretation": [
+    "In the approved model mutual inductance is reactive: fixed Q of each L remains 25.",
+    "Driven magnetic Q can improve above 25 with favorable coupling relative phases, but coil RMS currents also change.",
+    "At B28 803MHz strengthening middle coupling raises magnetic Q 25.482→25.682 while absolute ohmic coil dissipation 0.305714→0.308175mW and IL 0.811307→0.814157dB.",
+    "The middle coupling k=0.060185... is deliberately constrained by H2/H3 notch positions and full-band minimax matching, not because Q improvement is impossible.",
+    "2/3 adjacent k saturated: L0-L1=+0.1 and L3-L2=-0.1.",
+    "The unequal branch current amplitudes (L1,L2 shunts << L0,L3 main transmission arms) bound achievable mutual energy fraction despite k=0.1."
+  ],
+  "limitations": [
+    "Local 31 point per range perturbation screen; baseline independently compared with prior 1001 point official checkpoint.",
+    "Fixed L and C for k perturbations: not a proof of reoptimized full-k feasibility.",
+    "No Q(f), SRF, EM, physical signed mutual feasibility, tolerance. S2P are fixed model not measurements.",
+    "A Python Actions reproducibility run 38822400076 failed with log unavailable; source script is available but CI PASS is not claimed."
+  ],
+  "code": "experiments/chatgpt_topology_search/runs/EXP-042/analyze_passband_q.py"
+}

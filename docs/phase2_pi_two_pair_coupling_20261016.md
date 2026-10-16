@@ -84,7 +84,7 @@ I=Z^{-1}AV,\quad
 \]
 で照合。全3ケースで複素電流一致1e−12A以内、電力保存残差1e−13W以内。有限数値ベンチであり、RF-F003全帯域の検証でも高調波仕様達成でもない。
 
-計算実装：`tests/test_pi_two_pair_coupling.py`、ローカル計算で期待結果を再確認。GitHub CI等の別実行状況は未確認。
+計算実装：元の1GHzベンチは会話環境の`pi_two_pair_foundation_check.py`で再現済み。GitHubに登録した追加検証は`tests/test_pi_zero_retarget.py`（零点2GHz固定の別ベンチ）。元ベンチ専用`tests/test_pi_two_pair_coupling.py`はGitHub未登録。GitHub CI等の実行結果は未確認。
 
 ## 4. 技術評価
 

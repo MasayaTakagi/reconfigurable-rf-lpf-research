@@ -382,5 +382,24 @@
       "metric_db": 30.019999917788805,
       "worst_freq_mhz": 2640
     }
-  ]
+  ],
+  "variant": "three_gjm_pi",
+  "inductor_Q": [
+    33,
+    33,
+    33
+  ],
+  "fixed_C_types": [
+    "GJM",
+    "GJM",
+    "GJM"
+  ],
+  "min_L_eigenvalue_nH": 6.194844934451552,
+  "independent_MNA": {
+    "status": "checked_on_high_accuracy_S2P_surrogate_only",
+    "points": 84,
+    "max_IL_difference_db": 2.7000623958883807e-13,
+    "max_power_balance_W": 9.498203954036097e-18,
+    "exact_original_S2P_MNA": "not_run_yet"
+  }
 }

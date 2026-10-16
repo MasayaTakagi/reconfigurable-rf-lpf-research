@@ -145,7 +145,7 @@ def seed_vector(ev,rng,j):
         low,high=ev.bounds[3+q]
         guess=[0.30,0.15,0.10][q]*np.exp(rng.normal(0,.65 if j else .02))
         x[3+q]=np.clip(guess,low,high)
-    x[6:8]=np.clip(rng.normal(0,.035 if j else .005,2),-.095,.095)
+    x[6:8]=np.clip(np.array([-.075,+.075])+rng.normal(0,.045 if j else .003,2),-.1,.1)
     case_amplitude=np.array([1.0,.94,.91,.82,.72,.65])
     for q in range(6):
         var=np.array([1.22,0.70,0.55])*case_amplitude[q]

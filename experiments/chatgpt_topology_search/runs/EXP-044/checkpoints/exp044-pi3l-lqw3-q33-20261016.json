@@ -1,0 +1,122 @@
+{
+  "experiment_id": "EXP-044",
+  "constraint_id": "RF-T005",
+  "phase": "Phase 2",
+  "status": "executed_local_chebyshev_s2p_surrogate_only",
+  "topology": "π-type 3L; electrical Ls(0,1), La(0,2), Lb(1,3); linear physical row La-Ls-Lb",
+  "variant": "two_gjm_pi",
+  "physical_row": [
+    "La",
+    "Ls",
+    "Lb"
+  ],
+  "fixed_C_edges": [
+    [
+      2,
+      -1
+    ],
+    [
+      3,
+      -1
+    ],
+    [
+      0,
+      1
+    ]
+  ],
+  "fixed_C_types": [
+    "GJM_Q80",
+    "GJM_Q80",
+    "PCB_Q40"
+  ],
+  "variable_C_edges": [
+    [
+      2,
+      -1
+    ],
+    [
+      3,
+      -1
+    ],
+    [
+      0,
+      1
+    ]
+  ],
+  "variable_C_Q": 35,
+  "vector_order": "Ls,La,Lb,CfL,CfR,CfB,k(Ls,La),k(Ls,Lb),then CvL,CvR,CvB for B71,B12,B28,B13+B14,B26,B8",
+  "external_S2P": "Chebyshev degree-9 surrogate from GitHub main immutable 0..6GHz originals, fitted 600..2800MHz; max complex-entry error ~7.70e-9 on sampled 1MHz grid. NOT official full-grid original S2P certification.",
+  "finite_grid": "28 separate CSV segments x 1001 points per segment, 6 fixed-state topology variants",
+  "independent_original_S2P_spot_checks_MHz": [
+    617,
+    803,
+    960,
+    1406,
+    2148,
+    2745
+  ],
+  "independent_model": "7x7 explicit branch-current complex MNA, separate from 4-node admittance Kron reduction; power residual <=7e-18 W on checked GHz spot points",
+  "requirements": "external 50ohm source, 60-j40ohm load, RF-F003 fixed input/output 2ports, 3 tunable C <=3pF and 2 physically-adjacent |k|<=0.1",
+  "limitations": [
+    "S2P approximate on 28x1001, not complete exact original-S2P independent sweep",
+    "Strong magnetic coupling among mixed LQP02HV/LQW04 physical packages, Q(f), SRF, EM, tolerance not checked",
+    "Margins ~0.002 to 0.020 dB at some H2/H3 points are inadequate for robustness",
+    "Unlike latest EXP043 the chip-area cost is much higher; numerical local screening does not prove technology benefit",
+    "GitHub Actions PR checks failed with no recorded run steps; local Python was executed independently",
+    "Not Phase 3, not measured, not formal RF-F003"
+  ],
+  "baseline": {
+    "source": "EXP-043 RF-T005 3L local checkpoint + independent 7x7 MNA",
+    "worst_IL_db": 0.8959933012075728,
+    "min_H2_db": 30.003263623111177,
+    "min_H3_db": 30.00586595367983,
+    "area_cost": 3.6666666666666665
+  },
+  "candidate_id": "EXP044-PI3L-LQW3-Q33-20261016",
+  "inductor_Q": [
+    33,
+    33,
+    33
+  ],
+  "inductor_series": [
+    "LQW04",
+    "LQW04",
+    "LQW04"
+  ],
+  "area_units": 10.333333333333334,
+  "vector": [
+    9.217200695847998,
+    7.7751813824881895,
+    7.83086946630042,
+    0.9303672112238311,
+    0.6406272206341604,
+    0.2,
+    -0.05921593751532863,
+    -0.018527589167804396,
+    0.1774321456494581,
+    0.08944567478651677,
+    1.153698658277093,
+    0.2321399711474947,
+    0.05668103748244486,
+    0.9437842745291255,
+    0.2995061334365739,
+    1.601809885809e-16,
+    0.8199166330841554,
+    0.244993190815565,
+    0.027500421730049542,
+    0.3174756850727148,
+    0.1284338895724007,
+    0.004145445300442539,
+    0.2676540520894443,
+    0,
+    7.051450682957428e-18,
+    0.19511541633138638
+  ],
+  "metrics": {
+    "worst_IL_db": 0.8896215553883247,
+    "min_H2_db": 30.01999999995451,
+    "min_H3_db": 30.019999999701557
+  },
+  "independent_spot_worst_B28_803_IL_db": 0.88962148,
+  "independent_spot_B8_960_IL_db": 0.8896215
+}

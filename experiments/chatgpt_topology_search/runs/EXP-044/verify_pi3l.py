@@ -17,7 +17,7 @@ def verify(candidate,points=3):
     if cfg not in source.CONFIGS:
         raise ValueError("This checker supports source search_3l variants only")
     p=load_constraint("RF-T005",allow_trial=True)
-    ev=source.Evaluator(p,cfg,points)
+    ev=source.Evaluator(p,cfg,points,candidate.get('inductor_Q',(25.,25.,25.)))
     x=np.array(candidate["vector"],float)
     assert len(x)==26
     B_L=source.BL; B_C=ev.BC

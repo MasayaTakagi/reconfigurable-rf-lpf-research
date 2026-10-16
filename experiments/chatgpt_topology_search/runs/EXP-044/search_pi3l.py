@@ -146,10 +146,16 @@ def seed_vector(ev,rng,j):
         guess=[0.30,0.15,0.10][q]*np.exp(rng.normal(0,.65 if j else .02))
         x[3+q]=np.clip(guess,low,high)
     x[6:8]=np.clip(np.array([-.075,+.075])+rng.normal(0,.045 if j else .003,2),-.1,.1)
-    case_amplitude=np.array([1.0,.94,.91,.82,.72,.65])
+    # Put the two independent shunt series-LC resonances initially near
+    # the H2 and H3 band centers; the optimizer moves transmission zeros.
+    h2_ghz=np.array([1.361,1.415,1.450,1.575,1.663,1.795])
+    h3_ghz=np.array([2.040,2.1225,2.176,2.360,2.4945,2.693])
     for q in range(6):
-        var=np.array([1.22,0.70,0.55])*case_amplitude[q]
-        if j: var=np.array([1.22,.70,.55])*case_amplitude[q]*np.exp(rng.normal(0,.7,3))
+        left_target=1000./((2*np.pi*h2_ghz[q])**2*x[1])
+        right_target=1000./((2*np.pi*h3_ghz[q])**2*x[2])
+        var=np.array([max(0.,left_target-x[3]),
+                      max(0.,right_target-x[4]),.55])
+        if j: var=var*np.exp(rng.normal(0,.50,3))
         x[8+3*q:11+3*q]=np.clip(var,0,3)
     return np.clip(x,ev.bounds[:,0],ev.bounds[:,1])
 

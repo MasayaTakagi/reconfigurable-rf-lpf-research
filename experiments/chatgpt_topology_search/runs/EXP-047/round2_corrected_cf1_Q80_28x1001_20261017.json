@@ -1,0 +1,107 @@
+{
+  "experiment_id": "EXP-047",
+  "condition": "RF-F003",
+  "phase": "Phase 2",
+  "base": "EXP-047 nested_loss_reduction_round2_20261017.json selected seed 0",
+  "model": "frozen original fixed external S2Ps, 50 ohm generator, 60-j40ohm load, Q25 chL Q80 GJM Q40 PCB Q35 tunable, signed neighbor |k|<=0.1",
+  "topology": "EXP-042 L0(0,1),L1(1,3),L2(1,4),L3(1,2); Cf0(0,1),Cf1(4,GND),Cf2(1,2),Cp(0,3); Cv0(3,GND),Cv2(1,2); Cv1 absent",
+  "chip_area": 6,
+  "vector_order": "L0..L3,Cf0..Cf2,Cp,k01,k13,k32,Cv0,Cv1(0 absent),Cv2 by B71 B12 B28 B13B14 B26 B8",
+  "vector": [
+    2.8620637892140897,
+    13.731704353199596,
+    14.82387369579421,
+    7.3141670390005675,
+    2.051169837242361,
+    0.47980580858538613,
+    0.4695514882873126,
+    0.14922891338268218,
+    0.09196,
+    -0.003596008916520968,
+    -0.1,
+    0.7446896644677942,
+    0,
+    1.1251337232284881,
+    0.5981320295190157,
+    0,
+    0.9773746390072398,
+    0.6138379028407659,
+    0,
+    0.905779117441273,
+    0.43055767236472775,
+    0,
+    0.5110878483380459,
+    0.37601519730363286,
+    0,
+    0.2654942569568136,
+    0.2286103391164062,
+    0,
+    0
+  ],
+  "grid": {
+    "regions": 28,
+    "pts_per_region": 1001,
+    "verified": {
+      "worst": 0.8596509086453454,
+      "h2": 30.146369910382546,
+      "h3": 30.260680291701814,
+      "byBand": [
+        {
+          "band": "B71",
+          "IL": 0.818967,
+          "H2": 30.14637,
+          "H3": 30.39999
+        },
+        {
+          "band": "B12",
+          "IL": 0.804545,
+          "H2": 30.23073,
+          "H3": 30.26068
+        },
+        {
+          "band": "B28",
+          "IL": 0.859651,
+          "H2": 30.18697,
+          "H3": 31.74939
+        },
+        {
+          "band": "B13+B14",
+          "IL": 0.776401,
+          "H2": 30.29625,
+          "H3": 33.33708
+        },
+        {
+          "band": "B26",
+          "IL": 0.832436,
+          "H2": 30.34458,
+          "H3": 31.05706
+        },
+        {
+          "band": "B8",
+          "IL": 0.855407,
+          "H2": 32.98719,
+          "H3": 31.49687
+        }
+      ]
+    }
+  },
+  "validation": {
+    "independent_solver": "explicit 9x9 5 nodes + 4 branch-current MNA vs reduced nodal Y and S2P ABCD",
+    "probes": 84,
+    "max_abs_il_db_difference": 1.9895196601282805e-13,
+    "max_power_balance_residual_W": 7.194697853978027e-18,
+    "min_component_power_W": 1.2029425998813854e-8,
+    "cholesky_SPD": true,
+    "min_cholesky_pivot_nH": 2.8620637892140897,
+    "bounds_ok": true,
+    "all_30db": true,
+    "all_35db": false
+  },
+  "limitations": [
+    "finite grid only, not continuous intervals proof",
+    "no independent MNA full frequency grid",
+    "real Q(f)/SRF, EM, tolerances, true k/dot layout and fixed S2P measurement not verified",
+    "local coordinate nested heuristic is not proven globally optimal"
+  ],
+  "correction": "Cf1 cap index1 GJM Q80; former EXP-047 numerical studies from 2026-10-17 had Q[5]=80 (absent Cv1), leaving Cf1 Q40 while allowing Cf1 capacitance above PCB maximum 0.2 pF; those numerical metrics are not RF-F003 compliant under the intended fixed-C component model"
+}

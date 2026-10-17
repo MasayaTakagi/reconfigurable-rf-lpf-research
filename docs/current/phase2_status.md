@@ -1,6 +1,6 @@
 # Phase 2：現行ステータス（2026-10-17）
 
-> **基準：** mainコミット `bdb39904379637aeca5cf56ec3096e9e1b15f62a` までに記録された研究。閲覧用要約であり数値正本ではない。以後の変更は [roadmap](../roadmap.md) と [制約レジストリ](../../data/constraints/registry.json) を確認する。
+> **基準：** 2026-10-17の[統合PR #71](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/71)マージ後main `055b222c79c73c7fbeacb19383f21c1da0625195`。このページは閲覧用要約であり数値正本ではない。以後の変更は[ロードマップ](../roadmap.md)と[制約レジストリ](../../data/constraints/registry.json)で確認する。
 >
 > **フェーズ：Phase 2継続。Phase 3への移行は所有者の明示的承認まで禁止。**
 
@@ -38,7 +38,7 @@
 - **未実行・未保証：** RF-F003対応の共通`full_lpf`ソルバー／ローカルrunnerによる網羅的な探索を完了した実績はない。連続帯域極値、Q(f)、SRF、EM、組立・温度・公差、実測、物理面積は未保証。S2Pは手書き回路のモデル由来。
 - **過去の数値：** RF-F002/ RF-T004のILや旧Q・可変C条件を、現行正式RF-F003の達成値として使わない。[履歴索引](../historical_results.md)。
 - **実験番号：** [番号予約レジストリ](../../data/experiment_number_registry.csv)ではEXP-042～047が予約済み、EXP-018/019は永久欠番。新規実験は必ずmainへ事前予約して照合する。今回の文書整理は新規EXPではない。
-- **既存CIの注意：** 2026-10-17の [Phase 2 regression](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39015048662) では、`audit_results.py`がEXP-047のmanifest共通必須フィールド不足を検出し失敗。全回帰PASSとは扱わない。対応状況は [未解決課題](open_research_questions.md) を参照する。
+- **回帰CIの確認済み範囲：** 旧run `39015048662` はEXP-047 manifest欠損で失敗した**当時の記録**。その後[統合PR #71のPhase 2 regression](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39028160775)は325件の単体テストを含め**マージ前SUCCESS**。原EXP-047 manifestは非標準のまま保全し、[出典固定の索引専用アダプター](../../src/lpf/legacy_manifest_adapter.py)を用いて照合する。元の実行SHA／seed／環境は未復旧であり完全な再現性を主張しない。マージ後mainのpush CIはこのページでは未確認。
 
 ## 次に確認する場所
 

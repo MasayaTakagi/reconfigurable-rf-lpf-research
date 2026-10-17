@@ -25,6 +25,9 @@ class ExperimentNumberLedgerTests(unittest.TestCase):
     def setUp(self):
         self.source = (ROOT / PATH).read_text(encoding="utf-8")
         self.rows = read_ledger(self.source)
+        next_n = int(self.rows[-1]['experiment_id'].split('-')[1]) + 1
+        self.next_id = f'EXP-{next_n:03d}'
+        self.following_id = f'EXP-{next_n + 1:03d}'
 
     def test_baseline_retired_gaps_and_new_id(self):
         self.assertGreaterEqual(len(self.rows), 41)

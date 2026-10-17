@@ -1,5 +1,7 @@
 # Phase 2：リポジトリ整理計画（2026-10-17）
 
+> **2026-10-17 W1追補（後日状態の注記）：** 本文冒頭の「整理計画のみ／未実施」と各Stepの未実施表現は**当初作成時点**の記録。Step 1～5の実装・検証は[統合PR #71](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/71)、mainマージコミット `055b222c79c73c7fbeacb19383f21c1da0625195`で反映済み。その後のPhase 2整理は[削除を含む新計画](phase2_repository_cleanup_and_deletion_plan_20261017.md)と[W0再監査](phase2_cleanup_w0_current_main_audit_20261017.md)へ移行。元の作成時の議論、数値、検証・未実行の区分は変更しない。
+
 > **状態：整理計画のみ／未実施。** 本文の作成は研究の新規実行・最適化・原本移動・削除・RF仕様変更を意味しない。実施前にはmainの最新コミットと監査結果を再確認する。
 >
 > **適用フェーズ：Phase 2継続。Phase 3は所有者の明示承認まで停止。**

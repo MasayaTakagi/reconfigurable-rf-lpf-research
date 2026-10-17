@@ -251,7 +251,7 @@ def main() -> None:
         top[row["area"]][1] += row["bytes"]
 
     report_lines = [
-        "# Step 1：最新main全追跡ファイル棚卸しと参照監査（2026-10-17）",
+        "# W0：現行main全追跡ファイル・静的依存監査（2026-10-17）",
         "",
         "> **実行済みの読み取り専用監査。** この文書は自動抽出結果であり、"
         "移動・削除・無参照証明・回路最適化・物理検証ではない。",
@@ -262,7 +262,7 @@ def main() -> None:
         f"- 静的参照として検出：**{len(edges)} edges**（text {len(sources)} filesを解析）",
         f"- 同一Git blob複数path：**{len(duplicates)} groups**（余分なpath {sum(len(v)-1 for v in duplicates.values())}件）",
         f"- 旧46要レビュー台帳に記録：**{len(triage)} paths**（現mainに存在：{len(triage & known)}）",
-        f"- 未解決候補のMarkdownローカルリンク：**{len(missing_markdown)}**（手動精査が必要）",
+        f"- 全テキスト抽出による未解決リンク候補（誤検知を含む）：**{len(missing_markdown)}**（手動精査が必要）",
         "",
         "## 1. ルート領域の個数・非圧縮サイズ",
         "",
@@ -320,7 +320,7 @@ def main() -> None:
         "実行時に生成される依存関係は調べていない。リンク抽出は保守的な静的ヒューリスティックであり"
         "未検出参照を根拠に消去してはならない。全tracked bytesはpack容量を表さない。",
         "",
-        "**現在の作業はStep 1の棚卸しのみ。研究Phase 2を維持し、Phase 3は開始しない。**",
+        "**現在の作業はW0再監査のみ。研究Phase 2を維持し、Phase 3は開始しない。**",
     ]
     if issues:
         report_lines += ["", "## 監査上の不整合（解決前に移動禁止）", ""] + [

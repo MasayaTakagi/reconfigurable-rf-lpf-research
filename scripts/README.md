@@ -7,8 +7,8 @@
 | 系統 | スクリプト | 主な役割 |
 |---|---|---|
 | RF候補の台帳監査 | [audit_research_catalog.py](audit_research_catalog.py) | 登録候補・元証拠と条件IDの健全性を監査 |
-| 候補・RF数値監査 | [audit_results.py](audit_results.py) | 実験manifest／候補などの監査。2026-10-17時点でEXP-047の必須manifest項目不足により回帰CI失敗（解決済みとは扱わない） |
-| 条件別パレート報告 | [report_research_pareto.py](report_research_pareto.py) | **旧候補台帳**`data/research_candidate_register.csv`から条件別グループを生成。2026-10-17の新パレート10点は未統合 |
+| 候補・RF数値監査 | [audit_results.py](audit_results.py) | 実験manifest／候補の通常監査。EXP-047は元manifestを変えない[限定legacy adapter](../src/lpf/legacy_manifest_adapter.py)による索引互換を使用（元実行情報は未完全） |
+| 条件別パレート報告 | [report_research_pareto.py](report_research_pareto.py) | 既定は現行`data/research_candidate_register.csv`。保存済み24件を比較するときは`--catalog data/catalog/phase2_candidate_catalog_20261017.csv`を明示し、異条件を混ぜない |
 | 研究証拠の参照棚卸し | [build_reference_inventory.py](build_reference_inventory.py) | Git追跡ファイル・manifest・候補台帳から証拠逆引きを構築 |
 | 未登録証拠のレビュー | [triage_unlinked_evidence.py](triage_unlinked_evidence.py) | 自動削除せず保全／個別レビューを分ける |
 | 実験inventory | [audit_experiment_inventory.py](audit_experiment_inventory.py) | EXPごとの登録・実行状態・証拠整合を確認 |
@@ -27,7 +27,7 @@ uv run --frozen python scripts/audit_results.py
 uv run --frozen python -m unittest discover -s tests -v
 ```
 
-ただし、**2026-10-17の既存回帰CIではEXP-047 manifestスキーマ不整合によって`audit_results.py`が失敗**している。単純に全CI PASSと表現しない。CIの実行結果は [既存のRun](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39015048662)を参照する。
+2026-10-17の[旧CI失敗run](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39015048662)はEXP-047の旧形式manifestが原因。その後の[PR #71最終Phase 2 regression](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39028160775)は325テストを含めSUCCESS。**元manifestは完全な標準形式へ置き換えておらず、元optimizer seed・実行環境・commitは不明**。CI成功を新しいRF探索実行や独立MNAの全面再実行と誤認しない。
 
 ## 保全と変更のルール
 

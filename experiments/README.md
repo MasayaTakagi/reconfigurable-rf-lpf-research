@@ -21,6 +21,8 @@
 
 **注：** 各実験の目的と保存された出典を示す表であり、全iterationの再現済み・最適化収束・物理実証の証明ではない。EXP-047の元manifestは標準の実行前provenance形式を満たさないが、[元blob固定の索引専用互換処理](../src/lpf/legacy_manifest_adapter.py)を通じて[PR #71回帰CI](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39028160775)は成功済み。旧形式の不明SHA/seed/環境は引き続き未確認（[現行の課題](../docs/current/open_research_questions.md)）。
 
+**EXP-004の旧Actionsへの導線（W1訂正）：** [Phase 2 target 0.40dB topology sweepをGitHub Actionsで開く](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/workflows/lpf-target040.yml)。原[EXP-004 README](chatgpt_topology_search/runs/EXP-004/README.md)の相対リンクは現行リポジトリでは切れているが、同READMEは元[EXP-004 manifest](chatgpt_topology_search/runs/EXP-004/manifest.json)のSHA-256固定証拠なので、原文を改変せず正しいURLを**本案内側で補正**している。W0リンク監査では当該1件を保全例外として記録し、解消済み・全リンク0件とは呼ばない。
+
 ## 原本、overlay、報告値の区別
 
 1. **元実験原本：** `runs/EXP-NNN/manifest.json` およびチェックポイント。実行条件、収束・中断、格子、失敗を当時の状態で保全する。

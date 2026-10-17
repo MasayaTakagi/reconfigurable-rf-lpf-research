@@ -121,7 +121,10 @@ def build_catalog(root=ROOT):
         if cid not in expected or condition["type"] not in SNAPSHOT_CLASSES:
             raise ValueError("unexpected snapshot constraint ID or class")
         kind = SNAPSHOT_CLASSES[condition["type"]]
-        constraint = registry["formal" if kind == "formal" else "trial"][cid]
+        registry_group = registry["formal" if kind == "formal" else "trial"]
+        if cid not in registry_group:
+            raise ValueError("constraint ID and declared type mismatch: " + cid)
+        constraint = registry_group[cid]
         if kind == "formal":
             if (constraint["effective_constraint_sha256"] !=
                     condition["effective_constraint_sha256"]):
@@ -250,7 +253,7 @@ def build_catalog(root=ROOT):
         "constraint_counts": dict(sorted(Counter(r["constraint_id"] or "historical"
                                                for r in records).items())),
         "snapshot_pareto_counts": dict(sorted(found.items())),
-        "verified_git_blob_sha_count": len(found) * 2,
+        "verified_git_blob_sha_count": sum(found.values()) * 2,
         "formal_rf_f003_il0p30_achieved": False,
         "trial_rf_t005_il0p30_achieved": False,
         "new_simulations_executed": False,

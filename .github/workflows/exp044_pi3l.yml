@@ -25,7 +25,6 @@ jobs:
           - two_gjm_cross
           - one_gjm_cross
           - two_gjm_fork
-          - three_gjm_pi
     env:
       OPENBLAS_NUM_THREADS: '1'
       OMP_NUM_THREADS: '1'
@@ -51,7 +50,7 @@ jobs:
       - name: Optimize coupled pi 3L under RF-T005
         run: |
           uv run --frozen python experiments/chatgpt_topology_search/runs/EXP-044/search_pi3l.py \
-            --variant ${{ matrix.variant }} --inductor-q ${{ matrix.variant == 'three_gjm_pi' && '33,33,33' || '25,25,25' }} --starts 2 --maxiter 80 --coarse 5 --dense 301 \
+            --variant ${{ matrix.variant }} --inductor-q 25,25,25 --starts 2 --maxiter 80 --coarse 5 --dense 301 \
             --seed 20261016 --output results/EXP-044/${{ matrix.variant }}.json
       - name: Independently check saved winning vector
         if: success()

@@ -521,6 +521,30 @@
         "k Ls-L1 +/-0.01",
         "IC Cv -1%"
       ]
+    },
+    "margin_pareto_study": {
+      "status": "executed_in_chat",
+      "source_files": [
+        "experiments/chatgpt_topology_search/runs/EXP-045/robust_cv_retune_inchat.js",
+        "experiments/chatgpt_topology_search/runs/EXP-045/robust_cv_retune_lowtarget_inchat.js",
+        "experiments/chatgpt_topology_search/runs/EXP-045/margin_0p03_hybrid_inchat.js",
+        "experiments/chatgpt_topology_search/runs/EXP-045/margin_0p03_independent_fullgrid_inchat.js",
+        "experiments/chatgpt_topology_search/runs/EXP-045/margin_0p03_tolerance_inchat.js"
+      ],
+      "margin_candidate_path": "experiments/chatgpt_topology_search/runs/EXP-045/margin_0p03_hybrid_candidate_20261017.json",
+      "independent_dense_check_path": "experiments/chatgpt_topology_search/runs/EXP-045/margin_0p03_independent_fullgrid_20261017.json",
+      "tolerance_101_grid_path": "experiments/chatgpt_topology_search/runs/EXP-045/margin_0p03_101point_tolerance_20261017.json",
+      "worst_IL_dB": 0.8955739167911114,
+      "min_H2_dB": 30.030018651170593,
+      "min_H3_dB": 30.030621824491913,
+      "independent_frequency_points": 28028,
+      "max_IL_difference_dB": 1.0658141036401503e-13,
+      "tolerance_scenarios": 12,
+      "passes_finite_30_nominal": true,
+      "passes_all_stresses": false,
+      "fully_independent_MNA_dense": "executed_in_chat",
+      "independent_F003_formal": "not_applicable_3_C_trial",
+      "nominal_IL_selected_unchanged": true
     }
   },
   "validation": {
@@ -540,6 +564,7 @@
     "Two electrically parallel 0.2pF Q40 PCB capacitor patterns require physical footprint, EM, SRF/Q(f), layout, and tolerancing checks.",
     "Manifest schema migration preserves pre-repair JSON in search_scope.original_archived_manifest and Git history; this is not a new RF solver run.",
     "Trial RF-T005 only; formal RF-F003 unchanged; Phase 3 not authorized.",
-    "2026-10-17 four-frequency tolerance diagnostics show 30dB failures for small single-parameter changes but neither cover all bands nor estimate manufacturing yield."
+    "2026-10-17 four-frequency tolerance diagnostics show 30dB failures for small single-parameter changes but neither cover all bands nor estimate manufacturing yield.",
+    "New 0.030dB-headroom 3L control was independently verified via explicit 5x5 MNA on 28x1001 but sensitivity shows failures under ±1% GJM/PCB perturbations and ±0.01 coupling; no physical tolerance claim."
   ]
 }

@@ -68,5 +68,36 @@
     "Continuous-band extrema, manufacturing tolerance, EM and measured RF performance unverified",
     "Historical 46-file source-context review remains open; no removal authorized",
     "These CI runs predate addition of this report; re-run for final branch commit"
-  ]
+  ],
+  "review_remediation_20261017": {
+    "status": "implemented_and_checked_in_integration_branch",
+    "scope": "historical audit corrected to remain reproducible after main advances",
+    "historical_main_sha": "bdb39904379637aeca5cf56ec3096e9e1b15f62a",
+    "source_immutability": "Step 4/5 compare against pinned main commit by git show/ls-tree, not by equality to origin/main",
+    "audit_files": "Step 3/4 pull_request CI checks committed outputs before any generation; read-only GitHub token",
+    "dated_catalog_archive_sources": [
+      {
+        "path": "data/catalog/research_candidate_register_20261017.csv",
+        "blob_sha1": "a0015088db4c8a243c0fa5a3e4000c4e47b3fddb"
+      },
+      {
+        "path": "data/catalog/constraints_registry_20261017.json",
+        "blob_sha1": "4363b99aae968c6573e286f7dc20ea32e959fe8b"
+      },
+      {
+        "path": "data/catalog/experiment_index_20261017.csv",
+        "blob_sha1": "4fb76382458436f0de1a1fd8083bd6d9d737d18d"
+      }
+    ],
+    "validated_commit": "7ed8e305ae992892c4d2a81d15c5d1533242d4df",
+    "step3_archive_ci": "https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39027871885",
+    "step4_archive_ci": "https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39027871809",
+    "step5_integration_ci": "https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39027871788",
+    "historical_integrated_tree_paths": 1092,
+    "historical_checked_markdown_links": 403,
+    "old_counts_in_root_fields": "All root-level scalar counts relate to original verification commit d1e8111 and must not be read as newest HEAD counts.",
+    "post_report_ci_check": "Latest PR and final merge commit checks must be verified separately before declaring final production status.",
+    "main_merged": false,
+    "phase3_started": false
+  }
 }

@@ -1,5 +1,8 @@
 # EXP-046 RF-T005 4L outer-shunt / inner-series layout exploration (2026-10-17)
 
+> **2026-10-17 追試で更新:** 物理配置 Shunt–Series–Series–Shunt の4LでRF-T005高調波≥30dB適合候補を発見。面積5⅓・IL 1.042184351dB、および面積6・IL 1.025722604dBを28×1001点と独立7×7MNAで検証した。**ただし既存EXP-042 0.811306586dBを更新していない。** これより下の「全新候補FAIL」は初期探索段階の歴史記録。
+
+
 **Phase 2 only. Status: exploratory, all new candidates fail mandatory H2/H3>=30dB. No valid IL improvement claimed.** Pre-run EXP-046 reservation was committed and reread in the main registry (reservation commit `3723eaca6d0174df720ed091e51fd1b7cd068693`). Formal RF-F003 remains unchanged; RF-T005 is the explicit 3-variable-C study.
 
 ## Question
@@ -84,3 +87,50 @@ At B28 803MHz, series1 loss partition for 1Vrms input source and 5mW available p
 - **Next analytical priority:** reduce phase-2 RF-T005 shunt-C and high-current L contributions, not merely maximize signed adjacent k. Explore lower-loss bridge-controlled stop-mode combinations and higher-dimension multi-start convergence; do not misclassify IL-only low-loss states failing 30dB as feasible.
 
 No formal RF-F003 condition was changed. Phase 2 remains active; Phase 3 remains paused.
+
+
+## 2026-10-17 後続探索実行結果（上記初期の不適合結果を更新）
+
+対象RF-T005／Phase 2のみ。現行の正式RF-F003は改定せず、固定入力S2P → LPF → 固定出力S2P、外部50Ω源・60−j40Ω負荷、28不連続周波数区間、LQP02HV Q25×4、可変C Q35×3・各0–3pFを維持。
+
+回路構成：主経路 Ls0(IN→center)–Ls1(center→OUT)、シャント LshL(IN→tipL) と LshR(OUT→tipR)。物理列は **LshL–Ls0–Ls1–LshR**。強結合可能ペア3組だけを使用し、全て|k|≤0.10、非隣接ペア公称0。可変C3枝はtipL-GND、tipR-GND、IN–OUTブリッジ。固定Cは左右シャント先端対GND、各シリーズL並列、および第3のPCB-CをシリーズLs1に並列配置。後者の最良配置はシリーズL磁気結合を活かしつつ高調波伝送零点を回復する。
+
+### 探索経過（実行済み）
+
+- 初期電気グラフ維持・物理L順序変更、単純π型、最初の容量枝移設は30dB違反。旧本文の不適合結果は削除しない。
+- 重要な最適化手法変更：共通L/C/kを変更する**たびに6設定それぞれの3可変Cを再同調する**内側探索を導入。固定回路だけを動かしCvをそのまま評価する単純手法で生じた局所停滞を緩和。初めて30dB適合点に到達。
+- 三つの可変C接続の後続選抜（スクリプト continuation_pi4l_feasibility.js / nested_retune_results.json）ではIL=1.181641528dB、H2=30.034554、H3=30.036219、チップ面積5⅓。
+- 第3 PCB固定Cの接続を10候補で比較。3バッチ計424,233回の評価、いずれも有限31点/区間で30dB達成。シリーズLs1並列PCB-Cが最良のIL=1.042184351dB／面積5⅓。
+- シリーズL並列PCB-CのGJM01/Q80置換で3構成・計133,964評価。GJM3個の面積6構成でIL=1.025722604dB。4GJM（面積6⅔）試験はIL=1.107864dBへ後退。高密度・独立検証は選抜候補のみ行った。
+
+### 同一RF-T005比較
+
+| 回路 | GJM / PCB-C数 | 面積 | 最悪IL dB | 最小H2/H3 dB | ステータス |
+|---|---|---:|---:|---|---|
+| 既存EXP-042 pcb_cf1 | 2 / 2 | 5⅓ | **0.811306586** | 30.0200 / 30.0200 | 既存独立検証済み |
+| 今回最初に30dB通過 total_bridge | 2 / 3 | 5⅓ | 1.181641528 | 30.034554 / 30.036219 | 28×1001 + 84点MNA |
+| 今回の最良同面積 series1 | 2 / 3 | 5⅓ | **1.042184351** | 30.034439 / 30.061801 | **28×1001 + 84点MNA PASS** |
+| 今回の面積6 CF3_GJM3 | 3 / 2 | 6 | **1.025722604** | 30.035708 / 30.060277 | **28×1001 + 84点MNA PASS** |
+| 今回の面積6 CF2_GJM3 | 3 / 2 | 6 | 1.043036282 | 30.034805 / 30.285153 | 28×31のみ |
+| 今回の面積6⅔ CF2_CF3_GJM4 | 4 / 1 | 6⅔ | 1.107863534 | 30.027463 / 30.103568 | 28×31のみ |
+
+完全30要素回路ベクトル・固定/可変枝・6設定CV：
+- [面積5⅓ checkpoint](checkpoints/series1_PCB3_area5p333.json)
+- [面積6 checkpoint](checkpoints/series1_GJM3_area6.json)
+
+高密度検証証跡： independent_verified_bridge_relocation_1001.json 、independent_verified_gjm3_cf3_1001.json。
+面積5⅓候補は隣接k=[+0.044,+0.100,−0.044]、面積6は[+0.044,+0.100,−0.019]。独立7×7枝電流MNAとノード縮約Y-ABCDが84点/候補で最大7.11×10⁻¹⁴dB以内で一致。確認点の電力収支残差最大4.16×10⁻¹⁷W、L行列最小固有値4.27nH超（SPD）。両者とも有限格子の必須30dBをPASSするが、公称35dBは未達。
+
+### シリーズL実効磁気Qと損失
+
+[シリーズL駆動Q・I²Rの保存結果](loaded_series_q_results.json) および analyze_loaded_series_q.js。外部S2P/50Ω/60−j40Ωに接続、1Vrms外部信号源で独立MNA解析。中央2シリーズLの k=+0.1 により、通過帯域7代表点で駆動磁気エネルギーQ≈27.491～27.492（単体Q25比約+10%）。4本全体の磁気エネルギーQは26.71～26.95。磁気Q改善は「コイル実直列抵抗が減った」とは異なり、ILの改善を保証しない。
+
+B28 803MHzで新4L同面積候補のチップL合計損失は約0.390219mW、既存EXP-042の約0.305714mWより大きい。B8 960MHzでも新4Lは約0.429622mW、既存約0.309924mW。主経路電流とシャント枝電流、整合損失が支配要因となっている。
+
+**診断コード修正記録:** 最初の independent_verified_1001.json は容量損失の会計式に 1/q*q と書いてしまい、誤って損失を半減した。LPF伝達IL/H2/H3は影響を受けず、容量電力会計のみが誤り。必ず修正ソース verify_independent_1001.js と independent_verified_1001_corrected.json を参照。元ファイルは訂正前証跡として保持。
+
+### 実行済みと未検証の区別
+
+本追試はGitHub mainから元のS2Pデータを取得したChatGPT内JavaScript数値実行で、プログラムと完全定数をmainへ保存した。**GitHub Actions成功・Python CI完了とは主張しない。** 新候補は独立枝MNA、電力保存、SPD、28×1001有限格子まで検証した。35dB公称条件、連続帯域極値、同時3組の物理結合実装、Q(f)/SRF、実部品寄生/EM、公差・温度、IC実装は未実施。いずれもPhase 2のモデル上の結果であり、Phase 3は未承認。
+
+**結論:** 外側シャントL/内側シリーズLでQを最大限利用する数値解は存在するが、この有限探索の最良ILは既存EXP-042を更新しない。面積5⅓基準0.811307dBへ近づくには、強結合によるQ比の改善以上に、シリーズL/シャントLの電流を減らしながらH2/H3零点を維持する新たな電気トポロジー合成が必要。

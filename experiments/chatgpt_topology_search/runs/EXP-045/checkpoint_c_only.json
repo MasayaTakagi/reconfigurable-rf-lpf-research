@@ -166,15 +166,16 @@
     "external_S2P_model_not_measured": true
   },
   "independent_validation": {
-    "LPF_branch_current_7x7_MNA_samples": 84,
     "maximum_Y_matrix_discrepancy_siemens": 3.817931396441887e-17,
     "minimum_Hermitian_LPF_Y_eig_siemens": 0.00009845978406688072,
     "minimum_full_L_matrix_eig_nH": 3.1979569408577118,
     "passivity_on_samples": true,
     "verified_in_container": true,
-    "full_external_S2P_independent_branch_MNA_not_yet_run": true
+    "full_external_S2P_independent_branch_MNA_not_yet_run": true,
+    "LPF_branch_current_5x5_dirichlet_MNA_samples": 84,
+    "method_note": "Full 4-node + 3-coupled-L-current formulation, port voltage Dirichlet excitation eliminates 2 known voltages; explicit internal solve is 5x5."
   },
-  "origin": "in-chat V8 original-S2P nodal Y/ABCD evaluation; 6-setting three-C Nelder-Mead local retune (3 orientations per setting, 120 iterations each), independent Python 7-branch MNA 84-point LPF-only check",
+  "origin": "in-chat V8 original-S2P nodal Y/ABCD evaluation; 6-setting three-C Nelder-Mead local retune (3 orientations per setting, 120 iterations each), independent Python 7-variable (5x5 port-clamped) branch-current MNA 84-point LPF-only check",
   "restrictions": [
     "RF-T005 trial only; does not constitute RF-F003 formal two-C result",
     "Nominal minimum H2/H3 margin ~0.003 dB; practically negligible robustness margin",

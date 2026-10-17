@@ -1,0 +1,117 @@
+{
+  "experiment_id": "EXP-046",
+  "phase": "Phase 2",
+  "constraint_id": "RF-T005",
+  "base_candidate": "bridge_cap_relocation_batch0_results.json series1",
+  "measurement": "Qeff=25*(Ih L I)/(Ih diag(L) I), normalized 1Vrms Thévenin source, 50ohm, load 60-j40, original input/output S2P",
+  "frequency_probes": [
+    {
+      "band": "B71",
+      "MHz": 698,
+      "IL_dB": 1.04180032955931,
+      "L_Qeff": 26.80611560054772,
+      "coil_mA": [
+        12.655164793945229,
+        12.62049991551891,
+        4.251559891166739,
+        3.0173645710679806
+      ],
+      "P_mW": {
+        "reflection": 0.12906616797263465,
+        "inputS2P": 0.3348821921723916,
+        "coil": 0.3182420014461854,
+        "capacitors": 0.12257988773742512,
+        "outputS2P": 0.16163177865188058,
+        "load": 3.933597972019483
+      },
+      "balance_error_W": 0
+    },
+    {
+      "band": "B28",
+      "MHz": 803,
+      "IL_dB": 1.0317411282603497,
+      "L_Qeff": 26.717283346956627,
+      "coil_mA": [
+        12.871462838740149,
+        12.826708146827183,
+        5.766176678112448,
+        1.6623126387916514
+      ],
+      "P_mW": {
+        "reflection": 0.06921407906526883,
+        "inputS2P": 0.2858352894645599,
+        "coil": 0.390217951007603,
+        "capacitors": 0.15000389728500205,
+        "outputS2P": 0.16200918610846832,
+        "load": 3.942719597069098
+      },
+      "balance_error_W": 0
+    },
+    {
+      "band": "B8",
+      "MHz": 960,
+      "IL_dB": 1.0335212053458396,
+      "L_Qeff": 26.71961414763099,
+      "coil_mA": [
+        12.645885343215411,
+        12.58241928985112,
+        4.391558422708194,
+        2.292290637434742
+      ],
+      "P_mW": {
+        "reflection": 0.06814766939455298,
+        "inputS2P": 0.2886756938510716,
+        "coil": 0.4296222722202177,
+        "capacitors": 0.11050526103935641,
+        "outputS2P": 0.1619452088962468,
+        "load": 3.9411038945985544
+      },
+      "balance_error_W": 0
+    }
+  ],
+  "grid31_perband": [
+    {
+      "band": "B71",
+      "minQ": 26.80611560054772,
+      "maxQ": 26.98878993690364,
+      "worstIL": 1.0421843514036793,
+      "coil_mW_max": 0.3182420014461854
+    },
+    {
+      "band": "B12",
+      "minQ": 26.877258379423314,
+      "maxQ": 26.99472543507903,
+      "worstIL": 0.9462964895202066,
+      "coil_mW_max": 0.33257062861904674
+    },
+    {
+      "band": "B28",
+      "minQ": 26.717283346956627,
+      "maxQ": 26.99938722846593,
+      "worstIL": 1.0317411282603497,
+      "coil_mW_max": 0.390217951007603
+    },
+    {
+      "band": "B13+B14",
+      "minQ": 26.9496514860334,
+      "maxQ": 27.060839113233737,
+      "worstIL": 0.8713837781254231,
+      "coil_mW_max": 0.3157127804738703
+    },
+    {
+      "band": "B26",
+      "minQ": 26.709135546068058,
+      "maxQ": 26.899508227966944,
+      "worstIL": 0.9802635821231497,
+      "coil_mW_max": 0.4170174070863575
+    },
+    {
+      "band": "B8",
+      "minQ": 26.71961414763099,
+      "maxQ": 26.900394310456637,
+      "worstIL": 1.0335212053458396,
+      "coil_mW_max": 0.4296222722202177
+    }
+  ],
+  "limitations": "Finite 28x31 sample of current-driven Q and power only; manufacturer Q(f), SRF, simultaneous coupling physics and EM unverified."
+}

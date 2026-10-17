@@ -43,4 +43,3 @@ jobs:
           name: exp042-4L-passband-magnetic-Q
           path: results/EXP-042/
           if-no-files-found: warn
-          if-no-files-found: warn

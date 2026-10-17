@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-045",
+  "phase": "Phase 2",
+  "objective": "full_lpf",
+  "constraint_class": "trial",
+  "constraint_id": "RF-T005",
+  "base_constraint_id": "RF-F003",
+  "effective_constraint_sha256": "59a451775ab4914cf9f0e51785ebfb62b36217af7735e7c93e9fe70f2323e67c",
+  "reservation_main_commit": "8fce735e2dbbccc098750230fa2752bbb9e2015a",
+  "reservation_request_key": "rft005-3l-t-loss-refine-20261017",
+  "state": "partial_numeric_local_search_with_independent_JS_7x7_MNA_pass",
+  "source_experiment": "EXP-043",
+  "source_checkpoint": "experiments/chatgpt_topology_search/runs/EXP-043/checkpoints/gjm_cp_local_H30p0032.json",
+  "search_engine": "V8 JavaScript running within live conversation, deterministic 26D coordinate pattern step, starts from recorded EXP043 vector",
+  "seed": "deterministic_existing_checkpoint",
+  "topology_trials": 2,
+  "targets_per_topology": 2,
+  "objective_evaluation_count": 1988,
+  "passband_stopband_coarse_samples_per_segment": 5,
+  "independent_full_grid_samples_per_segment": 301,
+  "independent_power_samples_per_segment": 3,
+  "complete_segments": 28,
+  "selected": [
+    "checkpoints/t3l_lowil.json",
+    "checkpoints/t3l_harmonic_margin.json"
+  ],
+  "python_recheck_status": "not_run",
+  "source_S2P_SHA256_recompute_status": "not_run_in_JS; pending_Python_recheck",
+  "phase3": "not_authorized",
+  "limitations": [
+    "local search only",
+    "continuous frequency extrema not certified",
+    "original frozen main S2P used but cryptographic digest not recomputed in JavaScript worker",
+    "L Q(f), SRF, EM, tolerances, coupling orientation physical feasibility not validated"
+  ],
+  "full_results_on_git_branch": true
+}

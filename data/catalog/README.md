@@ -4,7 +4,7 @@
 
 | データ系列 | 原本 | 件数 | 条件 |
 |---|---|---:|---|
-| 従来の選別候補 | [research_candidate_register.csv](../research_candidate_register.csv) | 14 | RF-F002／RF-T004等、条件・閾値別 |
+| 従来の選別候補 | [2026-10-17固定14件CSV](research_candidate_register_20261017.csv)（[現行台帳](../research_candidate_register.csv)から原blobを保存） | 14 | RF-F002／RF-T004等、条件・閾値別 |
 | 2026-10-17保存済み非支配候補 | [rf_t005_rf_f003_20261017.json](../pareto_snapshots/rf_t005_rf_f003_20261017.json) | 10 | RF-T005（trial）6件とRF-F003（formal）4件 |
 
 **統合24件**は[CSV](phase2_candidate_catalog_20261017.csv)でフィルタ可能です。原checkpointの相対パス／Git blob SHA、実行状態、記録済みの独立MNAプローブ点数、収束状態、パレートの条件別キーを含みます。[集計JSON](phase2_candidate_catalog_20261017_summary.json)と[人間向けレポート](../../docs/results/phase2_candidate_catalog_20261017.md)も参照してください。

@@ -21,6 +21,10 @@ ROOT = Path(__file__).resolve().parents[1]
 LEGACY = "data/catalog/research_candidate_register_20261017.csv"
 LEGACY_ORIGINAL_PATH = "data/research_candidate_register.csv"
 LEGACY_BLOB_SHA1 = "a0015088db4c8a243c0fa5a3e4000c4e47b3fddb"
+REGISTRY_SNAPSHOT = "data/catalog/constraints_registry_20261017.json"
+REGISTRY_BLOB_SHA1 = "4363b99aae968c6573e286f7dc20ea32e959fe8b"
+EXPERIMENT_INDEX_SNAPSHOT = "data/catalog/experiment_index_20261017.csv"
+EXPERIMENT_INDEX_BLOB_SHA1 = "4fb76382458436f0de1a1fd8083bd6d9d737d18d"
 SNAPSHOT = "data/pareto_snapshots/rf_t005_rf_f003_20261017.json"
 OUTPUT_CSV = "data/catalog/phase2_candidate_catalog_20261017.csv"
 OUTPUT_JSON = "data/catalog/phase2_candidate_catalog_20261017_summary.json"
@@ -101,7 +105,13 @@ def build_catalog(root=ROOT):
         if set(item) != set(BASE_COLUMNS):
             raise ValueError("legacy CSV schema changed unexpectedly")
     snap = read_json(root, SNAPSHOT)
-    registry = read_json(root, "data/constraints/registry.json")
+    # Freeze dated source metadata; active main policy and live experiment
+    # index may legitimately evolve after this historical snapshot.
+    for rel, expected in ((REGISTRY_SNAPSHOT, REGISTRY_BLOB_SHA1),
+                          (EXPERIMENT_INDEX_SNAPSHOT, EXPERIMENT_INDEX_BLOB_SHA1)):
+        if git_blob_sha1(safe_evidence(root, rel)) != expected:
+            raise ValueError("archived 2026-10-17 metadata blob changed: " + rel)
+    registry = read_json(root, REGISTRY_SNAPSHOT)
     if (snap.get("snapshot_id") != "AREA_IL_PARETO_RF_T005_RF_F003_20261017"
             or snap.get("phase") != "Phase 2" or snap.get("status")
             != "archived_best_found_non_dominated_observed_candidates"):
@@ -109,7 +119,7 @@ def build_catalog(root=ROOT):
     if registry.get("active_formal_id") != "RF-F003":
         raise ValueError("active formal RF constraint changed: review before reusing 2026-10-17 catalog")
     experiments = {x["experiment_id"]: x for x in
-                   rows_from_csv(root, "data/experiment_index.csv")}
+                   rows_from_csv(root, EXPERIMENT_INDEX_SNAPSHOT)}
     seen = {x["catalog_id"] for x in raw}
     if len(seen) != len(raw):
         raise ValueError("duplicate legacy catalog IDs")

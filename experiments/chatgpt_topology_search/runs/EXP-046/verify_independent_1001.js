@@ -127,7 +127,7 @@ function mnaProbe(x,conf,p){
  const I=Array.from({length:4},(_,i)=>sol[3+i][0]);
  let lossL=0,lossC=0;
  for(let j=0;j<4;j++)lossL+=om*L[j]*1e-9/25*n2(I[j]);
- for(let j=0;j<cc.length;j++){const[u,v]=cc[j],dif=v<0?V[u]:S(V[u],V[v]),q=Q[j];lossC+=om*cap[j]*1e-12/(q*(1+1/q*q))*n2(dif);}
+ for(let j=0;j<cc.length;j++){const[u,v]=cc[j],dif=v<0?V[u]:S(V[u],V[v]),q=Q[j];lossC+=om*cap[j]*1e-12/(q*(1+1/(q*q)))*n2(dif);}
  const Pin=y2[0][0][0]; // Vp=[1,0], port power Re(Vp* conj(Ip)), real Iin = Re(Y00)
  return {il,power_error_W:Pin-lossL-lossC,min_inductance_eig_nH:eigmin(ind),min_L_loss_W:lossL,min_C_loss_W:lossC};
 }
@@ -146,5 +146,5 @@ for(const z of candidates){
     independent_mna:{probes:checks,max_IL_difference_dB:maxMna,max_power_balance_residual_W:maxPower,min_L_matrix_eigenvalue_nH:minEigen,most_disagreeing:extremeProbe}});
 }
 text({experiment:"EXP-046",verification:"28x1001 original S2P and independently solved 7x7 branch-current LPF MNA on 84 points",results:detail.map(d=>({name:d.name,grid1001:d.grid1001,strict:d.strict30_1001,MNA:d.independent_mna}))});
-const path="experiments/chatgpt_topology_search/runs/EXP-046/independent_verified_1001.json";
-try{const u=await tools.mcp__GitHub__create_file({repository_full_name:ROOT,path,branch:"main",content:JSON.stringify({experiment_id:"EXP-046",phase:"Phase 2",constraint_id:"RF-T005",validation_type:"28 disconnected bands times 1001 + independent 7x7 branch-current MNA 84 probes each with complex loaded original frozen S2P and capacitor Qs",notes:"Finite grid only, not continuous extremum proof. 7x7 interior+4L branches plus 2 fixed port voltages, independent of optimizer's 4x4 L inverse and nodal Schur reduction. Constant-Q idealized parts, physical realization unverified",results:detail},null,2)+"\n",message:"Archive dense original-S2P and independent MNA validation of EXP-046 4L candidates"});text({saved:path,commit:u.result.commit_sha});}catch(e){text({save_error:String(e)});}
+const path="experiments/chatgpt_topology_search/runs/EXP-046/independent_verified_1001_corrected.json";
+try{const u=await tools.mcp__GitHub__create_file({repository_full_name:ROOT,path,branch:"main",content:JSON.stringify({experiment_id:"EXP-046",phase:"Phase 2",constraint_id:"RF-T005",validation_type:"28 disconnected bands times 1001 + independent 7x7 branch-current MNA 84 probes each with complex loaded original frozen S2P and capacitor Qs",correction:"This rerun supersedes independent_verified_1001.json: its diagnostic capacitor power calculation used 1/q*q (equals 1), instead of 1/(q*q). Transmission gain and IL/H2/H3 in both runs were unaffected.",notes:"Finite grid only, not continuous extremum proof. 7x7 interior+4L branches plus 2 fixed port voltages, independent of optimizer's 4x4 L inverse and nodal Schur reduction. Constant-Q idealized parts, physical realization unverified",results:detail},null,2)+"\n",message:"Archive dense original-S2P and independent MNA validation of EXP-046 4L candidates"});text({saved:path,commit:u.result.commit_sha});}catch(e){text({save_error:String(e)});}

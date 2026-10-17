@@ -102,13 +102,19 @@ class UnifiedCatalogTests(unittest.TestCase):
                          catalog.as_markdown(records, summary))
 
     def test_opt_in_pareto_reports_24_with_old_default_unchanged(self):
-        old, old_summary = pareto.make_report()
+        current_old, current_summary = pareto.make_report()
+        archived_old, archived_summary = pareto.make_report(catalog_path=catalog.LEGACY)
         combined, newer = pareto.make_report(catalog_path=catalog.OUTPUT_CSV)
-        self.assertEqual(14, len(old))
-        self.assertEqual(14, old_summary["candidate_count"])
+        # The default follows the evolving live source; the 2026-10-17
+        # historical subset remains independently pinned to exactly 14 rows.
+        self.assertEqual(len(current_old),
+                         len(catalog.rows_from_csv(catalog.ROOT, "data/research_candidate_register.csv")))
+        self.assertEqual(current_summary["candidate_count"], len(current_old))
+        self.assertEqual(14, len(archived_old))
+        self.assertEqual(14, archived_summary["candidate_count"])
         self.assertEqual(24, len(combined))
         self.assertEqual(24, newer["candidate_count"])
-        self.assertEqual(old_summary["comparison_group_count"] + 2,
+        self.assertEqual(archived_summary["comparison_group_count"] + 2,
                          newer["comparison_group_count"])
         for cid, expected in (("RF-T005", 6), ("RF-F003", 4)):
             matching = [r for r in combined if r["constraint_id"] == cid]

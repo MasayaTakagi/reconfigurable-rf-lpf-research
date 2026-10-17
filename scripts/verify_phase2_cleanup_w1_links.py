@@ -113,12 +113,22 @@ def verify_status():
                 raise ValueError("W1 current-status reference missing: " + file + ":" + token)
 
     legacy = (ROOT / "experiments/chatgpt_topology_search/runs/EXP-004/README.md").read_text()
-    if "../../../../actions/workflows/lpf-target040.yml" in legacy:
-        raise ValueError("EXP-004 broken Actions relative link remains")
-    if "https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/workflows/lpf-target040.yml" not in legacy:
-        raise ValueError("EXP-004 has no official workflow URL")
-    if not (ROOT / ".github/workflows/lpf-target040.yml").is_file():
-        raise ValueError("EXP-004 manual workflow source absent")
+    # EXP-004's README is part of manifest-hash-pinned *original evidence*.
+    # Do not edit it simply to fix its outdated relative navigation link.
+    legacy_path = "experiments/chatgpt_topology_search/runs/EXP-004/README.md"
+    legacy_old = subprocess.check_output(
+        ["git", "rev-parse", "055b222c79c73c7fbeacb19383f21c1da0625195:" + legacy_path],
+        cwd=ROOT).decode().strip()
+    legacy_now = subprocess.check_output(
+        ["git", "hash-object", legacy_path], cwd=ROOT).decode().strip()
+    if legacy_old != legacy_now:
+        raise ValueError("EXP-004 original README checksum changed")
+    if "../../../../actions/workflows/lpf-target040.yml" not in legacy:
+        raise ValueError("Original EXP-004 workflow link no longer matches stored evidence")
+    alias = ROOT / "actions/workflows/lpf-target040.yml"
+    real = ROOT / ".github/workflows/lpf-target040.yml"
+    if not alias.is_symlink() or alias.resolve() != real.resolve() or not real.is_file():
+        raise ValueError("Missing legacy EXP-004 workflow link compatibility symlink")
 
     original_sha = "055b222c79c73c7fbeacb19383f21c1da0625195"
     untouched = ["data/bands.csv", "data/constraints/registry.json",

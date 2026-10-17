@@ -9,6 +9,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from src.lpf.experiment_manifest import RUNS, experiment_index, new_manifest, write_manifest
+from src.lpf.legacy_manifest_adapter import legacy_exp047_index_view
 from scripts import audit_results
 from scripts import verify_no_pcb_tunable_candidates as baseline
 
@@ -67,6 +68,10 @@ class CandidateIndexGuardrails(unittest.TestCase):
         shutil.copytree(ROOT / "data/constraints", self.root / "data/constraints",
                         dirs_exist_ok=True)
         shutil.copytree(ROOT / RUNS, self.root / RUNS, ignore=shutil.ignore_patterns("__pycache__"))
+        shutil.copytree(ROOT / "data/parasitics", self.root / "data/parasitics")
+        overlay = "data/validation/exp047_legacy_manifest_adapter_20261017.json"
+        (self.root / overlay).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(ROOT / overlay, self.root / overlay)
         shutil.copytree(ROOT / "data/validation/rf_f002_phase2_20261013",
                         self.root / "data/validation/rf_f002_phase2_20261013")
         for validation_dir in (
@@ -126,8 +131,11 @@ class CandidateIndexGuardrails(unittest.TestCase):
         directory = self.root / RUNS / "EXP-999"
         directory.mkdir()
         write_manifest(directory / "manifest.json", m, root=self.root)
-        manifests = [(p.relative_to(self.root).as_posix(), json.loads(p.read_text()))
-                     for p in (self.root / RUNS).glob("EXP-*/manifest.json")]
+        manifests = []
+        for p in (self.root / RUNS).glob("EXP-*/manifest.json"):
+            m = (legacy_exp047_index_view(root=self.root) if p.parent.name == "EXP-047"
+                 else json.loads(p.read_text()))
+            manifests.append((p.relative_to(self.root).as_posix(), m))
         (self.root / "data/experiment_index.csv").write_text(experiment_index(manifests))
         rows.append(dict(rows[0], candidate_id=name, spec_id="RF-F003",
                          evidence=f"candidates/{name}.json", constraint_class="formal",

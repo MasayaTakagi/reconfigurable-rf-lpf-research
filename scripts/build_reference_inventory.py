@@ -139,8 +139,20 @@ def create_inventory(root=ROOT, tracked=None):
     for manifest in sorted((root / RUNS).glob("EXP-*/manifest.json")):
         exp_id = manifest.parent.name
         data = json.loads(manifest.read_text(encoding="utf-8"))
-        for item in data["evidence"]:
-            link(item["path"], "manifest_sha256", exp_id)
+        if "evidence" not in data:
+            if exp_id != "EXP-047":
+                raise ValueError(f"Noncanonical {exp_id} manifest lacks provenance evidence")
+            # This is the single source-pinned in-chat legacy exception.
+            # Zero canonical evidence[] entries; validated_candidates remain
+            # original external source records, not fabricated SHA evidence.
+            import sys
+            if str(root) not in sys.path:
+                sys.path.insert(0, str(root))
+            from src.lpf.legacy_manifest_adapter import legacy_exp047_index_view
+            legacy_exp047_index_view(root=root)
+        else:
+            for item in data["evidence"]:
+                link(item["path"], "manifest_sha256", exp_id)
     for row in _read_csv(root, "data/research_candidate_register.csv"):
         link(row["checkpoint_path"], "candidate_checkpoint", row["catalog_id"])
         link(row["verification_path"], "candidate_verification", row["catalog_id"])

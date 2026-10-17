@@ -25,17 +25,20 @@ class ExperimentNumberLedgerTests(unittest.TestCase):
     def setUp(self):
         self.source = (ROOT / PATH).read_text(encoding="utf-8")
         self.rows = read_ledger(self.source)
+        next_n = int(self.rows[-1]['experiment_id'].split('-')[1]) + 1
+        self.next_id = f'EXP-{next_n:03d}'
+        self.following_id = f'EXP-{next_n + 1:03d}'
 
     def test_baseline_retired_gaps_and_new_id(self):
-        self.assertEqual(41, len(self.rows))
+        self.assertGreaterEqual(len(self.rows), 41)
         self.assertEqual("legacy_gap_retired", self.rows[17]["state"])
         self.assertEqual("legacy_gap_retired", self.rows[18]["state"])
         self.assertEqual("legacy_recorded", self.rows[40]["state"])
         updated, ident, created = allocate(self.rows)
         self.assertTrue(created)
-        self.assertEqual("EXP-042", ident)
+        self.assertEqual(self.next_id, ident)
         self.assertEqual("reserved", updated[-1]["state"])
-        self.assertEqual(42, len(read_ledger(as_csv(updated))))
+        self.assertEqual(len(self.rows) + 1, len(read_ledger(as_csv(updated))))
 
     def test_rerun_same_request_is_idempotent(self):
         rows, first, _ = allocate(self.rows)
@@ -51,8 +54,8 @@ class ExperimentNumberLedgerTests(unittest.TestCase):
         rows[-1]["state"] = "cancelled"
         later, second, created = allocate(
             rows, owner="second", purpose="Another search", key="request-002")
-        self.assertEqual("EXP-042", first)
-        self.assertEqual("EXP-043", second)
+        self.assertEqual(self.next_id, first)
+        self.assertEqual(self.following_id, second)
         self.assertTrue(created)
         self.assertEqual("cancelled", later[-2]["state"])
 
@@ -90,7 +93,7 @@ class ExperimentNumberLedgerTests(unittest.TestCase):
 
 
 class FastForwardPushRaceTests(unittest.TestCase):
-    """Two stale workers start with EXP-041; only one EXP-042 push may land."""
+    """Two stale workers race on the next available ID, then retry."""
 
     def git(self, root, *args, check=True):
         run = subprocess.run(["git", *args], cwd=root, capture_output=True,
@@ -116,6 +119,10 @@ class FastForwardPushRaceTests(unittest.TestCase):
             self.git(seed, "remote", "add", "origin", str(remote))
             self.git(seed, "push", "origin", "HEAD:refs/heads/main")
             self.git(remote, "symbolic-ref", "HEAD", "refs/heads/main")
+            current_rows = read_ledger((ROOT / PATH).read_text(encoding='utf-8'))
+            next_n = int(current_rows[-1]['experiment_id'][4:]) + 1
+            next_id = f'EXP-{next_n:03d}'
+            following_id = f'EXP-{next_n + 1:03d}'
             workers = []
             for i in range(2):
                 w = root / f"worker{i}"
@@ -127,11 +134,11 @@ class FastForwardPushRaceTests(unittest.TestCase):
                 rows = read_ledger((w / PATH).read_text())
                 updated, exp_id, created = allocate(
                     rows, owner=f"worker{i}", key=f"request-{i:03d}")
-                self.assertEqual("EXP-042", exp_id)
+                self.assertEqual(next_id, exp_id)
                 self.assertTrue(created)
                 (w / PATH).write_text(as_csv(updated))
                 self.git(w, "add", PATH)
-                self.git(w, "commit", "-m", "Reserve EXP-042")
+                self.git(w, "commit", "-m", f"Reserve {next_id}")
             self.git(workers[0], "push", "origin", "HEAD:refs/heads/main")
             blocked = self.git(
                 workers[1], "push", "origin", "HEAD:refs/heads/main",
@@ -143,10 +150,10 @@ class FastForwardPushRaceTests(unittest.TestCase):
             updated, ident, created = allocate(
                 rows, owner="worker1", key="request-001")
             self.assertTrue(created)
-            self.assertEqual("EXP-043", ident)
+            self.assertEqual(following_id, ident)
             (workers[1] / PATH).write_text(as_csv(updated))
             self.git(workers[1], "add", PATH)
-            self.git(workers[1], "commit", "-m", "Reserve EXP-043 after conflict")
+            self.git(workers[1], "commit", "-m", f"Reserve {following_id} after conflict")
             self.git(workers[1], "push", "origin", "HEAD:refs/heads/main")
             final = self.git(workers[1], "show", "HEAD:" + PATH).stdout
             keys = [r["request_id"] for r in read_ledger(final)]

@@ -34,6 +34,8 @@ jobs:
           cache-dependency-glob: uv.lock
       - run: uv sync --frozen
       - run: echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+      - name: Verify derived 2026-10-17 candidate catalog (no RF recomputation)
+        run: python scripts/build_phase2_candidate_catalog.py --check
       - run: python scripts/audit_results.py
       - run: python scripts/audit_research_catalog.py
       - run: python scripts/verify_exp016_numpy2_replay.py
@@ -50,7 +52,7 @@ jobs:
           python scripts/build_reference_inventory.py --csv artifacts/phase2_reports/reference_inventory.csv --summary artifacts/phase2_reports/reference_summary.json
       - name: Build condition-separated Pareto reports
         run: |
-          python scripts/report_research_pareto.py --csv artifacts/phase2_reports/pareto_candidates.csv --summary artifacts/phase2_reports/pareto_summary.json --markdown artifacts/phase2_reports/pareto.md
+          python scripts/report_research_pareto.py --catalog data/catalog/phase2_candidate_catalog_20261017.csv --csv artifacts/phase2_reports/pareto_candidates.csv --summary artifacts/phase2_reports/pareto_summary.json --markdown artifacts/phase2_reports/pareto.md
       - run: python scripts/verify_archived_evidence_packages.py --summary artifacts/phase2_reports/archive_integrity_summary.json
       - name: Triage non-indexed research evidence (no deletion)
         run: |

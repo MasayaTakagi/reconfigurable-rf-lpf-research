@@ -170,10 +170,14 @@ def main():
         "evidence_review_bytes": sum(int(r["bytes"]) for r in file_decisions),
         "by_scope": {scope: sum(row["w4_scope"] == scope for row in file_decisions) for scope in ("E-001", "E-002")},
         "by_disposition": dict(sorted(((s + ":" + d), n) for (s, d), n in total.items())),
+        "unindexed_review_total": sum(row["w4_disposition"] == "review_unindexed_no_deletion_authority" for row in file_decisions),
+        "unindexed_review_examples": [row["path"] for row in file_decisions
+                                      if row["w4_disposition"] == "review_unindexed_no_deletion_authority"][:20],
         "groups_count": len(by_run),
         "top_groups": by_run.most_common(12),
         "workflow_count": len(workflow_rows),
         "workflow_exp042_count": sum(x["w4_scope"] == "W-001" for x in workflow_rows),
+        "workflow_exp042_names": [x["path"] for x in workflow_rows if x["w4_scope"] == "W-001"],
         "workflow_dispatch_count": sum(x["manual_dispatch"] == "true" for x in workflow_rows),
         "workflow_mutating_or_branch_pinned": [
             row["path"] for row in workflow_rows

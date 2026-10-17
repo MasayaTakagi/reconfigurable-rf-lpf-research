@@ -10,6 +10,7 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 RUNS = ROOT / "experiments/chatgpt_topology_search/runs"
 INVENTORY = ROOT / "data/experiment_evidence_inventory.csv"
 AUDITED_COLUMNS = {

@@ -80,6 +80,22 @@
       "min_h3_db": 30.0448202773175,
       "reference": "4GJM_further_independent_28x1001_20261017.json",
       "status": "finite_grid_independent_MNA_84_pass"
+    },
+    {
+      "id": "4L_2GJM_2PCB_area5p333",
+      "chip_area": 5.333333333333333,
+      "worst_il_db": 0.8436523315639586,
+      "min_h2_db": 30.039938653461622,
+      "min_h3_db": 30.03984294128475,
+      "reference": "area5p333_g2_independent_28x1001_20261017.json"
+    },
+    {
+      "id": "4L_1GJM_3PCB_area4p667_dualpcb",
+      "chip_area": 4.666666666666667,
+      "worst_il_db": 0.9022190035042201,
+      "min_h2_db": 30.039542302677106,
+      "min_h3_db": 30.021150058107512,
+      "reference": "area4p667_g1_dualpcb_independent_28x1001_20261017.json"
     }
   ],
   "validation": {
@@ -97,5 +113,80 @@
     "scenarios_passing_required_30db": 0
   },
   "phase3": "not_authorized",
-  "selected_best_20261017": "4L_4GJM_0PCB_area6p667_further"
+  "selected_best_20261017": "4L_4GJM_0PCB_area6p667_further",
+  "area_pareto_latest": {
+    "source": "area_cost_pareto_RF-F003_20261017.json",
+    "date": "2026-10-17",
+    "area_formula": "4+(2/3)*N_GJM01 (PCB-C chip area 0)",
+    "best_found": [
+      {
+        "gjm": 0,
+        "pcb": 3,
+        "chip_area": 4,
+        "worst_IL_db": 1.8539464120529223,
+        "min_H2_db": 21.363272317601663,
+        "min_H3_db": 25.9605754667206,
+        "pass": false,
+        "verification": "28x31 exploratory",
+        "source": "area4_g0_dualpcb_cf1_screen_20261017.json"
+      },
+      {
+        "gjm": 1,
+        "pcb": 3,
+        "chip_area": 4.666666666666667,
+        "worst_IL_db": 0.9022190035042201,
+        "min_H2_db": 30.039542302677106,
+        "min_H3_db": 30.021150058107512,
+        "pass": true,
+        "verification": "28x1001+84 independent MNA",
+        "source": "area4p667_g1_dualpcb_independent_28x1001_20261017.json"
+      },
+      {
+        "gjm": 2,
+        "pcb": 2,
+        "chip_area": 5.333333333333333,
+        "worst_IL_db": 0.8436523315639586,
+        "min_H2_db": 30.039938653461622,
+        "min_H3_db": 30.03984294128475,
+        "pass": true,
+        "verification": "28x1001+84 independent MNA",
+        "source": "area5p333_g2_independent_28x1001_20261017.json"
+      },
+      {
+        "gjm": 3,
+        "pcb": 1,
+        "chip_area": 6,
+        "worst_IL_db": 0.8368679516651689,
+        "min_H2_db": 30.027933823238982,
+        "min_H3_db": 30.02784666573411,
+        "pass": true,
+        "verification": "28x1001+84 independent MNA",
+        "source": "round4_corrected_Q80_independent_28x1001_20261017.json"
+      },
+      {
+        "gjm": 4,
+        "pcb": 0,
+        "chip_area": 6.666666666666667,
+        "worst_IL_db": 0.8338671118954777,
+        "min_H2_db": 30.04431009095553,
+        "min_H3_db": 30.050754704754983,
+        "pass": true,
+        "verification": "28x1001+84 independent MNA",
+        "source": "4GJM_noPCB_independent_28x1001_20261017.json"
+      },
+      {
+        "gjm": 4,
+        "pcb": 0,
+        "chip_area": 6.666666666666667,
+        "worst_IL_db": 0.8331882335507537,
+        "min_H2_db": 30.04493190861092,
+        "min_H3_db": 30.0448202773175,
+        "pass": true,
+        "verification": "28x1001+84 independent MNA",
+        "source": "4GJM_further_independent_28x1001_20261017.json"
+      }
+    ],
+    "zero_gjm_status": "Two 4L/2Cv local topology trials failed mandatory 30dB, no impossibility inference.",
+    "verified_best_status": "Best found under limited local searches, not global or physical/tolerance robust."
+  }
 }

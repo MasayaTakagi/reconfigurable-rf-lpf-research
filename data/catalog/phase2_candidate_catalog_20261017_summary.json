@@ -7,7 +7,7 @@
   "comparison_group_count": 10,
   "snapshot_id": "AREA_IL_PARETO_RF_T005_RF_F003_20261017",
   "snapshot_source": "data/pareto_snapshots/rf_t005_rf_f003_20261017.json",
-  "legacy_source": "data/research_candidate_register.csv",
+  "legacy_source": "data/catalog/research_candidate_register_20261017.csv",
   "source_counts": {
     "archived_pareto_20261017": 10,
     "legacy_curated_register": 14

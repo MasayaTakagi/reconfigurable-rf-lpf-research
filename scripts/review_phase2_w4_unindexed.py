@@ -101,12 +101,12 @@ def build():
         path = item["path"]
         kind, schema = _source_summary(path, ROOT / path)
         exact = sorted(t for t, body in texts.items()
-                       if t != path and _ref_hits(body, path))
+                       if t != path and path in body and _ref_hits(body, path))
         md = sorted(links.get(path, []))
-        wf_exact = sorted(p for p, body in workflows.items() if _ref_hits(body, path))
+        wf_exact = sorted(p for p, body in workflows.items() if path in body and _ref_hits(body, path))
         base = Path(path).name
         wf_basename = sorted(p for p, body in workflows.items()
-                             if p not in wf_exact and _ref_hits(body, base))
+                             if p not in wf_exact and base in body and _ref_hits(body, base))
         group = (path[len(ROOTS[0]):].split("/", 1)[0] if path.startswith(ROOTS[0])
                  else path[len(ROOTS[1]):].split("/", 1)[0])
         status = ("exact_source_path_found" if exact or md else

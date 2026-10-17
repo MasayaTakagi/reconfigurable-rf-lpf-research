@@ -71,7 +71,7 @@ def main():
         raise SystemExit("No authenticated API token; abort rather than claim run-history verification")
     assert git("rev-parse", BASE) == BASE
     assert not git("diff", "--diff-filter=D", "--name-only", BASE, "HEAD")
-    tracked = sorted(p for p in git("ls-files").splitlines()
+    tracked = sorted(p for p in git("ls-tree", "-r", "--name-only", BASE, ".github/workflows/").splitlines()
                      if p.startswith(".github/workflows/") and p.endswith((".yml", ".yaml")))
     assert len(tracked) == 39, ("Workflow scope changed; review before rerunning", len(tracked))
     url_root = "https://api.github.com/repos/" + OWNER_REPO + "/actions/workflows"

@@ -1,0 +1,69 @@
+name: Phase 2 Step 3 derived catalog verification
+
+on:
+  push:
+    branches:
+      - feat/phase2-candidate-catalog-step3-20261017
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Derive 24-row catalog from source evidence and check hashes
+        run: python3 scripts/build_phase2_candidate_catalog.py
+      - name: Confirm deterministic outputs
+        run: python3 scripts/build_phase2_candidate_catalog.py --check
+      - name: Unit tests (catalog + legacy report compatibility)
+        run: python3 -m unittest tests.test_phase2_candidate_catalog -v
+      - name: Report combined Pareto groups
+        run: |
+          python3 scripts/report_research_pareto.py \
+            --catalog data/catalog/phase2_candidate_catalog_20261017.csv \
+            --csv artifacts/phase2_step3_pareto.csv \
+            --summary artifacts/phase2_step3_pareto.json \
+            --markdown artifacts/phase2_step3_pareto.md
+          python3 - <<'PY'
+          import json
+          p = json.load(open('artifacts/phase2_step3_pareto.json'))
+          groups = {g['constraint_id']: g for g in p['groups']
+                    if g['constraint_id'] in ('RF-F003', 'RF-T005')}
+          assert p['candidate_count'] == 24, p
+          assert groups['RF-F003']['count'] == 4, groups
+          assert groups['RF-T005']['count'] == 6, groups
+          assert len(groups['RF-F003']['front']) == 4
+          assert len(groups['RF-T005']['front']) == 6
+          print('PASS: 24 candidates, condition-separated 4 + 6 fronts')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phase2-step3-unified-catalog-pareto
+          path: |
+            artifacts/phase2_step3_pareto.*
+            data/catalog/phase2_candidate_catalog_20261017.*
+            docs/results/phase2_candidate_catalog_20261017.md
+          retention-days: 30
+      - name: Commit generated catalog to this review branch only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/catalog/phase2_candidate_catalog_20261017.csv
+          git add data/catalog/phase2_candidate_catalog_20261017_summary.json
+          git add docs/results/phase2_candidate_catalog_20261017.md
+          if git diff --cached --quiet; then
+            echo 'No generated changes'
+          else
+            git commit -m 'data(catalog): archive checked 24-candidate unified view [skip ci]'
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi

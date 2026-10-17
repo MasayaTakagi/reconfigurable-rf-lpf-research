@@ -1,5 +1,7 @@
 # Phase 2 Step 5：リポジトリ整理の統合整合性検証（2026-10-17）
 
+> **2026-10-17 W1追補（マージ完了情報）：** この文書の「PR #67～71未マージ／Draft」は**マージ前に実行された検証時点**の状態であり、現在のPR状態を意味しない。[統合PR #71](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/71)はマージコミット `055b222c79c73c7fbeacb19383f21c1da0625195`でmainへ反映済み。[検証対象HEAD](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/commit/276c0ec92158f60ecef361ba2fc158f2978e79f1)からマージコミットへの比較でファイル差分0件。[マージ前Phase 2 regression成功run](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39028160775)ほか専用CI 3件SUCCESS。別のmain push CI結果を検証したとの主張ではない。#67～70は#71に統合してClosed（個別にはマージせず）。原検証表の数値と時点情報は履歴として保存。
+
 > **状態：検証実行済み／全4ワークフローPASS。** この文書はPR #67～70の統合検証ブランチの結果であり、元4 PRのmainへのマージ完了を意味しない。Phase 2を維持、Phase 3は所有者の明示承認まで停止。
 >
 > **基準main：** `bdb39904379637aeca5cf56ec3096e9e1b15f62a`。  

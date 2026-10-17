@@ -1,0 +1,37 @@
+name: Phase 2 W1 current status and Markdown links
+
+on:
+  push:
+    branches:
+      - docs/phase2-w1-current-status-links-20261017
+  pull_request:
+    paths:
+      - '.github/workflows/phase2_cleanup_w1.yml'
+      - 'scripts/verify_phase2_cleanup_w1.py'
+      - 'README.md'
+      - '**/*.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-w1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify current Phase 2 docs and all tracked local Markdown links
+        run: python3 scripts/verify_phase2_cleanup_w1.py --summary artifacts/phase2_w1_report.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase2-w1-checked-links
+          path: artifacts/phase2_w1_report.json
+          retention-days: 30

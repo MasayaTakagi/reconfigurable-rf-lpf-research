@@ -134,11 +134,11 @@ class FastForwardPushRaceTests(unittest.TestCase):
                 rows = read_ledger((w / PATH).read_text())
                 updated, exp_id, created = allocate(
                     rows, owner=f"worker{i}", key=f"request-{i:03d}")
-                self.assertEqual("EXP-042", exp_id)
+                self.assertEqual(next_id, exp_id)
                 self.assertTrue(created)
                 (w / PATH).write_text(as_csv(updated))
                 self.git(w, "add", PATH)
-                self.git(w, "commit", "-m", "Reserve EXP-042")
+                self.git(w, "commit", "-m", f"Reserve {next_id}")
             self.git(workers[0], "push", "origin", "HEAD:refs/heads/main")
             blocked = self.git(
                 workers[1], "push", "origin", "HEAD:refs/heads/main",
@@ -150,10 +150,10 @@ class FastForwardPushRaceTests(unittest.TestCase):
             updated, ident, created = allocate(
                 rows, owner="worker1", key="request-001")
             self.assertTrue(created)
-            self.assertEqual("EXP-043", ident)
+            self.assertEqual(following_id, ident)
             (workers[1] / PATH).write_text(as_csv(updated))
             self.git(workers[1], "add", PATH)
-            self.git(workers[1], "commit", "-m", "Reserve EXP-043 after conflict")
+            self.git(workers[1], "commit", "-m", f"Reserve {following_id} after conflict")
             self.git(workers[1], "push", "origin", "HEAD:refs/heads/main")
             final = self.git(workers[1], "show", "HEAD:" + PATH).stdout
             keys = [r["request_id"] for r in read_ledger(final)]

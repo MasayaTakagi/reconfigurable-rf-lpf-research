@@ -2,7 +2,7 @@
   "schema_version": 1,
   "experiment_id": "EXP-042",
   "phase": "Phase 2",
-  "purpose": "RF-T005 EXP-021 4L bridge BSF first-pass Phase 2 optimization with mandatory fixed port S2P",
+  "purpose": "RF-T005 EXP-021 C-H30p0002 corrected parallel bridge; area/IL Pareto study including GJM deletion and PCB substitution",
   "objective": "full_lpf",
   "constraints": {
     "class": "trial",
@@ -325,30 +325,51 @@
     "legacy_policy_version": "2026-10-16"
   },
   "code": {
-    "execution_sha": "56bfb70908fa7f5613692a577733bf809d962ebc",
-    "working_tree_dirty": true,
+    "execution_sha": "c5b530e39b2d3a446a5bc5baae23c9ecea0832ef",
+    "working_tree_dirty": false,
     "archive_sha": null
   },
-  "random_seed": null,
+  "random_seed": 20261016,
   "environment": {
-    "optimizer": "JS code executed in interactive ChatGPT tool environment; full source not preserved as standalone optimizer",
-    "checker": "Python 3.12 with uv sync --frozen and pinned repository uv.lock on GitHub Actions",
-    "numerics": "constant-Q coupled nodal admittance, two SHA-pinned external fixed S2P cascades, linear complex interpolation"
+    "python": "3.12.3",
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "dependencies": {
+      "numpy": "2.5.4",
+      "scipy": "1.18.1"
+    }
   },
   "search_scope": {
-    "phase": "Phase 2",
+    "experiment_id": "EXP-042",
+    "objective": "full_lpf",
     "constraint_id": "RF-T005",
-    "root": "experiments/chatgpt_topology_search/runs/EXP-042",
-    "topology": "EXP021-HV35/Q33x4-35 fixed 4L+6GJM+3 variable-C bridge arrangement; 30-layout only evaluated as source baseline, not reoptimized",
-    "method": "Projected finite-difference Adam local search; no convergence or exhaustive-topology claim",
-    "optimized_variables": 31,
-    "setting_count": 6,
-    "csv_segment_count": 28,
-    "local_candidate_families": [
-      "4xLQP02HV Q25 cost8",
-      "4xLQW04 Q33 cost16"
+    "phase": "Phase 2",
+    "source": "EXP-021 C-H30p0002 figure; Cf2||Cv2",
+    "variants": [
+      "original",
+      "cf1",
+      "cf2",
+      "both",
+      "pcb_cf1",
+      "pcb_cf2",
+      "pcb_both"
     ],
-    "source_evidence": "EXP-021 selected_checkpoints.json; current checkpoints and verification JSON in EXP-042"
+    "chip_area_units": [
+      6,
+      5.333333333333333,
+      4.666666666666667
+    ],
+    "interim_worst_IL_target_db": 0.8,
+    "formal_worst_IL_target_db": 0.3,
+    "minimum_harmonic_db": 30.0,
+    "nominal_harmonic_db": 35.0,
+    "source_run_ids": [
+      38773925329,
+      38774957692,
+      38775347911,
+      38775558755,
+      38775559008
+    ],
+    "original_archived_evidence": "preliminary_js_5pt.json, dense_1001_independent_check.json"
   },
   "bands_sha256": "1b1182e4c947059cb263c1af52ddf64236bd1fd9e83770cc844126576c7865fe",
   "execution": {
@@ -357,19 +378,18 @@
     "evaluation_count": null
   },
   "validation": {
-    "numerical": "passed",
+    "numerical": "screened",
     "independent": "passed",
     "implementation": "not_run",
-    "analysis_grid": "2001 frequencies per each of 28 individual CSV intervals (finite mesh)",
-    "independent_grid": "84 S2P-ABCD versus 7-node independent nodal probes per candidate"
+    "analysis_grid": "28 separate bands x 1001 points; finite only",
+    "independent_grid": "84 explicit 9x9 branch MNA checks per chosen candidate"
   },
   "evidence": [],
   "limitations": [
-    "Numerical first-pass local Adam optimizers did not establish convergence or global optimality; original interactive optimizer code is not yet archived as a replayable script.",
-    "Numerical performance is a 2001-point/segment finite mesh, not a proof of extrema between points.",
-    "Chip Q values are idealized constant-Q; LQW04 Q33 is assumed, device-specific Q(f) and SRF not measured or checked.",
-    "Port S2P are original schematic-derived, not measured or EM-derived; input port reference planes remain uncertain.",
-    "Simultaneously realizable adjacent mutual coupling and required polarity not verified with EM layout.",
-    "The trial RF-T005 does not supersede RF-F003 and Phase 3 remains stopped."
+    "Ongoing Phase 2 local exploration; no mathematical global optimum.",
+    "Formal RF-F003 remains unchanged: interim 0.8dB target is EXP-042-only.",
+    "New 30-dB and 35-dB SLSQP baseline runs and multiple area variants are local best-found.",
+    "Not every run/artifact has yet been curated as a permanent Git checkpoint.",
+    "SRF, frequency-dependent Q, EM, tolerance, simultaneous k implementation unverified."
   ]
 }

@@ -1,0 +1,258 @@
+{
+  "experiment_id": "EXP-046",
+  "phase": "Phase 2",
+  "constraint_id": "RF-T005",
+  "context": "Direct in-chat JavaScript, original GitHub main fixed S2P as retrieved by exact line ranges; 50ohm source, 60-j40ohm load, LQP02HV Q25, IC Cv Q35 max3pF x3, chip strong adjacent abs(k)<=0.10",
+  "reference": "EXP-042 pcb_cf1 4L candidate chip area 5+1/3, finite 28x31 exact reproduction, independently validated historic 28x1001",
+  "model": {
+    "source": "original fixed RF-F003 S2P 1MHz grid; real-imag linear interpolation; S->ABCD cascade; nodal Schur reduction",
+    "source_hashes": [
+      "ad266111ba1dc2b92f235d39f4a647ff271050bc11941c217661dd299ee59945",
+      "b3cfc861bc0c8221f49328598c9d7d0766a6e94e42e990b6a50f6c90bf9a84da"
+    ],
+    "grid_coarse": "28 x 5",
+    "grid_recheck": "28 x 31",
+    "source_sha": "main checked 2026-10-17; JS source not archived or separately replayed in GitHub CI"
+  },
+  "baseline": {
+    "layout": [
+      "L0",
+      "L1",
+      "L3",
+      "L2"
+    ],
+    "worstIL": 0.8113065857640428,
+    "minH2": 30.01999999945071,
+    "minH3": 30.01999999999573
+  },
+  "direct_reorder": {
+    "layout": [
+      "L1",
+      "L0",
+      "L3",
+      "L2"
+    ],
+    "L_edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "Cfixed_edges": [
+      [
+        0,
+        1
+      ],
+      [
+        4,
+        -1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "Cv_edges": [
+      [
+        3,
+        -1
+      ],
+      [
+        4,
+        -1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "chip_area": 5.333333333333333,
+    "baseline_vector_reordered_without_reopt": {
+      "IL": 0.8489729541327794,
+      "H2": 23.196028912725374,
+      "H3": 19.79023057039266
+    },
+    "two_starts_evaluations": 868,
+    "best_local": {
+      "IL": 0.876383325654476,
+      "H2": 29.014479295896408,
+      "H3": 26.837161836246715,
+      "k": [
+        0.1,
+        0.013655807999999993,
+        -0.1
+      ]
+    },
+    "vector_order": "L0,L1,L2,L3,Cf0,Cf1,Cf2,Cp,k(L1-L0),k(L0-L3),k(L3-L2),Cv0,Cv1,Cv2 for each case B71,B12,B28,B13+B14,B26,B8",
+    "vector": [
+      2.2375839355613034,
+      16.898231874365173,
+      21.542921585434353,
+      7.150457018040519,
+      3.0788222295432957,
+      0.2,
+      0.49124157193910617,
+      0.2,
+      0.1,
+      0.013655807999999993,
+      -0.1,
+      0.571463452970501,
+      0.12152678963252792,
+      1.178982130643013,
+      0.45092250210623946,
+      0.09536209219702954,
+      1.065076472721476,
+      0.46716553899076185,
+      0.04842746677478945,
+      0.9896652135682875,
+      0.18571595787006873,
+      0.2511887066207075,
+      0.2716912863710131,
+      0.10672790380405078,
+      0.21409019977388702,
+      0.1577980211477295,
+      0.03272195627083502,
+      0.09977559316481487,
+      0.075712
+    ],
+    "strict30pass": false
+  },
+  "pi_4L": {
+    "layout": [
+      "L2",
+      "L0",
+      "L1",
+      "L3"
+    ],
+    "L_edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "Cfixed_edges": [
+      [
+        3,
+        -1
+      ],
+      [
+        4,
+        -1
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "fixed_types": [
+      "GJM01",
+      "GJM01",
+      "PCB_PATTERN_C",
+      "PCB_PATTERN_C"
+    ],
+    "Cv_edges": [
+      [
+        3,
+        -1
+      ],
+      [
+        4,
+        -1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "chip_area": 5.333333333333333,
+    "three_starts_evaluations": 2009,
+    "most_harmonic_compliant_infeasible": {
+      "IL": 1.5882242173502599,
+      "H2": 28.254724947689894,
+      "H3": 28.53048690175929,
+      "k": [
+        0.073441977712,
+        0.1,
+        -0.045
+      ]
+    },
+    "lowest_IL_infeasible": {
+      "IL": 1.0785913782311778,
+      "H2": 27.619329695092965,
+      "H3": 28.964264780069932
+    },
+    "vector_order": "Ls0,Ls1,Lsh0,Lsh1,Cf0,Cf1,Cf2,Cf3,k(Lsh0-Ls0),k(Ls0-Ls1),k(Ls1-Lsh1),Cv0,Cv1,Cv2 for six settings",
+    "vector": [
+      5.3651501532160015,
+      5.88,
+      12,
+      7.14804685312,
+      0.4,
+      0.57571476768,
+      0.2,
+      0.2,
+      0.073441977712,
+      0.1,
+      -0.045,
+      0.83,
+      0.853207647872,
+      0.71,
+      0.73,
+      0.69929624,
+      0.6322478192,
+      0.6900000000000001,
+      0.6392961808000001,
+      0.5833999408,
+      0.502628,
+      0.514903853536,
+      0.48,
+      0.43000000000000005,
+      0.407020386464,
+      0.40942794079999995,
+      0.309779554336,
+      0.2971235792,
+      0.32737199999999994
+    ],
+    "strict30pass": false
+  },
+  "conclusion": "All new finite locally optimized candidates FAIL the H2/H3 >=30dB RF-T005 gate. No valid improvement vs EXP-042.",
+  "verification": {
+    "checkpoint_reproduced": "yes 28x31 matches 28x1001 checkpoint values",
+    "independent_new_candidate_MNA": "not run",
+    "stationary_continuous_extrema": "not run",
+    "solver_converged": "not established",
+    "physical_Qf_SRF_EM": "not run"
+  }
+}

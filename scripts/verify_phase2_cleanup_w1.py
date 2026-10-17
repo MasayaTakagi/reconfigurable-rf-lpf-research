@@ -142,10 +142,15 @@ def current_state_guardrails():
             if bad in text:
                 raise AssertionError("W1 stale active status: " + tag + ": " + bad)
     original = (ROOT / "experiments/chatgpt_topology_search/runs/EXP-004/README.md").read_text()
-    if "(../../../../actions/workflows/lpf-target040.yml)" in original:
-        raise AssertionError("EXP-004 broken Actions browser link remains")
-    if "https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/workflows/lpf-target040.yml" not in original:
-        raise AssertionError("EXP-004 fixed browser URL is missing")
+    if "(../../../../actions/workflows/lpf-target040.yml)" not in original:
+        raise AssertionError("EXP-004 immutable source no longer matches historic link evidence")
+    # The original README is manifest-hash-pinned and MUST NOT be patched.
+    # Provide a verified working URL only in an editable navigation document.
+    overview = (ROOT / "experiments/README.md").read_text(encoding="utf-8")
+    if "https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/workflows/lpf-target040.yml" not in overview:
+        raise AssertionError("Working URL missing from experiments navigation")
+    if "保全例外" not in overview:
+        raise AssertionError("Known source-immutable broken link not disclosed")
     if ".github/workflows/lpf-target040.yml" not in git("ls-files").decode():
         raise AssertionError("referenced source workflow does not exist")
 
@@ -183,6 +188,18 @@ def main():
     markdown_count, link_count, statuses, problems = scan_links(tracked)
     current_state_guardrails()
     retained = protection_guardrails()
+    known_immutable_link = {
+        "source": "experiments/chatgpt_topology_search/runs/EXP-004/README.md",
+        "target": "../../../../actions/workflows/lpf-target040.yml",
+        "status": "missing",
+    }
+    waived = [p for p in problems
+              if (p["source"], p["target"], p["status"]) ==
+              (known_immutable_link["source"], known_immutable_link["target"],
+               known_immutable_link["status"])]
+    remaining = [p for p in problems if p not in waived]
+    if len(waived) != 1:
+        raise AssertionError("Manifest-pinned EXP-004 historic broken link count differs from one")
     summary = {
         "phase": "Phase 2",
         "scope": "checked-out W1 worktree; 2026-10-17 fixed W0 base",
@@ -192,6 +209,9 @@ def main():
         "markdown_links_extracted": link_count,
         "status_counts": dict(sorted(statuses.items())),
         "broken_local_markdown_links": problems,
+        "unresolved_because_immutable_historical_source": len(waived),
+        "unresolved_unexpected_links": len(remaining),
+        "known_historical_exception": known_immutable_link,
         "protected_original_blob_checks": 8,
         "retained_46_sha_validated": retained,
         "historical_exp004_workflow_source_exists": True,
@@ -208,12 +228,13 @@ def main():
         out.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({
         "tracked": len(tracked), "markdown": markdown_count, "links": link_count,
-        "issues": len(problems), "retained": retained,
+        "issues": len(problems), "waived_original_immutable": len(waived),
+        "unexpected_issues": len(remaining), "retained": retained,
         "states": dict(sorted(statuses.items())),
     }, ensure_ascii=False))
-    if problems:
-        raise SystemExit("W1 unresolved tracked Markdown links: " +
-                         json.dumps(problems[:15], ensure_ascii=False))
+    if remaining:
+        raise SystemExit("W1 unexpected broken tracked Markdown links: " +
+                         json.dumps(remaining[:15], ensure_ascii=False))
 
 
 if __name__ == "__main__":

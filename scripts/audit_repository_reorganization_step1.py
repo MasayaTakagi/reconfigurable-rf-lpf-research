@@ -26,12 +26,12 @@ TEXT_EXTENSIONS = {
     ".toml", ".ini", ".cfg", ".sh", ".lock", ".gitignore", ".rst",
 }
 PATH_PATTERN = re.compile(
-    r"(?<![\\w/])(?:\\.\\./|\\./|/)?"
+    r"(?<![\w/])(?:\.\./|\./|/)?"
     r"(?:data|docs|scripts|src|tests|experiments|candidates|"
-    r"\\.github|results|artifacts)/[A-Za-z0-9_.+/@-]+"
+    r"\.github|results|artifacts)/[A-Za-z0-9_.+/@-]+"
     r"(?:/[A-Za-z0-9_.+@-]+)*"
 )
-LINK_PATTERN = re.compile(r"\\]\\(([^)]+)\\)")
+LINK_PATTERN = re.compile(r"\]\(([^)]+)\)")
 
 
 def git(*args: str) -> bytes:
@@ -52,7 +52,7 @@ def csv_parts(stem: str, fields: list[str], rows: list[dict], cap: int = 95000) 
     for row in rows:
         test = group + [row]
         buf = io.StringIO()
-        w = csv.DictWriter(buf, fieldnames=fields, extrasaction="ignore", lineterminator="\\n")
+        w = csv.DictWriter(buf, fieldnames=fields, extrasaction="ignore", lineterminator="\n")
         w.writeheader()
         w.writerows(test)
         if len(buf.getvalue().encode("utf-8")) > cap and group:
@@ -109,10 +109,10 @@ def normalize_link(source: str, raw: str, known: set[str]) -> str | None:
 def main() -> None:
     main_sha = git("rev-parse", "origin/main").decode().strip()
     entries = []
-    for item in git("ls-tree", "-r", "-l", "-z", "origin/main").split(b"\\0"):
+    for item in git("ls-tree", "-r", "-l", "-z", "origin/main").split(b"\0"):
         if not item:
             continue
-        left, rawpath = item.split(b"\\t", 1)
+        left, rawpath = item.split(b"\t", 1)
         mode, typ, sha, size = left.decode().split(" ", 3)
         entries.append({"path": rawpath.decode("utf-8", "surrogateescape"),
                         "mode": mode, "type": typ, "git_blob_sha1": sha,
@@ -129,7 +129,7 @@ def main() -> None:
         }:
             continue
         data = read_at_main(p)
-        if b"\\0" in data:
+        if b"\0" in data:
             continue
         sources[p] = data.decode("utf-8", "replace")
 
@@ -255,7 +255,7 @@ def main() -> None:
         "> **実行済みの読み取り専用監査。** この文書は自動抽出結果であり、"
         "移動・削除・無参照証明・回路最適化・物理検証ではない。",
         "",
-        f"- 対象main SHA：\`{main_sha}\`",
+        f"- 対象main SHA：`{main_sha}`",
         f"- 再帰Git tree：**{len(entries)} entries**（Git ls-tree -r、全追跡entry）",
         f"- 追跡ファイルの非圧縮size合計：**{sum(r['bytes'] for r in rows):,} bytes**",
         f"- 静的参照として検出：**{len(edges)} edges**（text {len(sources)} filesを解析）",
@@ -269,7 +269,7 @@ def main() -> None:
         "|---|---:|---:|",
     ]
     for key, val in sorted(top.items(), key=lambda kv: -kv[1][1]):
-        report_lines.append(f"| \`{key}\` | {val[0]} | {val[1]:,} |")
+        report_lines.append(f"| `{key}` | {val[0]} | {val[1]:,} |")
     report_lines += [
         "",
         "## 2. 分類と処置（削除の自動承認なし）",
@@ -286,13 +286,13 @@ def main() -> None:
         "",
         "## 3. 重要な正本・最新パレートの照合",
         "",
-        f"- 制約台帳 active正式ID：\`{registry.get('active_formal_id')}\`",
-        f"- \`data/design_constraints.json\`と正式RF-F003のバイト一致：**{formal_equal_compatibility}**",
+        f"- 制約台帳 active正式ID：`{registry.get('active_formal_id')}`",
+        f"- `data/design_constraints.json`と正式RF-F003のバイト一致：**{formal_equal_compatibility}**",
         f"- 2026-10-17パレート保存点：**{by_condition}**",
         f"- 完全checkpoint参照：**{sum(x['blob_sha_matches_snapshot'] for x in checkpoint_checks)}/{len(checkpoint_checks)} SHA一致かつ現存**",
     ]
     for item in s2p_checks:
-        report_lines.append(f"- S2P原本：\`{item['path']}\` SHA256合致：**{item.get('matches_spec', False)}**")
+        report_lines.append(f"- S2P原本：`{item['path']}` SHA256合致：**{item.get('matches_spec', False)}**")
     report_lines += [
         "",
         "## 4. 優先して手動確認する事項",
@@ -327,7 +327,7 @@ def main() -> None:
         ]
     OUT_DOCS.mkdir(parents=True, exist_ok=True)
     (OUT_DOCS / (STAMP + "_report.md")).write_text(
-        "\\n".join(report_lines) + "\\n", encoding="utf-8")
+        "\n".join(report_lines) + "\n", encoding="utf-8")
     summary = {
         "phase": "Phase 2", "audit_type": "read_only_git_main_tree_static_dependencies",
         "main_sha": main_sha, "tracked_entries": len(entries),
@@ -351,7 +351,7 @@ def main() -> None:
                         "no_git_history_or_untracked_files", "classification_is_provisional"],
     }
     (OUT_DATA / (STAMP + "_summary.json")).write_text(
-        json.dumps(summary, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+        json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({
         "main_sha": main_sha, "tracked_entries": len(entries),
         "tracked_bytes": summary["tracked_bytes"], "reference_edges": len(edges),

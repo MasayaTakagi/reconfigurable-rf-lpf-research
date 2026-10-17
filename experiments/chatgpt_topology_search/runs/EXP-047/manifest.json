@@ -2,236 +2,80 @@
   "schema_version": 1,
   "experiment_id": "EXP-047",
   "phase": "Phase 2",
-  "objective": "full_lpf",
   "constraint_id": "RF-F003",
-  "formal_not_trial": true,
   "experiment_reserved_on_main": true,
   "request_id": "rff003-fourl-two-c-tuning-20261017",
-  "reservation_commit": "223909ecdc54e1108be88a710f2f0031f9996412",
-  "resolved_formal_sha256": "f85710200ccda5b72ab32f943540fbfd7a8abb3137c5f4e6e5ba7a6d7b3da2ba",
+  "active_formal_constraint_sha256": "f85710200ccda5b72ab32f943540fbfd7a8abb3137c5f4e6e5ba7a6d7b3da2ba",
   "bands_sha256": "1b1182e4c947059cb263c1af52ddf64236bd1fd9e83770cc844126576c7865fe",
-  "mandatory_S2P_sha256": {
-    "input": "ad266111ba1dc2b92f235d39f4a647ff271050bc11941c217661dd299ee59945",
-    "output": "b3cfc861bc0c8221f49328598c9d7d0766a6e94e42e990b6a50f6c90bf9a84da"
+  "s2p_provenance": {
+    "input_git_blob": "1d46ad6f2e144ff90e6789869c8b08203dd3c41e",
+    "output_git_blob": "d8f45955ce05978bd1e25c89a3578a2710735e30",
+    "input_sha256": "ad266111ba1dc2b92f235d39f4a647ff271050bc11941c217661dd299ee59945",
+    "output_sha256": "b3cfc861bc0c8221f49328598c9d7d0766a6e94e42e990b6a50f6c90bf9a84da"
   },
-  "execution": {
-    "state": "partial_executed",
-    "method": "in-chat ECMAScript Code Mode with original immutable GitHub-main S2P; no GitHub Actions optimizer or Python verifier executed",
-    "source_basis": "EXP-046/continuation_inchat.js",
-    "optimizer": "nested 6-setting 2C Nelder Mead and coordinate common L/C/k, finite nonconverged heuristic",
-    "selected": "independent_continuation_28x1001_20261017.json",
-    "validation_script": "verify_continuation_full_20261017.js"
-  },
-  "topology": {
-    "chip_inductors": "4 x LQP02HV Q25",
-    "L_edges": [
-      [
-        0,
-        1
-      ],
-      [
-        1,
-        3
-      ],
-      [
-        1,
-        4
-      ],
-      [
-        1,
-        2
-      ]
+  "model": {
+    "l_inductors": 4,
+    "l_series": "LQP02HV Q25",
+    "fixed_gjm_q": 80,
+    "fixed_pcb_c_q": 40,
+    "tunable_c_branches": 2,
+    "tunable_c_q": 35,
+    "tunable_c_range_pf": [
+      0,
+      3
     ],
-    "L_physical_order": [
+    "chip_row": [
       "L0",
       "L1",
       "L3",
       "L2"
     ],
-    "strong_signed_k_pairs": [
-      [
-        "L0",
-        "L1"
-      ],
-      [
-        "L1",
-        "L3"
-      ],
-      [
-        "L3",
-        "L2"
-      ]
-    ],
-    "fixed_caps": [
-      {
-        "name": "Cf0",
-        "edge": [
-          0,
-          1
-        ],
-        "kind": "GJM01",
-        "Q": 80
-      },
-      {
-        "name": "Cf1",
-        "edge": [
-          4,
-          -1
-        ],
-        "kind": "GJM01",
-        "Q": 80
-      },
-      {
-        "name": "Cf2",
-        "edge": [
-          1,
-          2
-        ],
-        "kind": "GJM01",
-        "Q": 80
-      },
-      {
-        "name": "Cp",
-        "edge": [
-          0,
-          3
-        ],
-        "kind": "PCB_PATTERN_C",
-        "Q": 40
-      }
-    ],
-    "variable_caps": [
-      {
-        "name": "Cv0",
-        "edge": [
-          3,
-          -1
-        ],
-        "Q": 35,
-        "range_pF": [
-          0,
-          3
-        ]
-      },
-      {
-        "name": "Cv2",
-        "edge": [
-          1,
-          2
-        ],
-        "Q": 35,
-        "range_pF": [
-          0,
-          3
-        ]
-      }
-    ],
-    "unused_historical_Cv1": "physically absent; zero entries only kept in legacy 29-element vector format",
-    "chip_area_units": 6,
-    "component_vector_order": "L0,L1,L2,L3,Cf0,Cf1,Cf2,Cp,k01,k13,k32,(Cv0,absentCv1zero,Cv2) by six bands",
-    "full_legacy_29value_vector": [
-      2.8575357892140896,
-      11.467944353199595,
-      13.08659369579421,
-      7.793847039000568,
-      2.4217298372423612,
-      0.47980580858538613,
-      0.4232234882873125,
-      0.07162271338268218,
-      0.1,
-      -0.006636008916520967,
-      -0.0892,
-      0.8505758886232777,
-      0,
-      1.2163102008676367,
-      0.7214966925623392,
-      0,
-      1.0294350586974017,
-      0.8232410400413854,
-      0,
-      0.8201550913921585,
-      0.6147709708290934,
-      0,
-      0.45315344614255043,
-      0.5401287260396577,
-      0,
-      0.24782592850319118,
-      0.31757684362582816,
-      0,
-      0
+    "strong_k_abs_max": 0.1
+  },
+  "execution": {
+    "status": "partial_local_best_found",
+    "platform": "in-chat Code Mode, JavaScript (original immutable GitHub S2P fetched)",
+    "github_actions_search_executed": false,
+    "opt_baseline": "EXP-042 RF-T005",
+    "initial_q_bug": "Q[5]=80 indexed removed tunable Cv1 instead of GJM fixed Cf1; pre-correction metrics are not RF-F003 compliant Q assignments",
+    "correction": "Q[1]=80 for GJM Cf1; for 4GJM case also Q[3]=80",
+    "sources": [
+      "optimise_correct_q80_round3_20261017.js",
+      "optimise_correct_q80_round4_20261017.js",
+      "search_4GJM_noPCB_20261017.js"
     ]
   },
-  "outcomes": {
-    "worst_IL_db": 0.9068566836679675,
-    "min_H2_db": 30.02978317910496,
-    "min_H3_db": 30.029984555933183,
-    "grid": "28 disjoint segments x 1001 points",
-    "mandatory_30dB": "PASS finite-grid",
-    "nominal_35dB": "FAIL",
-    "nominal_IL_0p30dB": "FAIL",
-    "independent_9x9_MNA_probes": 84,
-    "max_methods_difference_dB": 2.984279490192421e-13,
-    "maximum_power_balance_residual_W": 9.540979117872439e-18,
-    "inductor_matrix_SPD": true,
-    "component_bounds_PASS": true
+  "validated_candidates": [
+    {
+      "id": "4L_3GJM_1PCB_area6",
+      "chip_area": 6,
+      "worst_il_db": 0.8368679516651689,
+      "min_h2_db": 30.027933823238982,
+      "min_h3_db": 30.02784666573411,
+      "reference": "round4_corrected_Q80_independent_28x1001_20261017.json"
+    },
+    {
+      "id": "4L_4GJM_0PCB_area6p667",
+      "chip_area": 6.666666666666667,
+      "worst_il_db": 0.8338671118954777,
+      "min_h2_db": 30.04431009095553,
+      "min_h3_db": 30.050754704754983,
+      "reference": "4GJM_noPCB_independent_28x1001_20261017.json"
+    }
+  ],
+  "validation": {
+    "dense_grid": "28 independent disjoint intervals x 1001-point each",
+    "independent_mna": "9x9 explicit coupled-inductor branch-current MNA at 84 endpoint+midpoint probes/candidate",
+    "spd": true,
+    "power_balance": true,
+    "continuous_extrema_proof": false,
+    "part_SRF_Qf_EM_tolerance_verified": false,
+    "physical_realization": false
   },
-  "tolerance": "16 separate small perturbations evaluated on 28x101 with Cv unchanged; all failed 30dB somewhere; no statistical tolerance modeling or EM",
-  "records": [
-    "two_C_drop_screen_20261017.json",
-    "fixed_gjm_replacement_screen_20261017.json",
-    "35db_seed_twoC_screen_20261017.json",
-    "full_common_retune_20261017.json",
-    "independent_28x1001_20261017.json",
-    "continuation_20261017.json",
-    "independent_continuation_28x1001_20261017.json",
-    "single_parameter_tolerance_101pt_20261017.json"
-  ],
-  "unverified": [
-    "continuous-band stationary extrema",
-    "part-specific Q(f)/SRF",
-    "physical signed simultaneous magnetic coupling and EM",
-    "manufacturing tolerance distributions and per-state IC retune",
-    "physical reference planes and measurement of mandatory S2P"
-  ],
-  "phase3": "not_authorized",
-  "latest_continuation_20261017": {
-    "classification": "phase2_RF-F003_actual_inchat_numerical_finite_grid",
-    "prior_outcomes_retained_as_older_checkpoint": true,
-    "latest_low_IL": {
-      "path": "round2_verified_28x1001_20261017.json",
-      "worst_IL_dB": 0.8709622912449427,
-      "min_H2_dB": 30.06989017705552,
-      "min_H3_dB": 30.06341193325721,
-      "independent_MNA_points": 84
-    },
-    "nominal_31db_margin": {
-      "path": "margin31_verified_28x1001_20261017.json",
-      "worst_IL_dB": 0.8906748990553417,
-      "min_H2_dB": 30.99996924965659,
-      "min_H3_dB": 30.994855063896747
-    },
-    "k1_robust": {
-      "path": "k1_robust_independent_28x1001_20261017.json",
-      "nominal_worst_IL_dB": 0.8925874628923431,
-      "k1_pm0p01_worst_IL_dB": 0.8937426008029559,
-      "min_H2_across3_dB": 30.01987614503608,
-      "min_H3_across3_dB": 30.09231969670983,
-      "independent_MNA_points": 252,
-      "other_tolerance_not_proven": true
-    },
-    "tolerance": {
-      "latest_low_IL": "16/20 single-parameter scenarios violate mandatory 30dB on 28x101 (no Cv retune)",
-      "nominal_31db": "2/20 single-parameter scenarios violate 30dB (k1 ±0.01)"
-    },
-    "evidence_files": [
-      "round2_verified_28x1001_20261017.json",
-      "round2_tolerance_20261017.json",
-      "nested_verified_28x1001_20261017.json",
-      "margin31_verified_28x1001_20261017.json",
-      "margin31_tolerance_20261017.json",
-      "k1_robust_independent_28x1001_20261017.json"
-    ],
-    "github_actions_execution_of_new_numerical_study": false,
-    "source_reproducibility_note": "Saved source scripts verify candidate vectors; not all optimizer step history is archived as an immutable executable run"
-  }
+  "sensitivity": {
+    "source": "q80_sensitivity_101grid_20261017.json",
+    "method": "20 independent one-at-a-time deviation scenarios for each of 2 final candidates, 28x101 grid, Cv fixed",
+    "scenarios_passing_required_30db": 0
+  },
+  "phase3": "not_authorized"
 }

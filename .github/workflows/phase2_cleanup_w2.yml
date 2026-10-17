@@ -14,10 +14,11 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   source-pinned-structural-index:
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -33,13 +34,32 @@ jobs:
       - name: Verify committed W2 output before any regeneration
         if: github.event_name != 'push'
         run: python3 scripts/build_phase2_candidate_topology_search.py --check
-      - name: Generate W2 derived metadata on review branch
-        if: github.event_name == 'push'
-        run: python3 scripts/build_phase2_candidate_topology_search.py
       - name: Verify exact derived output
         run: python3 scripts/build_phase2_candidate_topology_search.py --check
       - name: Verify signed k, unknowns, and immutable Git blobs
         run: python3 -m unittest discover -s tests -p 'test_phase2_candidate_topology_search.py' -v
+  publish-reviewed-snapshot:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check historical input catalog
+        run: python3 scripts/build_phase2_candidate_catalog.py --check
+      - name: Generate isolated W2 search output
+        run: python3 scripts/build_phase2_candidate_topology_search.py
+      - name: Check new output and regression before commit
+        run: |
+          python3 scripts/build_phase2_candidate_topology_search.py --check
+          python3 -m unittest discover -s tests -p 'test_phase2_candidate_topology_search.py' -v
       - name: Save generated W2 records to review branch only
         if: github.event_name == 'push'
         env:

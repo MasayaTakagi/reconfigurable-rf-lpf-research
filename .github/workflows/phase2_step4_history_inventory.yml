@@ -16,7 +16,6 @@ jobs:
         with:
           ref: 055b222c79c73c7fbeacb19383f21c1da0625195
           fetch-depth: 0
-          ref: 055b222c79c73c7fbeacb19383f21c1da0625195
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:

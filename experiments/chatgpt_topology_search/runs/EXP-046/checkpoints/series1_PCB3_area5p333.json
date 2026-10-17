@@ -1,0 +1,166 @@
+{
+  "candidate_id": "EXP046-4L-outer-shunt-series1-PCB",
+  "experiment_id": "EXP-046",
+  "constraint_id": "RF-T005",
+  "phase": "Phase 2",
+  "search_status": "finite-grid numerical feasible, local best-found, no global guarantee",
+  "all_L_series": "LQP02HV Q25 0.4..27nH",
+  "physical_inductor_order": [
+    "LshL",
+    "Ls0",
+    "Ls1",
+    "LshR"
+  ],
+  "L_edges": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      2,
+      4
+    ]
+  ],
+  "indices_L": [
+    "Ls0",
+    "Ls1",
+    "LshL",
+    "LshR"
+  ],
+  "coupling_pairs_by_indices": [
+    [
+      2,
+      0
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      3
+    ]
+  ],
+  "fixed_C_edges": [
+    [
+      3,
+      -1
+    ],
+    [
+      4,
+      -1
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ]
+  ],
+  "variable_C_edges": [
+    [
+      3,
+      -1
+    ],
+    [
+      4,
+      -1
+    ],
+    [
+      0,
+      2
+    ]
+  ],
+  "extra_PCB_C_edge": [
+    1,
+    2
+  ],
+  "fixed_C_Q_plus_variable_Q_plus_extra_Q": [
+    80,
+    80,
+    40,
+    40,
+    35,
+    35,
+    35,
+    40
+  ],
+  "LQP02HV_count": 4,
+  "GJM01_count": 2,
+  "PCB_PATTERN_C_count": 3,
+  "IC_VARIABLE_C_count": 3,
+  "chip_area": 5.333333333333333,
+  "vector_order": "L0,L1,L2,L3,Cf0,Cf1,Cf2,Cf3,k(L2-L0),k(L0-L1),k(L1-L3),[Cv0,Cv1,Cv2]*6 (B71,B12,B28,B13+B14,B26,B8),Cp_extra",
+  "full_vector": [
+    5.3,
+    4.5261759999999995,
+    8.52304,
+    9.919936,
+    0.950088,
+    0.2,
+    0.10156800000000002,
+    0.0448,
+    0.04400000000000001,
+    0.1,
+    -0.04400000000000001,
+    0.782427229755015,
+    0.7655488174505161,
+    0.4385052604940483,
+    0.6348218945586749,
+    0.3349296338242951,
+    0.650505931832596,
+    0.6253028663801838,
+    0.29615149929666396,
+    0.6277248006547279,
+    0.3530007928336968,
+    0.16420467617049733,
+    0.4643203027978481,
+    0.20200696930596707,
+    0.4321759783364615,
+    0.2762293713651893,
+    0.036502756844084105,
+    0.3319221126385733,
+    0.23029609566814468,
+    0.044800000000000006
+  ],
+  "verification": {
+    "frequency_segments": 28,
+    "frequency_samples_per_segment": 1001,
+    "IL_worst_dB": 1.0421843514036775,
+    "H2_min_dB": 30.034439352251848,
+    "H3_min_dB": 30.061801481674554,
+    "pass_strict_30dB": true,
+    "independent_branch_MNA_points": 84,
+    "max_IL_difference_dB": 7.105427357601002e-14,
+    "max_power_balance_residual_W": 4.163336342344337e-17,
+    "inductance_min_eigenvalue_nH": 4.272537553318584
+  },
+  "external_parasitic_SHA256": [
+    "ad266111ba1dc2b92f235d39f4a647ff271050bc11941c217661dd299ee59945",
+    "b3cfc861bc0c8221f49328598c9d7d0766a6e94e42e990b6a50f6c90bf9a84da"
+  ],
+  "limitations": [
+    "not physical EM",
+    "no part-number Q(f) or SRF",
+    "no 35dB nominal pass",
+    "no continuous extrema certificate",
+    "no CI job or source commit process isolated"
+  ],
+  "run_source_files": [
+    "scan_bridge_cap_relocation.js",
+    "verify_bridge_relocation_1001.js",
+    "scan_gjm_series_bypass.js",
+    "verify_gjm3_cf3_1001.js",
+    "analyze_loaded_series_q.js"
+  ]
+}

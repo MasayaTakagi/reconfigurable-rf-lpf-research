@@ -68,15 +68,15 @@ def git(*args: str) -> bytes:
 
 
 def read_source(path: str) -> bytes:
-    return git("show", "origin/main:" + path)
+    return git("show", BASE_MAIN_SHA + ":" + path)
 
 
 def collect_main_tree():
-    actual = git("rev-parse", "origin/main").decode().strip()
-    if actual != BASE_MAIN_SHA:
-        raise ValueError("main SHA changed; review and re-pin the historical evidence before re-running")
+    # Historical evidence must be pinned to its original commit even when
+    # main advances after merge. Do not require origin/main == BASE_MAIN_SHA.
+    git("cat-file", "-e", BASE_MAIN_SHA + "^{commit}")
     result = []
-    for raw in git("ls-tree", "-r", "-l", "-z", "origin/main").split(b"\0"):
+    for raw in git("ls-tree", "-r", "-l", "-z", BASE_MAIN_SHA).split(b"\0"):
         if not raw:
             continue
         left, path = raw.split(b"\t", 1)

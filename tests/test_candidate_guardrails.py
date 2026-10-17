@@ -9,6 +9,8 @@ from pathlib import Path
 from unittest.mock import patch
 
 from src.lpf.experiment_manifest import RUNS, experiment_index, new_manifest, write_manifest
+from src.lpf.legacy_manifest_adapter import legacy_exp047_index_view
+from src.lpf.constraint_versions import load_constraint, constraint_fingerprint
 from scripts import audit_results
 from scripts import verify_no_pcb_tunable_candidates as baseline
 
@@ -67,6 +69,10 @@ class CandidateIndexGuardrails(unittest.TestCase):
         shutil.copytree(ROOT / "data/constraints", self.root / "data/constraints",
                         dirs_exist_ok=True)
         shutil.copytree(ROOT / RUNS, self.root / RUNS, ignore=shutil.ignore_patterns("__pycache__"))
+        shutil.copytree(ROOT / "data/parasitics", self.root / "data/parasitics")
+        overlay = "data/validation/exp047_legacy_manifest_adapter_20261017.json"
+        (self.root / overlay).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(ROOT / overlay, self.root / overlay)
         shutil.copytree(ROOT / "data/validation/rf_f002_phase2_20261013",
                         self.root / "data/validation/rf_f002_phase2_20261013")
         for validation_dir in (
@@ -123,11 +129,20 @@ class CandidateIndexGuardrails(unittest.TestCase):
             rows = list(csv.DictReader(f))
         m = new_manifest("EXP-999", "Synthetic candidate metadata fixture", {},
                          objective="full_lpf", seed=1)
+        # Use the copied fixture policy to derive the temporary candidate
+        # identity; never rely on another root's fingerprint for a new row.
+        resolved = load_constraint("RF-F003", root=self.root)
+        m["constraints"]["effective_constraints"] = resolved
+        m["constraints"]["effective_constraint_sha256"] = constraint_fingerprint(resolved)
         directory = self.root / RUNS / "EXP-999"
         directory.mkdir()
         write_manifest(directory / "manifest.json", m, root=self.root)
-        manifests = [(p.relative_to(self.root).as_posix(), json.loads(p.read_text()))
-                     for p in (self.root / RUNS).glob("EXP-*/manifest.json")]
+        manifests = []
+        for p in (self.root / RUNS).glob("EXP-*/manifest.json"):
+            source_manifest = (legacy_exp047_index_view(root=self.root)
+                               if p.parent.name == "EXP-047"
+                               else json.loads(p.read_text()))
+            manifests.append((p.relative_to(self.root).as_posix(), source_manifest))
         (self.root / "data/experiment_index.csv").write_text(experiment_index(manifests))
         rows.append(dict(rows[0], candidate_id=name, spec_id="RF-F003",
                          evidence=f"candidates/{name}.json", constraint_class="formal",
@@ -141,7 +156,18 @@ class CandidateIndexGuardrails(unittest.TestCase):
 
     def test_additional_current_policy_candidate_does_not_require_audit_edit(self):
         self._add_candidate("LPF-TEST-ADDED")
-        self.assertEqual(self._audit(), [])
+        issues = self._audit()
+        with (self.root / "data/candidate_index.csv").open(newline="", encoding="utf-8") as stream:
+            row = [x for x in csv.DictReader(stream)
+                   if x["candidate_id"] == "LPF-TEST-ADDED"][0]
+        current = load_constraint("RF-F003", root=self.root)
+        self.assertEqual(issues, [], {
+            "kind": row["constraint_class"], "id": row["constraint_id"],
+            "spec_id": row["spec_id"],
+            "row_digest": row["effective_constraint_sha256"],
+            "expected_digest": constraint_fingerprint(current),
+            "policy_status": current["active_constraint_status"],
+        })
 
     def test_historical_candidate_cannot_claim_formal_spec(self):
         self._add_candidate("LPF-TEST-ADDED")

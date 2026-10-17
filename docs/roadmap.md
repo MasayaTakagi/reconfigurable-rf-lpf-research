@@ -1,4 +1,24 @@
-# Phase 2 現行状況 — RF-F003正式採用・RF-T005追加（2026-10-16 JST）
+# Phase 2 研究ロードマップ（現行入口：2026-10-17）
+
+> **現在の閲覧入口：** [Phase 2現行サマリー](current/phase2_status.md) ／ [未解決課題と実施ゲート](current/open_research_questions.md) ／ [RF-F003・RF-T005パレート一覧](results/README.md) ／ [文書総合目次](README.md)。
+>
+> **研究Phase 2継続、Phase 3はユーザー明示承認まで停止。** 現行正式数値正本は [制約レジストリ](../data/constraints/registry.json) のRF-F003、周波数帯は [bands.csv](../data/bands.csv)。RF-T005は試験条件であり正式RF-F003へ昇格していない。
+>
+> **時系列の解釈：** この下には2026-10-16以前に書かれた未実装・未実行計画が歴史として残る。**2026-10-17のEXP-047局所数値探索・独立MNAを消さず、かつRF-F003共通runnerによる網羅最適化の完了ともみなさない**。過去のRF-F002成果・旧PRの状態は現在の公式実績を意味しない。
+
+## 現行の管理課題（2026-10-17）
+
+| 優先 | 論点 | 出典・次工程 |
+|---|---|---|
+| P0 | EXP-047 manifestの共通必須フィールド不足で2026-10-17の[Phase 2 regression](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39015048662)が失敗。全回帰PASSしていない | [未解決課題](current/open_research_questions.md)に対応方針を記載。原記録を改変して実行済みとみなさない |
+| P1 | 現行RF-F003/T005の10点と旧14件候補台帳が別管理 | [保存パレートJSON](../data/pareto_snapshots/rf_t005_rf_f003_20261017.json)、[旧候補台帳](../data/research_candidate_register.csv)。整理Step 3で出典に基づき統合 |
+| P1 | RF-F003共通探索pipeline、同条件での共通格子・独立検証、Q(f)/SRF/EM/実測・公差検証が未完了 | [RF-F003当時の計画](rf_f003_phase2_rebaseline_plan_20261016.md)、[現行課題](current/open_research_questions.md) |
+| P1 | レポジトリの文書導線と研究証拠の長期保全 | [整理計画・Step 1監査PR #67](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/67)と本Step 2の目次類。原証拠の移動・削除禁止 |
+
+---
+
+## 2026-10-17以前の計画・進捗（時点情報として保存）
+
 
 ## 2026-10-17 現時点のパレート解を保存（数値探索・検証済み成果の追記）
 

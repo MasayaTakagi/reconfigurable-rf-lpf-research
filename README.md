@@ -1,6 +1,31 @@
 # Reconfigurable RF LPF Research — Phase 2
 
-## 現行ステータス（2026-10-15／PR #54統合後のmain）
+## 現行ステータス（2026-10-17／Phase 2）
+
+**正式制約はRF-F003、試験条件はRF-T005です。** 運用正本は[ChatGPTプロジェクト指示](docs/chatgpt_project_instructions.md)。数値は[制約レジストリ](data/constraints/registry.json)のactive正式ID → [RF-F003](data/constraints/formal/RF-F003.json) を正本とし、[bands.csv](data/bands.csv)、[固定S2P](data/README.md)を適用します。RF-T005は[最大3枝の可変Cを許した試験条件](data/constraints/trial/RF-T005.json)であり、正式RF-F003の最大2枝と混同しません。
+
+| すぐに知りたいこと | 入口 |
+|---|---|
+| **現行RF-F003仕様・達成状況** | [Phase 2現行サマリー](docs/current/phase2_status.md) ／ [設計仕様](docs/specification.md) |
+| **最良候補・3L/4L・面積–ILパレート** | [結果一覧](docs/results/README.md) ／ [2026-10-17パレート原報告](docs/pareto_rf_t005_rf_f003_20261017.md) |
+| **機械可読パレートと完全回路ベクトル** | [固定スナップショットJSON](data/pareto_snapshots/rf_t005_rf_f003_20261017.json) → [実験フォルダ](experiments/README.md) |
+| **未解決課題と次工程** | [現行課題](docs/current/open_research_questions.md) ／ [ロードマップ](docs/roadmap.md) |
+| **ファイルの所在と運用** | [文書](docs/README.md) ／ [データ](data/README.md) ／ [実験](experiments/README.md) ／ [スクリプト](scripts/README.md) |
+| **整理計画と棚卸し** | [PR #67：計画とStep 1監査（レビュー中）](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/67) |
+
+### 最新の保存結果（条件別・best-found）
+
+- **RF-T005（試験・最大3可変C）：** H2/H3必須30dBの有限格子適合候補のうち**6点**（3L/4L、chip面積3～6、最悪IL 0.944268～0.805149dB）。出典EXP-042/043/045。
+- **RF-F003（正式・最大2可変C）：** 同じく**4点**（4L、chip面積4⅔～6⅔、最悪IL 0.882647～0.833188dB）。出典EXP-047。
+- 両方とも**IL≤0.30dB、公称H2/H3≥35dBは未達**。保存済み候補集合の局所・有限格子の非支配点であり、大域最適性、連続帯域極値、Q(f)/SRF/EM、実装・公差・実測の成立は保証されません。外部S2Pはモデル由来で実測ではありません。
+
+**実施状態の注意：** 現行EXP-047での局所探索・数値検証は保存済みですが、RF-F003共通full_lpf探索pipelineによる網羅最適化は完了していません。2026-10-17の[既存Phase 2回帰CI](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39015048662)はEXP-047のmanifest必須フィールド不足で失敗しており、全CI PASSと呼びません。
+
+**Phase 2継続。Phase 3は所有者の明示承認まで開始しません。** 新規EXPはmainの[中央番号台帳](data/experiment_number_registry.csv)への事前予約と照合を必要とします。過去のRF-F001/F002/T004記録は下に歴史資料として残し、現行RF-F003の値として使用しません。
+
+---
+
+## 2026-10-15時点の研究状況（歴史的記録・現行ではない）
 
 > この節は2026-10-15時点の状況を記録する。最新の数値・実験状態は[RF制約台帳](data/constraints/registry.json)、[ロードマップ](docs/roadmap.md)、[研究候補台帳](data/research_candidate_register.csv)、[課題台帳](data/research_review_issues.csv)を確認する。下の「過去の研究記録」にある旧時点の「現行」「未導入」「hard cap 6」等は現在の承認済み仕様を示さない。
 

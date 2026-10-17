@@ -10,6 +10,7 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 RUNS = ROOT / "experiments/chatgpt_topology_search/runs"
 INVENTORY = ROOT / "data/experiment_evidence_inventory.csv"
 AUDITED_COLUMNS = {
@@ -56,6 +57,32 @@ def check_inventory(root=ROOT):
             issues.append(f"Unknown inventory ID: {cid}")
             continue
         manifest_path = run_root / cid / "manifest.json"
+        if cid == "EXP-047":
+            # The source-pinned in-chat report does not contain canonical
+            # evidence/code/seed/environment fields. Never invent these.
+            from src.lpf.legacy_manifest_adapter import legacy_exp047_index_view
+            view = legacy_exp047_index_view(root=root)
+            expected = {
+                "experiment_id": "EXP-047",
+                "constraint_class": view["constraints"]["class"],
+                "constraint_id": view["constraints"]["constraint_id"],
+                "objective": view["objective"],
+                "execution_status": view["execution"]["status"],
+                "numerical_validation": view["validation"]["numerical"],
+                "independent_validation": view["validation"]["independent"],
+                "implementation_validation": "not_run",
+                "registered_evidence_count": "0",
+                "execution_sha_recorded": "false",
+                "seed_recorded": "false",
+                "environment_recorded": "false",
+                "readme_present": str((run_root / cid / "README.md").is_file()).lower(),
+                "review_flag": "legacy_partial_noncanonical_manifest",
+                "manifest": manifest_path.relative_to(root).as_posix(),
+            }
+            for key, value in expected.items():
+                if row[key] != value:
+                    issues.append(f"{cid}: unsupported legacy inventory value for {key}")
+            continue
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         for column, keys in AUDITED_COLUMNS.items():
             if row[column] != _field(manifest, keys):

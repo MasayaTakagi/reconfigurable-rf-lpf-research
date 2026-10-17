@@ -31,9 +31,14 @@ def dominates(a, b):
     return aa <= ba and ai <= bi and (aa < ba or ai < bi)
 
 
-def make_report(root=ROOT):
+def make_report(root=ROOT, catalog_path="data/research_candidate_register.csv"):
+    """Report a selected curated catalog; default remains the historical 14-row source.
+
+    The 2026-10-17 unified view is opt-in via --catalog, and must first pass
+    scripts/build_phase2_candidate_catalog.py --check.
+    """
     root = Path(root)
-    records = _rows(root, "data/research_candidate_register.csv")
+    records = _rows(root, catalog_path)
     overlays = {x["candidate_id"]: x for x in
                 _rows(root, "data/research_validation_overlays.csv")}
     if not records or len({x["catalog_id"] for x in records}) != len(records):
@@ -100,6 +105,12 @@ def make_report(root=ROOT):
             x["constraint_id"] == "RF-F002" and
             x["threshold_classification"] == "strict_finite_grid" and
             x["il_0p30_met_on_recorded_grid"] == "true" for x in view),
+        "formal_strict_rf_f003_il0p3_met": any(
+            x["constraint_class"] == "formal" and
+            x["constraint_id"] == "RF-F003" and
+            x["threshold_classification"] == "strict_finite_grid" and
+            x["il_0p30_met_on_recorded_grid"] == "true" for x in view),
+        "catalog_path": catalog_path,
     }
     return view, summary
 
@@ -137,12 +148,15 @@ def as_markdown(summary):
         "- reported_finite_grid: 元研究の報告区分。EXP-016の4件については"
         "後からCIで独立再計算が成功しているが元実行状態の証拠は変えない。",
         "- RF-T004の3可変C試験結果をRF-F002正式2可変C結果と混同しない。",
+        "- RF-T005の3可変C試験結果をRF-F003正式2可変C結果と混同しない。",
+        "- 2026-10-17の統合候補は不変snapshot由来。元checkpointのblob SHAを"
+        "統合catalog生成時に確認するが、新しいRF数値解析を実行したわけではない。",
         "- historical_onlyは旧モデルの参考値。現行制約の順位付けに使わない。",
         "- 検証格子と証拠深度が異なる場合、厳密な相互優劣は"
         "同一格子・独立検証で再確認するまで確定しない。",
         "- チップ面積は正式な上限ではない。SRF、Q(f)、EM、温度、公差、"
         "PCB/IC面積、結合の物理実現性は検証していない。", "",
-        "入力: data/research_candidate_register.csv と"
+        f"入力: {summary['catalog_path']} と"
         " data/research_validation_overlays.csv。", "",
     ])
     return "\n".join(lines)
@@ -153,8 +167,11 @@ def main():
     parser.add_argument("--csv", type=Path, required=True)
     parser.add_argument("--summary", type=Path, required=True)
     parser.add_argument("--markdown", type=Path, required=True)
+    parser.add_argument("--catalog", default="data/research_candidate_register.csv",
+                        help="curated CSV source; use data/catalog/phase2_candidate_catalog_20261017.csv "
+                             "for the 24-row unified Phase 2 view")
     args = parser.parse_args()
-    view, summary = make_report()
+    view, summary = make_report(catalog_path=args.catalog)
     for p, data in (
             (args.csv, as_csv(view)),
             (args.summary, json.dumps(summary, ensure_ascii=False, indent=2) + "\n"),
@@ -165,6 +182,8 @@ def main():
           "candidates,", summary["comparison_group_count"], "groups")
     print("Strict formal RF-F002 IL <= 0.30dB achieved:",
           summary["formal_strict_rf_f002_il0p3_met"])
+    print("Strict formal RF-F003 IL <= 0.30dB achieved:",
+          summary["formal_strict_rf_f003_il0p3_met"])
 
 
 if __name__ == "__main__":

@@ -16,7 +16,7 @@ import re
 import subprocess
 from pathlib import Path
 
-from scripts.build_reference_inventory import create_inventory
+from build_reference_inventory import create_inventory
 
 ROOT = Path(__file__).resolve().parents[1]
 PRE_W4_MAIN = "a11e9edc06b1238558cfeff1efb005faf668692b"

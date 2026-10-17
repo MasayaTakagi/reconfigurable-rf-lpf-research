@@ -127,8 +127,15 @@ def verify_status():
         raise ValueError("Original EXP-004 workflow link no longer matches stored evidence")
     alias = ROOT / "actions/workflows/lpf-target040.yml"
     real = ROOT / ".github/workflows/lpf-target040.yml"
-    if not alias.is_symlink() or alias.resolve() != real.resolve() or not real.is_file():
-        raise ValueError("Missing legacy EXP-004 workflow link compatibility symlink")
+    if not alias.is_file() or alias.is_symlink() or not real.is_file():
+        raise ValueError("Missing regular legacy EXP-004 navigation note or true workflow")
+    alias_text = alias.read_text(encoding="utf-8")
+    if not all(k in alias_text for k in (
+        "NOT a GitHub Actions workflow",
+        ".github/workflows/lpf-target040.yml",
+        "https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/workflows/lpf-target040.yml",
+    )):
+        raise ValueError("EXP-004 legacy note no longer leads to the true manual workflow")
 
     original_sha = "055b222c79c73c7fbeacb19383f21c1da0625195"
     untouched = ["data/bands.csv", "data/constraints/registry.json",

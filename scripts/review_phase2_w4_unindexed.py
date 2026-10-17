@@ -88,7 +88,11 @@ def build():
     for rel in sorted(tracked):
         if Path(rel).suffix.lower() not in TEXT_EXTENSIONS or rel.startswith((
             "data/repository_reviews/", "data/repository_audits/"
-        )):
+        )) or rel in {
+            "docs/phase2_cleanup_w4_forensics_20261017.md",
+            "scripts/review_phase2_w4_unindexed.py",
+            "scripts/review_phase2_w4_action_runs.py",
+        }:
             continue
         body = _safe_read_text(ROOT / rel)
         if body is not None:
@@ -172,6 +176,7 @@ def build():
         "new_rf_numeric_runs": 0,
         "limitations": [
             "Source path search is lexical, not semantic dependency proof.",
+            "W4 follow-up self-generated documentation and scan scripts are excluded as reference sources.",
             "Dynamically built code paths, off-repository dependencies and unpublished runs are not indexed.",
             "No static path hit is not an assertion that a file is redundant.",
             "Original experiment file contents and 46 protected blobs are unchanged.",

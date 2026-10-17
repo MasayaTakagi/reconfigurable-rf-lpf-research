@@ -32,7 +32,7 @@ BASE_COLUMNS = (
     "verification_path", "comparison_key",
 )
 EXTRA_COLUMNS = (
-    "origin", "snapshot_id", "checkpoint_git_blob_sha1",
+    "origin", "snapshot_id", "source_subcandidate_id", "checkpoint_git_blob_sha1",
     "verification_git_blob_sha1", "num_lqp02hv", "num_gjm01",
     "num_pcb_pattern_c", "num_ic_variable_c", "mesh_interval_count",
     "mesh_points_per_interval", "independent_mna_probe_points",
@@ -194,11 +194,12 @@ def build_catalog(root=ROOT):
                 "min_h3_db": str(h3),
                 "threshold_classification": "strict_finite_grid",
                 "checkpoint_path": checkpoint["path"],
-                "checkpoint_stage_index": c.get("selected_candidate_id", ""),
+                "checkpoint_stage_index": "",
                 "verification_path": metric_evidence["path"],
                 "comparison_key": cid + "_full_lpf_30_strict_finite_grid",
                 "origin": "archived_pareto_20261017",
                 "snapshot_id": snap["snapshot_id"],
+                "source_subcandidate_id": c.get("selected_candidate_id", ""),
                 "checkpoint_git_blob_sha1": checkpoint_sha,
                 "verification_git_blob_sha1": metric_sha,
                 "num_lqp02hv": str(nl),
@@ -314,7 +315,7 @@ def as_markdown(records: list[dict], summary: dict) -> str:
         "成立区分と一対一。RF-T005（trial）とRF-F003（formal）の面積–IL Paretoを混ぜない。",
         "- **ソース追跡：** CSVの `checkpoint_path` と `checkpoint_git_blob_sha1` が完全ベクトルの元出典、"
         "`verification_path`と`verification_git_blob_sha1`が記録済み評価根拠。"
-        "実験内で候補が入れ子になっているときは `checkpoint_stage_index`／元スナップショットも参照する。",
+        "実験内で候補が入れ子になっているときは `source_subcandidate_id`／元スナップショットも参照する。",
         "- **検証範囲：** 記載の独立MNAは84点等、有限の指定点での照合。"
         "縮約法の28×1001／28×7001格子と28×7001の独立MNA全点実行は同義ではない。",
         "- **収束状態：** EXP-042の面積6はSLSQP未収束。H2/H3の有限格子PASSと収束を混同しない。",

@@ -1,14 +1,9 @@
 name: Phase 2 Step 5 integrated integrity
 
+# Dated source-integrity audit of the *merged 2026-10-17 Step 1–5 tree*.
+# This is not a gate for unrelated later Phase 2 documentation PRs.
+# The normal Phase 2 regression and W1 link gate check current PRs.
 on:
-  pull_request:
-    paths:
-      - '.github/workflows/phase2_step5_integration.yml'
-      - 'scripts/verify_repository_step5_integration.py'
-      - 'src/lpf/legacy_manifest_adapter.py'
-      - 'data/validation/exp047_legacy_manifest_adapter_20261017.json'
-      - 'docs/phase2_repository_step5_final_verification_20261017.md'
-      - 'data/repository_reviews/step5_integration_20261017.json'
   workflow_dispatch:
 
 permissions:
@@ -21,7 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
+          # Replay the exact previously verified archival snapshot, not
+          # whatever files are in the newer Phase 2 main branch.
+          ref: 055b222c79c73c7fbeacb19383f21c1da0625195
           fetch-depth: 0
+          persist-credentials: false
       - name: Fetch authoritative main history
         run: git fetch --no-tags origin '+refs/heads/main:refs/remotes/origin/main'
       - name: Verify original Git blobs, all integrated links and RF source hashes

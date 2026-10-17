@@ -18,7 +18,9 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-LEGACY = "data/research_candidate_register.csv"
+LEGACY = "data/catalog/research_candidate_register_20261017.csv"
+LEGACY_ORIGINAL_PATH = "data/research_candidate_register.csv"
+LEGACY_BLOB_SHA1 = "a0015088db4c8a243c0fa5a3e4000c4e47b3fddb"
 SNAPSHOT = "data/pareto_snapshots/rf_t005_rf_f003_20261017.json"
 OUTPUT_CSV = "data/catalog/phase2_candidate_catalog_20261017.csv"
 OUTPUT_JSON = "data/catalog/phase2_candidate_catalog_20261017_summary.json"
@@ -90,6 +92,8 @@ def numeric(value, label: str) -> float:
 
 def build_catalog(root=ROOT):
     root = Path(root)
+    if git_blob_sha1(safe_evidence(root, LEGACY)) != LEGACY_BLOB_SHA1:
+        raise ValueError("original 2026-10-17 historical catalog source blob changed")
     raw = rows_from_csv(root, LEGACY)
     if len(raw) != 14:
         raise ValueError("2026-10-17 legacy source must contain 14 curated records")

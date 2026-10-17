@@ -36,9 +36,9 @@ class ExperimentNumberLedgerTests(unittest.TestCase):
         self.assertEqual("legacy_recorded", self.rows[40]["state"])
         updated, ident, created = allocate(self.rows)
         self.assertTrue(created)
-        self.assertEqual("EXP-042", ident)
+        self.assertEqual(self.next_id, ident)
         self.assertEqual("reserved", updated[-1]["state"])
-        self.assertEqual(42, len(read_ledger(as_csv(updated))))
+        self.assertEqual(len(self.rows) + 1, len(read_ledger(as_csv(updated))))
 
     def test_rerun_same_request_is_idempotent(self):
         rows, first, _ = allocate(self.rows)
@@ -54,8 +54,8 @@ class ExperimentNumberLedgerTests(unittest.TestCase):
         rows[-1]["state"] = "cancelled"
         later, second, created = allocate(
             rows, owner="second", purpose="Another search", key="request-002")
-        self.assertEqual("EXP-042", first)
-        self.assertEqual("EXP-043", second)
+        self.assertEqual(self.next_id, first)
+        self.assertEqual(self.following_id, second)
         self.assertTrue(created)
         self.assertEqual("cancelled", later[-2]["state"])
 

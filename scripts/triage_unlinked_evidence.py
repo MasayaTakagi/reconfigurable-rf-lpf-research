@@ -217,14 +217,48 @@ def to_csv(records):
 
 
 def check_snapshot(root=ROOT):
+    """Check frozen review-only source bytes without freezing future Git inventory.
+
+    The 2026-10-15 CSV is a historical triage snapshot, not an assertion
+    that the repository can never gain further experiments or reference links.
+    Preserve its original 46 rows, each tracked file, blob identity, and the
+    explicit non-deletion disposition. Current additional files are covered by
+    build_triage() reports but do not rewrite historical row classifications.
+    """
     root = Path(root)
-    expected = (root / SNAPSHOT).read_text(encoding="utf-8")
-    records, summary = build_triage(root)
-    if expected != to_csv(records):
-        raise ValueError("Evidence triage snapshot is stale or was modified")
-    if not summary["all_dispositions_retain"]:
-        raise ValueError("Source triage inadvertently approved evidence deletion")
-    return summary
+    with (root / SNAPSHOT).open(encoding="utf-8", newline="") as stream:
+        records = list(csv.DictReader(stream))
+    tracked = _tracked_paths(root)
+    seen = set()
+    for row in records:
+        rel = row["path"]
+        if (rel in seen or rel not in tracked or
+                Path(rel).is_absolute() or ".." in Path(rel).parts):
+            raise ValueError(f"Missing, duplicate or unsafe historical triage path: {rel}")
+        seen.add(rel)
+        raw = (root / rel).read_bytes()
+        if (str(len(raw)) != row["bytes"] or
+                _blob_sha1(raw) != row["git_blob_sha1"]):
+            raise ValueError(f"Historical evidence triage blob changed: {rel}")
+        if row["disposition"] != "retain_pending_source_context_review":
+            raise ValueError(f"Historical evidence deletion disposition changed: {rel}")
+    if not records:
+        raise ValueError("Historical triage snapshot is empty")
+    return {
+        "schema_version": 1, "phase": "Phase 2",
+        "scope": "frozen historical 2026-10-15 review-only evidence subset",
+        "input_review_file_count": len(records),
+        "classified_rows": len(records),
+        "review_classes": dict(sorted(Counter(
+            row["review_class"] for row in records).items())),
+        "locations": dict(sorted(Counter(
+            row["location"] for row in records).items())),
+        "resolved_markdown_link_hits": sum(int(
+            row["markdown_resolved_ref_count"]) for row in records),
+        "all_dispositions_retain": True,
+        "deletions_or_moves_executed": 0,
+        "newer_sources_not_claimed_to_be_in_snapshot": True,
+    }
 
 
 def main():

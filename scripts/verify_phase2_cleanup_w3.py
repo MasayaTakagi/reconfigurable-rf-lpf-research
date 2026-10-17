@@ -1,28 +1,24 @@
 #!/usr/bin/env python3
-"""Phase 2 W3 read-only approved deletion gate.
+"""W3 approved-deletion gate: exact four-doc allowlist, historical recovery and no source loss.
 
-D-001..D-004 were owner-approved for retirement from the current tree.
-Validate actual historical byte restoration and the exact approved deletion
-set, while retaining D-005..D-007 and the 46 old protected sources.
+Check removal against pinned pre-deletion main. Raw experiment evidence and
+the 46 previously reviewed source blobs must remain byte-identical.
+External links, dynamic paths and all Git history are not fully audited.
 """
 import csv
-import hashlib
 import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-ORIGINAL_MAIN = "731e901e79cfa367fd06b4350844c6987b30caa5"
-PRE_DELETE_MAIN = "88562135dae2edf8ba7763aa529181c05f7c1ded"
+PRE_DELETE = "88562135dae2edf8ba7763aa529181c05f7c1ded"
+INITIAL_W3_REVIEW = "731e901e79cfa367fd06b4350844c6987b30caa5"
 REVIEW = ROOT / "data/repository_reviews/w3_document_disposition_20261017.csv"
+PLAN = ROOT / "data/repository_reviews/phase2_cleanup_deletion_candidates_20261017.csv"
 OLD_PROTECTED = ROOT / "data/repository_reviews/step4_retention_46_20261017.csv"
-CONSOLIDATED = "docs/archive/w3_consolidated_documents_20261017.md"
-EXPECTED_IDS = {"D-%03d" % i for i in range(1, 8)}
-REMOVABLE = {
-    "docs/repository_reorganization_plan.md",
-    "docs/research_result_governance.md",
-    "docs/phase2_actions_ci_repair_20261017.md",
-    "docs/repository_storage_audit_20261014.md",
-}
+HISTORY = ROOT / "docs/archive/w3_consolidated_documents_20261017.md"
+APPROVED_IDS = {"D-%03d" % i for i in range(1, 5)}
+RETAINED_IDS = {"D-%03d" % i for i in range(5, 8)}
+EXPECTED_IDS = APPROVED_IDS | RETAINED_IDS
 PROTECTED_PREFIXES = (
     "data/constraints/", "data/parasitics/", "data/validation/",
     "experiments/", "candidates/",
@@ -37,91 +33,72 @@ def git(*args, text=True):
     return subprocess.check_output(["git", *args], cwd=ROOT, text=text)
 
 
-def safe_path(relpath):
-    if Path(relpath).is_absolute() or ".." in Path(relpath).parts:
-        raise AssertionError("Bad path: " + relpath)
-
-
-def hash_blob(data):
-    return hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()
-
-
-def verify_historic_blob(path, sha):
-    safe_path(path)
-    recovered = git("show", PRE_DELETE_MAIN + ":" + path, text=False)
-    assert hash_blob(recovered) == sha, ("Restoration SHA mismatch", path)
-    assert git("rev-parse", PRE_DELETE_MAIN + ":" + path).strip() == sha, (
-        "Git tree SHA mismatch", path
-    )
-    return recovered
-
-
-def verify_unchanged(path, sha):
-    safe_path(path)
-    target = ROOT / path
-    assert target.is_file() and not target.is_symlink(), "Missing original: " + path
-    actual = target.read_bytes()
-    assert hash_blob(actual) == sha, "Current blob changed: " + path
-    assert git("rev-parse", ORIGINAL_MAIN + ":" + path).strip() == sha, (
-        "Original baseline mismatch", path
-    )
+def require_original(relpath, source_sha, *, removed):
+    rel = Path(relpath)
+    assert not rel.is_absolute() and ".." not in rel.parts and relpath.startswith(("docs/", "data/", "experiments/", "candidates/"))
+    expected_git_blob = git("rev-parse", PRE_DELETE + ":" + relpath).strip()
+    assert source_sha == expected_git_blob, "Pre-delete source hash mismatch: " + relpath
+    recovered = git("show", PRE_DELETE + ":" + relpath, text=False)
+    actual_blob = subprocess.check_output(
+        ["git", "hash-object", "--stdin"], input=recovered, cwd=ROOT
+    ).decode().strip()
+    assert actual_blob == source_sha, "git show recovery differs: " + relpath
+    file = ROOT / relpath
+    if removed:
+        assert not file.exists() and not file.is_symlink(), "Approved deleted path is still in tree: " + relpath
+    else:
+        assert file.is_file() and not file.is_symlink(), "Retained file missing: " + relpath
+        assert file.read_bytes() == recovered, "Retained source changed: " + relpath
 
 
 def main():
     with REVIEW.open(newline="", encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
-    assert len(rows) == 7
-    assert {r["candidate_id"] for r in rows} == EXPECTED_IDS
-    assert len({r["candidate_id"] for r in rows}) == 7
-    consolidated = (ROOT / CONSOLIDATED).read_text(encoding="utf-8")
-    assert PRE_DELETE_MAIN in consolidated
-    seen_removed = set()
+    items = {row["candidate_id"]: row for row in rows}
+    assert len(rows) == 7 and items.keys() == EXPECTED_IDS
+    expected_deleted = {items[k]["source_path"] for k in APPROVED_IDS}
+    assert len(expected_deleted) == 4
+    history_text = HISTORY.read_text(encoding="utf-8")
 
-    for row in rows:
-        path, sha = row["source_path"], row["git_blob_sha1"]
-        assert row["review_main_commit"] == ORIGINAL_MAIN
-        assert path.startswith("docs/")
-        if row["candidate_id"] in {"D-001", "D-002", "D-003", "D-004"}:
-            seen_removed.add(path)
-            assert row["tree_state"] == "removed_from_current_tree"
-            assert row["owner_delete_approval"] == "approved_2026-10-17_user_message"
-            assert row["w3_disposition"] == "owner_approved_historical_consolidation"
-            assert not (ROOT / path).exists(), "Approved path was not removed: " + path
-            verify_historic_blob(path, sha)
-            assert path in consolidated and sha in consolidated, (
-                "Consolidation missing SHA/path provenance", path
-            )
-            print(row["candidate_id"], "historical recovery PASS", path)
+    for key, row in items.items():
+        assert row["review_main_commit"] == INITIAL_W3_REVIEW
+        if key in APPROVED_IDS:
+            assert row["owner_delete_approval"] == "granted_2026-10-17T14-55-06Z"
+            assert row["tree_state"] == "removed_from_current_revision"
+            assert row["w3_disposition"] == "approved_removed_after_consolidation"
+            assert row["source_path"] in history_text
+            assert row["git_blob_sha1"] in history_text
+            require_original(row["source_path"], row["git_blob_sha1"], removed=True)
         else:
             assert row["owner_delete_approval"] == "not_granted"
             assert row["tree_state"] == "retained"
-            verify_unchanged(path, sha)
-            print(row["candidate_id"], "retained SHA PASS", path)
-    assert seen_removed == REMOVABLE, ("unexpected removed paths", seen_removed)
+            require_original(row["source_path"], row["git_blob_sha1"], removed=False)
+
+    with PLAN.open(newline="", encoding="utf-8") as f:
+        planning = {r["candidate_id"]: r for r in csv.DictReader(f)}
+    for k in APPROVED_IDS:
+        assert planning[k]["execution_state"] == "removed_from_current_revision_owner_approved_20261017"
+        assert planning[k]["source_git_blob_sha1_at_planning"] == items[k]["git_blob_sha1"]
+    for k in RETAINED_IDS:
+        assert planning[k]["execution_state"] == "not_started_unapproved"
 
     with OLD_PROTECTED.open(newline="", encoding="utf-8") as f:
         protected = list(csv.DictReader(f))
     assert len(protected) == 46
     for row in protected:
-        verify_unchanged(row["path"], row["git_blob_sha1"])
+        require_original(row["path"], row["git_blob_sha1"], removed=False)
 
-    names = git("diff", "--name-only", PRE_DELETE_MAIN, "HEAD").splitlines()
-    deleted = set(git("diff", "--diff-filter=D", "--name-only",
-                      PRE_DELETE_MAIN, "HEAD").splitlines())
-    assert deleted == REMOVABLE, ("Unexpected deletion set", deleted)
-    for name in names:
-        assert not name.startswith(PROTECTED_PREFIXES) and name not in PROTECTED_FILES, (
-            "RF/experimental evidence changed: " + name
+    deleted = set(git("diff", "--diff-filter=D", "--name-only", PRE_DELETE, "HEAD").splitlines())
+    assert deleted == expected_deleted, "Unapproved deletion or missing four deletions: " + str(deleted)
+    changed = git("diff", "--name-only", PRE_DELETE, "HEAD").splitlines()
+    for path in changed:
+        assert not path.startswith(PROTECTED_PREFIXES) and path not in PROTECTED_FILES, (
+            "Changed protected RF or original research evidence: " + path
         )
-    print(
-        "W3 PASS: exactly 4 owner-approved historical docs retired,"
-        " all four original blobs restorable from pre-delete main,"
-        " 3 retained original docs and 46 protected sources unchanged."
-    )
-    print(
-        "No numeric RF analysis or physical validation is implied."
-        " W1 tests tracked Markdown links separately."
-    )
+    print("W3 PASS: exactly four owner-approved historical documents removed from tree.")
+    print("W3 PASS: original four Git blobs byte-for-byte restorable with git show.")
+    print("W3 PASS: retained D-005 to D-007, all 46 source documents and RF evidence unchanged.")
+    print("Limit: not a complete verification of dynamic paths, all external URLs or full repository history.")
 
 
 if __name__ == "__main__":

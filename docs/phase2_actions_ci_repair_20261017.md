@@ -37,3 +37,20 @@ PR #64 [run 38996649074](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-r
 This PR still has a legacy flat EXP-045 manifest. Do not silence audit or fabricate execution SHA or independent verification to obtain a green run. Proper migration must retain the original as historical evidence, resolve approved RF-T005 policy precisely, and label in-chat versus unexecuted archive replayers accurately. Thus the PR #64 content validation remains unresolved, while its EXP-042 YAML workflow is repaired.
 
 RF numerical outcomes, constraints, experiment reservations and Phase status were not changed. Phase 2 continues; Phase 3 remains unapproved.
+
+
+## 2026-10-17 final PR review / merge reconciliation (03:44 UTC)
+
+The "PR #64 unresolved" subsection above is a **historical snapshot** and is now superseded for the merged branch. GitHub state confirmed all five reviewed draft PRs have been merged:
+
+| PR | Merge commit | Provenance / reconciliation |
+|---|---|---|
+| #65 | `cc22c7ec2ff97b836365e77a14ca9d32832ff0b1` | EXP-045 research in-chat evidence, canonical source/manifest; Phase 2 regression 38997436104 PASS |
+| #62 | `a3bed9b304e55f3fb623c8255d30478b986f1950` | T/π electromagnetic-coupling theory; added `tests/test_phase2_standalone_function_coverage.py` because the six theory modules used pytest-style functions not discovered by `unittest`; corrected PR head regression 38998999844 PASS |
+| #64 | `39d394b9f310928115c119b7a253030441707505` | Distinct EXP-045 3L checkpoints and reproducers merged while preserving #65 canonical `EXP-045/manifest.json` / README; archived original PR #64 versions as `archive_PR64_original_manifest_20261017.json` and `archive_PR64_original_README_20261017.md`. Metadata index remains one EXP-045 row. Earlier PR #64 failed CI 38996649074 must not be reclassified as passing. |
+| #59 | `e9ca3cab477ad0e8fc197f2817247b092998b38c` | Additional EXP-042 4L numerical provenance and replay source, separate from formal RF-F003 achievements; merge-head main regression 38999715559 PASS |
+| #58 | `6b4f3941067e3cb0823f602051e22bcccd72aebc` | EXP-042 Cf2∥Cv2 circuit correction / source updates; associated PR check workflow runs 38999677183, 38999677194, 38999677216 and 38999677351 all SUCCESS |
+
+**Post-merge main gate:** [Phase 2 regression 38999850687](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38999850687), head `6b4f3941067e3cb0823f602051e22bcccd72aebc`, completed **SUCCESS** with 28 successful steps and no failed steps. Source tree shows one unique record each for EXP-042, EXP-045, EXP-046 in `data/experiment_index.csv`. All five PRs are closed as merged, and no open PRs remained when checked. The previous validation failure in the original #64 branch was resolved by source preservation plus canonical synchronization before merge; the earlier failed run remains an authentic historical failure.
+
+Review caveat: Actions PASS establishes the committed regression/evidence scripts executed by those workflows; it does not verify unexecuted offline reproducers, physical SRF/Q(f), EM, fabrication tolerance, continuous-band extremes, or formal RF-F003 performance. No explicit Phase 3 authorization has been issued.

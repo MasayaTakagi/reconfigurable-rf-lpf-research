@@ -2,6 +2,8 @@
 
 > **非破壊の仮想フォルダ索引。** 旧文書の本体を本ディレクトリに移動していない。元の相対パス／Git blob SHAを保存し、条件・作成日・出典を確認して読む。現行正式制約は [RF-F003](../../data/constraints/formal/RF-F003.json)。参照する際は制約レジストリ上のactive IDを優先する。
 
+**2026-10-17 W3追補：** D-001～D-004の旧二次文書は所有者承認で現行treeから削除し、[固有情報と元blob出典](w3_consolidated_documents_20261017.md)に統合。下の4件の旧題名リンクは統合資料に対応し、固定Gitコミットの元全文はそこから復元できる。D-005～D-007は原位置保持。
+
 **最新の正式仕様を確認する場合：** [制約台帳](../../data/constraints/registry.json)、[現行仕様要約](../specification.md)、[保存パレート](../pareto_rf_t005_rf_f003_20261017.md)。旧RF-F002、RF-T004、RF-T003の成果をRF-F003へ置き換えない。
 
 監査基準main: `bdb39904379637aeca5cf56ec3096e9e1b15f62a`。元`docs/`配下は**56件**。以下は実ファイルの所在を提示する索引であり、移動・改名済みの意味ではない。
@@ -71,13 +73,13 @@
 - [Phase 2：EXP実験番号の中央予約規則（2026-10-15・提案）](../experiment_number_reservation_policy_20261015.md) — `docs/experiment_number_reservation_policy_20261015.md`
 - [Phase 2：GitHubのみで管理する実験結果保存方針（2026-10-15、提案）](../experiment_result_storage_policy_proposal_20261015.md) — `docs/experiment_result_storage_policy_proposal_20261015.md`
 - [GitHub不要ブランチ監査・削除記録（2026-10-14）](../maintenance/branch_cleanup_20261014.md) — `docs/maintenance/branch_cleanup_20261014.md`
-- [Phase 2 GitHub Actions CI repair — 2026-10-17](../phase2_actions_ci_repair_20261017.md) — `docs/phase2_actions_ci_repair_20261017.md`
+- [Phase 2 GitHub Actions CI repair — 2026-10-17](w3_consolidated_documents_20261017.md#d-003) — `docs/phase2_actions_ci_repair_20261017.md`
 - [Phase 2：46ファイルの出典・内容レビュー（2026-10-15）](../phase2_evidence_triage_20261015.md) — `docs/phase2_evidence_triage_20261015.md`
 - [Phase 2：リポジトリ保存最適化レビュー（GitHub-only、2026-10-15）](../phase2_repository_optimization_review_20261015.md) — `docs/phase2_repository_optimization_review_20261015.md`
 - [Phase 2：証拠逆引き・保管区分・条件別Pareto（2026-10-15）](../phase2_storage_pareto_review_20261015.md) — `docs/phase2_storage_pareto_review_20261015.md`
-- [リポジトリ整理・引き継ぎ計画（Phase 2 / 2026-10-12）](../repository_reorganization_plan.md) — `docs/repository_reorganization_plan.md`
-- [Phase 2 Git保管構造の非破壊監査（2026-10-14）](../repository_storage_audit_20261014.md) — `docs/repository_storage_audit_20261014.md`
-- [Phase 2：実験成果の統合台帳と保全規則（初版、2026-10-14）](../research_result_governance.md) — `docs/research_result_governance.md`
+- [リポジトリ整理・引き継ぎ計画（Phase 2 / 2026-10-12）](w3_consolidated_documents_20261017.md#d-001) — `docs/repository_reorganization_plan.md`
+- [Phase 2 Git保管構造の非破壊監査（2026-10-14）](w3_consolidated_documents_20261017.md#d-004) — `docs/repository_storage_audit_20261014.md`
+- [Phase 2：実験成果の統合台帳と保全規則（初版、2026-10-14）](w3_consolidated_documents_20261017.md#d-002) — `docs/research_result_governance.md`
 - [Phase 2 証拠の整合性調査と時点訂正（2026-10-14）](../result_record_corrections_20261014.md) — `docs/result_record_corrections_20261014.md`
 
 ## その他の時点付き研究・計画（3件）

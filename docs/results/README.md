@@ -43,3 +43,7 @@
 - **過去との区別：** [2026-10-17固定の旧14件](../../data/catalog/research_candidate_register_20261017.csv)と、本ページのRF-T005 6件・RF-F003 4件は[統合24候補CSV](../../data/catalog/phase2_candidate_catalog_20261017.csv)に出典別・条件別で収録済み。[検索・比較方法](../../data/catalog/README.md)に従い、旧RF-F002/T004とのパレートを混同しない。
 
 [現行ステータス](../current/phase2_status.md) ／ [実験フォルダの案内](../../experiments/README.md) ／ [文書総合入口](../README.md)
+
+## W2：トポロジー・磁気結合の符号で検索
+
+[構造検索レポート](phase2_topology_search_20261017.md)と[24件の構造検索CSV](../../data/catalog/phase2_topology_search_20261017.csv)を追加しました。[元の24件性能CSV](../../data/catalog/phase2_candidate_catalog_20261017.csv)と`catalog_id`で結合できます。出典に記録がない接続・インダクタ順は`unknown`のまま保持し、数値モデル上の符号つき`k`をコイル極性やEM実現性の実証と混同しません。

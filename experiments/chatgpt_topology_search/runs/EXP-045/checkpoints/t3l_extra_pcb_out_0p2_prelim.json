@@ -2,7 +2,7 @@
   "experiment_id": "EXP-045",
   "condition": "RF-T005",
   "phase": "Phase 2",
-  "status": "preliminary_direct_nodalY_ABCD_exact_S2P_28x1001_NOT_independent_MNA_verified",
+  "status": "direct_nodalY_exact_28x1001_plus_independent_explicit_MNA_84_probe_pass",
   "source": "GitHub connector main immutable original S2P + JS full-lumped linear circuit evaluation",
   "baseline": "EXP-043/checkpoints/gjm_cp_local_H30p0032.json",
   "component_types": {
@@ -147,9 +147,42 @@
     "band_file": "data/bands.csv"
   },
   "limitations": [
-    "No independent 7x7 branch-current MNA for this exact vector yet",
+    "Independent explicit branch-current MNA checked on 84 boundary/midpoint frequency probes, not full 28x1001 mesh",
     "No continuous-band stationary point certification",
     "No Q(f), real SRF, PCB geometry, tolerance, EM or measurement validation",
     "No proven global minimax, only selected local best found"
-  ]
+  ],
+  "validation": {
+    "independent_method": "5x5 explicit coupled-inductor branch-current MNA, separate port excitations V_in=1V,V_out=0V and V_in=0V,V_out=1V; full external S2P cascade",
+    "frequency_probes": 84,
+    "grid": "28 bands x [low,mid,high]",
+    "max_IL_disagreement_db": 1.7763568394002505e-14,
+    "max_elementwise_power_residual_W": 6.071532165918825e-18,
+    "negative_constituent_dissipation_count": 0,
+    "critical_frequencies": [
+      {
+        "setting": "B28",
+        "MHz": 803,
+        "IL": 0.8951800090647889
+      },
+      {
+        "setting": "B13+B14",
+        "MHz": 1554,
+        "attenuation_H2": 30.00800000006536
+      },
+      {
+        "setting": "B71",
+        "MHz": 1989,
+        "attenuation_H3": 30.00800000182903
+      },
+      {
+        "setting": "B8",
+        "MHz": 960,
+        "IL": 0.8944031897229465
+      }
+    ],
+    "min_L_inductance_matrix_eigenvalue_nH": 3.1979569408577118,
+    "full_band_independent_MNA": false,
+    "physical_realization": false
+  }
 }

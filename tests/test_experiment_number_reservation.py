@@ -93,7 +93,7 @@ class ExperimentNumberLedgerTests(unittest.TestCase):
 
 
 class FastForwardPushRaceTests(unittest.TestCase):
-    """Two stale workers start with EXP-041; only one EXP-042 push may land."""
+    """Two stale workers race on the next available ID, then retry."""
 
     def git(self, root, *args, check=True):
         run = subprocess.run(["git", *args], cwd=root, capture_output=True,
@@ -119,6 +119,10 @@ class FastForwardPushRaceTests(unittest.TestCase):
             self.git(seed, "remote", "add", "origin", str(remote))
             self.git(seed, "push", "origin", "HEAD:refs/heads/main")
             self.git(remote, "symbolic-ref", "HEAD", "refs/heads/main")
+            current_rows = read_ledger((ROOT / PATH).read_text(encoding='utf-8'))
+            next_n = int(current_rows[-1]['experiment_id'][4:]) + 1
+            next_id = f'EXP-{next_n:03d}'
+            following_id = f'EXP-{next_n + 1:03d}'
             workers = []
             for i in range(2):
                 w = root / f"worker{i}"

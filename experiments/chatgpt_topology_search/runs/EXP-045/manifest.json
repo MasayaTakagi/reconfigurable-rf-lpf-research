@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-045",
+  "phase": "Phase 2",
+  "objective": "RF-T005 3L T-type versus fair pi-type numerical IL improvement",
+  "constraint_id": "RF-T005",
+  "base_constraint_id": "RF-F003",
+  "trial_study_authorized": true,
+  "formal_RF_F003_unchanged": true,
+  "experiment_reserved_on_main": true,
+  "request_id": "rft005-3l-t-loss-refine-20261017",
+  "execution": {
+    "status": "partial_direct_in_chat_numeric",
+    "preflight_main_reservation_commit": "8fce735e2dbbccc098750230fa2752bbb9e2015a",
+    "implementation": "Standalone in-chat V8 with exact main fixed S2P; 84-point branch-current MNA local Python; this branch includes checkpoint but no remote CI execution",
+    "github_actions_run": "not_run",
+    "approx_local_objective_evaluations_global_scan": 9574
+  },
+  "constraint_effective_sha256": "59a451775ab4914cf9f0e51785ebfb62b36217af7735e7c93e9fe70f2323e67c",
+  "bands_sha256": "1b1182e4c947059cb263c1af52ddf64236bd1fd9e83770cc844126576c7865fe",
+  "input_fixed_S2P_sha256": "ad266111ba1dc2b92f235d39f4a647ff271050bc11941c217661dd299ee59945",
+  "output_fixed_S2P_sha256": "b3cfc861bc0c8221f49328598c9d7d0766a6e94e42e990b6a50f6c90bf9a84da",
+  "S2P_git_blob_sha": {
+    "input": "1d46ad6f2e144ff90e6789869c8b08203dd3c41e",
+    "output": "d8f45955ce05978bd1e25c89a3578a2710735e30"
+  },
+  "selected": "checkpoint_c_only.json",
+  "baseline_path": "experiments/chatgpt_topology_search/runs/EXP-043/checkpoints/gjm_cp_local_H30p0032.json",
+  "other_results": [
+    "checkpoint_fixed_scan.json",
+    "independent_84point.json"
+  ],
+  "nominal_worst_IL_db": 0.8959810601905048,
+  "nominal_H2_min_db": 30.003000000557428,
+  "nominal_H3_min_db": 30.003000001291102,
+  "convergence": "local heuristic only; not optimizer-certified",
+  "independent_verification": "LPF 7x7 branch-MNA 84 points PASSED; full external 28x1001 checks same in-chat analysis; separate exact remote independent check pending",
+  "implementation_validation": "not_run",
+  "phase3": "not_authorized"
+}

@@ -37,8 +37,29 @@ W4では[読み取り専用監査スクリプト](../scripts/audit_phase2_cleanu
 4. 保存場所・参照更新・`git show`の復元、同条件数値再現（必要時）を実証し、Phase 2回帰とW1リンク監査をPASSしてからマージ。
 5. 今回の終了条件は**監査結果と未解決依存がGitHubに残ること**。削除0件を「W4削除の完了」とは扱わない。
 
-## 5. 結果の記録状態
+## 5. GitHub Actionsで実行済みの数値棚卸し（2026-10-17）
+
+[W4 CI run 39045177622](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39045177622) は**SUCCESS**。実際に走査したPR検証checkout `410bde44cf4d6b008b42cccb72910a2fc01b3ff1` の結果を[固定JSON](../data/repository_reviews/w4_read_only_audit_20261017_snapshot.json)へ保存した。これは現在のmainを自動更新するlive集計ではなく、後続コミットでは追跡ファイル数が増えることがある。
+
+| 対象 | 追跡ファイル | 機械参照あり（保持） | 旧46保護対象（保持） | 未索引・追加調査（**削除不可**） |
+|---|---:|---:|---:|---:|
+| E-001 `data/validation/` | **266** | 239 | 26 | **1** |
+| E-002 `experiments/.../runs/` | **481** | 239 | 18 | **224** |
+| **合計** | **747** | **478** | **44** | **225** |
+
+上記747ファイルの非圧縮合計は**9,185,643 bytes**。旧保護46件はこれらの領域外の2件を含め**46件すべてSHA一致**。期間固定の旧W0集計ではなく、W4の実際のcheckoutを対象にした数値。索引にない225件を不要とみなしていない。
+
+- E-001の1件は`data/validation/exp047_legacy_manifest_adapter_20261017.json`。EXP-047の旧manifest互換出典に関連するため、**候補削除は不可**と判断する。機械索引の単独分類は用途なしを意味しない。
+- E-002の224件には`EXP-042/analyze_passband_q.py`、`EXP-042/optimize.py`、旧PR #58/#59のREADME／manifest、個別checkpoint等が含まれる。過去のrun・トポロジー復元・改修履歴と照合するまで保持。
+- グループは66件。件数上位はEXP-047の97、旧RF-F002 solver ablationの47、並列benchmarkの46、RF-F002復旧39、EXP-046の36、EXP-042の31ファイル。
+- **workflow 39件**のうち**38件に`workflow_dispatch`の手動起動口**がある。EXP-042を名前に含むものは6件。`exp042_manifest.yml`と`exp043_manifest.yml`は書込権限または固定研究ブランチ参照を持ち、個別のセキュリティ／履歴レビューが必要。スクリプトの静的正規表現が拾ったソースpathの欠落は0件だが、動的pathや過去runの正常完了を証明するものではない。
+- **承認済みE/W削除0件、実削除0件、新規RF計算0件。**
+
+**結論**：研究結果や再実行機能の喪失リスクを判断できる段階ではないため、W4の削除工程は保留。個別run・workflowの実行履歴と再現要否、静的・動的依存を調査するまではこのまま保持する。
+
+## 6. 更新・実行状態
+
 
 - GitHubのmainファイル本文に基づく上記workflowの機能確認：**実施済み**。
-- W4新スクリプトのGitHub Actionsでの実走査、群別件数、全ファイル個票：**PR CIで実行・検査**（CI完了後に追記）。
+- W4新スクリプトのGitHub Actionsでの実走査、群別件数：**実行済み**（上記CIの固定スナップショットをGit保存）。全ファイル個票は同CIの`phase2-w4-review-only-reports`成果物として生成済みだが、Git treeへ全量固定はしていない。
 - GitHub Actions全履歴の時系列実測調査、物理RF独立検証、新規RF実験：**未実施**。

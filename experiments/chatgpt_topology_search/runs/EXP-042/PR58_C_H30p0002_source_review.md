@@ -8,7 +8,7 @@ and RF-T005 finite-grid screening are preserved verbatim at
 manifest, recorded winners, index and constraints from main take precedence.
 
 This PR adds the original archived Python **source-only**
-`optimize.py` (29-dimensional SLSQP epigraph exploration) and the historical
+`optimize_PR58_legacy.py` (29-dimensional SLSQP epigraph exploration) and the preserved canonical `optimize.py` from main and the historical
 drawing-connectivity diagnosis. Source discovery/test import and CI metadata
 audit do **not** mean its end-to-end optimizer was executed or converged.
 

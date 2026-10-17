@@ -1,10 +1,14 @@
 name: Phase 2 Step 5 integrated integrity
 
 on:
-  push:
-    branches:
-      - test/phase2-reorganization-step5-integrated-20261017
   pull_request:
+    paths:
+      - '.github/workflows/phase2_step5_integration.yml'
+      - 'scripts/verify_repository_step5_integration.py'
+      - 'src/lpf/legacy_manifest_adapter.py'
+      - 'data/validation/exp047_legacy_manifest_adapter_20261017.json'
+      - 'docs/phase2_repository_step5_final_verification_20261017.md'
+      - 'data/repository_reviews/step5_integration_20261017.json'
   workflow_dispatch:
 
 permissions:

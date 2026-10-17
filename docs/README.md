@@ -31,4 +31,4 @@
 
 ## ドキュメント移動に関する方針
 
-Step 2では**既存の履歴文書、実験、候補、検証データのファイルパスを変更しない**。重複・未参照・古いログを削除しない。まず入口と相互リンクのみ整理し、将来の移設は[Step 1監査と計画のPR #67](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/67)を踏まえて個別に検討する。
+**整理Step 1～5は[PR #71でmainに統合済み](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/71)**。既存の履歴資料・実験原本の大規模移動・削除は行っていない。不要な二次文書や旧記述は[Phase 2追加整理計画（PR #72、Draft）](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/72)に基づき個別レビューする。[W0監査](phase2_cleanup_w0_current_main_audit_20261017.md)の削除候補7文書・旧46保全対象の扱いと区別する。

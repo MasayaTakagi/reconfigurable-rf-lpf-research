@@ -15,21 +15,21 @@
 | [pareto_snapshots/rf_t005_rf_f003_20261017.json](pareto_snapshots/rf_t005_rf_f003_20261017.json) | 2026-10-17の**保存済みbest-foundパレート**（RF-T005 6点、RF-F003 4点）。新しい値で上書きしない |
 | [experiment_number_registry.csv](experiment_number_registry.csv) | 新規EXP番号のmain事前予約正本。欠番EXP-018/019再利用禁止 |
 | [experiment_index.csv](experiment_index.csv) | 実験ID別の制約・実行状態・原manifestの検索入口 |
-| [research_candidate_register.csv](research_candidate_register.csv) | **旧仕様を中心とした選別候補14件の台帳**。上記最新10点の統合は未実施 |
+| [research_candidate_register.csv](research_candidate_register.csv) | **現行の旧条件選別台帳**（2026-10-17時点14件）。[固定14件入力](catalog/research_candidate_register_20261017.csv)と最新10件を合成した[24候補CSV](catalog/phase2_candidate_catalog_20261017.csv)は**日付付き派生索引**であり、live台帳を置き換えない |
 | [research_review_issues.csv](research_review_issues.csv) | 歴史的RG課題を含むレビュー問題台帳 |
 | [validation/](validation/) | 独立MNA検証、事後再評価、数値・実行の証拠。元ファイルを改変しない |
 
-## 現行パレートと旧候補台帳は別物
+## 2026-10-17の派生カタログと現行台帳の使い分け
 
 2026-10-17パレートは、正式RF-F003最大2Cv／試験RF-T005最大3Cv、外部固定S2P付き、必須H2/H3≥30dBの有限格子における保存候補を分離している。どちらもIL≤0.30dB・35dB公称は未達。実行や検証の詳細は [結果の閲覧入口](../docs/results/README.md) と [原レポート](../docs/pareto_rf_t005_rf_f003_20261017.md) に記載する。
 
-旧 [research_candidate_register.csv](research_candidate_register.csv) の14件は旧RF-F002/RF-T004等を含み、まだ最新10点との同一台帳へ統合されていない。整理Step 3までは過去結果との優越関係を誤判定しない。
+旧 [research_candidate_register.csv](research_candidate_register.csv) の2026-10-17固定14件とRF-F003/RF-T005の新規10件は、[統合24件索引](catalog/phase2_candidate_catalog_20261017.csv)に出典別・比較群別に整理済み。**旧RF-F002と現行RF-F003、正式／試験を混ぜた非支配計算は禁止**。今後のlive候補の追加は、この不変2026-10-17索引の自動更新を意味しない。
 
 ## 証拠保全上の注意
 
 - 元実験の完全ベクトルは [experimentsの案内](../experiments/README.md) → `runs/EXP-NNN/` を参照する。元checkpointと検証overlayを区別する。
 - 別の格子幅・別の独立MNAで確認したことは、条件を揃えた再検証と同じではない。
-- 未リンク、同一Git blob、古いログ・lockだけでは削除可否を決めない。[Step 1監査PR #67](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/67)では46件が要レビューのまま。
+- 未リンク、同一Git blob、古いログ・lockだけでは削除可否を決めない。[統合PR #71](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/71)では46件が元SHA一致・削除未承認で保全。[W0削除候補再監査](../docs/phase2_cleanup_w0_current_main_audit_20261017.md)に別件の旧文書7候補を記録。
 - GitHubを長期保全先とし、期限付きActions artifactを唯一の根拠としない。
 
 [プロジェクトREADME](../README.md) ／ [文書一覧](../docs/README.md)

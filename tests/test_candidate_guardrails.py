@@ -139,9 +139,10 @@ class CandidateIndexGuardrails(unittest.TestCase):
         write_manifest(directory / "manifest.json", m, root=self.root)
         manifests = []
         for p in (self.root / RUNS).glob("EXP-*/manifest.json"):
-            m = (legacy_exp047_index_view(root=self.root) if p.parent.name == "EXP-047"
-                 else json.loads(p.read_text()))
-            manifests.append((p.relative_to(self.root).as_posix(), m))
+            source_manifest = (legacy_exp047_index_view(root=self.root)
+                               if p.parent.name == "EXP-047"
+                               else json.loads(p.read_text()))
+            manifests.append((p.relative_to(self.root).as_posix(), source_manifest))
         (self.root / "data/experiment_index.csv").write_text(experiment_index(manifests))
         rows.append(dict(rows[0], candidate_id=name, spec_id="RF-F003",
                          evidence=f"candidates/{name}.json", constraint_class="formal",

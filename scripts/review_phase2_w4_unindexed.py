@@ -69,9 +69,15 @@ def build():
     )
     tracked = set(git("ls-files").splitlines())
     inventory, _ = create_inventory(root=ROOT, tracked=tracked)
+    with (ROOT / "data/repository_reviews/step4_retention_46_20261017.csv").open(
+        newline="", encoding="utf-8"
+    ) as stream:
+        protected = {row["path"] for row in csv.DictReader(stream)}
+    assert len(protected) == 46
     candidates = sorted(
         [r for r in inventory if r["path"].startswith(ROOTS)
-         and r["review_decision"] == "review_only_no_deletion"],
+         and r["review_decision"] == "review_only_no_deletion"
+         and r["path"] not in protected],
         key=lambda r: r["path"],
     )
     assert len(candidates) == 225, (

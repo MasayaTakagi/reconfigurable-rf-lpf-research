@@ -155,7 +155,18 @@ class CandidateIndexGuardrails(unittest.TestCase):
 
     def test_additional_current_policy_candidate_does_not_require_audit_edit(self):
         self._add_candidate("LPF-TEST-ADDED")
-        self.assertEqual(self._audit(), [])
+        issues = self._audit()
+        with (self.root / "data/candidate_index.csv").open(newline="", encoding="utf-8") as stream:
+            row = [x for x in csv.DictReader(stream)
+                   if x["candidate_id"] == "LPF-TEST-ADDED"][0]
+        current = load_constraint("RF-F003", root=self.root)
+        self.assertEqual(issues, [], {
+            "kind": row["constraint_class"], "id": row["constraint_id"],
+            "spec_id": row["spec_id"],
+            "row_digest": row["effective_constraint_sha256"],
+            "expected_digest": constraint_fingerprint(current),
+            "policy_status": current["active_constraint_status"],
+        })
 
     def test_historical_candidate_cannot_claim_formal_spec(self):
         self._add_candidate("LPF-TEST-ADDED")

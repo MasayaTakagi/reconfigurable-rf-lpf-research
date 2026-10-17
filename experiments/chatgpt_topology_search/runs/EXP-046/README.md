@@ -20,3 +20,26 @@ Both investigated 4L configurations retain chip area 5⅓. The selected 29-real-
 Chip-L resistive losses are proportional to `sum((omega*Li/Q)*|Ii|²)`. Adjacent positive central-series mutual coupling can increase driven magnetic-energy Q if currents are aligned, but merely increasing k neither reduces ohmic resistance per coil nor guarantees 30dB transmission-zero placement. On the reordered original graph, harmonic constraints worsen severely; the pi-type graph gains a separate shunt resonator at each end but also shows poor rejection in the sampled search. Further RF-T005 phase-2 exploration should modify both capacitive cross-connections and where series-vs-shunt resonances create independent zeros; first recover 30dB before assessing IL and k saturation. Physical realization, SPD/branch-MNA/power-balance for new vectors, tolerance, SRF, and Q(f) remain unverified. Phase 3 remains blocked.
 
 **No baseline RF-F003 or RF-T005 conditions were relaxed.**
+
+## 2026-10-17 continuation — executed local Code-Mode RF-T005 topology search
+
+This dated addendum supersedes the earlier state that every new EXP-046 topology fails 30 dB: **a different pi-type 4L graph now has a finite-grid 30dB-valid control**, but it is **worse in IL than the existing EXP-042 reference**. The earlier first-round findings remain historically correct for their own scanned graphs. No RF constraint changed.
+
+Full numerical summary, complete 29-element control vector, 6-setting C state, all branch definitions, and evidence status: [`continuation_results_20261017.json`](continuation_results_20261017.json). Four deterministic in-chat source programs (GitHub connector original S2P, no rederived parasitic RLC): [homotopy scan](continuation_inchat.js), [third PCB-C scan](continuation_pcb3_inchat.js), [pi 4L scan](continuation_pi4l_inchat.js), and [hybrid scan](continuation_hybrid4l_inchat.js). Code-Mode tools and original GitHub S2P files were used; these JavaScript searches were **not executed in GitHub Actions**.
+
+| Expansion | Evaluations | Best evaluated point (dB) | Strict H2/H3≥30 |
+|---|---:|---|---|
+| Old-graph magnetic homotopy + 7 C-branch placements | 20,230 | IL 0.881003, H2 27.332409, H3 22.742037 | **FAIL** |
+| Third approved PCB-C (max 3 total) and 2 Sh–S–S–Sh orders, 14 variants | 73,052 | IL 0.849816, H2 29.027432, H3 23.788654 | **FAIL** |
+| Pi-type 4L, 10 capacitor placements × 3 starts | 124,266 | **IL 1.323175, H2 30.036390, H3 30.040672** | **PASS** |
+| 4L input/mid/output mixed shunt L attachment, 8 variants × 3 starts | 102,440 | IL 1.137999, H2 26.326401, H3 26.389468 | **FAIL** |
+
+**Total new evaluations 319,988** (322,865 including first-round EXP-046). These are objective evaluations, not converged starts or exhaustive graph coverage. Numeric search used 28 disjoint intervals ×5-point grid with 28×31 checks. For the `pi_right` selected pass candidate, a further **28×1001** dense reduced-nodal calculation agrees in its worst IL/H2/H3 figures with the 31-point scan. Independent explicit 9×9 MNA (5 node voltages, 4 L branch currents) across **84 frequencies** matched the original fixed-S2P-referenced IL/H2/H3 extrema to within **4.62e-14 dB**, and Y-port reciprocity residual ≤1.39e-17 S in the numerical samples. No claim of independent full 28×1001 MNA or exact continuous-frequency maxima/minima. Full-L matrix eigenvalues for `pi_right` are approximately (4.366887, 6.381277, 6.906278, 8.945558) nH, all positive.
+
+New pi control circuit: 4 LQP02HV Q25, 2 GJM01 Q80, 2 PCB-pattern C Q40, 3 tunable Q35 C branches (0..3 pF). Inductor branches Ls0(IN,mid), Ls1(mid,OUT), Lsh0(IN,tipLeft), Lsh1(OUT,tipRight). **Physical order Lsh0–Ls0–Ls1–Lsh1**. Signed neighbor k=(+0.08,+0.10,−0.08), non-neighbor k=0. Chip area 5⅓. Fixed-C branches tipLeft–GND, tipRight–GND, IN–mid, mid–OUT; tunables tipLeft–GND, tipRight–GND, mid–OUT. Exact element values and six tunable C triplets are in JSON; no rounding should replace that source vector.
+
+### Research conclusion / gating
+
+The strict 30dB pi-4L point **does not improve** EXP-042/RF-T005 area5⅓ `pcb_cf1` baseline worst IL **0.811306586dB**, as the new pi control is **1.323175101dB**. Its margins to nominal35dB and interim0.8dB are also negative. The extra PCB-C scans and mixed-shunt variants all violate H2/H3. Some examples have passband IL under 0.8113dB in isolation but **cannot be counted as compliant improvements**; e.g. third PCB-C shuntL2-parallel IL 0.802286dB has only H2 22.498dB and H3 16.940dB.
+
+The physical theory that positive series-series mutual coupling can raise driven magnetic-energy Q is not contradicted; it cannot by itself guarantee useful stopband zeros or lower full-system GT loss. In the next Phase-2 search the priority is a qualitatively different 2-stop-mode synthesis that retains low-Q branch current suppression while placing H2 and H3 zeros independently. Continuous-band extremes, manufacturer Q(f)/SRF, actual mutual k/dot layout, EM and tolerances remain open. **Phase 3 remains stopped.**

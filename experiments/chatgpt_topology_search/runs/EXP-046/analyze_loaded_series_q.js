@@ -148,3 +148,7 @@ const cf={fixed:[[3,-1],[4,-1],[0,1],[1,2]],cv:config[a.variant],extra:[a.edge]}
 const freqs=[["B71",663],["B71",698],["B12",746],["B28",803],["B13+B14",798],["B26",894],["B8",960]];
 const vals=freqs.map(([band,f])=>{const p={f,ci:cases.indexOf(band),pre:s4(f,0),post:s4(f,1),role:"pass"};return {band,f,...mnaProbe(a.vector,cf,p)};});
 text(vals);
+
+const path="experiments/chatgpt_topology_search/runs/EXP-046/loaded_series_q_results.json";
+const u=await tools.mcp__GitHub__create_file({repository_full_name:ROOT,path,content:JSON.stringify({experiment_id:"EXP-046",constraint_id:"RF-T005",phase:"Phase 2",candidate:"series1",method:"Independent branch-current 7x7 MNA for LPF, original fixed S2P ABCD and external 1 Vrms source, Rs 50Ω, Zload 60-j40Ω; coil Q25; magnetic effective Q uses stored signed M; Qseries refers only L0/L1 energy ratio; sampled probe analysis, not Q(f)/SRF/EM",probes:vals},null,2)+"\n",message:"Preserve EXP-046 actual driven central-series-L Q and resistive mW under RF-T005",branch:"main"});
+text({saved:path,commit:u.result.commit_sha});

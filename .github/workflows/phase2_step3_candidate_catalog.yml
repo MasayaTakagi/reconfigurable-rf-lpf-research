@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - feat/phase2-candidate-catalog-step3-20261017
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -55,6 +56,7 @@ jobs:
             docs/results/phase2_candidate_catalog_20261017.md
           retention-days: 30
       - name: Commit generated catalog to this review branch only
+        if: github.event_name == 'push'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'

@@ -10,10 +10,10 @@
 
 | 優先 | 論点 | 出典・次工程 |
 |---|---|---|
-| P0 | EXP-047 manifestの共通必須フィールド不足で2026-10-17の[Phase 2 regression](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39015048662)が失敗。全回帰PASSしていない | [未解決課題](current/open_research_questions.md)に対応方針を記載。原記録を改変して実行済みとみなさない |
-| P1 | 現行RF-F003/T005の10点と旧14件候補台帳が別管理 | [保存パレートJSON](../data/pareto_snapshots/rf_t005_rf_f003_20261017.json)、[旧候補台帳](../data/research_candidate_register.csv)。整理Step 3で出典に基づき統合 |
+| P1 | **EXP-047旧manifestの完全再現情報は未回収**。原本を改変しない限定互換処理で、[PR #71最終回帰CI](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39028160775)はSUCCESS（325テスト） | [旧manifestの索引専用アダプター](../src/lpf/legacy_manifest_adapter.py)。元実行SHA・seed・環境は不明として保持し、厳格manifestの完全再現と区別 |
+| P1 | **2026-10-17保存24候補の条件別統合は完了**。接続・物理列順・結合符号による詳細検索とlive候補の増分運用は残る | [24候補統合CSV](../data/catalog/phase2_candidate_catalog_20261017.csv)、[固定入力](../data/catalog/README.md)。RF-F003正式4／RF-T005試験6を混合しない |
 | P1 | RF-F003共通探索pipeline、同条件での共通格子・独立検証、Q(f)/SRF/EM/実測・公差検証が未完了 | [RF-F003当時の計画](rf_f003_phase2_rebaseline_plan_20261016.md)、[現行課題](current/open_research_questions.md) |
-| P1 | レポジトリの文書導線と研究証拠の長期保全 | [整理計画・Step 1監査PR #67](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/67)と本Step 2の目次類。原証拠の移動・削除禁止 |
+| P1 | **Step 1～5整理はPR #71でmainに統合済み**。W0再監査以降、現行案内・不要旧文書の個別判定を継続 | [統合PR #71](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/71)、[W0監査](phase2_cleanup_w0_current_main_audit_20261017.md)、[削除候補の別計画](phase2_repository_cleanup_and_deletion_plan_20261017.md)。原証拠46件は削除未承認 |
 
 ---
 

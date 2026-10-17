@@ -193,5 +193,45 @@
     "manufacturing tolerance distributions and per-state IC retune",
     "physical reference planes and measurement of mandatory S2P"
   ],
-  "phase3": "not_authorized"
+  "phase3": "not_authorized",
+  "latest_continuation_20261017": {
+    "classification": "phase2_RF-F003_actual_inchat_numerical_finite_grid",
+    "prior_outcomes_retained_as_older_checkpoint": true,
+    "latest_low_IL": {
+      "path": "round2_verified_28x1001_20261017.json",
+      "worst_IL_dB": 0.8709622912449427,
+      "min_H2_dB": 30.06989017705552,
+      "min_H3_dB": 30.06341193325721,
+      "independent_MNA_points": 84
+    },
+    "nominal_31db_margin": {
+      "path": "margin31_verified_28x1001_20261017.json",
+      "worst_IL_dB": 0.8906748990553417,
+      "min_H2_dB": 30.99996924965659,
+      "min_H3_dB": 30.994855063896747
+    },
+    "k1_robust": {
+      "path": "k1_robust_independent_28x1001_20261017.json",
+      "nominal_worst_IL_dB": 0.8925874628923431,
+      "k1_pm0p01_worst_IL_dB": 0.8937426008029559,
+      "min_H2_across3_dB": 30.01987614503608,
+      "min_H3_across3_dB": 30.09231969670983,
+      "independent_MNA_points": 252,
+      "other_tolerance_not_proven": true
+    },
+    "tolerance": {
+      "latest_low_IL": "16/20 single-parameter scenarios violate mandatory 30dB on 28x101 (no Cv retune)",
+      "nominal_31db": "2/20 single-parameter scenarios violate 30dB (k1 ±0.01)"
+    },
+    "evidence_files": [
+      "round2_verified_28x1001_20261017.json",
+      "round2_tolerance_20261017.json",
+      "nested_verified_28x1001_20261017.json",
+      "margin31_verified_28x1001_20261017.json",
+      "margin31_tolerance_20261017.json",
+      "k1_robust_independent_28x1001_20261017.json"
+    ],
+    "github_actions_execution_of_new_numerical_study": false,
+    "source_reproducibility_note": "Saved source scripts verify candidate vectors; not all optimizer step history is archived as an immutable executable run"
+  }
 }

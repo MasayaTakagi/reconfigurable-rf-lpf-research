@@ -132,7 +132,7 @@ const checkpoint=JSON.parse((await tools.mcp__GitHub__fetch_file({repository_ful
 const x=checkpoint.vector, confQ={fixed:[[3,-1],[4,-1],[0,1],[1,2]],cv:[[3,-1],[4,-1],[0,2]],extra:[checkpoint.edge]};
 const dotReal=(a,b)=>a[0]*b[0]+a[1]*b[1];
 function probe(p){
-const o=mnaProbe(x,confQ,p),Z=C(60,-40),Tpre=p.pr,Tpost=p.po;
+const o=mnaProbe(x,confQ,p),Z=C(60,-40),Tpre=p.pre,Tpost=p.post;
 const Zpost=D(A(M(Tpost[0][0],Z),Tpost[0][1]),A(M(Tpost[1][0],Z),Tpost[1][1]));
 const Vratio=K(D(o.y2[1][0],A(o.y2[1][1],D(C(1),Zpost))),-1);
 const Yin=A(o.y2[0][0],M(o.y2[0][1],Vratio));

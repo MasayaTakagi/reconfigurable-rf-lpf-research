@@ -56,6 +56,8 @@ class UnifiedCatalogTests(unittest.TestCase):
         self.assertIn("nonconverged", t["solver_convergence_status"])
         self.assertEqual("7001", t["mesh_points_per_interval"])
         self.assertEqual("84", t["independent_mna_probe_points"])
+        self.assertEqual("EXP042-30m005", t["source_subcandidate_id"])
+        self.assertEqual("", t["checkpoint_stage_index"])
 
     def test_source_blob_mismatch_fails_closed(self):
         with self.assertRaisesRegex(ValueError, "Git blob mismatch"):

@@ -63,11 +63,12 @@ class Phase2CurrentStatusTests(unittest.TestCase):
         self.assertIn("RG-009", issues)
         self.assertIn("RG-010", issues)
         inventory = read_csv("data/experiment_evidence_inventory.csv")
-        self.assertEqual(39, len(inventory))
-        self.assertEqual(25, sum(x["seed_recorded"] == "false" for x in inventory))
-        self.assertEqual(15, sum(x["execution_sha_recorded"] == "false" for x in inventory))
-        self.assertEqual(16, sum(x["environment_recorded"] == "false" for x in inventory))
-        self.assertEqual(6, sum(x["registered_evidence_count"] == "0" for x in inventory))
+        legacy = [x for x in inventory if int(x["experiment_id"][4:]) <= 41]
+        self.assertEqual(39, len(legacy))
+        self.assertEqual(25, sum(x["seed_recorded"] == "false" for x in legacy))
+        self.assertEqual(15, sum(x["execution_sha_recorded"] == "false" for x in legacy))
+        self.assertEqual(16, sum(x["environment_recorded"] == "false" for x in legacy))
+        self.assertEqual(6, sum(x["registered_evidence_count"] == "0" for x in legacy))
 
 
 if __name__ == "__main__":

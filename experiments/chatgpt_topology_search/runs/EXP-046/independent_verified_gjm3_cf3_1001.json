@@ -1,0 +1,134 @@
+{
+  "experiment_id": "EXP-046",
+  "phase": "Phase 2",
+  "constraint_id": "RF-T005",
+  "validation_type": "28 disconnected bands times 1001 + independent 7x7 branch-current MNA 84 probes each with complex loaded original frozen S2P and capacitor Qs",
+  "correction": "GJM3 revised Q80 for Cf3 replaces former PCB Q40 and allows capacitance above 0.2pF; baseline Qs and variable C values remain within RF-T005. Corrected capacitor loss denominator (1+1/(q*q)).",
+  "notes": "Finite grid only, not continuous extremum proof. 7x7 interior+4L branches plus 2 fixed port voltages, independent of optimizer's 4x4 L inverse and nodal Schur reduction. Constant-Q idealized parts, physical realization unverified",
+  "results": [
+    {
+      "name": "CF3_GJM3",
+      "chip_area": 6,
+      "number_of_GJM": 3,
+      "PCB_pattern_C_count": 2,
+      "grid31": {
+        "worst": 1.0257226038468235,
+        "h2": 30.035707515556872,
+        "h3": 30.06027697949719,
+        "byBand": [
+          {
+            "band": "B71",
+            "IL": 1.025723,
+            "H2": 30.03636,
+            "H3": 30.38389
+          },
+          {
+            "band": "B12",
+            "IL": 0.939572,
+            "H2": 30.03848,
+            "H3": 33.5736
+          },
+          {
+            "band": "B28",
+            "IL": 1.02182,
+            "H2": 30.03895,
+            "H3": 30.06028
+          },
+          {
+            "band": "B13+B14",
+            "IL": 0.865514,
+            "H2": 30.03571,
+            "H3": 30.79014
+          },
+          {
+            "band": "B26",
+            "IL": 0.971268,
+            "H2": 30.03606,
+            "H3": 30.56964
+          },
+          {
+            "band": "B8",
+            "IL": 1.024606,
+            "H2": 30.04278,
+            "H3": 30.21432
+          }
+        ]
+      },
+      "grid1001": {
+        "worst": 1.0257226038468235,
+        "h2": 30.035707515556872,
+        "h3": 30.06027697949719,
+        "byBand": [
+          {
+            "band": "B71",
+            "IL": 1.025723,
+            "H2": 30.03636,
+            "H3": 30.38389
+          },
+          {
+            "band": "B12",
+            "IL": 0.939572,
+            "H2": 30.03848,
+            "H3": 33.5736
+          },
+          {
+            "band": "B28",
+            "IL": 1.02182,
+            "H2": 30.03895,
+            "H3": 30.06028
+          },
+          {
+            "band": "B13+B14",
+            "IL": 0.865514,
+            "H2": 30.03571,
+            "H3": 30.79014
+          },
+          {
+            "band": "B26",
+            "IL": 0.971268,
+            "H2": 30.03606,
+            "H3": 30.56964
+          },
+          {
+            "band": "B8",
+            "IL": 1.024606,
+            "H2": 30.04278,
+            "H3": 30.21432
+          }
+        ]
+      },
+      "L_nH": [
+        5.3,
+        4.5261759999999995,
+        8.52304,
+        9.919936
+      ],
+      "k": [
+        0.04400000000000001,
+        0.1,
+        -0.01900000000000001
+      ],
+      "fixed_C_pF": [
+        0.950088,
+        0.2,
+        0.2,
+        0.374
+      ],
+      "PCB_bridge_pF": 0.044800000000000006,
+      "strict30_1001": true,
+      "independent_mna": {
+        "probes": 84,
+        "max_IL_difference_dB": 5.3290705182007514e-14,
+        "max_power_balance_residual_W": 2.7755575615628914e-17,
+        "min_L_matrix_eigenvalue_nH": 4.28263027006259,
+        "most_disagreeing": {
+          "band": "B8",
+          "role": "H3",
+          "f_MHz": 2640,
+          "fastIL": 30.214324824839224,
+          "independentIL": 30.21432482483917
+        }
+      }
+    }
+  ]
+}

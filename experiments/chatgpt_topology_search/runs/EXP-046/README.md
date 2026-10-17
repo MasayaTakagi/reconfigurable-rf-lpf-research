@@ -1,5 +1,8 @@
 # EXP-046 RF-T005 4L outer-shunt / inner-series layout exploration (2026-10-17)
 
+> **2026-10-17 追試で更新:** 物理配置 Shunt–Series–Series–Shunt の4LでRF-T005高調波≥30dB適合候補を発見。面積5⅓・IL 1.042184351dB、および面積6・IL 1.025722604dBを28×1001点と独立7×7MNAで検証した。**ただし既存EXP-042 0.811306586dBを更新していない。** これより下の「全新候補FAIL」は初期探索段階の歴史記録。
+
+
 **Phase 2 only. Status: exploratory, all new candidates fail mandatory H2/H3>=30dB. No valid IL improvement claimed.** Pre-run EXP-046 reservation was committed and reread in the main registry (reservation commit `3723eaca6d0174df720ed091e51fd1b7cd068693`). Formal RF-F003 remains unchanged; RF-T005 is the explicit 3-variable-C study.
 
 ## Question
@@ -20,3 +23,114 @@ Both investigated 4L configurations retain chip area 5⅓. The selected 29-real-
 Chip-L resistive losses are proportional to `sum((omega*Li/Q)*|Ii|²)`. Adjacent positive central-series mutual coupling can increase driven magnetic-energy Q if currents are aligned, but merely increasing k neither reduces ohmic resistance per coil nor guarantees 30dB transmission-zero placement. On the reordered original graph, harmonic constraints worsen severely; the pi-type graph gains a separate shunt resonator at each end but also shows poor rejection in the sampled search. Further RF-T005 phase-2 exploration should modify both capacitive cross-connections and where series-vs-shunt resonances create independent zeros; first recover 30dB before assessing IL and k saturation. Physical realization, SPD/branch-MNA/power-balance for new vectors, tolerance, SRF, and Q(f) remain unverified. Phase 3 remains blocked.
 
 **No baseline RF-F003 or RF-T005 conditions were relaxed.**
+
+## 2026-10-17 continuation — executed local Code-Mode RF-T005 topology search
+
+This dated addendum supersedes the earlier state that every new EXP-046 topology fails 30 dB: **a different pi-type 4L graph now has a finite-grid 30dB-valid control**, but it is **worse in IL than the existing EXP-042 reference**. The earlier first-round findings remain historically correct for their own scanned graphs. No RF constraint changed.
+
+Full numerical summary, complete 29-element control vector, 6-setting C state, all branch definitions, and evidence status: [`continuation_results_20261017.json`](continuation_results_20261017.json). Four deterministic in-chat source programs (GitHub connector original S2P, no rederived parasitic RLC): [homotopy scan](continuation_inchat.js), [third PCB-C scan](continuation_pcb3_inchat.js), [pi 4L scan](continuation_pi4l_inchat.js), and [hybrid scan](continuation_hybrid4l_inchat.js). Code-Mode tools and original GitHub S2P files were used; these JavaScript searches were **not executed in GitHub Actions**.
+
+| Expansion | Evaluations | Best evaluated point (dB) | Strict H2/H3≥30 |
+|---|---:|---|---|
+| Old-graph magnetic homotopy + 7 C-branch placements | 20,230 | IL 0.881003, H2 27.332409, H3 22.742037 | **FAIL** |
+| Third approved PCB-C (max 3 total) and 2 Sh–S–S–Sh orders, 14 variants | 73,052 | IL 0.849816, H2 29.027432, H3 23.788654 | **FAIL** |
+| Pi-type 4L, 10 capacitor placements × 3 starts | 124,266 | **IL 1.323175, H2 30.036390, H3 30.040672** | **PASS** |
+| 4L input/mid/output mixed shunt L attachment, 8 variants × 3 starts | 102,440 | IL 1.137999, H2 26.326401, H3 26.389468 | **FAIL** |
+
+**Total new evaluations 319,988** (322,865 including first-round EXP-046). These are objective evaluations, not converged starts or exhaustive graph coverage. Numeric search used 28 disjoint intervals ×5-point grid with 28×31 checks. For the `pi_right` selected pass candidate, a further **28×1001** dense reduced-nodal calculation agrees in its worst IL/H2/H3 figures with the 31-point scan. Independent explicit 9×9 MNA (5 node voltages, 4 L branch currents) across **84 frequencies** matched the original fixed-S2P-referenced IL/H2/H3 extrema to within **4.62e-14 dB**, and Y-port reciprocity residual ≤1.39e-17 S in the numerical samples. No claim of independent full 28×1001 MNA or exact continuous-frequency maxima/minima. Full-L matrix eigenvalues for `pi_right` are approximately (4.366887, 6.381277, 6.906278, 8.945558) nH, all positive.
+
+New pi control circuit: 4 LQP02HV Q25, 2 GJM01 Q80, 2 PCB-pattern C Q40, 3 tunable Q35 C branches (0..3 pF). Inductor branches Ls0(IN,mid), Ls1(mid,OUT), Lsh0(IN,tipLeft), Lsh1(OUT,tipRight). **Physical order Lsh0–Ls0–Ls1–Lsh1**. Signed neighbor k=(+0.08,+0.10,−0.08), non-neighbor k=0. Chip area 5⅓. Fixed-C branches tipLeft–GND, tipRight–GND, IN–mid, mid–OUT; tunables tipLeft–GND, tipRight–GND, mid–OUT. Exact element values and six tunable C triplets are in JSON; no rounding should replace that source vector.
+
+### Research conclusion / gating
+
+The strict 30dB pi-4L point **does not improve** EXP-042/RF-T005 area5⅓ `pcb_cf1` baseline worst IL **0.811306586dB**, as the new pi control is **1.323175101dB**. Its margins to nominal35dB and interim0.8dB are also negative. The extra PCB-C scans and mixed-shunt variants all violate H2/H3. Some examples have passband IL under 0.8113dB in isolation but **cannot be counted as compliant improvements**; e.g. third PCB-C shuntL2-parallel IL 0.802286dB has only H2 22.498dB and H3 16.940dB.
+
+The physical theory that positive series-series mutual coupling can raise driven magnetic-energy Q is not contradicted; it cannot by itself guarantee useful stopband zeros or lower full-system GT loss. In the next Phase-2 search the priority is a qualitatively different 2-stop-mode synthesis that retains low-Q branch current suppression while placing H2 and H3 zeros independently. Continuous-band extremes, manufacturer Q(f)/SRF, actual mutual k/dot layout, EM and tolerances remain open. **Phase 3 remains stopped.**
+
+## 2026-10-17 CI repair and additional PCB-C search — later update
+
+### GitHub Actions repair verified
+PR [#66](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/66) merged as `62b82e7b79d4`, fixing workflow YAML and historical experiment metadata. Main Phase 2 regression [run 38994946769](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38994946769), [38995067899](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38995067899) and the post-fix latest [38995246501](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/38995246501) all completed with success. This means regression CI has recovered, **not that these EXP-046 numerical scans ran in GitHub Actions**.
+
+### New RF-T005 4L fixed-C topology variants (executed, 28×1001 selected verification)
+
+Two HV-Q25 series L at the physical center and two HV-Q25 shunt L at the row ends (Sh–S–S–Sh); 2 GJM01 Q80, 3 PCB pattern C Q40, 3 independent IC tunables 0..3pF Q35; mandatory external input/output S2P and 50ohm source/60-j40ohm load. The third PCB pattern capacitor was placed across several legal edges and optimized jointly with common fixed L/C/k and six 3-branch settings.
+
+Results in [batch0](bridge_cap_relocation_batch0_results.json), [batch1](bridge_cap_relocation_batch1_results.json), and [batch2](bridge_cap_relocation_batch2_results.json). **All recorded additional variants passed strict H2/H3 30dB on the coarse 28x31 mesh, but none beat the existing EXP-042 0.811306586dB reference.** The prior best EXP-046 outer-shunt candidate was 1.181641528dB.
+
+| Added fixed PCB C connection | Best local worst IL dB | Min H2 dB | Min H3 dB | verification |
+|---|---:|---:|---:|---|
+| second series L parallel (series1) | **1.042184351** | **30.034439** | **30.061801** | 28x1001 + 84 independent 7x7 MNA |
+| IN–OUT bridge (IN_OUT) | 1.050344938 | 30.033681 | 30.036879 | 28x1001 + 84 independent 7x7 MNA |
+| first series L parallel (series0) | 1.051360084 | 30.034630 | 30.037238 | 28x1001 + 84 independent 7x7 MNA |
+| mid-to-right-shunt-tip (center_righttip) | 1.060423919 | 30.034673 | 30.068671 | 28x31 scan only |
+| mid-to-left-shunt-tip (center_lefttip) | 1.101172197 | 30.034256 | 30.219283 | 28x31 scan only |
+
+[Verified batch0 report](bridge_cap_batch0_independent_1001.json): best series1 full-grid minimum L-matrix eigenvalue >4.2725nH, maximum independent IL mismatch **7.11e-14dB**, maximum power balance residual **4.16e-17W**. These checks use original model-derived immutable S2P and distinct 7x7 branch-current MNA equations. Original CI repair PR does not reproduce them.
+
+### Loss diagnosis (driven magnetic Q, original fixed S2P)
+
+[Series1 driven power/Q report](series1_passband_driven_Q_loss.json) explicitly solves the loaded port voltages from fixed pre/post S2P and source/load; the magnetic Q is `25 * (Iᴴ L I)/(Iᴴ diag(L) I)`. All four chip L remain Q25. Measurements below are from the *model* and not real component measurements.
+
+| Case | Driven magnetic Qeff | Chip-L loss (mW) | Worst/local IL dB |
+|---|---:|---:|---:|
+| B71, 698MHz | 26.8061 | 0.318242 | 1.041800 |
+| B28, 803MHz | 26.7173 | 0.390218 | 1.031741 |
+| B8, 960MHz | 26.7196 | 0.429622 | 1.033521 |
+
+At B28 803MHz, series1 loss partition for 1Vrms input source and 5mW available power: source reflection 0.069214mW, input external S2P 0.285835mW, all 4 chip L 0.390218mW, all C 0.150004mW, output external S2P 0.162009mW, delivered 3.942720mW; power budget closes numerically. The earlier EXP-042 pcb_cf1 baseline at the same B28 point reported chip L 0.305714mW, combined C 0.078194mW, reflection 0.004021mW; its overall IL is lower at ~0.811307dB. Thus **energy-defined Qeff improves but total loss does not** because absolute coil currents, capacitor dissipation and input mismatch rise.
+
+### Research status
+
+- **Completed in this follow-up:** current repaired GitHub Actions status reviewed; new 4L capacitive branch variants identified; best 3 variants verified on original fixed-S2P 28x1001 and independent 84-sample branch-current MNA; driven Q and external power accounting performed.
+- **Not completed / not claimed:** new candidate IL <=0.8113dB or interim 0.8dB, nominal35dB, new EXP-046 numerical calculation in GitHub Actions, 28x7001 continuous stationary-point search, part-specific Q(f)/SRF/EM/tolerance/physical simultaneous k verification, fully converged constrained/global optimization.
+- **Next analytical priority:** reduce phase-2 RF-T005 shunt-C and high-current L contributions, not merely maximize signed adjacent k. Explore lower-loss bridge-controlled stop-mode combinations and higher-dimension multi-start convergence; do not misclassify IL-only low-loss states failing 30dB as feasible.
+
+No formal RF-F003 condition was changed. Phase 2 remains active; Phase 3 remains paused.
+
+
+## 2026-10-17 後続探索実行結果（上記初期の不適合結果を更新）
+
+対象RF-T005／Phase 2のみ。現行の正式RF-F003は改定せず、固定入力S2P → LPF → 固定出力S2P、外部50Ω源・60−j40Ω負荷、28不連続周波数区間、LQP02HV Q25×4、可変C Q35×3・各0–3pFを維持。
+
+回路構成：主経路 Ls0(IN→center)–Ls1(center→OUT)、シャント LshL(IN→tipL) と LshR(OUT→tipR)。物理列は **LshL–Ls0–Ls1–LshR**。強結合可能ペア3組だけを使用し、全て|k|≤0.10、非隣接ペア公称0。可変C3枝はtipL-GND、tipR-GND、IN–OUTブリッジ。固定Cは左右シャント先端対GND、各シリーズL並列、および第3のPCB-CをシリーズLs1に並列配置。後者の最良配置はシリーズL磁気結合を活かしつつ高調波伝送零点を回復する。
+
+### 探索経過（実行済み）
+
+- 初期電気グラフ維持・物理L順序変更、単純π型、最初の容量枝移設は30dB違反。旧本文の不適合結果は削除しない。
+- 重要な最適化手法変更：共通L/C/kを変更する**たびに6設定それぞれの3可変Cを再同調する**内側探索を導入。固定回路だけを動かしCvをそのまま評価する単純手法で生じた局所停滞を緩和。初めて30dB適合点に到達。
+- 三つの可変C接続の後続選抜（スクリプト continuation_pi4l_feasibility.js / nested_retune_results.json）ではIL=1.181641528dB、H2=30.034554、H3=30.036219、チップ面積5⅓。
+- 第3 PCB固定Cの接続を10候補で比較。3バッチ計424,233回の評価、いずれも有限31点/区間で30dB達成。シリーズLs1並列PCB-Cが最良のIL=1.042184351dB／面積5⅓。
+- シリーズL並列PCB-CのGJM01/Q80置換で3構成・計133,964評価。GJM3個の面積6構成でIL=1.025722604dB。4GJM（面積6⅔）試験はIL=1.107864dBへ後退。高密度・独立検証は選抜候補のみ行った。
+
+### 同一RF-T005比較
+
+| 回路 | GJM / PCB-C数 | 面積 | 最悪IL dB | 最小H2/H3 dB | ステータス |
+|---|---|---:|---:|---|---|
+| 既存EXP-042 pcb_cf1 | 2 / 2 | 5⅓ | **0.811306586** | 30.0200 / 30.0200 | 既存独立検証済み |
+| 今回最初に30dB通過 total_bridge | 2 / 3 | 5⅓ | 1.181641528 | 30.034554 / 30.036219 | 28×1001 + 84点MNA |
+| 今回の最良同面積 series1 | 2 / 3 | 5⅓ | **1.042184351** | 30.034439 / 30.061801 | **28×1001 + 84点MNA PASS** |
+| 今回の面積6 CF3_GJM3 | 3 / 2 | 6 | **1.025722604** | 30.035708 / 30.060277 | **28×1001 + 84点MNA PASS** |
+| 今回の面積6 CF2_GJM3 | 3 / 2 | 6 | 1.043036282 | 30.034805 / 30.285153 | 28×31のみ |
+| 今回の面積6⅔ CF2_CF3_GJM4 | 4 / 1 | 6⅔ | 1.107863534 | 30.027463 / 30.103568 | 28×31のみ |
+
+完全30要素回路ベクトル・固定/可変枝・6設定CV：
+- [面積5⅓ checkpoint](checkpoints/series1_PCB3_area5p333.json)
+- [面積6 checkpoint](checkpoints/series1_GJM3_area6.json)
+
+高密度検証証跡： independent_verified_bridge_relocation_1001.json 、independent_verified_gjm3_cf3_1001.json。
+面積5⅓候補は隣接k=[+0.044,+0.100,−0.044]、面積6は[+0.044,+0.100,−0.019]。独立7×7枝電流MNAとノード縮約Y-ABCDが84点/候補で最大7.11×10⁻¹⁴dB以内で一致。確認点の電力収支残差最大4.16×10⁻¹⁷W、L行列最小固有値4.27nH超（SPD）。両者とも有限格子の必須30dBをPASSするが、公称35dBは未達。
+
+### シリーズL実効磁気Qと損失
+
+[シリーズL駆動Q・I²Rの保存結果](loaded_series_q_results.json) および analyze_loaded_series_q.js。外部S2P/50Ω/60−j40Ωに接続、1Vrms外部信号源で独立MNA解析。中央2シリーズLの k=+0.1 により、通過帯域7代表点で駆動磁気エネルギーQ≈27.491～27.492（単体Q25比約+10%）。4本全体の磁気エネルギーQは26.71～26.95。磁気Q改善は「コイル実直列抵抗が減った」とは異なり、ILの改善を保証しない。
+
+B28 803MHzで新4L同面積候補のチップL合計損失は約0.390219mW、既存EXP-042の約0.305714mWより大きい。B8 960MHzでも新4Lは約0.429622mW、既存約0.309924mW。主経路電流とシャント枝電流、整合損失が支配要因となっている。
+
+**診断コード修正記録:** 最初の independent_verified_1001.json は容量損失の会計式に 1/q*q と書いてしまい、誤って損失を半減した。LPF伝達IL/H2/H3は影響を受けず、容量電力会計のみが誤り。必ず修正ソース verify_independent_1001.js と independent_verified_1001_corrected.json を参照。元ファイルは訂正前証跡として保持。
+
+### 実行済みと未検証の区別
+
+本追試はGitHub mainから元のS2Pデータを取得したChatGPT内JavaScript数値実行で、プログラムと完全定数をmainへ保存した。**GitHub Actions成功・Python CI完了とは主張しない。** 新候補は独立枝MNA、電力保存、SPD、28×1001有限格子まで検証した。35dB公称条件、連続帯域極値、同時3組の物理結合実装、Q(f)/SRF、実部品寄生/EM、公差・温度、IC実装は未実施。いずれもPhase 2のモデル上の結果であり、Phase 3は未承認。
+
+**結論:** 外側シャントL/内側シリーズLでQを最大限利用する数値解は存在するが、この有限探索の最良ILは既存EXP-042を更新しない。面積5⅓基準0.811307dBへ近づくには、強結合によるQ比の改善以上に、シリーズL/シャントLの電流を減らしながらH2/H3零点を維持する新たな電気トポロジー合成が必要。

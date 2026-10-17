@@ -1,4 +1,4 @@
-"""Phase 2 39-run evidence inventory and source-reported checkpoint checks."""
+"""Phase 2 expanding evidence inventory and source-reported checkpoint checks."""
 import csv
 import unittest
 from pathlib import Path
@@ -13,7 +13,8 @@ class ExperimentEvidenceInventoryTests(unittest.TestCase):
         with (ROOT / "data/experiment_evidence_inventory.csv").open(
                 newline="", encoding="utf-8") as stream:
             rows = list(csv.DictReader(stream))
-        self.assertEqual(39, len(rows))
+        self.assertGreaterEqual(len(rows), 39)
+        self.assertEqual(39, sum(int(row['experiment_id'][4:]) <= 41 for row in rows))
         by_id = {row["experiment_id"]: row for row in rows}
         self.assertEqual("unknown", by_id["EXP-016"]["execution_status"])
         self.assertEqual("not_run", by_id["EXP-016"]["independent_validation"])

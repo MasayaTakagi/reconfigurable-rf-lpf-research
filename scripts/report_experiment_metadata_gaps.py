@@ -52,7 +52,7 @@ def matrix(root=ROOT):
     categories = Counter(r["constraint_class"] for r in output)
     summary = {
         "schema_version": 1, "phase": "Phase 2",
-        "scope": "all 39 manifest-derived inventory entries",
+        "scope": "all current manifest-derived inventory entries",
         "data_source": INVENTORY,
         "experiments": len(output),
         "constraint_classes": dict(sorted(categories.items())),

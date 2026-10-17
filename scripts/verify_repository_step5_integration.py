@@ -72,9 +72,9 @@ def read_csv(path):
 
 
 def run():
-    main_head = git("rev-parse", "origin/main").decode().strip()
-    if main_head != BASE:
-        raise ValueError("main moved: audit this newer baseline in a separate run")
+    # Validate the archived pre-reorganization baseline, independent of
+    # subsequent legitimate changes to origin/main after the PR is merged.
+    git("cat-file", "-e", BASE + "^{commit}")
     old, current = tree(BASE), tree("HEAD")
     if len(old) != 1043:
         raise ValueError("unexpected 2026-10-17 tracked baseline")

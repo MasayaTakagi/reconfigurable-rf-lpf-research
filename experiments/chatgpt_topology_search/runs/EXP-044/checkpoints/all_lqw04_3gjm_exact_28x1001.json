@@ -1,0 +1,405 @@
+{
+  "experiment": "EXP-044",
+  "constraint_id": "RF-T005",
+  "phase": "Phase 2",
+  "status": "direct_original_S2P_finite_grid_28x1001_nodal_verification_independent_MNA_pending",
+  "component_assignment": {
+    "inductors": [
+      "LQW04_Q33",
+      "LQW04_Q33",
+      "LQW04_Q33"
+    ],
+    "fixed_caps": [
+      "GJM01_Q80",
+      "GJM01_Q80",
+      "GJM01_Q80"
+    ],
+    "variable_caps": [
+      "IC_VARIABLE_C_Q35"
+    ]
+  },
+  "topology": {
+    "L_edges": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "fixed_C_edges": [
+      [
+        2,
+        -1
+      ],
+      [
+        3,
+        -1
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "variable_C_edges": [
+      [
+        2,
+        -1
+      ],
+      [
+        3,
+        -1
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "physical_L_order": [
+      "La",
+      "Ls",
+      "Lb"
+    ],
+    "coupling_pairs": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "nonneighbor_pair": [
+      1,
+      2
+    ],
+    "nonneighbor_k": 0
+  },
+  "vector": [
+    8.97222843060797,
+    6.337682683502675,
+    8.694710289205753,
+    1.0315535914590581,
+    0.47354861123835773,
+    0.5244453555499196,
+    -0.08330879611345327,
+    0.021522882588977957,
+    0.10129654449820218,
+    0.28138392650646216,
+    0.8113497754488506,
+    0.18202744970090334,
+    0.199410701465837,
+    0.7083545639211335,
+    0.22069228796089768,
+    0.13667351400161568,
+    0.5506719851667355,
+    0.28463185286187087,
+    0.059868998707717974,
+    0.11868763553528434,
+    0.16639293494970495,
+    0.0008413104374242412,
+    8.760353559019139e-17,
+    1.3682687175848935e-17,
+    1.853073507198493e-17,
+    0
+  ],
+  "chip_area_cost": 11,
+  "grid_points_per_band": 1001,
+  "bands_count": 28,
+  "original_S2P_source_files": [
+    "data/parasitics/circuit1_ant_coupler_0_6ghz.s2p",
+    "data/parasitics/circuit2_poc_through_0_6ghz.s2p"
+  ],
+  "original_S2P_rows_loaded": [
+    2401,
+    2401
+  ],
+  "metrics": {
+    "worst_IL_db": 0.8708673281216226,
+    "min_H2_db": 30.019999977703943,
+    "min_H3_db": 30.01994662920847,
+    "locations": {
+      "pass": {
+        "value": 0.8708673281216226,
+        "case": "B8",
+        "mhz": 960
+      },
+      "H2": {
+        "value": 30.019999977703943,
+        "case": "B8",
+        "mhz": 1830
+      },
+      "H3": {
+        "value": 30.01994662920847,
+        "case": "B28",
+        "mhz": 2142.345
+      }
+    },
+    "pass_il_by_setting": {
+      "B71": 0.8514270144895415,
+      "B12": 0.841593859616634,
+      "B28": 0.8708673109242899,
+      "B13+B14": 0.8536448002094934,
+      "B26": 0.8285537053785342,
+      "B8": 0.8708673281216226
+    }
+  },
+  "comparison": {
+    "EXP043_worst_IL_db": 0.8959933012075728,
+    "improvement_db": 0.025125973085950215
+  },
+  "finite_grid_note": "Do not claim independent full MNA, measured Q(f)/SRF/EM, or continuous-frequency extrema",
+  "stage": "direct exact original S2P with 1MHz RI real/imag linear interpolation, RF external cascade and 60-j40ohm load",
+  "segments": [
+    {
+      "case": "B71",
+      "type": "pass",
+      "low_mhz": 663,
+      "high_mhz": 698,
+      "metric_db": 0.8356312310675228,
+      "worst_freq_mhz": 663
+    },
+    {
+      "case": "B71",
+      "type": "pass",
+      "low_mhz": 617,
+      "high_mhz": 652,
+      "metric_db": 0.8514270144895415,
+      "worst_freq_mhz": 617
+    },
+    {
+      "case": "B71",
+      "type": "H2",
+      "low_mhz": 1326,
+      "high_mhz": 1396,
+      "metric_db": 30.023209686610777,
+      "worst_freq_mhz": 1326
+    },
+    {
+      "case": "B71",
+      "type": "H3",
+      "low_mhz": 1989,
+      "high_mhz": 2094,
+      "metric_db": 30.027810473182335,
+      "worst_freq_mhz": 2094
+    },
+    {
+      "case": "B12",
+      "type": "pass",
+      "low_mhz": 699,
+      "high_mhz": 716,
+      "metric_db": 0.8293600696263371,
+      "worst_freq_mhz": 716
+    },
+    {
+      "case": "B12",
+      "type": "pass",
+      "low_mhz": 729,
+      "high_mhz": 746,
+      "metric_db": 0.841593859616634,
+      "worst_freq_mhz": 746
+    },
+    {
+      "case": "B12",
+      "type": "H2",
+      "low_mhz": 1398,
+      "high_mhz": 1432,
+      "metric_db": 30.049145802037458,
+      "worst_freq_mhz": 1432
+    },
+    {
+      "case": "B12",
+      "type": "H3",
+      "low_mhz": 2097,
+      "high_mhz": 2148,
+      "metric_db": 30.760583475883053,
+      "worst_freq_mhz": 2148
+    },
+    {
+      "case": "B28",
+      "type": "pass",
+      "low_mhz": 703,
+      "high_mhz": 748,
+      "metric_db": 0.8299996088998787,
+      "worst_freq_mhz": 703
+    },
+    {
+      "case": "B28",
+      "type": "pass",
+      "low_mhz": 758,
+      "high_mhz": 803,
+      "metric_db": 0.8708673109242899,
+      "worst_freq_mhz": 803
+    },
+    {
+      "case": "B28",
+      "type": "H2",
+      "low_mhz": 1406,
+      "high_mhz": 1496,
+      "metric_db": 30.01999998432376,
+      "worst_freq_mhz": 1496
+    },
+    {
+      "case": "B28",
+      "type": "H3",
+      "low_mhz": 2109,
+      "high_mhz": 2244,
+      "metric_db": 30.01994662920847,
+      "worst_freq_mhz": 2142.345
+    },
+    {
+      "case": "B13+B14",
+      "type": "pass",
+      "low_mhz": 777,
+      "high_mhz": 787,
+      "metric_db": 0.8447705599178463,
+      "worst_freq_mhz": 777
+    },
+    {
+      "case": "B13+B14",
+      "type": "pass",
+      "low_mhz": 788,
+      "high_mhz": 798,
+      "metric_db": 0.842929894549519,
+      "worst_freq_mhz": 788
+    },
+    {
+      "case": "B13+B14",
+      "type": "pass",
+      "low_mhz": 746,
+      "high_mhz": 756,
+      "metric_db": 0.8536448002094934,
+      "worst_freq_mhz": 746
+    },
+    {
+      "case": "B13+B14",
+      "type": "pass",
+      "low_mhz": 758,
+      "high_mhz": 768,
+      "metric_db": 0.8496682950284837,
+      "worst_freq_mhz": 758
+    },
+    {
+      "case": "B13+B14",
+      "type": "H2",
+      "low_mhz": 1554,
+      "high_mhz": 1574,
+      "metric_db": 33.13914730199943,
+      "worst_freq_mhz": 1554
+    },
+    {
+      "case": "B13+B14",
+      "type": "H2",
+      "low_mhz": 1576,
+      "high_mhz": 1596,
+      "metric_db": 31.88135851964536,
+      "worst_freq_mhz": 1596
+    },
+    {
+      "case": "B13+B14",
+      "type": "H3",
+      "low_mhz": 2331,
+      "high_mhz": 2361,
+      "metric_db": 31.28690634933281,
+      "worst_freq_mhz": 2361
+    },
+    {
+      "case": "B13+B14",
+      "type": "H3",
+      "low_mhz": 2364,
+      "high_mhz": 2394,
+      "metric_db": 31.198856922362413,
+      "worst_freq_mhz": 2380.29
+    },
+    {
+      "case": "B26",
+      "type": "pass",
+      "low_mhz": 814,
+      "high_mhz": 849,
+      "metric_db": 0.8076598650826634,
+      "worst_freq_mhz": 849
+    },
+    {
+      "case": "B26",
+      "type": "pass",
+      "low_mhz": 859,
+      "high_mhz": 894,
+      "metric_db": 0.8285537053785342,
+      "worst_freq_mhz": 894
+    },
+    {
+      "case": "B26",
+      "type": "H2",
+      "low_mhz": 1628,
+      "high_mhz": 1698,
+      "metric_db": 30.51895922910917,
+      "worst_freq_mhz": 1628
+    },
+    {
+      "case": "B26",
+      "type": "H3",
+      "low_mhz": 2442,
+      "high_mhz": 2547,
+      "metric_db": 30.028956624970256,
+      "worst_freq_mhz": 2547
+    },
+    {
+      "case": "B8",
+      "type": "pass",
+      "low_mhz": 880,
+      "high_mhz": 915,
+      "metric_db": 0.8042330253149439,
+      "worst_freq_mhz": 915
+    },
+    {
+      "case": "B8",
+      "type": "pass",
+      "low_mhz": 925,
+      "high_mhz": 960,
+      "metric_db": 0.8708673281216226,
+      "worst_freq_mhz": 960
+    },
+    {
+      "case": "B8",
+      "type": "H2",
+      "low_mhz": 1760,
+      "high_mhz": 1830,
+      "metric_db": 30.019999977703943,
+      "worst_freq_mhz": 1830
+    },
+    {
+      "case": "B8",
+      "type": "H3",
+      "low_mhz": 2640,
+      "high_mhz": 2745,
+      "metric_db": 30.019999917788805,
+      "worst_freq_mhz": 2640
+    }
+  ],
+  "variant": "three_gjm_pi",
+  "inductor_Q": [
+    33,
+    33,
+    33
+  ],
+  "fixed_C_types": [
+    "GJM",
+    "GJM",
+    "GJM"
+  ],
+  "min_L_eigenvalue_nH": 6.194844934451552,
+  "independent_MNA": {
+    "status": "checked_on_high_accuracy_S2P_surrogate_only",
+    "points": 84,
+    "max_IL_difference_db": 2.7000623958883807e-13,
+    "max_power_balance_W": 9.498203954036097e-18,
+    "exact_original_S2P_MNA": "not_run_yet"
+  }
+}

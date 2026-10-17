@@ -1,0 +1,83 @@
+{
+  "experiment": "EXP-044",
+  "status": "independent_original_frozen_S2P_MNA_verified",
+  "method": "original 1MHz S2P linear interpolation, independent direct 7x7 MNA vs independent 4x4 nodal-Y, source50Ω/load(60-j40)Ω",
+  "samples": 85,
+  "max_IL_delta_db": 1.4921397450962104e-13,
+  "max_power_balance_residual_W": 9.540979117872439e-18,
+  "critical": [
+    {
+      "f": 803,
+      "setting": 2,
+      "il": 0.870867310924293,
+      "alt": 0.8708673109242936,
+      "delta": 5.551115123125783e-16,
+      "balance": 8.673617379884035e-19,
+      "losses": {
+        "reflection_mW": 0.013656768667485563,
+        "inputS2P_mW": 0.2903712595507578,
+        "outputS2P_mW": 0.16812295779920772,
+        "inductors_mW": 0.32100606380476915,
+        "capacitors_mW": 0.11533618840466477,
+        "delivered_mW": 4.091506761773114
+      },
+      "case": "B28",
+      "type": "pass"
+    },
+    {
+      "f": 960,
+      "setting": 5,
+      "il": 0.8708673281216226,
+      "alt": 0.8708673281216173,
+      "delta": 5.329070518200751e-15,
+      "balance": 2.6020852139652106e-18,
+      "losses": {
+        "reflection_mW": 0.03415225910683769,
+        "inputS2P_mW": 0.2907185465917672,
+        "outputS2P_mW": 0.16812546239140802,
+        "inductors_mW": 0.3353434358052297,
+        "capacitors_mW": 0.08015355053331794,
+        "delivered_mW": 4.091506745571437
+      },
+      "case": "B8",
+      "type": "pass"
+    },
+    {
+      "f": 1830,
+      "setting": 5,
+      "il": 30.019999977703943,
+      "alt": 30.019999977703932,
+      "delta": 1.0658141036401503e-14,
+      "balance": 8.673617379884035e-19,
+      "losses": {
+        "reflection_mW": 3.3333626806810472,
+        "inputS2P_mW": 0.7505135073468262,
+        "outputS2P_mW": 0.00020451782183550534,
+        "inductors_mW": 0.6155102241018837,
+        "capacitors_mW": 0.2954320429360978,
+        "delivered_mW": 0.004977027112308978
+      },
+      "case": "B8",
+      "type": "H2"
+    },
+    {
+      "f": 2142.345,
+      "setting": 2,
+      "il": 30.019946629208487,
+      "alt": 30.019946629208466,
+      "delta": 2.1316282072803006e-14,
+      "balance": 8.673617379884035e-19,
+      "losses": {
+        "reflection_mW": 2.341494927021901,
+        "inputS2P_mW": 1.0517915505983697,
+        "outputS2P_mW": 0.00020452089769135699,
+        "inductors_mW": 1.1625787947614925,
+        "capacitors_mW": 0.43895311847033347,
+        "delivered_mW": 0.004977088250211981
+      },
+      "case": "B28",
+      "type": "H3_critical"
+    }
+  ],
+  "pass": true
+}

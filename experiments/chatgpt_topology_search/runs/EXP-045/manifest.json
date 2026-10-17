@@ -34,7 +34,7 @@
   "nominal_H2_min_db": 30.003000000557428,
   "nominal_H3_min_db": 30.003000001291102,
   "convergence": "local heuristic only; not optimizer-certified",
-  "independent_verification": "LPF 7x7 branch-MNA 84 points PASSED; full external 28x1001 checks same in-chat analysis; separate exact remote independent check pending",
+  "independent_verification": "5x5 port-clamped branch-current MNA 84 points PASSED (from underlying full 7-variable model); external 28x1001 checks use same in-chat nodal Y/ABCD analysis; standalone repository verifier not yet executed",
   "implementation_validation": "not_run",
   "phase3": "not_authorized"
 }

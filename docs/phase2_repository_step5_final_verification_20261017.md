@@ -7,6 +7,21 @@
 > **検証ブランチ／Draft PR：** [PR #71](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/71)。  
 > **参照元：** [Step 1：PR #67](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/67)、[Step 2：PR #68](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/68)、[Step 3：PR #69](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/69)、[Step 4：PR #70](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/70)。すべてDraft・main未マージ。
 
+## 2026-10-17 マージ前レビュー修正・追補（上記旧テスト記録との区別）
+
+本節は下記「最初のStep 5検証」より**新しい修正後の観測**を示す。歴史的な旧コミット・旧run値はその時点の証拠として本文に保持する。2026-10-17のレビューで問題となった固定main SHA、監査ファイル自己上書き、PR検証書込みトークン、将来のRF条件改訂時のアーカイブ監査停止を修正した。
+
+- **2026-10-17保存元をコミットSHAで固定：** Step 4の元56文書・46保全対象およびStep 5の元1,043ファイルは`bdb39904379637aeca5cf56ec3096e9e1b15f62a`を直接参照する。**現在のorigin/main HEADが固定値に一致する必要はない**。将来の新しい実験や資料への保全ゲートとは区別する。
+- **監査実行時にコミット済みファイルを修復しない：** Step 3/4 CIはまず`--check`のみ実行し、変更済みCSV/JSON/Markdownがあればfail-closed。保存用git pushジョブも廃止。ジョブ権限は`contents: read`、checkout認証情報の残留も無効。
+- **歴史候補の変化耐性：** 旧14件CSV・RF制約レジストリ・実験索引を[固定2026-10-17入力](../data/catalog/README.md)にGit blob SHA一致で別保存した。現在の`data/research_candidate_register.csv`や現行active RF番号が更新されても、この日の24件の検証は元の証拠で行える。通常CIは引き続き現行リポジトリの監査を実行し、保存当時の値を現行設計目標達成と呼ばない。
+- **適用範囲：** 日付付きStep 3/4/5の特別なPRジョブは、対応する監査コード・証拠・レポートの変更がある場合のみ走るよう`pull_request.paths`で限定。新しい一般PRを「昔の1,043ファイルの許可リスト」に固定しない。
+- **追加の検証根拠（修正後統合コミット`7ed8e305ae992892c4d2a81d15c5d1533242d4df`）：** [Step 3](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39027871885)、[Step 4](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39027871809)、[Step 5](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39027871788)の専用監査はSUCCESS。Step 5の計数は**元1,043件・削除0・元blob不変1,032・既存11件の明示変更・現在の追跡1,092件・ローカルリンク403件未解決0**。
+- **最終マージ時のCIゲート：** マージ対象HEADの[Phase 2 regression](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/workflows/audit.yml)と専用CIを確認する。現在のGitHub Actionsが記録するrun/HEADを最終状態の証拠とし、上記の過去SHAを「最終HEAD」と読み替えない。
+
+本PRは原RF-F003制約・S2P・パレート原スナップショット・実験checkpoint・EXP-047旧manifestを変更しない。**Phase 2継続、Phase 3未承認。**
+
+---
+
 ## 1. CI実行結果（統合ブランチに対する実行済み証拠）
 
 | ゲート | GitHub Actions | 結果 | 実行範囲 |

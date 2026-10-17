@@ -1,0 +1,155 @@
+{
+  "experiment_id": "EXP-045",
+  "condition": "RF-T005",
+  "phase": "Phase 2",
+  "status": "preliminary_direct_nodalY_ABCD_exact_S2P_28x1001_NOT_independent_MNA_verified",
+  "source": "GitHub connector main immutable original S2P + JS full-lumped linear circuit evaluation",
+  "baseline": "EXP-043/checkpoints/gjm_cp_local_H30p0032.json",
+  "component_types": {
+    "inductor": [
+      "LQP02HV Q25",
+      "LQP02HV Q25",
+      "LQP02HV Q25"
+    ],
+    "fixed_C": [
+      "PCB_PATTERN_C Q40",
+      "PCB_PATTERN_C Q40",
+      "GJM01 Q80",
+      "PCB_PATTERN_C Q40"
+    ],
+    "variable_C": "3 independent branches Q35 max 3 pF"
+  },
+  "L_edges": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      3
+    ]
+  ],
+  "fixed_C_edges": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      3,
+      -1
+    ],
+    [
+      1,
+      2
+    ]
+  ],
+  "variable_C_edges": [
+    [
+      3,
+      -1
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ]
+  ],
+  "physical_L_order": [
+    "L0",
+    "Ls",
+    "L1"
+  ],
+  "coupled_L_pairs": [
+    [
+      0,
+      2
+    ],
+    [
+      2,
+      1
+    ]
+  ],
+  "chip_area_units": 3.6666666666666665,
+  "extra_PCB_C_pf": 0.2,
+  "note": "PCB_PATTERN_C #3 and fixed PCB Cf1 are two independent parallel 0.2pF patterns on same node pair; physical PCB area is unmodeled",
+  "vector_order": "L0_nH,L1_nH,Ls_nH,Cf0_pF,Cf1_pF,Cp_GJM_pF,k_L0_Ls,k_Ls_L1, then Cv0,Cv1,Cv2 in pF for B71,B12,B28,B13+B14,B26,B8",
+  "vector": [
+    3.2925321835765495,
+    7.710415239527519,
+    4.9728393917692095,
+    0.19866045614116043,
+    0.2,
+    1.1612999744014958,
+    0.1,
+    -0.07166805730766193,
+    0.4104900594393547,
+    2.9999379207942924,
+    1.0483027681092008,
+    0.23510643538287693,
+    2.637630265720163,
+    0.9315633365215492,
+    0.22733382434446905,
+    2.99999999753723,
+    0.7277763921702136,
+    0.0009213651860025488,
+    2.4573262527411384,
+    0.43421825082677074,
+    0.09264500670763746,
+    1.8358559854855958,
+    0.25239831286739817,
+    0,
+    1.101321458892268,
+    0.15853991115874994
+  ],
+  "metrics": {
+    "grid": "28 band segments x 1001 points",
+    "worst_IL_db": 0.8951800090647889,
+    "min_H2_db": 30.00800000006535,
+    "min_H3_db": 30.008000001829046,
+    "worst_IL_location": [
+      "B28",
+      803
+    ],
+    "baseline_worst_IL_db": 0.8959933012075728,
+    "improvement_db": 0.0008132921427844719,
+    "passes_finite_30db": true,
+    "passes_0p8db": false,
+    "passes_0p3db": false
+  },
+  "search": {
+    "extra_PCB_edges_tested": 9,
+    "cap_values_pf": [
+      0.02,
+      0.08,
+      0.2
+    ],
+    "screened_total": 27,
+    "screen_pass_count": 13,
+    "method": "Nelder Mead per-setting Cv local fine-tune 7 points per csv region, 101-point screen, 1001-point direct final",
+    "other_global_params_optimized": false
+  },
+  "sources": {
+    "input_S2P_path": "data/parasitics/circuit1_ant_coupler_0_6ghz.s2p",
+    "input_sha256": "ad266111ba1dc2b92f235d39f4a647ff271050bc11941c217661dd299ee59945",
+    "output_S2P_path": "data/parasitics/circuit2_poc_through_0_6ghz.s2p",
+    "output_sha256": "b3cfc861bc0c8221f49328598c9d7d0766a6e94e42e990b6a50f6c90bf9a84da",
+    "band_file": "data/bands.csv"
+  },
+  "limitations": [
+    "No independent 7x7 branch-current MNA for this exact vector yet",
+    "No continuous-band stationary point certification",
+    "No Q(f), real SRF, PCB geometry, tolerance, EM or measurement validation",
+    "No proven global minimax, only selected local best found"
+  ]
+}

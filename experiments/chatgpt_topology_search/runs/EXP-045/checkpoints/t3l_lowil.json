@@ -1,0 +1,161 @@
+{
+  "experiment_id": "EXP-045",
+  "phase": "Phase 2",
+  "condition": "RF-T005",
+  "trial_based_on": "RF-F003",
+  "constraint_effective_sha256": "59a451775ab4914cf9f0e51785ebfb62b36217af7735e7c93e9fe70f2323e67c",
+  "bands_sha256": "1b1182e4c947059cb263c1af52ddf64236bd1fd9e83770cc844126576c7865fe",
+  "source": "EXP-043/checkpoints/gjm_cp_local_H30p0032.json",
+  "circuit": {
+    "nodes": "IN=0, middle=1, OUT=2, shunt_tip=3, ground=-1",
+    "inductor_edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "physical_inductor_order": [
+      "L0",
+      "Ls",
+      "L1"
+    ],
+    "series": [
+      "LQP02HV",
+      "LQP02HV",
+      "LQP02HV"
+    ],
+    "fixed_cap_edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        -1
+      ]
+    ],
+    "fixed_cap_types": [
+      "PCB_PATTERN_C",
+      "PCB_PATTERN_C",
+      "GJM01"
+    ],
+    "variable_cap_edges": [
+      [
+        3,
+        -1
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "variable_cap_Q": 35,
+    "variable_cap_limit_pf": [
+      0,
+      3
+    ],
+    "inductor_Q": 25,
+    "k_order": [
+      "L0-Ls",
+      "Ls-L1"
+    ],
+    "max_abs_k": 0.1,
+    "chip_area": 3.6666666666666665,
+    "vector_layout": "L0_nH,L1_nH,Ls_nH,Cf0_pF,Cf1_pF,Cp_pF,k0s,ks1 then Cv0,Cv1,Cv2 per B71,B12,B28,B13+B14,B26,B8"
+  },
+  "nominal_load_ohm": {
+    "re": 60,
+    "im": -40
+  },
+  "nominal_source_ohm": 50,
+  "external_s2p_paths": [
+    "data/parasitics/circuit1_ant_coupler_0_6ghz.s2p",
+    "data/parasitics/circuit2_poc_through_0_6ghz.s2p"
+  ],
+  "evaluation_reference": "complete external-port cascade, no internal 50-ohm terminations",
+  "fixed_S2P_SHA256_from_formal_policy": [
+    "ad266111ba1dc2b92f235d39f4a647ff271050bc11941c217661dd299ee59945",
+    "b3cfc861bc0c8221f49328598c9d7d0766a6e94e42e990b6a50f6c90bf9a84da"
+  ],
+  "verification_classification": "finite_28x301_original_main_S2P_and_84_independent_branch_MNA",
+  "independent_sha256_recompute_in_current_JS_run": false,
+  "physical_srf_qf_em_tolerance_verified": false,
+  "optimization_converged": false,
+  "continuous_band_certificate": false,
+  "candidate_id": "EXP045-T3L-LOWIL",
+  "target_h2h3_for_local_penalty_db": 30.001,
+  "vector": [
+    3.2925321835765495,
+    7.710415239527519,
+    4.9728393917692095,
+    0.1984320908560042,
+    0.2,
+    1.1612999744014958,
+    0.1,
+    -0.07166805730766193,
+    0.4110019357493417,
+    2.994937024587299,
+    1.2568936666654607,
+    0.4629248183860568,
+    2.567936066328905,
+    0.9623083764433327,
+    0.22742173886529893,
+    2.99889145344,
+    0.9283565339664822,
+    0.00010657952052064759,
+    2.191684416018305,
+    0.87178698474095,
+    0.07183391066233659,
+    1.6423066657146432,
+    0.5762544224250881,
+    0,
+    1.0960497282746877,
+    0.36108212451748756
+  ],
+  "result": {
+    "worst_IL_db": 0.8959850525517993,
+    "min_H2_db": 30.00122912577205,
+    "min_H3_db": 30.006004113138776,
+    "worst_IL_location": [
+      "B28",
+      "DL",
+      803
+    ],
+    "worst_H2_location": [
+      "B28",
+      "H2",
+      1406
+    ],
+    "worst_H3_location": [
+      "B28",
+      "H3",
+      2109
+    ],
+    "min_30db_pass_on_finite_mesh": true,
+    "delta_IL_vs_EXP043_baseline_db": -0.0000082486557735,
+    "chip_area": 3.6666666666666665,
+    "samples_per_csv_interval": 301,
+    "number_of_csv_intervals": 28,
+    "independent_7x7_MNA_frequencies": 84,
+    "max_absolute_power_balance_error_W": 8.673617379884035e-18,
+    "negative_component_loss_samples": 0,
+    "inductor_matrix_spd": true,
+    "physical_robustness": "NOT VALIDATED; H2 margin 0.001229dB"
+  }
+}

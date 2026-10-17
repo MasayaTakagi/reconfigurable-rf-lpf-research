@@ -1,13 +1,7 @@
-name: Phase 2 Step 4 historical evidence inventory
+# Historical read-only audit: use original Step 4 merged tree; current W1/W3 workflows test current PRs.
+name: Phase 2 Step 4 pinned historical evidence inventory
 
 on:
-  pull_request:
-    paths:
-      - '.github/workflows/phase2_step4_history_inventory.yml'
-      - 'scripts/audit_repository_reorganization_step4.py'
-      - 'data/repository_reviews/step4_*'
-      - 'docs/archive/README.md'
-      - 'docs/phase2_repository_step4_review_20261017.md'
   workflow_dispatch:
 
 permissions:
@@ -20,12 +14,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: 055b222c79c73c7fbeacb19383f21c1da0625195
           fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Fetch and pin original main research tree
+      - name: Fetch original 2026-10-17 main research history
         run: git fetch --no-tags origin '+refs/heads/main:refs/remotes/origin/main'
       - name: Fail on checked-in review snapshot drift (do not overwrite first)
         run: python3 scripts/audit_repository_reorganization_step4.py --check

@@ -15,13 +15,15 @@
 
 ## 過去の監査・訂正・ブランチ経緯
 
-- [研究結果管理の初版（2026-10-14）](../research_result_governance.md)：RF-F002や当時の候補数など**旧時点の記述**がある。現在のRF-F003や24候補のビューと混同しない。
+W3でD-001～D-004を[歴史統合資料](../archive/w3_consolidated_documents_20261017.md)に保存した。下記の旧題名のリンクは該当章と元の固定コミット出典へ導く。D-005～D-007は保持。
+
+- [研究結果管理の初版（2026-10-14）](../archive/w3_consolidated_documents_20261017.md#d-002)：RF-F002や当時の候補数など**旧時点の記述**がある。現在のRF-F003や24候補のビューと混同しない。
 - [記録の訂正経緯](../result_record_corrections_20261014.md)。
-- [古いリポジトリ容量監査](../repository_storage_audit_20261014.md)と[2026-10-15 GitHub-only保全レビュー](../phase2_repository_optimization_review_20261015.md)。
+- [古いリポジトリ容量監査](../archive/w3_consolidated_documents_20261017.md#d-004)と[2026-10-15 GitHub-only保全レビュー](../phase2_repository_optimization_review_20261015.md)。
 - [2026-10-15証拠トリアージ](../phase2_evidence_triage_20261015.md)。
-- [当時のリポジトリ引継ぎ計画](../repository_reorganization_plan.md)。
+- [当時のリポジトリ引継ぎ計画](../archive/w3_consolidated_documents_20261017.md#d-001)。
 - [2026-10-14ブランチ削除の実行記録](../maintenance/branch_cleanup_20261014.md)：**過去の実行済み事項**。2026-10-17に新たに削除した意味ではない。
-- [2026-10-17 Actions修復記録](../phase2_actions_ci_repair_20261017.md)。現在のEXP-047 manifestに関するCI問題とは区別する。
+- [2026-10-17 Actions修復記録](../archive/w3_consolidated_documents_20261017.md#d-003)。現在のEXP-047 manifestに関するCI問題とは区別する。
 - [条件別旧候補の保全・Pareto](../phase2_storage_pareto_review_20261015.md)。旧RF-F002/RF-T004条件の保存資料。
 
 ## 物理移動・削除の承認ゲート

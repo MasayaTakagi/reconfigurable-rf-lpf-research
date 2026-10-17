@@ -31,4 +31,6 @@
 
 ## ドキュメント移動に関する方針
 
+**W3削除実施追補（2026-10-17）：** 条件付き旧文書D-001～D-004の[固有資料と出典](archive/w3_consolidated_documents_20261017.md)を保存し、元4pathのGit追跡を削除。D-005～D-007と旧46件保全対象、RF制約・実験原本は保持。
+
 **整理Step 1～5は[PR #71でmainに統合済み](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/71)**。追加整理の[#72（計画）](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/72)・[#73（W0監査）](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/73)・[#75（W1）](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/75)・[#78（W2）](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/78)も2026-10-17にmain統合済み。**W3の7旧文書は[個別レビュー](phase2_cleanup_w3_document_review_20261017.md)で引き続き保全**し、所有者によるpath別承認前に削除しない。元実験46件の保全審査とは別管理する。

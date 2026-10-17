@@ -1,0 +1,188 @@
+{
+  "experiment_id": "EXP-045",
+  "phase": 2,
+  "constraint_id": "RF-T005",
+  "base_constraint_id": "RF-F003",
+  "status": "executed_numeric_finite_grid_and_84_point_independent_LPF_MNA",
+  "source_checkpoint": "experiments/chatgpt_topology_search/runs/EXP-043/checkpoints/gjm_cp_local_H30p0032.json",
+  "fixed_topology": {
+    "inductor_edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "inductor_part": [
+      "LQP02HV",
+      "LQP02HV",
+      "LQP02HV"
+    ],
+    "L_Q": [
+      25,
+      25,
+      25
+    ],
+    "physical_L_order": [
+      "L0",
+      "Ls",
+      "L1"
+    ],
+    "chip_neighbor_pairs": [
+      [
+        0,
+        2
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "non_neighbor_nominal_k": 0,
+    "fixed_cap_edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        -1
+      ]
+    ],
+    "fixed_cap_types": [
+      "PCB_PATTERN_C",
+      "PCB_PATTERN_C",
+      "GJM01"
+    ],
+    "fixed_cap_Q": [
+      40,
+      40,
+      80
+    ],
+    "variable_cap_edges": [
+      [
+        3,
+        -1
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "variable_cap_Q": 35,
+    "variable_cap_limit_pF": [
+      0,
+      3
+    ],
+    "case_order": [
+      "B71",
+      "B12",
+      "B28",
+      "B13+B14",
+      "B26",
+      "B8"
+    ],
+    "vector_order": "L0_nH,L1_nH,Ls_nH,Cf0_pF,Cf1_pF,Cp_pF,k_L0Ls,k_LsL1,then [Cv0,Cv1,Cv2] per case"
+  },
+  "chip_area_units": 3.6666666666666665,
+  "vector": [
+    3.2925321835765495,
+    7.710415239527519,
+    4.9728393917692095,
+    0.19866045614116043,
+    0.2,
+    1.1612999744014958,
+    0.1,
+    -0.07166805730766193,
+    0.410442334068809,
+    2.9999999132895425,
+    1.2490630627591888,
+    0.2409193479127629,
+    3,
+    0.9611205363057922,
+    0.22735566381655806,
+    2.9996928659651836,
+    0.9281031871148363,
+    0,
+    2.4604025602593413,
+    0.634303132115497,
+    0.074542633793964,
+    1.896306705415011,
+    0.4513248706170877,
+    0,
+    1.0965996540345055,
+    0.3607574987176095
+  ],
+  "baseline": {
+    "IL": 0.8959933012075728,
+    "H2": 30.003263623111177,
+    "H3": 30.00586595367983,
+    "area": 3.6666666666666665
+  },
+  "result": {
+    "worst_IL_db": 0.8959810601905048,
+    "min_H2_db": 30.003000000557428,
+    "min_H3_db": 30.003000001291102,
+    "IL_worst_location": {
+      "case": "B28",
+      "freq_mhz": 803
+    },
+    "H2_min_location": {
+      "case": "B28",
+      "freq_mhz": 1406
+    },
+    "H3_min_location": {
+      "case": "B28",
+      "freq_mhz": 2109
+    },
+    "improvement_worst_IL_db": 0.000012241017068,
+    "minimum_harmonic_margin_above_30dB": 0.003000000557428,
+    "passband_worst_by_setting_db": {
+      "B71": 0.8492440562779934,
+      "B12": 0.836646536372469,
+      "B28": 0.8959810601905048,
+      "B13+B14": 0.8082805348121942,
+      "B26": 0.88012773248134,
+      "B8": 0.8958882820619083
+    },
+    "validated_finite_points_per_CSV_segment": 1001,
+    "CSV_segments": 28,
+    "uses_original_external_S2P": true,
+    "external_S2P_model_not_measured": true
+  },
+  "independent_validation": {
+    "maximum_Y_matrix_discrepancy_siemens": 3.817931396441887e-17,
+    "minimum_Hermitian_LPF_Y_eig_siemens": 0.00009845978406688072,
+    "minimum_full_L_matrix_eig_nH": 3.1979569408577118,
+    "passivity_on_samples": true,
+    "verified_in_container": true,
+    "full_external_S2P_independent_branch_MNA_not_yet_run": true,
+    "LPF_branch_current_5x5_dirichlet_MNA_samples": 84,
+    "method_note": "Full 4-node + 3-coupled-L-current formulation, port voltage Dirichlet excitation eliminates 2 known voltages; explicit internal solve is 5x5."
+  },
+  "origin": "in-chat V8 original-S2P nodal Y/ABCD evaluation; 6-setting three-C Nelder-Mead local retune (3 orientations per setting, 120 iterations each), independent Python 7-variable (5x5 port-clamped) branch-current MNA 84-point LPF-only check",
+  "restrictions": [
+    "RF-T005 trial only; does not constitute RF-F003 formal two-C result",
+    "Nominal minimum H2/H3 margin ~0.003 dB; practically negligible robustness margin",
+    "Finite 28x1001 grid does not prove continuous extrema",
+    "0.00001224dB improvement is below practical materiality, not evidence of better implementation",
+    "No part SRF/Q(f), switch parasitics, EM or physical coupling tolerance verification",
+    "No optimizer global optimality claim",
+    "No Phase 3 authorization"
+  ]
+}

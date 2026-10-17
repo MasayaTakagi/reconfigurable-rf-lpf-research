@@ -1,0 +1,71 @@
+{
+  "experiment_id": "EXP-045",
+  "phase": "Phase 2",
+  "constraint_id": "RF-T005",
+  "status": "executed_in_chat_JS_independent_full_28x1001",
+  "candidate": "experiments/chatgpt_topology_search/runs/EXP-045/margin_0p03_hybrid_candidate_20261017.json",
+  "method": "5x5 independent coupled-inductor branch-current MNA with two forced port voltage excitations, external fixed original S2P cascade; check against separate reduced nodal-Y",
+  "grid_points": 28028,
+  "full_dense_grid": true,
+  "summary": {
+    "worst_IL_dB": 0.8955739167911114,
+    "min_H2_dB": 30.030018651170593,
+    "min_H3_dB": 30.030621824491913
+  },
+  "by_setting": [
+    {
+      "setting": "B71",
+      "worst": 0.8492522519123967,
+      "h2": 30.04998037945168,
+      "h3": 30.049775765227523
+    },
+    {
+      "setting": "B12",
+      "worst": 0.8364961366632429,
+      "h2": 30.07172028237422,
+      "h3": 30.050127800195995
+    },
+    {
+      "setting": "B28",
+      "worst": 0.8953859072038743,
+      "h2": 30.038264527965243,
+      "h3": 30.030621824491913
+    },
+    {
+      "setting": "B13+B14",
+      "worst": 0.8083213742766305,
+      "h2": 30.077325408160362,
+      "h3": 31.017811085283533
+    },
+    {
+      "setting": "B26",
+      "worst": 0.8794835603645691,
+      "h2": 30.049967887442154,
+      "h3": 32.7225234867481
+    },
+    {
+      "setting": "B8",
+      "worst": 0.8955739167911114,
+      "h2": 30.030018651170593,
+      "h3": 38.588721974353305
+    }
+  ],
+  "max_IL_difference_dB": 1.0658141036401503e-13,
+  "min_port_admittance_passivity_eigen_S": 0.00009822793314187073,
+  "max_port_Y_reciprocity_residual_S": 3.469514713927663e-17,
+  "source_original_fixed_S2P": [
+    "data/parasitics/circuit1_ant_coupler_0_6ghz.s2p",
+    "data/parasitics/circuit2_poc_through_0_6ghz.s2p"
+  ],
+  "source_s2p_sha256": [
+    "ad266111ba1dc2b92f235d39f4a647ff271050bc11941c217661dd299ee59945",
+    "b3cfc861bc0c8221f49328598c9d7d0766a6e94e42e990b6a50f6c90bf9a84da"
+  ],
+  "limitations": [
+    "Independent numerical formulation but same circuit constants and same sampled S2P grids; not external hardware or measured validation.",
+    "Mathematical continuous interval extreme remains unproved; discrete 28x1001 only.",
+    "Code Mode executed; no WSL2/Actions run.",
+    "No tolerance simulation and no Q(f)/SRF/EM.",
+    "Phase3 not authorized."
+  ]
+}

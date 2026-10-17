@@ -1,0 +1,146 @@
+{
+  "experiment_id": "EXP-045",
+  "constraint_id": "RF-T005",
+  "phase": "Phase 2",
+  "status": "executed_in_chat_JS_original_S2P",
+  "objective": "local Pareto improvement in mandatory H2/H3 headroom versus baseline at low incremental IL",
+  "topology": "fixed L/C/k of extra PCB Q40 0.2pF T3L; 3 Q35 variable branches 6 settings",
+  "method": "B8 3x56x36 local deterministic Cv lattice around EXP-045 original, feasibility min H2/H3 >=30.03 on 31-point screen; other five settings from 30.05-target local search, final original S2P 28x1001 all 6 settings",
+  "B8_screen": {
+    "total": 6048,
+    "feasible_count": 107,
+    "maxH2_dB": 30.041644359152148,
+    "selected": {
+      "cv": [
+        0,
+        1.077,
+        0.168
+      ],
+      "metrics": {
+        "worst": 0.8955739167911139,
+        "h2": 30.03001865117057,
+        "h3": 38.58873630417325
+      }
+    }
+  },
+  "target_margin_dB": 30.03,
+  "vector_order": "L0,L1,Ls,Cf0,Cf1,Cp,k0s,ks1; Cv0/Cv1/Cv2 by B71,B12,B28,B13+B14,B26,B8",
+  "vector": [
+    3.2925321835765495,
+    7.710415239527519,
+    4.9728393917692095,
+    0.19866045614116043,
+    0.2,
+    1.1612999744014958,
+    0.1,
+    -0.07166805730766193,
+    0.41265202900072084,
+    3,
+    1.0478321048888952,
+    0.23307993256083764,
+    2.832626864998555,
+    0.8444199980677036,
+    0.2283853694542783,
+    3,
+    0.7280647299889128,
+    0,
+    2.4043472366409904,
+    0.45881436009337023,
+    0.07513789471447903,
+    1.8922245565753293,
+    0.2538784376717406,
+    0,
+    1.077,
+    0.168
+  ],
+  "variable_C_by_setting": {
+    "B71": [
+      0.41265202900072084,
+      3,
+      1.0478321048888952
+    ],
+    "B12": [
+      0.23307993256083764,
+      2.832626864998555,
+      0.8444199980677036
+    ],
+    "B28": [
+      0.2283853694542783,
+      3,
+      0.7280647299889128
+    ],
+    "B13+B14": [
+      0,
+      2.4043472366409904,
+      0.45881436009337023
+    ],
+    "B26": [
+      0.07513789471447903,
+      1.8922245565753293,
+      0.2538784376717406
+    ],
+    "B8": [
+      0,
+      1.077,
+      0.168
+    ]
+  },
+  "full_grid": {
+    "regions": 28,
+    "samples_per_region": 1001,
+    "worst_IL_dB": 0.8955739167911139,
+    "min_H2_dB": 30.03001865117057,
+    "min_H3_dB": 30.030621824491885,
+    "by_setting": {
+      "B71": {
+        "worst": 0.8492522519123955,
+        "h2": 30.04998037945169,
+        "h3": 30.049775765227537
+      },
+      "B12": {
+        "worst": 0.8364961366632416,
+        "h2": 30.071720282374237,
+        "h3": 30.05012780019601
+      },
+      "B28": {
+        "worst": 0.8953859072038799,
+        "h2": 30.03826452796524,
+        "h3": 30.030621824491885
+      },
+      "B13+B14": {
+        "worst": 0.8083213742766324,
+        "h2": 30.077325408160345,
+        "h3": 31.017811085283547
+      },
+      "B26": {
+        "worst": 0.8794835603645661,
+        "h2": 30.049967887442147,
+        "h3": 32.72252348674811
+      },
+      "B8": {
+        "worst": 0.8955739167911139,
+        "h2": 30.03001865117057,
+        "h3": 38.58872197435332
+      }
+    }
+  },
+  "baseline": {
+    "worst_IL_db": 0.8951800090647889,
+    "min_H2_dB": 30.00800000006535,
+    "min_H3_dB": 30.008000001829046
+  },
+  "evaluation_count": 6054,
+  "validation": {
+    "reduced_nodalY_external_S2P_28x1001": "executed",
+    "independent_MNA": "not_run_on_retuned_vector",
+    "continuous_grid_extrema": "not_run",
+    "hardware": "not_run"
+  },
+  "limitations": [
+    "B8 lattice is a limited local scan, not a topology/global proof.",
+    "All results computed on exact precomputed circuit-model S2Ps from GitHub main, not measured data.",
+    "No tolerance margin demonstration across RF bands; 0.03dB remains very small.",
+    "No separate independent branch-current MNA for combined candidate; must verify before promotion.",
+    "Phase 3 remains stopped."
+  ]
+}

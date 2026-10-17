@@ -1,0 +1,157 @@
+{
+  "experiment_id": "EXP-045",
+  "phase": "Phase 2",
+  "constraint_id": "RF-T005",
+  "status": "in_chat_JS_executed_original_S2P_finite_critical4",
+  "generated_on": "2026-10-17",
+  "source_method": "4-node reduced nodal-Y coupled 3-inductor, fixed Q, original independent input+output frozen S2Ps, no internal port terminations; check baseline exactly reproduces prior candidate",
+  "baseline_checkpoint": "experiments/chatgpt_topology_search/runs/EXP-045/checkpoints/t3l_extra_pcb_out_0p2_prelim.json",
+  "replay_script": "experiments/chatgpt_topology_search/runs/EXP-045/recheck_critical4_tolerance.py",
+  "replay_script_executed": false,
+  "grid": {
+    "B28_DL_IL_mhz": 803,
+    "B8_DL_IL_mhz": 960,
+    "B13B14_H2_mhz": 1554,
+    "B71_H3_mhz": 1989,
+    "total_distinct": 4
+  },
+  "stress_policy": "one parameter at a time, common fixed change over all settings, tunable C states frozen; L and source/load unchanged. PCB 0.2pF nominal +/-1% applied as sensitivity only (values >0.2pF not permissible as newly chosen nominal).",
+  "results": [
+    {
+      "scenario": "baseline",
+      "B28_DL_IL": 0.8951800090647889,
+      "B8_DL_IL": 0.8944031897229431,
+      "B13B14_H2": 30.008000000065337,
+      "B71_H3": 30.008000001829046,
+      "minimum_critical_stop_margin_dB": 0.008000000065337076,
+      "passes_critical_two_stop_points": true
+    },
+    {
+      "scenario": "third_PCB_C_plus_1pct",
+      "B28_DL_IL": 0.8954179623040713,
+      "B8_DL_IL": 0.8948842051301703,
+      "B13B14_H2": 30.056835026446805,
+      "B71_H3": 30.007857016276034,
+      "minimum_critical_stop_margin_dB": 0.007857016276034301,
+      "passes_critical_two_stop_points": true
+    },
+    {
+      "scenario": "third_PCB_C_minus_1pct",
+      "B28_DL_IL": 0.8949430226395211,
+      "B8_DL_IL": 0.8939243997114615,
+      "B13B14_H2": 29.95917338231702,
+      "B71_H3": 30.00811681615421,
+      "minimum_critical_stop_margin_dB": -0.04082661768298124,
+      "passes_critical_two_stop_points": false
+    },
+    {
+      "scenario": "Cf1_PCB_C_plus_1pct",
+      "B28_DL_IL": 0.8954179623040713,
+      "B8_DL_IL": 0.8948842051301703,
+      "B13B14_H2": 30.056835026446805,
+      "B71_H3": 30.007857016276034,
+      "minimum_critical_stop_margin_dB": 0.007857016276034301,
+      "passes_critical_two_stop_points": true
+    },
+    {
+      "scenario": "Cf1_PCB_C_minus_1pct",
+      "B28_DL_IL": 0.8949430226395211,
+      "B8_DL_IL": 0.8939243997114615,
+      "B13B14_H2": 29.959173382317022,
+      "B71_H3": 30.00811681615421,
+      "minimum_critical_stop_margin_dB": -0.040826617682977684,
+      "passes_critical_two_stop_points": false
+    },
+    {
+      "scenario": "Cp_GJM_plus_1pct",
+      "B28_DL_IL": 0.8967484306388623,
+      "B8_DL_IL": 0.8951623556654644,
+      "B13B14_H2": 30.28202667605521,
+      "B71_H3": 30.234550026791727,
+      "minimum_critical_stop_margin_dB": 0.23455002679172665,
+      "passes_critical_two_stop_points": true
+    },
+    {
+      "scenario": "Cp_GJM_minus_1pct",
+      "B28_DL_IL": 0.893678412866387,
+      "B8_DL_IL": 0.8937510561590379,
+      "B13B14_H2": 29.70042662973798,
+      "B71_H3": 29.77816254826414,
+      "minimum_critical_stop_margin_dB": -0.2995733702620207,
+      "passes_critical_two_stop_points": false
+    },
+    {
+      "scenario": "Cf0_PCB_C_plus_1pct",
+      "B28_DL_IL": 0.8952518922621301,
+      "B8_DL_IL": 0.8944980661318157,
+      "B13B14_H2": 30.023066968878204,
+      "B71_H3": 30.009570790865784,
+      "minimum_critical_stop_margin_dB": 0.009570790865783607,
+      "passes_critical_two_stop_points": true
+    },
+    {
+      "scenario": "Cf0_PCB_C_minus_1pct",
+      "B28_DL_IL": 0.8951082050596391,
+      "B8_DL_IL": 0.8943084370191191,
+      "B13B14_H2": 29.992437013606246,
+      "B71_H3": 30.00642340095998,
+      "minimum_critical_stop_margin_dB": -0.007562986393754301,
+      "passes_critical_two_stop_points": false
+    },
+    {
+      "scenario": "k_L0_Ls_minus_0p01",
+      "B28_DL_IL": 0.8939954744860479,
+      "B8_DL_IL": 0.8939113440140645,
+      "B13B14_H2": 29.53656618174118,
+      "B71_H3": 30.743710648031634,
+      "minimum_critical_stop_margin_dB": -0.4634338182588209,
+      "passes_critical_two_stop_points": false
+    },
+    {
+      "scenario": "k_Ls_L1_plus_0p01",
+      "B28_DL_IL": 0.8952915579217936,
+      "B8_DL_IL": 0.8944042716814465,
+      "B13B14_H2": 29.491831198224613,
+      "B71_H3": 30.903966984734907,
+      "minimum_critical_stop_margin_dB": -0.5081688017753869,
+      "passes_critical_two_stop_points": false
+    },
+    {
+      "scenario": "k_Ls_L1_minus_0p01",
+      "B28_DL_IL": 0.8951958433403591,
+      "B8_DL_IL": 0.8945864092646156,
+      "B13B14_H2": 30.4069444440535,
+      "B71_H3": 29.138749153038912,
+      "minimum_critical_stop_margin_dB": -0.861250846961088,
+      "passes_critical_two_stop_points": false
+    },
+    {
+      "scenario": "all_Cv_plus_1pct",
+      "B28_DL_IL": 0.8964449223475317,
+      "B8_DL_IL": 0.8953332191921315,
+      "B13B14_H2": 30.25693010899795,
+      "B71_H3": 30.086206654504455,
+      "minimum_critical_stop_margin_dB": 0.08620665450445486,
+      "passes_critical_two_stop_points": true
+    },
+    {
+      "scenario": "all_Cv_minus_1pct",
+      "B28_DL_IL": 0.8928225838171759,
+      "B8_DL_IL": 0.8934787647723232,
+      "B13B14_H2": 29.67297650179539,
+      "B71_H3": 29.907585563604258,
+      "minimum_critical_stop_margin_dB": -0.3270234982046105,
+      "passes_critical_two_stop_points": false
+    }
+  ],
+  "stop_constraint": "Minimum 30dB required over full bands; this 2-stop-frequency PASS is necessary but NOT sufficient",
+  "physical_tolerance_distribution": "not specified; no yield computed",
+  "limitations": [
+    "Four selected frequencies only, NOT 28x1001 mesh with perturbations, no continuous proof.",
+    "Only single-parameter perturbations, not joint/worst-case interval robustness.",
+    "No variable-cap retuning under disturbance; reported sensitivity of existing frozen six-state control.",
+    "No measured Q(f), SRF, EM, PCB implementation, manufacturing statistics.",
+    "Stored rerun Python source not executed; computed table came from in-chat JS source; in-chat source not separately archived.",
+    "Values at 30dB threshold are mathematically under the idealized RF-T005 fixed-Q model, not hardware predictions."
+  ]
+}

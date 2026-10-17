@@ -51,7 +51,7 @@ A7-01同一グラフを使い、**制約の正式変更はしない**まま、�
 
 ### GitHub Actionsでの実行方法
 
-[Actions → Phase 2 target 0.40dB topology sweep](../../../../actions/workflows/lpf-target040.yml) から **Run workflow**。初期値2本×最大160回の局所反復を既定設定とし、4並列シャードを実行する。1回のワークフローでは各シャードで指定数のグラフを計算し、**完了した各グラフの直後にcheckpointを書き換え**、最後にArtifactを保存する。残りは別runで `resume_run_id` に直前のrun IDを入れ、同一ソース指紋・パラメータの場合のみ再開できる。Artifact不存在や不一致を探索完了と扱わない。数値ジョブ・独立再検証は起動された時点でのみ「実行済み」とする。
+[GitHub Actions → Phase 2 target 0.40dB topology sweep](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/workflows/lpf-target040.yml) から **Run workflow**。初期値2本×最大160回の局所反復を既定設定とし、4並列シャードを実行する。1回のワークフローでは各シャードで指定数のグラフを計算し、**完了した各グラフの直後にcheckpointを書き換え**、最後にArtifactを保存する。残りは別runで `resume_run_id` に直前のrun IDを入れ、同一ソース指紋・パラメータの場合のみ再開できる。Artifact不存在や不一致を探索完了と扱わない。数値ジョブ・独立再検証は起動された時点でのみ「実行済み」とする。
 
 **注意:** 新しい手動ワークフローを用意しただけで大規模計算が実行済みになったわけではない。新しい最良候補を採用するには、高密度周波数・独立MNA・SPD・電力収支・面積・物理結合配置・寄生／公差を別途検証する。
 

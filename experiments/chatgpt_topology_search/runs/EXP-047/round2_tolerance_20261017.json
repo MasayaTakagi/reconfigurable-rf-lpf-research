@@ -1,0 +1,235 @@
+{
+  "experiment_id": "EXP-047",
+  "constraint_id": "RF-F003",
+  "phase": "Phase 2",
+  "checkpoint": "round2_verified_28x1001_20261017.json",
+  "assumptions": "one at a time fixed L/C ±1%, k±0.01 subject to nominal k bounds; 28x101 and frozen 2Cv settings, original S2P. No manufacturing yield or joint tolerance",
+  "baseline": {
+    "worst": 0.8709622912449427,
+    "h2": 30.06989017705552,
+    "h3": 30.063417829562127,
+    "byBand": [
+      {
+        "band": "B71",
+        "IL": 0.827101,
+        "H2": 30.06989,
+        "H3": 30.06979
+      },
+      {
+        "band": "B12",
+        "IL": 0.813795,
+        "H2": 30.06994,
+        "H3": 30.06342
+      },
+      {
+        "band": "B28",
+        "IL": 0.87063,
+        "H2": 30.06993,
+        "H3": 31.531
+      },
+      {
+        "band": "B13+B14",
+        "IL": 0.786732,
+        "H2": 30.06996,
+        "H3": 33.28215
+      },
+      {
+        "band": "B26",
+        "IL": 0.845778,
+        "H2": 30.06993,
+        "H3": 30.99156
+      },
+      {
+        "band": "B8",
+        "IL": 0.870962,
+        "H2": 32.20046,
+        "H3": 31.48612
+      }
+    ]
+  },
+  "tested": 20,
+  "failed": 16,
+  "passed": 4,
+  "sorted": [
+    {
+      "parameter": 9,
+      "variation": -0.01,
+      "kind": "absolute",
+      "IL": 0.8713671523106208,
+      "H2": 27.637188558454362,
+      "H3": 29.56479996767971,
+      "PASS30": false
+    },
+    {
+      "parameter": 9,
+      "variation": 0.01,
+      "kind": "absolute",
+      "IL": 0.8717558772017021,
+      "H2": 28.868352026773394,
+      "H3": 29.950505476388642,
+      "PASS30": false
+    },
+    {
+      "parameter": 10,
+      "variation": 0.01,
+      "kind": "absolute",
+      "IL": 0.870764352818013,
+      "H2": 29.273396244950646,
+      "H3": 29.43078712544835,
+      "PASS30": false
+    },
+    {
+      "parameter": 8,
+      "variation": -0.01,
+      "kind": "absolute",
+      "IL": 0.870272644646216,
+      "H2": 29.38915621800238,
+      "H3": 30.25204223508,
+      "PASS30": false
+    },
+    {
+      "parameter": 3,
+      "variation": -0.01,
+      "kind": "relative",
+      "IL": 0.8673801958180836,
+      "H2": 29.446683755880123,
+      "H3": 30.19979806652924,
+      "PASS30": false
+    },
+    {
+      "parameter": 2,
+      "variation": 0.01,
+      "kind": "relative",
+      "IL": 0.871221717150831,
+      "H2": 30.13648543536963,
+      "H3": 29.61681311445819,
+      "PASS30": false
+    },
+    {
+      "parameter": 1,
+      "variation": -0.01,
+      "kind": "relative",
+      "IL": 0.8708467231312458,
+      "H2": 29.630272628293824,
+      "H3": 29.94862490986734,
+      "PASS30": false
+    },
+    {
+      "parameter": 0,
+      "variation": -0.01,
+      "kind": "relative",
+      "IL": 0.870018017221259,
+      "H2": 29.752357651184788,
+      "H3": 29.63568861357448,
+      "PASS30": false
+    },
+    {
+      "parameter": 4,
+      "variation": -0.01,
+      "kind": "relative",
+      "IL": 0.8703826123468171,
+      "H2": 29.883589408739294,
+      "H3": 29.653990879081377,
+      "PASS30": false
+    },
+    {
+      "parameter": 5,
+      "variation": -0.01,
+      "kind": "relative",
+      "IL": 0.8708420761546536,
+      "H2": 29.681923364426662,
+      "H3": 30.12478188401907,
+      "PASS30": false
+    },
+    {
+      "parameter": 5,
+      "variation": 0.01,
+      "kind": "relative",
+      "IL": 0.871468335344796,
+      "H2": 30.16455412747264,
+      "H3": 29.69381558402157,
+      "PASS30": false
+    },
+    {
+      "parameter": 2,
+      "variation": -0.01,
+      "kind": "relative",
+      "IL": 0.8707087227257884,
+      "H2": 29.753166557279876,
+      "H3": 30.17476161223339,
+      "PASS30": false
+    },
+    {
+      "parameter": 6,
+      "variation": -0.01,
+      "kind": "relative",
+      "IL": 0.8700523797171513,
+      "H2": 29.904258892988068,
+      "H3": 30.13074469146838,
+      "PASS30": false
+    },
+    {
+      "parameter": 3,
+      "variation": 0.01,
+      "kind": "relative",
+      "IL": 0.877127968343603,
+      "H2": 30.410534938277685,
+      "H3": 29.9231655960841,
+      "PASS30": false
+    },
+    {
+      "parameter": 7,
+      "variation": -0.01,
+      "kind": "relative",
+      "IL": 0.8707929810481927,
+      "H2": 29.93796446230327,
+      "H3": 30.0870608897004,
+      "PASS30": false
+    },
+    {
+      "parameter": 6,
+      "variation": 0.01,
+      "kind": "relative",
+      "IL": 0.8720575554760222,
+      "H2": 30.200619379030552,
+      "H3": 29.991045900294115,
+      "PASS30": false
+    },
+    {
+      "parameter": 1,
+      "variation": 0.01,
+      "kind": "relative",
+      "IL": 0.8712345266875932,
+      "H2": 30.013337192213896,
+      "H3": 30.146180474633727,
+      "PASS30": true
+    },
+    {
+      "parameter": 7,
+      "variation": 0.01,
+      "kind": "relative",
+      "IL": 0.8711323061084624,
+      "H2": 30.06269460147051,
+      "H3": 30.03995828329717,
+      "PASS30": true
+    },
+    {
+      "parameter": 4,
+      "variation": 0.01,
+      "kind": "relative",
+      "IL": 0.8720554028802867,
+      "H2": 30.11056496750301,
+      "H3": 30.46552554033958,
+      "PASS30": true
+    },
+    {
+      "parameter": 0,
+      "variation": 0.01,
+      "kind": "relative",
+      "IL": 0.8746907995357458,
+      "H2": 30.163686675818422,
+      "H3": 30.48559539121939,
+      "PASS30": true
+    }
+  ]
+}

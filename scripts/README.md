@@ -7,8 +7,8 @@
 | 系統 | スクリプト | 主な役割 |
 |---|---|---|
 | RF候補の台帳監査 | [audit_research_catalog.py](audit_research_catalog.py) | 登録候補・元証拠と条件IDの健全性を監査 |
-| 候補・RF数値監査 | [audit_results.py](audit_results.py) | 実験manifest／候補などの監査。2026-10-17時点でEXP-047の必須manifest項目不足により回帰CI失敗（解決済みとは扱わない） |
-| 条件別パレート報告 | [report_research_pareto.py](report_research_pareto.py) | **旧候補台帳**`data/research_candidate_register.csv`から条件別グループを生成。2026-10-17の新パレート10点は未統合 |
+| 候補・RF数値監査 | [audit_results.py](audit_results.py) | manifest／候補等を監査。EXP-047原manifestは非標準のまま保持し、[出典固定の索引専用アダプター](../src/lpf/legacy_manifest_adapter.py)で例外的に照合。新規runの厳格検証は維持 |
+| 条件別パレート報告 | [report_research_pareto.py](report_research_pareto.py) | 既定は現行の旧系統台帳。`--catalog data/catalog/phase2_candidate_catalog_20261017.csv`指定で2026-10-17固定**24候補・10条件群**を出力 |
 | 研究証拠の参照棚卸し | [build_reference_inventory.py](build_reference_inventory.py) | Git追跡ファイル・manifest・候補台帳から証拠逆引きを構築 |
 | 未登録証拠のレビュー | [triage_unlinked_evidence.py](triage_unlinked_evidence.py) | 自動削除せず保全／個別レビューを分ける |
 | 実験inventory | [audit_experiment_inventory.py](audit_experiment_inventory.py) | EXPごとの登録・実行状態・証拠整合を確認 |
@@ -16,6 +16,9 @@
 | 候補のPCB可変Cルール | [verify_no_pcb_tunable_candidates.py](verify_no_pcb_tunable_candidates.py) | 対象条件の候補種別制限を検証 |
 | 既存ローカル探索 | [local_p4.py](local_p4.py) | 旧P4-Aのplan/run/status/resume。matching_only成果はfull_lpf性能ではない |
 | 既存full_lpf runner | [local_full_lpf.py](local_full_lpf.py) | 既存経路の条件を実行前に検証。2026-10-16の計画では旧RF-F002向けで、RF-F003対応を保証しない |
+
+| 統合24候補の派生生成・照合 | [build_phase2_candidate_catalog.py](build_phase2_candidate_catalog.py) | 旧14件固定CSV＋最新10件の不変出典をSHAで検証して生成、`--check`は再生成せず一致判定 |
+| W0データ・リンク監査 | [audit_phase2_cleanup_w0_tree.py](audit_phase2_cleanup_w0_tree.py)、[audit_phase2_cleanup_w0_links.py](audit_phase2_cleanup_w0_links.py) | 2026-10-17基準mainを不変監査。現在のmain全域と同一とは限らず、原証拠の削除は行わない |
 
 ## プログラム実行の前提
 
@@ -27,7 +30,7 @@ uv run --frozen python scripts/audit_results.py
 uv run --frozen python -m unittest discover -s tests -v
 ```
 
-ただし、**2026-10-17の既存回帰CIではEXP-047 manifestスキーマ不整合によって`audit_results.py`が失敗**している。単純に全CI PASSと表現しない。CIの実行結果は [既存のRun](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39015048662)を参照する。
+2026-10-17の[旧失敗run](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39015048662)はEXP-047の原manifest不足を検出した当時の証拠。その後[統合PR #71の全回帰CI](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39028160775)は**マージ前SUCCESS（325テスト）**。これは数値探索の完全再演・原実行SHA復元・物理実装の証明ではない。
 
 ## 保全と変更のルール
 

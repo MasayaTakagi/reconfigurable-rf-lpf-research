@@ -40,6 +40,6 @@
 - **面積軸：** チップL／GJMの規約に基づく相対面積コスト。PCBパターンCおよび可変Cのchip面積コスト0は、実装物理面積ゼロを意味しない。
 - **IL軸：** 外部端子間6設定の最悪値。min H2/H3、全6設定のCv、完全L/C/k、独立MNAの格子数は[元レポート](../pareto_rf_t005_rf_f003_20261017.md)の各checkpoint参照で確認する。
 - **検証深度：** 有限格子値は候補により検証点数・独立MNA照合範囲が異なる。連続帯域極値、Q(f)、SRF、EM、公差、実測は未保証。
-- **過去との区別：** 旧 [RF-F002選別候補台帳](../../data/research_candidate_register.csv) の14件と、本ページの2026-10-17パレート10点は未統合。[Step 3](../roadmap.md)でカタログ統合するまでは出典別に扱う。
+- **過去との区別：** 旧 [選別候補台帳](../../data/research_candidate_register.csv) の14件と、この保存パレート10件は[2026-10-17固定の統合24候補CSV](../../data/catalog/phase2_candidate_catalog_20261017.csv)で**索引として統合済み**。[カタログの出典・ハッシュ](../../data/catalog/README.md)を確認し、RF-F002の旧正式成果・RF-T004試験・RF-T005試験・RF-F003正式を同一条件でパレート比較しない。
 
 [現行ステータス](../current/phase2_status.md) ／ [実験フォルダの案内](../../experiments/README.md) ／ [文書総合入口](../README.md)

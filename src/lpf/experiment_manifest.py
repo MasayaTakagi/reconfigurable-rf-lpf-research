@@ -217,7 +217,15 @@ def audit_provenance(*, root=ROOT):
     for directory in sorted((root / RUNS).glob("EXP-*")):
         try:
             path = directory / "manifest.json"
-            m = validate_manifest(_read(path), root=root)
+            raw_manifest = _read(path)
+            if directory.name == "EXP-047" and "constraints" not in raw_manifest:
+                # Strictly source-pinned 2026-10-17 in-chat source. The normal
+                # provenance schema still applies to every other run. We do
+                # not invent a missing execution SHA, seed, or environment.
+                from .legacy_manifest_adapter import legacy_exp047_index_view
+                m = legacy_exp047_index_view(root=root)
+            else:
+                m = validate_manifest(raw_manifest, root=root)
             if m["experiment_id"] != directory.name:
                 raise ValueError("Manifest/directory identity mismatch")
             manifests.append((path.relative_to(root).as_posix(), m))

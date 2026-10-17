@@ -2,7 +2,7 @@
 
 **利用範囲：保存済み・有限格子で確認された局所探索のbest-found。** 研究段階はPhase 2であり、以下の数値を数学的な大域最適値、RF-F003達成目標値、物理的な実装保証とは呼ばない。
 
-**詳細出典：** [RF-T005 / RF-F003 パレート説明](../pareto_rf_t005_rf_f003_20261017.md) ／ [機械可読不変スナップショット](../../data/pareto_snapshots/rf_t005_rf_f003_20261017.json)。
+**詳細出典：** [RF-T005 / RF-F003 パレート説明](../pareto_rf_t005_rf_f003_20261017.md) ／ [機械可読不変スナップショット](../../data/pareto_snapshots/rf_t005_rf_f003_20261017.json) ／ [旧14件＋最新10件の統合24候補](../../data/catalog/phase2_candidate_catalog_20261017.csv)。
 
 ## 条件ごとの整理（絶対に混合しない）
 
@@ -40,6 +40,6 @@
 - **面積軸：** チップL／GJMの規約に基づく相対面積コスト。PCBパターンCおよび可変Cのchip面積コスト0は、実装物理面積ゼロを意味しない。
 - **IL軸：** 外部端子間6設定の最悪値。min H2/H3、全6設定のCv、完全L/C/k、独立MNAの格子数は[元レポート](../pareto_rf_t005_rf_f003_20261017.md)の各checkpoint参照で確認する。
 - **検証深度：** 有限格子値は候補により検証点数・独立MNA照合範囲が異なる。連続帯域極値、Q(f)、SRF、EM、公差、実測は未保証。
-- **過去との区別：** 旧 [RF-F002選別候補台帳](../../data/research_candidate_register.csv) の14件と、本ページの2026-10-17パレート10点は未統合。[Step 3](../roadmap.md)でカタログ統合するまでは出典別に扱う。
+- **過去との区別：** [2026-10-17固定の旧14件](../../data/catalog/research_candidate_register_20261017.csv)と、本ページのRF-T005 6件・RF-F003 4件は[統合24候補CSV](../../data/catalog/phase2_candidate_catalog_20261017.csv)に出典別・条件別で収録済み。[検索・比較方法](../../data/catalog/README.md)に従い、旧RF-F002/T004とのパレートを混同しない。
 
 [現行ステータス](../current/phase2_status.md) ／ [実験フォルダの案内](../../experiments/README.md) ／ [文書総合入口](../README.md)

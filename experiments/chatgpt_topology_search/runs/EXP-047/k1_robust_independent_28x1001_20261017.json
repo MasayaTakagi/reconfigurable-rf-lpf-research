@@ -1,0 +1,174 @@
+{
+  "experiment_id": "EXP-047",
+  "condition_id": "RF-F003",
+  "phase": "Phase 2",
+  "source": "k1_robust_2cv_retune_20261017.json",
+  "methods": [
+    "original fixed precomputed input/output S2P external system nodalY/ABCD full 28x1001",
+    "independent explicit 9x9 branch-current MNA for 84 probes each",
+    "fixed 6-setting two-C schedule across k1 uncertainty"
+  ],
+  "scenarios": [
+    {
+      "k1": -0.013596008916520968,
+      "delta_k1": -0.01,
+      "grid": {
+        "worst": 0.8937426008029559,
+        "h2": 30.01987614503608,
+        "h3": 30.09231969670983,
+        "byBand": [
+          {
+            "band": "B71",
+            "IL": 0.850023,
+            "H2": 30.01988,
+            "H3": 30.09232
+          },
+          {
+            "band": "B12",
+            "IL": 0.833608,
+            "H2": 30.01997,
+            "H3": 30.31415
+          },
+          {
+            "band": "B28",
+            "IL": 0.893743,
+            "H2": 30.40474,
+            "H3": 32.25599
+          },
+          {
+            "band": "B13+B14",
+            "IL": 0.800849,
+            "H2": 30.41683,
+            "H3": 31.04086
+          },
+          {
+            "band": "B26",
+            "IL": 0.85,
+            "H2": 30.01998,
+            "H3": 32.53305
+          },
+          {
+            "band": "B8",
+            "IL": 0.878137,
+            "H2": 33.71406,
+            "H3": 34.40083
+          }
+        ]
+      },
+      "independent_probe_count": 84,
+      "maximum_il_difference_dB": 2.2026824808563106e-13,
+      "maximum_power_balance_residual_W": 9.028524184783587e-18,
+      "minimum_component_dissipation_W": 2.402577837973315e-8,
+      "bounds_pass": true,
+      "PASS30": true
+    },
+    {
+      "k1": -0.003596008916520968,
+      "delta_k1": 0,
+      "grid": {
+        "worst": 0.8925874628923431,
+        "h2": 30.513971089906036,
+        "h3": 30.508655573110968,
+        "byBand": [
+          {
+            "band": "B71",
+            "IL": 0.848994,
+            "H2": 32.30099,
+            "H3": 30.50866
+          },
+          {
+            "band": "B12",
+            "IL": 0.83288,
+            "H2": 31.1452,
+            "H3": 30.85277
+          },
+          {
+            "band": "B28",
+            "IL": 0.892587,
+            "H2": 31.47826,
+            "H3": 32.7554
+          },
+          {
+            "band": "B13+B14",
+            "IL": 0.800705,
+            "H2": 30.70292,
+            "H3": 31.09749
+          },
+          {
+            "band": "B26",
+            "IL": 0.850138,
+            "H2": 30.51397,
+            "H3": 31.50444
+          },
+          {
+            "band": "B8",
+            "IL": 0.8787,
+            "H2": 35.37134,
+            "H3": 38.01938
+          }
+        ]
+      },
+      "independent_probe_count": 84,
+      "maximum_il_difference_dB": 3.552713678800501e-13,
+      "maximum_power_balance_residual_W": 9.09205165582766e-18,
+      "minimum_component_dissipation_W": 1.319861184833709e-8,
+      "bounds_pass": true,
+      "PASS30": true
+    },
+    {
+      "k1": 0.006403991083479032,
+      "delta_k1": 0.01,
+      "grid": {
+        "worst": 0.8915707631280838,
+        "h2": 30.01997477302271,
+        "h3": 30.35513704534569,
+        "byBand": [
+          {
+            "band": "B71",
+            "IL": 0.848028,
+            "H2": 31.32238,
+            "H3": 30.69204
+          },
+          {
+            "band": "B12",
+            "IL": 0.832218,
+            "H2": 30.01997,
+            "H3": 31.42869
+          },
+          {
+            "band": "B28",
+            "IL": 0.891571,
+            "H2": 30.01999,
+            "H3": 32.75553
+          },
+          {
+            "band": "B13+B14",
+            "IL": 0.800598,
+            "H2": 30.01999,
+            "H3": 30.9717
+          },
+          {
+            "band": "B26",
+            "IL": 0.850346,
+            "H2": 30.01998,
+            "H3": 30.35514
+          },
+          {
+            "band": "B8",
+            "IL": 0.879308,
+            "H2": 36.5782,
+            "H3": 39.90139
+          }
+        ]
+      },
+      "independent_probe_count": 84,
+      "maximum_il_difference_dB": 5.613287612504791e-13,
+      "maximum_power_balance_residual_W": 8.265347499307463e-18,
+      "minimum_component_dissipation_W": 3.171749517680782e-9,
+      "bounds_pass": true,
+      "PASS30": true
+    }
+  ],
+  "all_pass_30db": true,
+  "caveat": "only k1 ±0.01 nominal variation. Not joint-parameter worst-case nor physical coupling/EM/SRF proof"
+}

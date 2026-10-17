@@ -10,10 +10,11 @@ on:
       constraint_id:
         description: "Approved RF condition"
         required: true
-        default: "RF-F002"
+        default: "RF-F003"
         type: choice
         options:
-          - RF-F002
+          - RF-F003
+          - RF-T005
           - RF-T004
       request_key:
         description: "Stable idempotency key (optional; defaults to workflow run ID)"

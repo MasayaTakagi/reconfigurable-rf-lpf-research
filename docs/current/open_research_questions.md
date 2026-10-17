@@ -6,13 +6,13 @@
 
 | 順位 | 論点 | 観測済みの状態 | 完了判定 |
 |---|---|---|---|
-| **P0** | **EXP-047 manifestにより回帰CIが失敗** | 2026-10-17の[回帰CI run](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39015048662)で`audit_results.py`が`code`、`constraints`、`environment`等9フィールド欠落を指摘。全CI PASSは未成立 | 原manifestの出典と実行状態を尊重し、実証できるメタデータ／互換overlayで対応後に回帰CIをPASS |
+| **P1（残件）** | **EXP-047原実行の完全な出典復元** | 旧manifestは9必須項目を欠く非標準記録のまま。出典blobを固定した[索引専用アダプター](../../src/lpf/legacy_manifest_adapter.py)で[PR #71の回帰CI](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39028160775)は**マージ前PASS**。原実行SHA・seed・環境は未確認 | 元の出典を捏造せずに取得できた事実だけを追加。新規runの厳格manifest検証は維持し、完全再現を主張しない |
 | **P0** | **正式／試験結果の混同防止** | RF-F003は最大2Cv、RF-T005は最大3Cv。旧RF-F002の値は新正式条件に適用不可 | 候補一覧・可視化・レポートが条件IDと実効制約SHA・最低要求値を明示し、異条件で非支配計算しない |
 | **P1** | **正式RF-F003共通探索runnerと評価器の統合** | [2026-10-16計画](../rf_f003_phase2_rebaseline_plan_20261016.md)は作成当時の未実装状態を記す。その後EXP-047で局所数値探索と独立MNAの証拠を保存したが、共通探索pipeline全体の完成を意味しない | 最新main実装に対する独立外部S2P縦続評価と6設定回帰を整備、条件適用を確認 |
-| **P1** | **最新候補台帳の分離** | [旧候補台帳](../../data/research_candidate_register.csv)は14件の旧条件中心。[最新スナップショット](../../data/pareto_snapshots/rf_t005_rf_f003_20261017.json)に10点が別途保存済み | 旧台帳とスナップショットの出典リンクを一意にし、条件別索引生成が再現可能（整理Step 3） |
+| **P1（残件）** | **候補のトポロジー検索属性** | 旧14件＋最新10件の[統合24候補CSV](../../data/catalog/phase2_candidate_catalog_20261017.csv)は出典・制約区分を保持して再生成可能。接続・配置・結合符号の専用検索列は未整備 | [固定2026-10-17カタログ](../../data/catalog/README.md)を保全したまま、未知値を捏造せず構造的な索引を拡充（整理W2） |
 | **P1** | **検証深度の均一化と連続域評価** | 候補ごとに28×1,001／28×7,001格子など検証深度が異なる。全域極値・公差での厳密成立を示さない | 同一条件の候補について共通格子・独立MNAで再照合した検証overlayを保存 |
 | **P1** | **履歴メタデータ欠損（RG-008/009）** | 旧39実験のメタデータ欠落は[RG-009](../../data/research_review_issues.csv)に記録される。EXP-042～047の追加によって旧集計を新しい全体数へ機械的に読み替えない | 証明可能なコードSHA・環境・seed・実行状態のみ追記し、推測補完しない |
-| **P1** | **長期保全・整理（RG-005/007）** | GitHub-only保存、旧要レビュー46件は削除未承認。旧ブランチ整理も別承認制 | path・blob・参照を追跡可能に保ち、整理後も重要証拠をGitで保全 |
+| **P1** | **長期保全・整理（RG-005/007）** | GitHub-only保存。旧要レビュー46件は削除未承認。整理Step 1～5は[統合PR #71](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/71)で実装済み。追加の文書削除は[整理計画PR #72](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/72)で審査中 | path・blob・参照と復旧方法を照合し、原証拠は保持。過去文書削除は個別審査・承認後に実施 |
 | **P2** | **物理実現性・モデルの不確かさ** | S2Pは回路モデル。Q(f)、SRF、EM、寄生の基準面、温度・公差・実装面積を未実証 | 候補別に前提、実測・EM・設計余裕・リスクを明示し、結果を別検証記録へ保存 |
 
 ## 旧課題との関係

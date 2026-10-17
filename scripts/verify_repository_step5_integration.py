@@ -38,6 +38,7 @@ ADDED_NAV = {
     "docs/repository_audits/step1_20261017_report.md",
     "docs/repository_audits/step1_20261017_review_notes.md",
     "docs/phase2_repository_step4_review_20261017.md",
+    "docs/phase2_repository_step5_final_verification_20261017.md",
 }
 LOCAL_LINK = re.compile(r"\]\(([^)]+)\)")
 

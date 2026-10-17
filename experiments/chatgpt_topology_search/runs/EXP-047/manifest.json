@@ -57,6 +57,20 @@
   },
   "validated_candidates": [
     {
+      "id": "4L_1GJM_3PCB_area4p667",
+      "chip_area": 4.666666666666667,
+      "worst_il_db": 0.882646927903292,
+      "min_h2_db": 30.02493785280207,
+      "min_h3_db": 30.024972665564587,
+      "reference": "area4p667_g1_deep_independent_28x1001_20261017.json",
+      "fixed_C": "Cf0 GJM2.253896424pF; Cf1 PCB0.2pF x2 in parallel; Cp PCB0.161657313pF; Cf2 absent",
+      "tunable_C_positions": [
+        "Cv0(3,GND)",
+        "Cv2(1,2)"
+      ],
+      "independent_MNA_probes": 84
+    },
+    {
       "id": "4L_3GJM_1PCB_area6",
       "chip_area": 6,
       "worst_il_db": 0.8368679516651689,
@@ -188,5 +202,20 @@
     ],
     "zero_gjm_status": "Two 4L/2Cv local topology trials failed mandatory 30dB, no impossibility inference.",
     "verified_best_status": "Best found under limited local searches, not global or physical/tolerance robust."
+  },
+  "gjm_reduction_study": {
+    "status": "executed_2026-10-17",
+    "phase": "Phase 2",
+    "area_costs_tested": [
+      4,
+      4.666666666666667,
+      5.333333333333333,
+      6,
+      6.666666666666667
+    ],
+    "one_gjm_verified": "area4p667_g1_deep_independent_28x1001_20261017.json",
+    "one_gjm_sensitivity": "area4p667_g1_perturbations_101grid_20261017.json",
+    "zero_gjm": "no 30dB-compliant checkpoint discovered in local search",
+    "conclusion": "1GJM area4.667 is non-dominated versus 2GJM area5.333 among found points; nominal 30dB margin only ~0.025dB and 18/18 OAT perturbations fail without retune."
   }
 }

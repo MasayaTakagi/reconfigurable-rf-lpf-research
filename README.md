@@ -17,6 +17,8 @@
 
 - **RF-T005（試験・最大3可変C）：** H2/H3必須30dBの有限格子適合候補のうち**6点**（3L/4L、chip面積3～6、最悪IL 0.944268～0.805149dB）。出典EXP-042/043/045。
 - **RF-F003（正式・最大2可変C）：** 同じく**4点**（4L、chip面積4⅔～6⅔、最悪IL 0.882647～0.833188dB）。出典EXP-047。
+
+**検索・出典の一元化：** 旧14候補と上記の10候補は[統合24件カタログ](data/catalog/phase2_candidate_catalog_20261017.csv)へ区分別に登録済み。[条件の比較規則](data/catalog/README.md)を参照し、正式／試験／旧仕様の数値を混同しません。
 - 両方とも**IL≤0.30dB、公称H2/H3≥35dBは未達**。保存済み候補集合の局所・有限格子の非支配点であり、大域最適性、連続帯域極値、Q(f)/SRF/EM、実装・公差・実測の成立は保証されません。外部S2Pはモデル由来で実測ではありません。
 
 **実施状態の注意：** EXP-047の局所探索・有限格子と限定的な独立MNAは保存済みですが、RF-F003共通`full_lpf`探索pipelineによる網羅最適化は完了していません。統合PR #71の[Phase 2回帰CI（325テストPASS）](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39028160775)は**マージ前にSUCCESS**。元EXP-047 manifestは旧形式のまま不変で、[出典SHA固定の索引専用アダプター](src/lpf/legacy_manifest_adapter.py)を通して検査しています。元の実行SHA・seed・環境は復元できていないため、完全な再実行可能性を意味しません。

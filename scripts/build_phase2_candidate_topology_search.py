@@ -177,7 +177,7 @@ def build(root=ROOT):
             "source_subcandidate_id": item["source_subcandidate_id"],
             "structural_metadata_status": "legacy_not_extracted",
         }
-        if item["origin"] == "archived_pareto_snapshot":
+        if item["origin"] == "archived_pareto_20261017":
             raw = safe_evidence(root, item["checkpoint_path"])
             if git_blob_sha1(raw) != item["checkpoint_git_blob_sha1"]:
                 raise ValueError("source checkpoint Git blob changed: " + item["catalog_id"])

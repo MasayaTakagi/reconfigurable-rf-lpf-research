@@ -31,4 +31,4 @@
 
 ## ドキュメント移動に関する方針
 
-**整理Step 1～5は[PR #71でmainに統合済み](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/71)**。既存の履歴資料・実験原本の大規模移動・削除は行っていない。不要な二次文書や旧記述は[Phase 2追加整理計画（PR #72、Draft）](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/72)に基づき個別レビューする。[W0監査](phase2_cleanup_w0_current_main_audit_20261017.md)の削除候補7文書・旧46保全対象の扱いと区別する。
+**整理Step 1～5は[PR #71でmainに統合済み](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/71)**。追加整理の[#72（計画）](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/72)・[#73（W0監査）](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/73)・[#75（W1）](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/75)・[#78（W2）](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/78)も2026-10-17にmain統合済み。**W3の7旧文書は[個別レビュー](phase2_cleanup_w3_document_review_20261017.md)で引き続き保全**し、所有者によるpath別承認前に削除しない。元実験46件の保全審査とは別管理する。

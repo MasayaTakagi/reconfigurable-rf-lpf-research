@@ -1,6 +1,6 @@
 # Phase 2：現行ステータス（2026-10-17）
 
-> **基準：** 2026-10-17の[統合PR #71](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/71)マージ後main `055b222c79c73c7fbeacb19383f21c1da0625195`。このページは閲覧用要約であり数値正本ではない。以後の変更は[ロードマップ](../roadmap.md)と[制約レジストリ](../../data/constraints/registry.json)で確認する。
+> **基準：** 2026-10-17の[統合PR #71](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/71)マージ後main `055b222c79c73c7fbeacb19383f21c1da0625195`を歴史起点とし、[#72/#73/#75/#78](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/78)統合後main `731e901e79cfa367fd06b4350844c6987b30caa5`の文書整理状況を反映。このページは閲覧用要約であり数値正本ではない。以後の変更は[ロードマップ](../roadmap.md)と[制約レジストリ](../../data/constraints/registry.json)で確認する。
 >
 > **フェーズ：Phase 2継続。Phase 3への移行は所有者の明示的承認まで禁止。**
 
@@ -31,6 +31,8 @@
 詳細値、各候補の完全L/C/k・全6設定Cvと元checkpoint、独立検証の範囲は [結果の入口](../results/README.md) → [パレート元レポート](../pareto_rf_t005_rf_f003_20261017.md) → [不変JSON](../../data/pareto_snapshots/rf_t005_rf_f003_20261017.json) を参照する。
 
 **EXP-047の記録訂正：** 4GJM候補について原独立検証JSON中の`chip_area=6`は記録誤り。正しい面積は**6⅔**。元証拠を改変せず、訂正根拠を明記して閲覧用表示に使用する。
+
+**候補の回路構造検索：** [W2構造索引](../results/phase2_topology_search_20261017.md)（PR #78）は既存24件からの読み取り専用派生。新たなRF解析結果ではなく、旧14件の接続情報は未抽出、磁気結合の物理実現性は未検証。旧文書の削除判断は[W3保全審査](../phase2_cleanup_w3_document_review_20261017.md)へ分離し、削除0件とする。
 
 ## 実行済み・未完了の境界
 

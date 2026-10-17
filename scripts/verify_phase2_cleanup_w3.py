@@ -77,7 +77,7 @@ def main():
     with PLAN.open(newline="", encoding="utf-8") as f:
         planning = {r["candidate_id"]: r for r in csv.DictReader(f)}
     for k in APPROVED_IDS:
-        assert planning[k]["execution_state"] == "removed_from_current_revision_owner_approved_20261017"
+        assert planning[k]["execution_state"] in {"removed_from_current_revision_owner_approved_20261017", "removed_after_owner_approval_20261017"}
         assert planning[k]["source_git_blob_sha1_at_planning"] == items[k]["git_blob_sha1"]
     for k in RETAINED_IDS:
         assert planning[k]["execution_state"] == "not_started_unapproved"

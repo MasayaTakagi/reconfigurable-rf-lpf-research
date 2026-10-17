@@ -56,7 +56,7 @@ GOVERNANCE_BASENAMES = {
 GROUP_NAMES = {
     "current_reference": "現行の正本・結果（履歴として移動しない）",
     "old_rft003": "旧RF-T003 系列（当時の計算・試験条件）",
-    "old_rff002_t004": "旧RF-F002 / RF-T004・EXP研究の記録",
+    "old_rff002_t004": "旧RF-F001 / RF-F002 / RF-T004・EXP研究の記録",
     "methods_and_theory": "研究方法・基礎理論（実装・物理検証との区別を要する）",
     "governance_and_provenance": "保全・出典・管理・旧計画（当時の状態）",
     "other_historical": "その他の時点付き研究・計画",
@@ -277,7 +277,7 @@ def build():
         "[保存パレート](../pareto_rf_t005_rf_f003_20261017.md)。"
         "旧RF-F002、RF-T004、RF-T003の成果をRF-F003へ置き換えない。",
         "",
-        f"監査基準main: \`{BASE_MAIN_SHA}\`。元\`docs/\`配下は**{len(doc_rows)}件**。"
+        f"監査基準main: `{BASE_MAIN_SHA}`。元`docs/`配下は**{len(doc_rows)}件**。"
         "以下は実ファイルの所在を提示する索引であり、移動・改名済みの意味ではない。",
         "",
     ]
@@ -293,7 +293,7 @@ def build():
         for row in contents:
             relative = posixpath.relpath(row["path"], "docs/archive")
             title = row["original_heading"].replace("[", "［").replace("]", "］")
-            lines.append(f"- [{title}]({relative}) — \`{row['path']}\`")
+            lines.append(f"- [{title}]({relative}) — `{row['path']}`")
         lines.append("")
 
     lines += [
@@ -316,7 +316,7 @@ def build():
         "# Step 4：歴史資料・重複証拠の分類レビュー（2026-10-17）", "",
         "> **監査と導線整理のみ実行。原研究資料の物理移動・削除なし。**"
         " 本書は所有者の削除承認ではない。Phase 2を継続し、Phase 3は未承認。",
-        "", f"対象main: \`{BASE_MAIN_SHA}\`（全{len(entries)}追跡ファイル）。"
+        "", f"対象main: `{BASE_MAIN_SHA}`（全{len(entries)}追跡ファイル）。"
         " 差分PRは元mainのデータを変更せず、派生の目次・台帳を追加した。", "",
         "## 1. 歴史文書の区分", "",
         "| 分類 | 件数 | 取り扱い |", "|---|---:|---|",
@@ -336,7 +336,7 @@ def build():
         "|---|---:|---|",
     ]
     for role, count in sorted(kinds.items()):
-        report.append(f"| \`{role}\` | {count} | 原パス保持・消去せず個別レビュー |")
+        report.append(f"| `{role}` | {count} | 原パス保持・消去せず個別レビュー |")
     report += [
         "", f"Git同内容グループ：**{len(duplicates)}**、追加path："
         f"**{sum(r['additional_checkout_paths'] for r in duplicates)}**。"
@@ -344,15 +344,15 @@ def build():
         "（同内容だけに基づく上界の参考値）。Gitの同一blobはcontent-addressedで既に共有されるため、"
         "**この数値をGit pack容量の削減見込みに使用してはならない**。",
         "",
-        "- \`data/constraints/formal/RF-F003.json\`と\`data/design_constraints.json\`:"
+        "- `data/constraints/formal/RF-F003.json`と`data/design_constraints.json`:"
         " 同一blobだが正本＋互換コピーであり**両方を保持**。",
-        "- \`EXP-020/source_pr38/\`にある同一blob:"
+        "- `EXP-020/source_pr38/`にある同一blob:"
         " 原PR出典の復旧性と当時のコンテキストを優先して保持。",
-        "- \`logs/\`、\`tasks/\`、各\`config.json\`:"
+        "- `logs/`、`tasks/`、各`config.json`:"
         " 失敗／再開／並列ベンチの再現に重要な可能性があり、同じSHAでも条件と意味が異なる。",
-        "- \`code_snapshot/\`と現行スクリプト:"
+        "- `code_snapshot/`と現行スクリプト:"
         " 実行時のコード指紋を保護。自動リンク置換や重複除去を禁止。",
-        "- \`EXP-012/search_cost.py\`と\`EXP-013/model013.py\`:"
+        "- `EXP-012/search_cost.py`と`EXP-013/model013.py`:"
         " 同一blobでも実験系譜・実行時点を確認するまで双方保持。",
         "",
         "[同一blob台帳CSV](../data/repository_reviews/step4_identical_blob_groups_20261017.csv)"
@@ -365,9 +365,9 @@ def build():
         "|---|---:|",
     ]
     for key, count in sorted(classes.items()):
-        report.append(f"| \`{key}\` | {count} |")
+        report.append(f"| `{key}` | {count} |")
     report += [
-        "", "旧台帳の全件\`retain_pending_source_context_review\`を引き継いだ。"
+        "", "旧台帳の全件`retain_pending_source_context_review`を引き継いだ。"
         "Markdownからの参照、PR source、同一blob、独立検証・実行復旧上の役割は"
         "ファイル内容と関連実験の証拠が揃うまで確定できない。",
         "[46件の照合台帳](../data/repository_reviews/step4_retention_46_20261017.csv)"
@@ -386,10 +386,10 @@ def build():
         "本Step 4専用監査のPASSと全体CIのPASSは別。",
         "",
         "## 5. 再実行と限界", "",
-        "\`\`\`bash",
+        "```bash",
         "git fetch origin main",
         "python scripts/audit_repository_reorganization_step4.py --check",
-        "\`\`\`",
+        "```",
         "",
         "本監査は指定mainの追跡tree、保存済み46件台帳、"
         "文書の先頭見出しを使う一次分類であり、"

@@ -26,7 +26,7 @@
 ## 証拠と比較条件
 
 - **条件を分離：** 比較キーは制約ID・実効条件SHA・目的・H2/H3要求・成立区分と一対一。RF-T005（trial）とRF-F003（formal）の面積–IL Paretoを混ぜない。
-- **ソース追跡：** CSVの `checkpoint_path` と `checkpoint_git_blob_sha1` が完全ベクトルの元出典、`verification_path`と`verification_git_blob_sha1`が記録済み評価根拠。実験内で候補が入れ子になっているときは `checkpoint_stage_index`／元スナップショットも参照する。
+- **ソース追跡：** CSVの `checkpoint_path` と `checkpoint_git_blob_sha1` が完全ベクトルの元出典、`verification_path`と`verification_git_blob_sha1`が記録済み評価根拠。実験内で候補が入れ子になっているときは `source_subcandidate_id`／元スナップショットも参照する。
 - **検証範囲：** 記載の独立MNAは84点等、有限の指定点での照合。縮約法の28×1001／28×7001格子と28×7001の独立MNA全点実行は同義ではない。
 - **収束状態：** EXP-042の面積6はSLSQP未収束。H2/H3の有限格子PASSと収束を混同しない。
 - **訂正記録：** RF-F003の4GJM候補は原検証JSONの面積が6と誤記。部品数から6⅔とした訂正を `original_metadata_discrepancy` に記録。原JSONは改変しない。

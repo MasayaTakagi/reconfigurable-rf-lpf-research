@@ -46,6 +46,12 @@ jobs:
                          for p in changed)
           deleted=subprocess.check_output(
               ['git','diff','--diff-filter=D','--name-only',baseline,'HEAD'],text=True).splitlines()
-          assert not deleted, deleted
-          print('W1 PASS: no deleted paths and no protected RF source changes')
+          approved={
+              'docs/repository_reorganization_plan.md',
+              'docs/research_result_governance.md',
+              'docs/phase2_actions_ci_repair_20261017.md',
+              'docs/repository_storage_audit_20261014.md',
+          }
+          assert set(deleted).issubset(approved), deleted
+          print('W1 PASS: no protected source changes; deletions limited to W3 approved historical documents')
           PY

@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 from src.lpf.experiment_manifest import RUNS, experiment_index, new_manifest, write_manifest
 from src.lpf.legacy_manifest_adapter import legacy_exp047_index_view
+from src.lpf.constraint_versions import load_constraint, constraint_fingerprint
 from scripts import audit_results
 from scripts import verify_no_pcb_tunable_candidates as baseline
 
@@ -128,6 +129,11 @@ class CandidateIndexGuardrails(unittest.TestCase):
             rows = list(csv.DictReader(f))
         m = new_manifest("EXP-999", "Synthetic candidate metadata fixture", {},
                          objective="full_lpf", seed=1)
+        # Use the copied fixture policy to derive the temporary candidate
+        # identity; never rely on another root's fingerprint for a new row.
+        resolved = load_constraint("RF-F003", root=self.root)
+        m["constraints"]["effective_constraints"] = resolved
+        m["constraints"]["effective_constraint_sha256"] = constraint_fingerprint(resolved)
         directory = self.root / RUNS / "EXP-999"
         directory.mkdir()
         write_manifest(directory / "manifest.json", m, root=self.root)

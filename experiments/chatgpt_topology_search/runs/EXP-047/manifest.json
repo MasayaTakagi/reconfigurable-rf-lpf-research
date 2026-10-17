@@ -42,7 +42,17 @@
     "sources": [
       "optimise_correct_q80_round3_20261017.js",
       "optimise_correct_q80_round4_20261017.js",
-      "search_4GJM_noPCB_20261017.js"
+      "search_4GJM_noPCB_20261017.js",
+      "optimise_4GJM_Q80_further_20261017.js",
+      "verify_4GJM_further_20261017.js"
+    ],
+    "evaluation_round_further_4GJM": 195898,
+    "q_bug_excluded_files": [
+      "nested_loss_reduction_round2_20261017.json",
+      "nested_loss_reduction_round3_20261017.json",
+      "second_pcb_nested_20261017.json",
+      "second_pcb_independent_corrected_28x1001_20261017.json",
+      "third_pcb_screen_20261017.json"
     ]
   },
   "validated_candidates": [
@@ -61,6 +71,15 @@
       "min_h2_db": 30.04431009095553,
       "min_h3_db": 30.050754704754983,
       "reference": "4GJM_noPCB_independent_28x1001_20261017.json"
+    },
+    {
+      "id": "4L_4GJM_0PCB_area6p667_further",
+      "chip_area": 6.666666666666667,
+      "worst_il_db": 0.8331882335507537,
+      "min_h2_db": 30.04493190861092,
+      "min_h3_db": 30.0448202773175,
+      "reference": "4GJM_further_independent_28x1001_20261017.json",
+      "status": "finite_grid_independent_MNA_84_pass"
     }
   ],
   "validation": {
@@ -77,5 +96,6 @@
     "method": "20 independent one-at-a-time deviation scenarios for each of 2 final candidates, 28x101 grid, Cv fixed",
     "scenarios_passing_required_30db": 0
   },
-  "phase3": "not_authorized"
+  "phase3": "not_authorized",
+  "selected_best_20261017": "4L_4GJM_0PCB_area6p667_further"
 }

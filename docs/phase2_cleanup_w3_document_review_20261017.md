@@ -1,5 +1,7 @@
 # Phase 2 W3：旧二次文書7件の出典・固有情報・削除可否レビュー（2026-10-17）
 
+> **後続の実施追補：** 以下の「削除承認0件、実削除0件」はPR #79の承認前監査時点の記録。その後、所有者はD-001～D-004の削除を承認し、[歴史文書統合資料](archive/w3_consolidated_documents_20261017.md)に固有事実・元blob・復元手順を保存して4旧pathを現行treeから削除した。D-005～D-007は保持。旧判定は当時の証拠として残す。
+
 > **判定：7件すべて現在のtreeに保持。削除承認0件、実削除0件。** 本PRはレビュー台帳と検証ゲートを追加する段階で、所有者の個別承認による削除PRではない。研究はPhase 2を継続し、Phase 3には移行しない。
 
 ## 1. 起点・実施範囲
@@ -14,10 +16,10 @@
 
 | ID | 元ファイル・Git blob SHA-1（先頭8桁） | 独自性・削除障害 | W3判定 |
 |---|---|---|---|
-| D-001 | [repository_reorganization_plan.md](repository_reorganization_plan.md) `1c0673ed` | 2026-10-12当時のR1～R5、R2内部シャントC一般化、P4-A探索対象、未実装ゲートが固有。単なる現況重複ではない。 | **条件付き保留**：日時付きR1～R5の処理状況と未実施項目を移記し、リンク更新・個別承認後に再判定 |
-| D-002 | [research_result_governance.md](research_result_governance.md) `946049b8` | 初期9→13候補の経緯、strict/tolerance/reported/historical区分、6実験の未連結manifestなど、訂正履歴の説明が残る。現行RF-F003正本と当時のRF-F002を混同禁止。 | **条件付き保留**：旧ルール・台帳推移・元訂正を出典付きで収録後に再判定 |
-| D-003 | [phase2_actions_ci_repair_20261017.md](phase2_actions_ci_repair_20261017.md) `4c45f2b0` | EXP-044/046 manifest修復、旧CI障害run `38993047810`、複数PRの修復・統合・run URLとSHAの時系列が固有。 | **条件付き保留**：インシデント記録の永久保存とリンク更新後に再判定 |
-| D-004 | [repository_storage_audit_20261014.md](repository_storage_audit_20261014.md) `2918391b` | 旧main `73c4f19b3b1264beeb5e8cbb2764ae3f82fb4f57`の707 tracked files/8.30 MB、実行時診断144件/約2.35 MB、同一blob34組・余分38path、分類方法が時点固有。 | **条件付き保留**：分母・日時・対象SHAを伴う監査履歴に移記後に再判定 |
+| D-001 | [repository_reorganization_plan.md](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/blob/88562135dae2edf8ba7763aa529181c05f7c1ded/docs/repository_reorganization_plan.md) `1c0673ed` | 2026-10-12当時のR1～R5、R2内部シャントC一般化、P4-A探索対象、未実装ゲートが固有。単なる現況重複ではない。 | **条件付き保留**：日時付きR1～R5の処理状況と未実施項目を移記し、リンク更新・個別承認後に再判定 |
+| D-002 | [research_result_governance.md](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/blob/88562135dae2edf8ba7763aa529181c05f7c1ded/docs/research_result_governance.md) `946049b8` | 初期9→13候補の経緯、strict/tolerance/reported/historical区分、6実験の未連結manifestなど、訂正履歴の説明が残る。現行RF-F003正本と当時のRF-F002を混同禁止。 | **条件付き保留**：旧ルール・台帳推移・元訂正を出典付きで収録後に再判定 |
+| D-003 | [phase2_actions_ci_repair_20261017.md](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/blob/88562135dae2edf8ba7763aa529181c05f7c1ded/docs/phase2_actions_ci_repair_20261017.md) `4c45f2b0` | EXP-044/046 manifest修復、旧CI障害run `38993047810`、複数PRの修復・統合・run URLとSHAの時系列が固有。 | **条件付き保留**：インシデント記録の永久保存とリンク更新後に再判定 |
+| D-004 | [repository_storage_audit_20261014.md](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/blob/88562135dae2edf8ba7763aa529181c05f7c1ded/docs/repository_storage_audit_20261014.md) `2918391b` | 旧main `73c4f19b3b1264beeb5e8cbb2764ae3f82fb4f57`の707 tracked files/8.30 MB、実行時診断144件/約2.35 MB、同一blob34組・余分38path、分類方法が時点固有。 | **条件付き保留**：分母・日時・対象SHAを伴う監査履歴に移記後に再判定 |
 | D-005 | [phase2_storage_pareto_review_20261015.md](phase2_storage_pareto_review_20261015.md) `7d97c8a5` | RF-F002／RF-T004の**13候補・8比較群**パレート表を含み、現在の24候補カタログとは条件・保存時点が異なる。535ファイル保全区分・旧CI成果も残る。 | **保持推奨**：表の全行と条件比較・出典を失わない移管実証までは削除対象外 |
 | D-006 | [r2_handoff.md](r2_handoff.md) `ff757983` | EXP-015で4候補の保存値を各周波数区間7001点で再現、72周波数点/候補の3方式照合。最大利得差`3.17e-15`、電力収支残差`3.36e-17 W`。元独立監査JSONへ連結。 | **保持推奨**：独立MNAの方法と当時の合否判定を含むため、別の証拠レビューが必要 |
 | D-007 | [p4_a_scope.md](p4_a_scope.md) `e254a785` | P4-Aの**内部ノード≤4、固定枝≤8、計算面積≤6**、`matching_only`、HV 0.4～12 nH限定・HQ未探索の境界は歴史的ソルバcoverageの出典。 | **保持推奨**：runner/manifestの当時の探索限界の突合まで保全 |

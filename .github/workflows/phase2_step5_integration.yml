@@ -1,0 +1,32 @@
+name: Phase 2 Step 5 integrated integrity
+
+on:
+  push:
+    branches:
+      - test/phase2-reorganization-step5-integrated-20261017
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Fetch authoritative main history
+        run: git fetch --no-tags origin '+refs/heads/main:refs/remotes/origin/main'
+      - name: Verify original Git blobs, all integrated links and RF source hashes
+        run: python3 scripts/verify_repository_step5_integration.py --summary artifacts/phase2_step5_integration.json
+      - name: Confirm legacy EXP-047 adapter and registered candidate provenance
+        run: python3 -m unittest tests.test_exp047_legacy_manifest_adapter tests.test_phase2_candidate_catalog -v
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase2-step5-integration-report
+          path: artifacts/phase2_step5_integration.json
+          retention-days: 30

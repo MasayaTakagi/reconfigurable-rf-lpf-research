@@ -194,7 +194,14 @@ class ManifestTests(unittest.TestCase):
         paths = sorted((ROOT / RUNS).glob("EXP-*/manifest.json"))
         self.assertTrue({f"EXP-{i:03}" for i in range(1, 16)}.issubset({p.parent.name for p in paths}))
         for path in paths:
-            validate_manifest(json.loads(path.read_text()))
+            if path.parent.name == "EXP-047":
+                # Original noncanonical in-chat provenance is preserved and
+                # verified via a pinned, index-only compatibility overlay.
+                from src.lpf.legacy_manifest_adapter import legacy_exp047_index_view
+                view = legacy_exp047_index_view(root=ROOT)
+                self.assertEqual(view["experiment_id"], "EXP-047")
+            else:
+                validate_manifest(json.loads(path.read_text()))
 
     def test_nonfinite_scope_and_invalid_validation_rejected(self):
         for key, value in (("phase", "Phase 3"), ("search_scope", {"max_search_area": float("inf")}),

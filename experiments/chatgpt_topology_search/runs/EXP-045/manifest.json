@@ -24,17 +24,56 @@
     "input": "1d46ad6f2e144ff90e6789869c8b08203dd3c41e",
     "output": "d8f45955ce05978bd1e25c89a3578a2710735e30"
   },
-  "selected": "checkpoint_c_only.json",
+  "selected": "checkpoints/t3l_extra_pcb_out_0p2_prelim.json",
   "baseline_path": "experiments/chatgpt_topology_search/runs/EXP-043/checkpoints/gjm_cp_local_H30p0032.json",
   "other_results": [
     "checkpoint_fixed_scan.json",
     "independent_84point.json"
   ],
-  "nominal_worst_IL_db": 0.8959810601905048,
-  "nominal_H2_min_db": 30.003000000557428,
-  "nominal_H3_min_db": 30.003000001291102,
+  "nominal_worst_IL_db": 0.8951800090647889,
+  "nominal_H2_min_db": 30.00800000006535,
+  "nominal_H3_min_db": 30.008000001829046,
   "convergence": "local heuristic only; not optimizer-certified",
   "independent_verification": "5x5 port-clamped branch-current MNA 84 points PASSED (from underlying full 7-variable model); external 28x1001 checks use same in-chat nodal Y/ABCD analysis; standalone repository verifier not yet executed",
   "implementation_validation": "not_run",
-  "phase3": "not_authorized"
+  "phase3": "not_authorized",
+  "historical_first_pass": {
+    "selected": "checkpoint_c_only.json",
+    "nominal_worst_IL_db": 0.8959810601905048,
+    "nominal_H2_min_db": 30.003000000557428,
+    "nominal_H3_min_db": 30.003000001291102
+  },
+  "continued_20261017_extra_pcb": {
+    "status": "computed_exact_original_S2P_finite_28x1001_and_independent_MNA_84_probes",
+    "candidate": "checkpoints/t3l_extra_pcb_out_0p2_prelim.json",
+    "changes": "one additional Q40 PCB_PATTERN_C, 0.2pF, placed in parallel to existing fixed PCB Cf1 across T output-side series L. No L or GJM count change. Fixed chip area remains 3+2/3. Third PCB pattern total 3 (RF-T005 limit).",
+    "exploration": {
+      "new_topology_edges": 9,
+      "new_fixed_C_values_pf": [
+        0.02,
+        0.08,
+        0.2
+      ],
+      "tested": 27,
+      "screen_passed": 13
+    },
+    "performance": {
+      "worst_IL_dB": 0.8951800090647889,
+      "H2_min_dB": 30.00800000006535,
+      "H3_min_dB": 30.008000001829046,
+      "baseline_worst_IL_dB": 0.8959933012075734,
+      "improvement_dB": 0.0008132921427844719,
+      "grid": "28 distinct segments x 1001"
+    },
+    "verification": {
+      "independent_MNA": "two port-clamped 5x5 coupled inductor branch-current MNA excitations at each of 84 points; includes external S2P cascade",
+      "max_method_difference_db": 1.7763568394002505e-14,
+      "max_power_balance_residual_W": 6.071532165918825e-18,
+      "min_inductance_matrix_eigen_nH": 3.1979569408577118,
+      "full_independent_mesh": false,
+      "continuous_interval_proof": false,
+      "physical_realization": false
+    },
+    "interpretation": "Numerical gain ~0.00081 dB, does not reach 0.8 dB or 0.3 dB. Fixed caps two separate Q40 0.2pF PCB patterns co-located electrically; real PCB area/capacitor parasitics not evaluated."
+  }
 }

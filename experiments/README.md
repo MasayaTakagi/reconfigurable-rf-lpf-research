@@ -19,7 +19,7 @@
 | [EXP-046](chatgpt_topology_search/runs/EXP-046/manifest.json) | RF-T005（試験） | 4L外側シャント・内側直列の検討 | 今回のパレート一覧には非掲載 |
 | [EXP-047](chatgpt_topology_search/runs/EXP-047/manifest.json) | **RF-F003（正式）** | 4L／2可変Cの局所探索・Q80修正・独立MNA確認 | 正式4L 4点の出典 |
 
-**注：** この表は各実験の目的と出典を示し、全iterationの再現済み・最適化収束・物理実証を主張しない。元manifestには実験ごとの実行状態を保持している。EXP-047の共通manifestスキーマ不足によるCI失敗については [未解決事項](../docs/current/open_research_questions.md) に記録する。
+**注：** この表は実験の目的と出典を示し、全iterationの再現済み・最適化収束・物理実証を意味しない。**EXP-047だけは原manifestが非標準の局所in-chat記録**であり、[索引専用アダプター](../src/lpf/legacy_manifest_adapter.py)が固定SHAと実験証拠を照合する。PR #71の[回帰CI](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39028160775)はマージ前にPASSしたが、元optimizerの実行SHA／seed／環境は不明のまま。詳しくは[現行の未解決事項](../docs/current/open_research_questions.md)。
 
 ## 原本、overlay、報告値の区別
 

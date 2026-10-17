@@ -1,0 +1,7 @@
+# Legacy navigation note for EXP-004 (research Phase 2).
+# This ordinary file exists only to preserve a path in the SHA-pinned original
+# EXP-004 README. It is NOT a GitHub Actions workflow or executable.
+# Actual workflow source: .github/workflows/lpf-target040.yml
+# To manually start the historic workflow, use:
+# https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/workflows/lpf-target040.yml
+# Historical conditions remain historical. Do not treat this as a new RF run.

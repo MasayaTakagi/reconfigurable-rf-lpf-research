@@ -11,15 +11,17 @@
 | **機械可読パレートと完全回路ベクトル** | [固定スナップショットJSON](data/pareto_snapshots/rf_t005_rf_f003_20261017.json) → [実験フォルダ](experiments/README.md) |
 | **未解決課題と次工程** | [現行課題](docs/current/open_research_questions.md) ／ [ロードマップ](docs/roadmap.md) |
 | **ファイルの所在と運用** | [文書](docs/README.md) ／ [データ](data/README.md) ／ [実験](experiments/README.md) ／ [スクリプト](scripts/README.md) |
-| **整理計画と棚卸し** | [PR #67：計画とStep 1監査（レビュー中）](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/67) |
+| **整理計画と棚卸し** | [統合済みPR #71（Step 1～5）](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/71) ／ [整理後の追加計画 PR #72（Draft）](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/72) |
 
 ### 最新の保存結果（条件別・best-found）
 
 - **RF-T005（試験・最大3可変C）：** H2/H3必須30dBの有限格子適合候補のうち**6点**（3L/4L、chip面積3～6、最悪IL 0.944268～0.805149dB）。出典EXP-042/043/045。
 - **RF-F003（正式・最大2可変C）：** 同じく**4点**（4L、chip面積4⅔～6⅔、最悪IL 0.882647～0.833188dB）。出典EXP-047。
+
+**検索・出典の一元化：** 旧14候補と上記の10候補は[統合24件カタログ](data/catalog/phase2_candidate_catalog_20261017.csv)へ区分別に登録済み。[条件の比較規則](data/catalog/README.md)を参照し、正式／試験／旧仕様の数値を混同しません。
 - 両方とも**IL≤0.30dB、公称H2/H3≥35dBは未達**。保存済み候補集合の局所・有限格子の非支配点であり、大域最適性、連続帯域極値、Q(f)/SRF/EM、実装・公差・実測の成立は保証されません。外部S2Pはモデル由来で実測ではありません。
 
-**実施状態の注意：** 現行EXP-047での局所探索・数値検証は保存済みですが、RF-F003共通full_lpf探索pipelineによる網羅最適化は完了していません。2026-10-17の[既存Phase 2回帰CI](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39015048662)はEXP-047のmanifest必須フィールド不足で失敗しており、全CI PASSと呼びません。
+**実施状態の注意：** EXP-047の局所探索・有限格子と限定的な独立MNAは保存済みですが、RF-F003共通`full_lpf`探索pipelineによる網羅最適化は完了していません。統合PR #71の[Phase 2回帰CI（325テストPASS）](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39028160775)は**マージ前にSUCCESS**。元EXP-047 manifestは旧形式のまま不変で、[出典SHA固定の索引専用アダプター](src/lpf/legacy_manifest_adapter.py)を通して検査しています。元の実行SHA・seed・環境は復元できていないため、完全な再実行可能性を意味しません。
 
 **Phase 2継続。Phase 3は所有者の明示承認まで開始しません。** 新規EXPはmainの[中央番号台帳](data/experiment_number_registry.csv)への事前予約と照合を必要とします。過去のRF-F001/F002/T004記録は下に歴史資料として残し、現行RF-F003の値として使用しません。
 

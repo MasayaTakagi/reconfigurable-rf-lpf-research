@@ -1,5 +1,7 @@
 # Phase 2：リポジトリ整理計画（2026-10-17）
 
+> **後日の完了状況（2026-10-17）：** 本書は策定時点の未実施計画として原文を保存する。Step 1～5の実装・統合検証は[PR #71](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/71)でmainへマージ済み（`055b222c79c73c7fbeacb19383f21c1da0625195`）。不要文書の削除を含む追加整理は[PR #72（Draft）](https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/pull/72)で計画中。以下の「未実施」は**計画を作成した当時の記述**であり、現行の実施状況ではない。
+
 > **状態：整理計画のみ／未実施。** 本文の作成は研究の新規実行・最適化・原本移動・削除・RF仕様変更を意味しない。実施前にはmainの最新コミットと監査結果を再確認する。
 >
 > **適用フェーズ：Phase 2継続。Phase 3は所有者の明示承認まで停止。**

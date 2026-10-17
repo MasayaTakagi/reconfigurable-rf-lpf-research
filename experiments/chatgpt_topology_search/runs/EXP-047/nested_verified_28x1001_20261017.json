@@ -1,0 +1,106 @@
+{
+  "experiment_id": "EXP-047",
+  "condition": "RF-F003",
+  "phase": "Phase 2",
+  "base": "EXP-047 nested_continuation 4L two-variable-C updated checkpoint",
+  "model": "frozen original fixed external S2Ps, 50 ohm generator, 60-j40ohm load, Q25 chL Q80 GJM Q40 PCB Q35 tunable, signed neighbor |k|<=0.1",
+  "topology": "EXP-042 L0(0,1),L1(1,3),L2(1,4),L3(1,2); Cf0(0,1),Cf1(4,GND),Cf2(1,2),Cp(0,3); Cv0(3,GND),Cv2(1,2); Cv1 absent",
+  "chip_area": 6,
+  "vector_order": "L0..L3,Cf0..Cf2,Cp,k01,k13,k32,Cv0,Cv1(0 absent),Cv2 by B71 B12 B28 B13B14 B26 B8",
+  "vector": [
+    2.8620637892140897,
+    12.036584353199595,
+    14.82387369579421,
+    7.3141670390005675,
+    2.131569837242361,
+    0.47980580858538613,
+    0.5054634882873126,
+    0.11292831338268218,
+    0.1,
+    -0.003596008916520968,
+    -0.1,
+    0.8043132405262757,
+    0,
+    1.1980424314011984,
+    0.6655090863878157,
+    0,
+    1.0261970528943074,
+    0.7174605496005375,
+    0,
+    0.8892883480366589,
+    0.4735584093205665,
+    0,
+    0.5696355728294413,
+    0.4790729670709968,
+    0,
+    0.18189178862315614,
+    0.27397075084002026,
+    0,
+    0
+  ],
+  "grid": {
+    "regions": 28,
+    "pts_per_region": 1001,
+    "verified": {
+      "worst": 0.8871828155614281,
+      "h2": 30.054923980042307,
+      "h3": 30.047491377343576,
+      "byBand": [
+        {
+          "band": "B71",
+          "IL": 0.836843,
+          "H2": 30.05495,
+          "H3": 30.04749
+        },
+        {
+          "band": "B12",
+          "IL": 0.827682,
+          "H2": 30.05494,
+          "H3": 30.05194
+        },
+        {
+          "band": "B28",
+          "IL": 0.887183,
+          "H2": 30.05495,
+          "H3": 33.08233
+        },
+        {
+          "band": "B13+B14",
+          "IL": 0.798403,
+          "H2": 30.05497,
+          "H3": 31.51891
+        },
+        {
+          "band": "B26",
+          "IL": 0.8467,
+          "H2": 30.05492,
+          "H3": 34.00041
+        },
+        {
+          "band": "B8",
+          "IL": 0.8787,
+          "H2": 35.41453,
+          "H3": 37.93415
+        }
+      ]
+    }
+  },
+  "validation": {
+    "independent_solver": "explicit 9x9 5 nodes + 4 branch-current MNA vs reduced nodal Y and S2P ABCD",
+    "probes": 84,
+    "max_abs_il_db_difference": 4.618527782440651e-13,
+    "max_power_balance_residual_W": 7.609743998132634e-18,
+    "min_component_power_W": 1.4000511453775714e-8,
+    "cholesky_SPD": true,
+    "min_cholesky_pivot_nH": 2.8620637892140897,
+    "bounds_ok": true,
+    "all_30db": true,
+    "all_35db": false
+  },
+  "limitations": [
+    "finite grid only, not continuous intervals proof",
+    "no independent MNA full frequency grid",
+    "real Q(f)/SRF, EM, tolerances, true k/dot layout and fixed S2P measurement not verified",
+    "local coordinate nested heuristic is not proven globally optimal"
+  ]
+}

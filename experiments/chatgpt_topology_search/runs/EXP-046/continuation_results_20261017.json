@@ -1,0 +1,311 @@
+{
+  "schema_version": 1,
+  "experiment_id": "EXP-046",
+  "phase": "Phase 2",
+  "constraint_id": "RF-T005",
+  "status": "in_chat_numeric_executed_partial_verification; no improvement over EXP042",
+  "model": "RF-F003 mandatory input and output S2P from GitHub main, complex real/imag linear interpolation; source 50Ω load 60-j40Ω, GT dB; 6 cases 28 disjoint bands",
+  "external_s2p_sha256": {
+    "input": "ad266111ba1dc2b92f235d39f4a647ff271050bc11941c217661dd299ee59945",
+    "output": "b3cfc861bc0c8221f49328598c9d7d0766a6e94e42e990b6a50f6c90bf9a84da"
+  },
+  "evaluation_accounting": {
+    "original_EXP046_local_evaluations": 2877,
+    "magnetic_homotopy_C_relocation": 20230,
+    "third_PCB_fixed_C_two_physical_orders": 73052,
+    "pi4l_ten_topologies_three_starts": 124266,
+    "hybrid_four_edge_types_two_cap_placements_three_starts": 102440,
+    "new_continuation_total": 319988,
+    "cumulative_with_initial": 322865,
+    "note": "Objective evaluations are not independent solver convergences or topology coverage guarantees."
+  },
+  "topology_scan_summary": [
+    {
+      "group": "coupling_homotopy_and_C_relocation",
+      "best_approx": {
+        "variant": "base",
+        "worst_IL_db": 0.8810030115717755,
+        "min_H2_db": 27.332409014466045,
+        "min_H3_db": 22.7420366746281
+      },
+      "strict30": false,
+      "grid": "28x31"
+    },
+    {
+      "group": "third_PCB_C",
+      "best_approx": {
+        "variant": "Sh1-S-S-Sh2__tip3_ground",
+        "worst_IL_db": 0.8498164037087246,
+        "min_H2_db": 29.027432364166707,
+        "min_H3_db": 23.788654273345195
+      },
+      "strict30": false,
+      "grid": "28x31"
+    },
+    {
+      "group": "third_PCB_C low IL invalid",
+      "best_approx": {
+        "variant": "Sh1-S-S-Sh2__shuntL2_parallel",
+        "worst_IL_db": 0.8022860948444478,
+        "min_H2_db": 22.497879120284434,
+        "min_H3_db": 16.940396340716518
+      },
+      "strict30": false,
+      "grid": "28x31"
+    },
+    {
+      "group": "hybrid",
+      "best_approx": {
+        "variant": "out_mid__CpOUTtip",
+        "worst_IL_db": 1.1379991394662528,
+        "min_H2_db": 26.32640087407808,
+        "min_H3_db": 26.38946759093227
+      },
+      "strict30": false,
+      "grid": "28x31"
+    }
+  ],
+  "new_selected_valid_but_worse": {
+    "candidate_id": "EXP046-pi_right-30dB-control",
+    "category": "RF-T005 candidate, NOT reference winner",
+    "circuit": {
+      "nodes": {
+        "IN": 0,
+        "center": 1,
+        "OUT": 2,
+        "tip_left": 3,
+        "tip_right": 4,
+        "GND": -1
+      },
+      "L_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "physical_row": [
+        "Lsh_left",
+        "Lseries_input",
+        "Lseries_output",
+        "Lsh_right"
+      ],
+      "L_types": [
+        "LQP02HV",
+        "LQP02HV",
+        "LQP02HV",
+        "LQP02HV"
+      ],
+      "L_Q": [
+        25,
+        25,
+        25,
+        25
+      ],
+      "L_nH": [
+        6.4,
+        4.6,
+        8.8,
+        6.8
+      ],
+      "mutual_pairs": [
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          3
+        ]
+      ],
+      "k": [
+        0.08,
+        0.1,
+        -0.08
+      ],
+      "fixed_C_edges": [
+        [
+          3,
+          -1
+        ],
+        [
+          4,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "fixed_C_types": [
+        "GJM01",
+        "GJM01",
+        "PCB_PATTERN_C",
+        "PCB_PATTERN_C"
+      ],
+      "fixed_C_Q": [
+        80,
+        80,
+        40,
+        40
+      ],
+      "fixed_C_pF": [
+        0.4,
+        0.2,
+        0.1095,
+        0.105
+      ],
+      "variable_C_edges": [
+        [
+          3,
+          -1
+        ],
+        [
+          4,
+          -1
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "variable_C_Q": 35,
+      "variable_C_bounds_pF": [
+        0,
+        3
+      ],
+      "band_order": [
+        "B71",
+        "B12",
+        "B28",
+        "B13+B14",
+        "B26",
+        "B8"
+      ],
+      "variable_C_pF": [
+        [
+          1.3137064283354942,
+          1.2643729482260018,
+          0.9859638424100403
+        ],
+        [
+          1.1714859299526945,
+          1.0611038213098944,
+          0.9244944593180511
+        ],
+        [
+          1.1161569542902081,
+          1.1419736961662188,
+          0.8441299400965272
+        ],
+        [
+          0.8693412834409074,
+          0.8400578915855875,
+          0.7249586468153626
+        ],
+        [
+          0.7438684141624717,
+          0.7867916360391776,
+          0.6193559265535964
+        ],
+        [
+          0.5812697402096465,
+          0.6496984982072773,
+          0.4917303718365516
+        ]
+      ],
+      "chip_area_units": 5.333333333333333
+    },
+    "worst_UL_DL_IL_db": 1.3231751008338446,
+    "min_H2_db": 30.036389591785422,
+    "min_H3_db": 30.040672024991146,
+    "per_setting_28x1001": [
+      {
+        "case": "B71",
+        "IL": 1.127952,
+        "H2": 30.03842,
+        "H3": 30.04252
+      },
+      {
+        "case": "B12",
+        "IL": 1.070505,
+        "H2": 30.03687,
+        "H3": 30.04096
+      },
+      {
+        "case": "B28",
+        "IL": 1.21288,
+        "H2": 30.03736,
+        "H3": 30.12711
+      },
+      {
+        "case": "B13+B14",
+        "IL": 1.016731,
+        "H2": 30.03818,
+        "H3": 30.04067
+      },
+      {
+        "case": "B26",
+        "IL": 1.209737,
+        "H2": 30.03758,
+        "H3": 32.21159
+      },
+      {
+        "case": "B8",
+        "IL": 1.323175,
+        "H2": 30.03639,
+        "H3": 30.09415
+      }
+    ],
+    "verification": {
+      "dense_28_regions_x_1001_points": "reduced node-Y + exact external ABCD",
+      "independent_28_regions_x_3_points": "full 9x9 (five voltage + four branch-current) MNA with two port voltage bases, then original S2P cascade",
+      "maximum_observed_reference_vs_branchMNA_IL_H2_H3_difference_db": 4.618527782440651e-14,
+      "maximum_y_reciprocity_residual": 1.3879481770324007e-17,
+      "L_matrix_min_eigenvalue_nH": 4.36688711,
+      "L_matrix_eigenvalues_nH": [
+        4.36688711,
+        6.3812772,
+        6.90627799,
+        8.9455577
+      ],
+      "source_technique": "in-chat JavaScript execution; no GitHub Actions independent rerun",
+      "continuous_frequency_extrema_proof": false,
+      "physical_em_qf_srf": false,
+      "power_balance_with_external_s2p_not_separately_derived": true
+    }
+  },
+  "benchmark": {
+    "candidate": "EXP042-pcb_cf1",
+    "worst_UL_DL_IL_db": 0.8113065857640376,
+    "min_H2_db": 30.019999999450626,
+    "min_H3_db": 30.01999999999574,
+    "chip_area_units": 5.333333333333333
+  },
+  "conclusion": "pi_right passes 30dB on finite 28x1001 mesh and matches full 9x9 MNA on 84 probes, but is substantially worse in worst IL than existing 4L benchmark; new topologies do not improve cost/IL Pareto. Formal 35dB is not met. No Phase 3 work.",
+  "sources": [
+    "continuation_inchat.js",
+    "continuation_pcb3_inchat.js",
+    "continuation_pi4l_inchat.js",
+    "continuation_hybrid4l_inchat.js"
+  ]
+}

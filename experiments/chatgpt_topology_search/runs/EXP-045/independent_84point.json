@@ -1,0 +1,11 @@
+{
+  "experiment_id": "EXP-045",
+  "independent_method": "Explicit branch-current MNA (7 unknown V and inductor branch currents) versus reduced nodal Schur complement. External S2Ps not independently cascaded in this check.",
+  "probe_count": 84,
+  "max_twoport_Y_matrix_difference_siemens": 3.817931396441887e-17,
+  "min_Hermitian_twoport_Y_eigenvalue_siemens": 0.00009845978406688072,
+  "min_coupled_inductance_eigenvalue_nH": 3.1979569408577118,
+  "pass": true,
+  "computed_in": "local Python+NumPy container 2026-10-17",
+  "limitations": "LPF-only 84 probes; original external-S2P 28x1001 result separately calculated in in-chat JS model."
+}

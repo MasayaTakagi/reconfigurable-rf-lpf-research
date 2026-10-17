@@ -10,24 +10,23 @@
   "source_summary": {
     "scope": "W4 current tracked 225 unindexed experiment/validation sources",
     "based_on_main": "26cacd179146bda5f5ca1cdcf0096dd61eb4faae",
-    "checked_out_commit": "ef490c6807ac5791d0ba0c6d2b1f9118d4ea6975",
+    "checked_out_commit": "ca9c9cfaea6ea95798c4d4a17e90d6149b747597",
     "unindexed_count": 225,
     "unindexed_bytes": 2046501,
     "groups": 7,
     "by_content_kind": {
       "narrative_or_text": 16,
       "source_code": 27,
-      "structured_json": 123,
-      "unclassified_file": 59
+      "source_code_js": 59,
+      "structured_json": 123
     },
     "by_evidence_role_gate": {
       "retain_candidate_checkpoint_or_vector_pending_replay": 25,
       "retain_direct_workflow_execution_dependency": 20,
       "retain_exp047_legacy_source_overlay": 1,
-      "retain_historical_interpretation_and_provenance": 23,
+      "retain_historical_interpretation_and_provenance": 16,
       "retain_numeric_or_metadata_source_pending_run_lineage": 97,
-      "retain_runner_or_verifier_source_pending_run_lineage": 7,
-      "retain_unknown_role_pending_semantic_review": 52
+      "retain_runner_or_verifier_source_pending_run_lineage": 66
     },
     "with_exact_path_hits": 78,
     "with_workflow_full_path_reference": 20,
@@ -188,5 +187,9 @@
   "approval_status": "no permission to remove E/W originals",
   "deletion_count": 0,
   "rf_computations_performed": 0,
-  "read_only_history_limit": "Actions API latest-three samples and current visible total counts are not complete immutable lifetime run history; original RF evidence not re-simulated."
+  "read_only_history_limit": "Actions API latest-three samples and current visible total counts are not complete immutable lifetime run history; original RF evidence not re-simulated.",
+  "source_verification_run_id": 39047041212,
+  "source_verification_url": "https://github.com/MasayaTakagi/reconfigurable-rf-lpf-research/actions/runs/39047041212",
+  "source_verification_conclusion": "success",
+  "source_classification_revision": "59 historical .js originals explicitly categorized as source_code_js and retained"
 }

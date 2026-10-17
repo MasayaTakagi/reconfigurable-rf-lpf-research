@@ -32,3 +32,13 @@ python scripts/report_research_pareto.py --catalog data/catalog/phase2_candidate
 `build_phase2_candidate_catalog.py`は元sourceを読み取り、元のGit blob SHAや制約・実験ID・面積・閾値を照合して派生ファイルだけを生成します。**新規最適化・回路再計算は行わず、EXP番号も採番しません。**
 
 本作業はPhase 2に限定し、Phase 3は所有者が明示承認するまで停止します。
+
+## W2：回路構造・結合符号の検索
+
+[回路構造検索CSV](phase2_topology_search_20261017.csv)は、上記24件の`catalog_id`と1:1で結合できる**独立した派生索引**です。[出典付き10候補の一覧](../../docs/results/phase2_topology_search_20261017.md)と[構造の監査サマリー](phase2_topology_search_20261017_summary.json)も参照してください。
+
+検索列は`topology_family`、`electrical_inductor_edges`、`reported_physical_inductor_order`、`signed_coupling_pairs`、各列の出典種別です。RF-F003とRF-T005を別条件として維持します。旧14件の`unknown`は**未抽出**であり、回路が不明または部品が存在しないと断定しません。
+
+4LのEXP-042系列の接続は、関連するEXP-047記録で明示された名称を参照する場合があります。この場合は`related_EXP047_only_not_independently_confirmed`と表示します。数値kの符号・報告された順序は**物理的な巻線極性、同時結合の実現性、EMの検証結果ではありません**。原回路の再解析・最適化は行っていません。
+
+再生成: `python scripts/build_phase2_topology_search.py`／`python scripts/build_phase2_topology_search.py --check`。

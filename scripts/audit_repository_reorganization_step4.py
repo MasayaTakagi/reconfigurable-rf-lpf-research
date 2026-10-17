@@ -268,8 +268,8 @@ def build():
         "# 歴史資料・研究記録の案内 — 2026-10-17（Phase 2）", "",
         "> **非破壊の仮想フォルダ索引。** 旧文書の本体を本ディレクトリに移動していない。"
         "元の相対パス／Git blob SHAを保存し、条件・作成日・出典を確認して読む。"
-        "現行正式制約は [RF-F003](../../../data/constraints/formal/RF-F003.json) "
-        "ではなく [RF-F003](../../data/constraints/formal/RF-F003.json) へのリンクを正とする。",
+        "現行正式制約は [RF-F003](../../data/constraints/formal/RF-F003.json)。"
+        "参照する際は制約レジストリ上のactive IDを優先する。",
         "",
         "**最新の正式仕様を確認する場合：** "
         "[制約台帳](../../data/constraints/registry.json)、"

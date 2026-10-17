@@ -100,4 +100,5 @@ for(let outer=0;outer<2;outer++){
  for(let ci=0;ci<6;ci++)simplex(x,[11+3*ci,12+3*ci,13+3*ci],1,conf,g5[ci],[.06,.09,.1],90,30.03,3);
 }
 results.push({variant:name,initial,coarse:summary(x,1,name,g5),recheck:summary(x,1,name,g31),vector:x});
+}
 text({phase:"EXP-046-continued",method:"per-band 3D simplex then common fixed L/C/k coordinate retune, homotopy on baseline",evaluations:count,results:results.map(r=>({variant:r.variant,coarse:r.coarse,recheck:r.recheck})),best_sort_by_feasibility:results.slice().sort((a,b)=>{let fa=Math.max(0,30-a.recheck.h2)+Math.max(0,30-a.recheck.h3),fb=Math.max(0,30-b.recheck.h2)+Math.max(0,30-b.recheck.h3);return fa-fb||a.recheck.worst-b.recheck.worst}).slice(0,3).map(r=>({variant:r.variant,summary:r.recheck,vector:r.vector}))});

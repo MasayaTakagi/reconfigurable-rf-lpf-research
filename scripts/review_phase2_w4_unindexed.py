@@ -45,7 +45,7 @@ def classify_gate(path, kind, workflow_refs, markdown_refs):
         return "retain_direct_workflow_execution_dependency"
     if "/checkpoints/" in path or "checkpoint" in Path(path).name.lower():
         return "retain_candidate_checkpoint_or_vector_pending_replay"
-    if kind in ("source_code", "configuration"):
+    if kind in ("source_code", "source_code_js", "configuration"):
         return "retain_runner_or_verifier_source_pending_run_lineage"
     if kind in ("structured_json", "structured_json_array", "tabular_csv"):
         return "retain_numeric_or_metadata_source_pending_run_lineage"
@@ -104,6 +104,8 @@ def build():
     for item in candidates:
         path = item["path"]
         kind, schema = _source_summary(path, ROOT / path)
+        if Path(path).suffix.lower() == ".js":
+            kind, schema = "source_code_js", "historical_javascript_analysis_source"
         exact = sorted(t for t, body in texts.items()
                        if t != path and path in body and _ref_hits(body, path))
         md = sorted(links.get(path, []))

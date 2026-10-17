@@ -1,0 +1,161 @@
+{
+  "experiment_id": "EXP-047",
+  "constraint_id": "RF-F003",
+  "candidate": "area4p667_g1_deep_independent_28x1001_20261017.json",
+  "type": "one-at-a-time preliminary fixed-Cv sensitivity; not manufacturing tolerance certification",
+  "grids": "28x101 6 settings original frozen port S2P",
+  "results": [
+    {
+      "scenario": "baseline",
+      "worstIL": 0.882646927903292,
+      "H2": 30.02493785280207,
+      "H3": 30.024972665564587,
+      "pass30": true,
+      "physical_fixed_limits_ok": true
+    },
+    {
+      "scenario": "p0-1%",
+      "worstIL": 0.8820358475071164,
+      "H2": 29.625897093724557,
+      "H3": 29.609983508896583,
+      "pass30": false,
+      "physical_fixed_limits_ok": true
+    },
+    {
+      "scenario": "p0+1%",
+      "worstIL": 0.8833135057152925,
+      "H2": 29.645675034497614,
+      "H3": 29.579506080188583,
+      "pass30": false,
+      "physical_fixed_limits_ok": true
+    },
+    {
+      "scenario": "p1-1%",
+      "worstIL": 0.8818512556979642,
+      "H2": 29.34138636501136,
+      "H3": 29.6711577006267,
+      "pass30": false,
+      "physical_fixed_limits_ok": true
+    },
+    {
+      "scenario": "p1+1%",
+      "worstIL": 0.8834533965764415,
+      "H2": 29.802309765203432,
+      "H3": 29.445917793155925,
+      "pass30": false,
+      "physical_fixed_limits_ok": true
+    },
+    {
+      "scenario": "p2-1%",
+      "worstIL": 0.8824018175553769,
+      "H2": 29.646521894470837,
+      "H3": 29.821334611567558,
+      "pass30": false,
+      "physical_fixed_limits_ok": true
+    },
+    {
+      "scenario": "p2+1%",
+      "worstIL": 0.8828940240735403,
+      "H2": 29.312678065327734,
+      "H3": 29.598609688892864,
+      "pass30": false,
+      "physical_fixed_limits_ok": true
+    },
+    {
+      "scenario": "p3-1%",
+      "worstIL": 0.8805639169466619,
+      "H2": 29.149688672603425,
+      "H3": 29.67342300268101,
+      "pass30": false,
+      "physical_fixed_limits_ok": true
+    },
+    {
+      "scenario": "p3+1%",
+      "worstIL": 0.8851500981870195,
+      "H2": 30.108324071818995,
+      "H3": 29.601619900047652,
+      "pass30": false,
+      "physical_fixed_limits_ok": true
+    },
+    {
+      "scenario": "p4-1%",
+      "worstIL": 0.8823607353831113,
+      "H2": 29.775680054867095,
+      "H3": 29.60877091684358,
+      "pass30": false,
+      "physical_fixed_limits_ok": true
+    },
+    {
+      "scenario": "p4+1%",
+      "worstIL": 0.8829364823882523,
+      "H2": 29.669720317154145,
+      "H3": 29.426229604161,
+      "pass30": false,
+      "physical_fixed_limits_ok": true
+    },
+    {
+      "scenario": "p5-1%",
+      "worstIL": 0.8818841836486431,
+      "H2": 29.568271896802223,
+      "H3": 29.771271080654927,
+      "pass30": false,
+      "physical_fixed_limits_ok": true
+    },
+    {
+      "scenario": "p5+1%",
+      "worstIL": 0.883422236404703,
+      "H2": 29.337827235344534,
+      "H3": 29.671064379829758,
+      "pass30": false,
+      "physical_fixed_limits_ok": false
+    },
+    {
+      "scenario": "p7-1%",
+      "worstIL": 0.8825225633147564,
+      "H2": 29.830623013744866,
+      "H3": 29.95017099760617,
+      "pass30": false,
+      "physical_fixed_limits_ok": true
+    },
+    {
+      "scenario": "p7+1%",
+      "worstIL": 0.8827717181137261,
+      "H2": 29.85500947823241,
+      "H3": 29.883679563188625,
+      "pass30": false,
+      "physical_fixed_limits_ok": true
+    },
+    {
+      "scenario": "k0-0.005",
+      "worstIL": 0.8822093343210873,
+      "H2": 29.518470866682552,
+      "H3": 29.581036982809337,
+      "pass30": false,
+      "physical_fixed_limits_ok": true
+    },
+    {
+      "scenario": "k2+0.005",
+      "worstIL": 0.8824233235781482,
+      "H2": 29.594544098467402,
+      "H3": 29.608664989634196,
+      "pass30": false,
+      "physical_fixed_limits_ok": true
+    },
+    {
+      "scenario": "Cv_all_-1%",
+      "worstIL": 0.879249238301717,
+      "H2": 28.743978602897453,
+      "H3": 29.596789600785876,
+      "pass30": false,
+      "physical_fixed_limits_ok": true
+    },
+    {
+      "scenario": "Cv_all_+1%",
+      "worstIL": 0.8860881639982234,
+      "H2": 29.908242025538506,
+      "H3": 29.336912702057163,
+      "pass30": false,
+      "physical_fixed_limits_ok": true
+    }
+  ]
+}

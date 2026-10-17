@@ -43,3 +43,7 @@
 - **過去との区別：** 旧 [選別候補台帳](../../data/research_candidate_register.csv) の14件と、この保存パレート10件は[2026-10-17固定の統合24候補CSV](../../data/catalog/phase2_candidate_catalog_20261017.csv)で**索引として統合済み**。[カタログの出典・ハッシュ](../../data/catalog/README.md)を確認し、RF-F002の旧正式成果・RF-T004試験・RF-T005試験・RF-F003正式を同一条件でパレート比較しない。
 
 [現行ステータス](../current/phase2_status.md) ／ [実験フォルダの案内](../../experiments/README.md) ／ [文書総合入口](../README.md)
+
+## W2：回路接続・コイル配置・結合符号の検索
+
+新しく[構造検索の一覧](phase2_topology_search_20261017.md)と[24件の構造検索CSV](../../data/catalog/phase2_topology_search_20261017.csv)を用意しました。既存の[24件性能CSV](../../data/catalog/phase2_candidate_catalog_20261017.csv)とは`catalog_id`で照合します。数値kの符号は原パラメータの符号で、物理的な実現性を示すものではありません。2026-10-17の旧14候補は構造未抽出として残し、推測で補完しません。

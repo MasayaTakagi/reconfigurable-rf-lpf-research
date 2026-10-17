@@ -504,7 +504,24 @@
     "selected_worst_IL_dB": 0.8951800090647889,
     "selected_min_H2_dB": 30.00800000006535,
     "selected_min_H3_dB": 30.008000001829046,
-    "chip_area": 3.6666666666666665
+    "chip_area": 3.6666666666666665,
+    "critical4_sensitivity": {
+      "executed": "in_chat_JS_original_S2P_four_frequency_only",
+      "scenario_count_including_baseline": 14,
+      "frequency_count": 4,
+      "raw_numeric_results": "experiments/chatgpt_topology_search/runs/EXP-045/tolerance_critical4_20261017.json",
+      "standalone_python_reproduction": "experiments/chatgpt_topology_search/runs/EXP-045/recheck_critical4_tolerance.py",
+      "standalone_python_execution": "not_run",
+      "full_band_under_perturbation": "not_run",
+      "notable_failed_single_stresses": [
+        "extra PCB-C -1%",
+        "GJM Cp -1%",
+        "PCB Cf0 -1%",
+        "k L0-Ls -0.01",
+        "k Ls-L1 +/-0.01",
+        "IC Cv -1%"
+      ]
+    }
   },
   "validation": {
     "numerical": "screened",
@@ -522,6 +539,7 @@
     "Worst IL 0.895180009dB exceeds interim 0.8dB and nominal 0.3dB.",
     "Two electrically parallel 0.2pF Q40 PCB capacitor patterns require physical footprint, EM, SRF/Q(f), layout, and tolerancing checks.",
     "Manifest schema migration preserves pre-repair JSON in search_scope.original_archived_manifest and Git history; this is not a new RF solver run.",
-    "Trial RF-T005 only; formal RF-F003 unchanged; Phase 3 not authorized."
+    "Trial RF-T005 only; formal RF-F003 unchanged; Phase 3 not authorized.",
+    "2026-10-17 four-frequency tolerance diagnostics show 30dB failures for small single-parameter changes but neither cover all bands nor estimate manufacturing yield."
   ]
 }
